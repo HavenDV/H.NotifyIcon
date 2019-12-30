@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         dotnet: [ '3.1.100' ]
-        os: [ubuntu-latest, ubuntu-16.04, windows-latest, macos-latest]
+        os: [windows-latest]
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - ${{ matrix.dotnet }}
