@@ -36,10 +36,10 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}
     
     - name: Build
-      run: dotnet build --configuration Release --nologo
+      run: dotnet build src --configuration Release --nologo
     
     - name: Run tests
-      run: dotnet test --configuration Release --nologo
+      run: dotnet test src --configuration Release --nologo
       
     - name: Try Publish(if the version has changed)
       if: runner.os == 'Windows' &&
