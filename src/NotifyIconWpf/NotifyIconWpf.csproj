@@ -7,6 +7,7 @@
     <Product>NotifyIcon WPF</Product>
     <PackageId>Hardcodet.NotifyIcon.Wpf.NetCore</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>1.0.10</Version>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
     <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
