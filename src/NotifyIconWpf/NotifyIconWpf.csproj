@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
+    <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
+    <AssemblyTitle>NotifyIcon for WPF</AssemblyTitle>
+    <Product>NotifyIcon WPF</Product>
+    <TargetFrameworks>net45;net472;netcoreapp3.0</TargetFrameworks>
+    
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Diagrams\TaskbarIcon Overview.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
+    <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
+  </ItemGroup>
+</Project>
