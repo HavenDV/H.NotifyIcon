@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
 	  <UseWPF>true</UseWPF>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -8,7 +7,7 @@
     <IsSampleProject>$(MSBuildProjectName.Contains('Sample'))</IsSampleProject>
     <Copyright>Copyright (c) 2016 Philipp Sumi</Copyright>
     <Company>hardcodet.net</Company>
-    <Authors>Philipp Sumi</Authors>
+    <Authors>havendv -&gt; Lakritzator and Philipp Sumi</Authors>
     <PackageIconUrl>http://www.hardcodet.net/wp-content/themes/inove/favicon.ico</PackageIconUrl>
     <RepositoryUrl>https://github.com/hardcodet/wpf-notifyicon</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
