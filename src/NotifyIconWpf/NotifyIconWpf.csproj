@@ -1,24 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
     <AssemblyTitle>NotifyIcon for WPF</AssemblyTitle>
     <Product>NotifyIcon WPF</Product>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
     <PackageId>Hardcodet.NotifyIcon.Wpf.NetCore</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <PackageReleaseNotes>Added strong name.</PackageReleaseNotes>
   </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
     <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
@@ -26,8 +27,10 @@
     </None>
     <None Include="Diagrams\TaskbarIcon Overview.cd" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
     <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
   </ItemGroup>
+
 </Project>
