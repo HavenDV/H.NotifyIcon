@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        dotnet: [ '5.*' ]
+        dotnet: [ '5.0.100-rc.2.20479.15' ]
         os: [windows-latest]
         
     runs-on: ${{ matrix.os }}
@@ -37,5 +37,5 @@ jobs:
       
     - name: Try Publish(if the version has changed)
       if: runner.os == 'Windows' &&
-          matrix.dotnet == '5.0.x'
+          matrix.dotnet == '5.0.100-rc.2.20479.15'
       run: dotnet nuget push src\NotifyIconWpf\bin\Release\Hardcodet.NotifyIcon.Wpf.NetCore.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json; exit 0
