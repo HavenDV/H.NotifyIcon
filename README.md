@@ -1,4 +1,4 @@
-# Hardcodet NotifyIcon for .Net Core 3.1 WPF
+# Hardcodet NotifyIcon for .Net Core 3.1 and .Net 5 WPF
 
 **This fork is aimed only at developing the .Net Core version of the original project - https://github.com/hardcodet/wpf-notifyicon**
 
@@ -8,6 +8,7 @@ Current version:
 [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/search?l=C%23&o=desc&s=&type=Code) 
 [![License](https://img.shields.io/github/license/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore.svg?label=License&maxAge=86400)](LICENSE) 
 [![Requirements](https://img.shields.io/badge/Requirements-.NET%20Core%203.1-blue.svg)](https://github.com/dotnet/core/blob/master/release-notes/3.1/3.1-supported-os.md)
+[![Requirements](https://img.shields.io/badge/Requirements-.NET%205.0-blue.svg)](https://github.com/dotnet/core/blob/master/release-notes/5.0/5.0-supported-os.md)
 [![Build Status](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/workflows/.NET%20Core/badge.svg?branch=master)](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/actions?query=workflow%3A%22.NET+Core%22)
 
 ## Description
