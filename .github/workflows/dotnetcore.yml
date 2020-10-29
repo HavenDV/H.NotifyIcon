@@ -27,7 +27,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
-        includePrerelease: true
     
     - name: Build
       run: dotnet build src --configuration Release --nologo
