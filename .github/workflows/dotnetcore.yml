@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        dotnet: [ '3.1.200' ]
+        dotnet: [ '5.0.x' ]
         os: [windows-latest]
 
     runs-on: ${{ matrix.os }}
@@ -20,17 +20,8 @@ jobs:
       
     - name: Getting code
       uses: actions/checkout@v1
-      
-    - name: Getting Nuget cache
-      if: runner.os == 'When the cache will be faster'
-      uses: actions/cache@v1
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget
           
-    - name: Setup .NET Core
+    - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
@@ -43,5 +34,5 @@ jobs:
       
     - name: Try Publish(if the version has changed)
       if: runner.os == 'Windows' &&
-          matrix.dotnet == '3.1.200'
+          matrix.dotnet == '5.0.x'
       run: dotnet nuget push src\NotifyIconWpf\bin\Release\Hardcodet.NotifyIcon.Wpf.NetCore.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json; exit 0
