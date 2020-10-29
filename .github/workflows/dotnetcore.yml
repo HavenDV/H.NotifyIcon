@@ -6,11 +6,13 @@ jobs:
   build:
     strategy:
       matrix:
-        dotnet: [ '5.0.x' ]
+        dotnet: [ '5.*' ]
         os: [windows-latest]
-
+        
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - ${{ matrix.dotnet }}
+    env:
+      DOTNET_NOLOGO: true
     
     steps:
     - name: Getting context
@@ -25,6 +27,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
+        includePrerelease: true
     
     - name: Build
       run: dotnet build src --configuration Release --nologo
