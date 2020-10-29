@@ -30,9 +30,6 @@ jobs:
     
     - name: Build
       run: dotnet build src --configuration Release --nologo
-    
-    - name: Run tests
-      run: dotnet test src --configuration Release --nologo
       
     - name: Try Publish(if the version has changed)
       if: runner.os == 'Windows' &&
