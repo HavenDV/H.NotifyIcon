@@ -1,13 +1,12 @@
-name: .NET Core
-
-on: [push]
+name: .NET
+on: [ push ]
 
 jobs:
   build:
     strategy:
       matrix:
-        dotnet: [ '5.0.100-rc.2.20479.15' ]
-        os: [windows-latest]
+        dotnet: [ '5.x' ]
+        os: [ windows-latest ]
         
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os }} - ${{ matrix.dotnet }}
@@ -15,15 +14,10 @@ jobs:
       DOTNET_NOLOGO: true
     
     steps:
-    - name: Getting context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
-      
     - name: Getting code
       uses: actions/checkout@v1
           
-    - name: Setup dotnet
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
@@ -31,7 +25,5 @@ jobs:
     - name: Build
       run: dotnet build src --configuration Release --nologo
       
-    - name: Try Publish(if the version has changed)
-      if: runner.os == 'Windows' &&
-          matrix.dotnet == '5.0.100-rc.2.20479.15'
+    - name: Try Publish
       run: dotnet nuget push src\NotifyIconWpf\bin\Release\Hardcodet.NotifyIcon.Wpf.NetCore.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json; exit 0
