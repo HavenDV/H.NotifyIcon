@@ -26,8 +26,8 @@ jobs:
       run: dotnet build src --configuration Release --nologo
       
     - name: Publish
-      run: dotnet nuget push \
-        src\**.nupkg \
-        -k ${{ secrets.NUGET_KEY }} \
-        -s https://api.nuget.org/v3/index.json \
+      run: dotnet nuget push
+        src\**.nupkg
+        -k ${{ secrets.NUGET_KEY }}
+        -s https://api.nuget.org/v3/index.json
         --skip-duplicate
