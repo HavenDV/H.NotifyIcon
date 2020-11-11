@@ -24,10 +24,10 @@ jobs:
     
     - name: Build
       run: dotnet build src --configuration Release --nologo
-      
+        
     - name: Publish
       run: dotnet nuget push
         src\**.nupkg
-        -k ${{ secrets.NUGET_KEY }}
-        -s https://api.nuget.org/v3/index.json
+        --api-key ${{ secrets.NUGET_KEY }}
+        --source https://api.nuget.org/v3/index.json
         --skip-duplicate
