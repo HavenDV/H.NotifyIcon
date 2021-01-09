@@ -1,8 +1,6 @@
-# H.NotifyIcon.WPF - NotifyIcon for .Net Core 3.1 and .Net 5 WPF
+## H.NotifyIcon.WPF - NotifyIcon for .Net Core 3.1 and .Net 5 WPF
 
 **This fork is aimed only at developing the .Net Core version of the original project - https://github.com/hardcodet/wpf-notifyicon**
-
-Current version: 
 
 [![Nuget](https://img.shields.io/nuget/v/Hardcodet.NotifyIcon.Wpf.NetCore.svg)](https://www.nuget.org/packages/Hardcodet.NotifyIcon.Wpf.NetCore/)
 [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/search?l=C%23&o=desc&s=&type=Code) 
@@ -11,30 +9,24 @@ Current version:
 [![Requirements](https://img.shields.io/badge/Requirements-.NET%205.0-blue.svg)](https://github.com/dotnet/core/blob/master/release-notes/5.0/5.0-supported-os.md)
 [![Build Status](https://github.com/HavenDV/H.NotifyIcon.WPF/workflows/.NET/badge.svg?branch=master)](https://github.com/HavenDV/H.NotifyIcon.WPF/actions?query=workflow%3A%22.NET%22)
 
-## Description
+This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WPF platform. 
+It does not just rely on the Windows Forms NotifyIcon component, 
+but is a purely independent control which leverages several features of the WPF framework 
+in order to display rich tooltips, popups, context menus, and balloon messages. 
+It can be used directly in code or embedded in any XAML file.
 
-This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WPF platform. It does not just rely on the Windows Forms NotifyIcon component, but is a purely independent control which leverages several features of the WPF framework in order to display rich tooltips, popups, context menus, and balloon messages. It can be used directly in code or embedded in any XAML file.
+### Nuget
 
-### Features at a glance
+[![NuGet](https://img.shields.io/nuget/dt/Hardcodet.NotifyIcon.Wpf.NetCore.svg?style=flat-square&label=Hardcodet.NotifyIcon.Wpf.NetCore)](https://www.nuget.org/packages/Hardcodet.NotifyIcon.Wpf.NetCore/)
 
-- Custom Popups (interactive controls) on mouse clicks.
-- Customized ToolTips (Vista and above) with fallback mechanism for xp/2003.
-- Rich event model including attached events to trigger animations in Popups, ToolTips, and balloon messages. I just love that.
-- Full support for standard Windows balloons, including custom icons.
-- Custom balloons that pop up in the tray area. Go wild with styles and animations 🙂
-- Support for WPF context menus.
-- You can define whether to show Popups on left-, right-, double-clicks etc. The same goes for context menus.
-- Simple data binding for Popups, ToolTips and custom balloons through attached properties and derived data context.
-- Command support for single / double clicks on the tray icon.
+```
+Install-Package Hardcodet.NotifyIcon.Wpf.NetCore
+```
 
-### Tutorial and Support
+### Usage
 
-A comprehensive tutorial that complements the attached sample application can be found on the Code Project: 
-http://www.codeproject.com/KB/WPF/wpf_notifyicon.aspx
-
-## XAML Declaration Sample
-
-The sample below shows some of the properties of the control. For a more comprehensive sample, have a look at the sample application that comes with the download.
+The sample below shows some of the properties of the control. 
+For a more comprehensive sample, have a look at the sample application that comes with the download.
 
 ``` XML
 <Window
@@ -56,4 +48,21 @@ The sample below shows some of the properties of the control. For a more compreh
 
 </Window>
 ```
+
+### Features
+
+- Custom Popups (interactive controls) on mouse clicks.
+- Customized ToolTips (Vista and above) with fallback mechanism for xp/2003.
+- Rich event model including attached events to trigger animations in Popups, ToolTips, and balloon messages. I just love that.
+- Full support for standard Windows balloons, including custom icons.
+- Custom balloons that pop up in the tray area. Go wild with styles and animations 🙂
+- Support for WPF context menus.
+- You can define whether to show Popups on left-, right-, double-clicks etc. The same goes for context menus.
+- Simple data binding for Popups, ToolTips and custom balloons through attached properties and derived data context.
+- Command support for single / double clicks on the tray icon.
+
+### Tutorial and Support
+
+A comprehensive tutorial that complements the attached sample application can be found on the Code Project: 
+http://www.codeproject.com/KB/WPF/wpf_notifyicon.aspx
 
