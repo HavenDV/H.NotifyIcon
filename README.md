@@ -9,7 +9,7 @@ Current version:
 [![License](https://img.shields.io/github/license/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore.svg?label=License&maxAge=86400)](LICENSE) 
 [![Requirements](https://img.shields.io/badge/Requirements-.NET%20Core%203.1-blue.svg)](https://github.com/dotnet/core/blob/master/release-notes/3.1/3.1-supported-os.md)
 [![Requirements](https://img.shields.io/badge/Requirements-.NET%205.0-blue.svg)](https://github.com/dotnet/core/blob/master/release-notes/5.0/5.0-supported-os.md)
-[![Build Status](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/workflows/.NET%20Core/badge.svg?branch=master)](https://github.com/HavenDV/Hardcodet.NotifyIcon.Wpf.NetCore/actions?query=workflow%3A%22.NET+Core%22)
+[![Build Status](https://github.com/HavenDV/H.NotifyIcon.WPF/workflows/.NET/badge.svg?branch=master)](https://github.com/HavenDV/H.NotifyIcon.WPF/actions?query=workflow%3A%22.NET%22)
 
 ## Description
 
