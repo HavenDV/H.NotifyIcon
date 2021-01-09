@@ -32,7 +32,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// See more on Windows messages <a href="https://docs.microsoft.com/en-us/windows/win32/learnwin32/window-messages">here</a>
     /// </summary>
     [SuppressMessage("ReSharper", "IdentifierTypo")]
-    public enum WindowsMessages : uint
+    internal enum WindowsMessages : uint
     {
         /// <summary>
         /// Notifies a window that the user clicked the right mouse button (right-clicked) in the window.

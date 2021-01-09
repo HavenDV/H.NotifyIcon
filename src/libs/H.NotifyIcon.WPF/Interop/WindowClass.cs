@@ -7,7 +7,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// Callback delegate which is used by the Windows API to
     /// submit window messages.
     /// </summary>
-    public delegate IntPtr WindowProcedureHandler(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+    internal delegate IntPtr WindowProcedureHandler(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// Used to receive window messages.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct WindowClass
+    internal struct WindowClass
     {
         #pragma warning disable 1591
 

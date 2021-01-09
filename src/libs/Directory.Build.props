@@ -1,0 +1,58 @@
+<Project>
+
+  <Import Project="..\Directory.Build.props" />
+
+  <PropertyGroup Label="Common">
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Signing">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)src\key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup Label="CLSCompliant">
+    <Compile Include="$(SolutionDir)src\CLSCompliantTrue.cs" />
+  </ItemGroup>
+
+  <PropertyGroup Label="Nuget">
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Copyright>Copyright (c) 2016 Philipp Sumi</Copyright>
+    <Company>hardcodet.net</Company>
+    <Authors>havendv -&gt; Lakritzator and Philipp Sumi</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/hardcodet/wpf-notifyicon</PackageProjectUrl>
+    <PackageIcon>nuget_icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup Label="Nuget">
+    <None Include="$(SolutionDir)assets\nuget_icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup Label="Source Link">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedAllSources>true</EmbedAllSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup Label="Source Link">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!--<PropertyGroup Label="Analyzers">
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <NoWarn>$(NoWarn)</NoWarn>
+  </PropertyGroup>-->
+
+</Project>

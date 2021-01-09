@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>net4.0;net4.5;netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
+    <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
+  </PropertyGroup>
+	  
+  <PropertyGroup Label="NuGet">
+    <PackageId>Hardcodet.NotifyIcon.Wpf.NetCore</PackageId>
+    <Version>1.0.16</Version>
+    <PackageReleaseNotes>
+Added net5.0-windows target.
+Added net4.0 and net4.5 targets.
+    </PackageReleaseNotes>
+    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WPF platform. 
+It does not just rely on the Windows Forms NotifyIcon component, 
+but is a purely independent control which leverages several features of the WPF framework in order to display rich tooltips, 
+popups, context menus, and balloon messages. It can be used directly in code or embedded in any XAML file.
+
+Source code and extensive sample application available at http://www.hardcodet.net/projects/wpf-notifyicon
+    </Description>
+    <PackageTags>NotifyIcon, WPF, Tray, Notify, ToolTip, Popup, Balloon, Toast</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows' ">
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

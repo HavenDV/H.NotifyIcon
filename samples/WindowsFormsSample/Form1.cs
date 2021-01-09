@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Hardcodet.Wpf.TaskbarNotification;
 using Samples;
-using WindowsFormsSample.Properties;
+using Samples.Properties;
 
 namespace WindowsFormsSample
 {

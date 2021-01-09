@@ -1,4 +1,4 @@
-# Hardcodet NotifyIcon for .Net Core 3.1 and .Net 5 WPF
+# H.NotifyIcon.WPF - NotifyIcon for .Net Core 3.1 and .Net 5 WPF
 
 **This fork is aimed only at developing the .Net Core version of the original project - https://github.com/hardcodet/wpf-notifyicon**
 
