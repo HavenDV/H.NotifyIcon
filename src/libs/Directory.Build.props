@@ -23,7 +23,7 @@
     <Authors>havendv -&gt; Lakritzator and Philipp Sumi</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/hardcodet/wpf-notifyicon</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</PackageProjectUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
   </PropertyGroup>
 

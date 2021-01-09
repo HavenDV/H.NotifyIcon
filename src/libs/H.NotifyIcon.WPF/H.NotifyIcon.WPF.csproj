@@ -10,7 +10,7 @@
 	  
   <PropertyGroup Label="NuGet">
     <PackageId>Hardcodet.NotifyIcon.Wpf.NetCore</PackageId>
-    <Version>1.0.16</Version>
+    <Version>1.0.17</Version>
     <PackageReleaseNotes>
 Added net5.0-windows target.
 Added net4.0 and net4.5 targets.
