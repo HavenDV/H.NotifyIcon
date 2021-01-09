@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1;net5-windows</TargetFrameworks>
+    <TargetFrameworks>net4.0;net4.5;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
     <AssemblyTitle>NotifyIcon for WPF</AssemblyTitle>
@@ -13,10 +13,17 @@
     <Version>1.0.14</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>Added net5 target.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      Added net5.0-windows target.
+      Added net4.0 and net4.5 targets.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net472'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows' ">
     <PackageReference Include="System.Resources.Extensions" Version="4.6.0" PrivateAssets="All" />
   </ItemGroup>
 
