@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net4.0;net4.5;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
+  </PropertyGroup>
+	  
+  <PropertyGroup Label="NuGet">
+    <Version>1.0.18</Version>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Description>Interop Core Package for Hardcodet.NotifyIcon.Wpf.NetCore</Description>
+    <PackageTags>NotifyIcon, Interop</PackageTags>
+  </PropertyGroup>
+
+</Project>
