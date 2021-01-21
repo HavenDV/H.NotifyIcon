@@ -66,12 +66,12 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         /// <summary>
         /// Window class ID.
         /// </summary>
-        internal string WindowId { get; private set; }
+        public string WindowId { get; private set; }
 
         /// <summary>
         /// Handle for the message window.
         /// </summary> 
-        internal IntPtr MessageWindowHandle { get; private set; }
+        public IntPtr MessageWindowHandle { get; private set; }
 
         /// <summary>
         /// The version of the underlying icon. Defines how
@@ -132,7 +132,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         /// Used at design time.
         /// </summary>
         /// <returns>WindowMessageSink</returns>
-        internal static WindowMessageSink CreateEmpty()
+        public static WindowMessageSink CreateEmpty()
         {
             return new WindowMessageSink
             {

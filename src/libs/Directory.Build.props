@@ -11,10 +11,6 @@
     <AssemblyOriginatorKeyFile>$(SolutionDir)src\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <ItemGroup Label="CLSCompliant">
-    <Compile Include="$(SolutionDir)src\CLSCompliantTrue.cs" />
-  </ItemGroup>
-
   <PropertyGroup Label="Nuget">
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

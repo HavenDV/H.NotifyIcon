@@ -6,7 +6,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// <summary>
     /// Win32 API imports.
     /// </summary>
-    internal static class WinApi
+    public static class WinApi
     {
         private const string User32 = "user32.dll";
 
@@ -85,6 +85,11 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         public static extern bool GetPhysicalCursorPos(ref Point lpPoint);
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lpPoint"></param>
+        /// <returns></returns>
         [DllImport(User32, SetLastError = true)]
         public static extern bool GetCursorPos(ref Point lpPoint);
     }

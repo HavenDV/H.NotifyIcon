@@ -11,7 +11,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// that were defined.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct NotifyIconData
+    public struct NotifyIconData
     {
         /// <summary>
         /// Size of this structure, in bytes.
