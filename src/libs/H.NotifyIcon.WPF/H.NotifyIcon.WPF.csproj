@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.1;netcoreapp3.1;net5.0-windows</TargetFrameworks>
@@ -6,6 +6,23 @@
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup Label="AssemblyInfo">
+    <AssemblyAttribute Include="System.Windows.ThemeInfo">
+      <_Parameter1>System.Windows.ResourceDictionaryLocation.None</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+      <_Parameter2>System.Windows.ResourceDictionaryLocation.SourceAssembly</_Parameter2>
+      <_Parameter2_IsLiteral>true</_Parameter2_IsLiteral>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Windows.Markup.XmlnsPrefix">
+      <_Parameter1>http://www.hardcodet.net/taskbar</_Parameter1>
+      <_Parameter2>tb</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Windows.Markup.XmlnsDefinition">
+      <_Parameter1>http://www.hardcodet.net/taskbar</_Parameter1>
+      <_Parameter2>Hardcodet.Wpf.TaskbarNotification</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
 	  
   <PropertyGroup Label="NuGet">
     <PackageId>Hardcodet.NotifyIcon.Wpf.NetCore</PackageId>
