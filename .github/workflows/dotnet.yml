@@ -5,7 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        dotnet: [ '5.0.x' ]
+        dotnet: [ '6.0.x' ]
         os: [ windows-latest ]
 
     runs-on: ${{ matrix.os }}

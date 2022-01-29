@@ -6,6 +6,10 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
   <PropertyGroup Label="Signing">
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)src\key.snk</AssemblyOriginatorKeyFile>
@@ -21,13 +25,12 @@
     <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</RepositoryUrl>
     <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</PackageProjectUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Label="Nuget">
-    <None Include="$(SolutionDir)assets\nuget_icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="$(SolutionDir)assets\nuget_icon.png" Pack="true" PackagePath="\"/>
+    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <PropertyGroup Label="Source Link">
@@ -38,7 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Source Link">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -48,7 +51,6 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <NoWarn>$(NoWarn)</NoWarn>
   </PropertyGroup>-->
 
 </Project>
