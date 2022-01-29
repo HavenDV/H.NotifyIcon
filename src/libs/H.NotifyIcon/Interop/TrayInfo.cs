@@ -42,15 +42,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
                     break;
             }
 
-            return GetDeviceCoordinates(new Point {X = x, Y = y});
+            return new Point {X = x, Y = y};
         }
-
-        /// <summary>
-        /// Recalculates OS coordinates in order to support WPFs coordinate
-        /// system if OS scaling (DPIs) is not 100%.
-        /// </summary>
-        /// <param name="point">Point</param>
-        /// <returns>Point</returns>
-        public static Point GetDeviceCoordinates(Point point) => point.ScaleWithDpi();
     }
 }

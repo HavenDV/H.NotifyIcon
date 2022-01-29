@@ -167,7 +167,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
         /// <returns>Point</returns>
         public Point GetPopupTrayPosition()
         {
-            return TrayInfo.GetTrayLocation();
+            return TrayInfo.GetTrayLocation().ScaleWithDpi();
         }
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
                 WinApi.GetCursorPos(ref cursorPosition);
             }
 
-            cursorPosition = TrayInfo.GetDeviceCoordinates(cursorPosition);
+            cursorPosition = cursorPosition.ScaleWithDpi();
 
             bool isLeftClickCommandInvoked = false;
 
