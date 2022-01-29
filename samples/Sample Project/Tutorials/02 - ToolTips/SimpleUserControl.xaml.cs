@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Samples.Tutorials.ToolTips
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for SimpleUserControl.xaml

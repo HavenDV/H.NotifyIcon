@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples.Tutorials.Commands
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for CommandWindow.xaml

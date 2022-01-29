@@ -4,7 +4,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 using Hardcodet.Wpf.TaskbarNotification;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases.Showcase
 {
     /// <summary>
     /// Interaction logic for ShowcaseWindow.xaml
@@ -77,7 +77,13 @@ namespace Samples
 
         private void OnNavigationRequest(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.ToString());
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = e.Uri.ToString(),
+                // UseShellExecute is default to false on .NET Core while true on .NET Framework.
+                // Only this value is set to true, the url link can be opened.
+                UseShellExecute = true
+            });
             e.Handled = true;
         }
 

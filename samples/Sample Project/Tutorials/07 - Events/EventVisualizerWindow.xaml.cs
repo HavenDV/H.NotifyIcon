@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples.Tutorials.Events
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for EventVisualizerWindow.xaml

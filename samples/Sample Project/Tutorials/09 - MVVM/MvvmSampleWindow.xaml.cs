@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples.Tutorials.MvvmSample
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for MvvmSampleWindow.xaml

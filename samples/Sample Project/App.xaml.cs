@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases.Showcase
 {
     /// <summary>
     /// Interaction logic for WelcomeBalloon.xaml

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WindowsFormsSample
+namespace NotifyIconWpf.Sample.WindowsForms
 {
     internal static class Program
     {

@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 namespace Hardcodet.Wpf.TaskbarNotification.Interop
 {
     /// <summary>
-    /// 
+    /// This contains the logic to access the location of the app bar and communicate with it.
     /// </summary>
     public class AppBarInfo
     {
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("shell32.dll")]
@@ -21,21 +21,13 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         private static extern int SystemParametersInfo(uint uiAction, uint uiParam,
             IntPtr pvParam, uint fWinIni);
 
-
-        private const int ABE_BOTTOM = 3;
-        private const int ABE_LEFT = 0;
-        private const int ABE_RIGHT = 2;
-        private const int ABE_TOP = 1;
-
         private const int ABM_GETTASKBARPOS = 0x00000005;
 
-        // SystemParametersInfo constants
-        private const uint SPI_GETWORKAREA = 0x0030;
 
         private APPBARDATA m_data;
 
         /// <summary>
-        /// 
+        /// Get on which edge the app bar is located
         /// </summary>
         public ScreenEdge Edge
         {
@@ -43,7 +35,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         }
 
         /// <summary>
-        /// 
+        /// Get the working area
         /// </summary>
         public Rectangle WorkArea
         {
@@ -53,14 +45,14 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         private Rectangle GetRectangle(RECT rc)
         {
             return new Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
-        }     
+        }
 
         /// <summary>
-        /// 
+        /// Update the location of the appbar with the specified classname and window name.
         /// </summary>
-        /// <param name="strClassName"></param>
-        /// <param name="strWindowName"></param>
-        public void GetPosition(string strClassName, string strWindowName)
+        /// <param name="strClassName">string</param>
+        /// <param name="strWindowName">string</param>
+        private void GetPosition(string strClassName, string strWindowName)
         {
             m_data = new APPBARDATA();
             m_data.cbSize = (uint) Marshal.SizeOf(m_data.GetType());
@@ -83,7 +75,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         }
 
         /// <summary>
-        /// 
+        /// Updates the system taskbar position
         /// </summary>
         public void GetSystemTaskBarPosition()
         {
@@ -91,34 +83,30 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         }
 
         /// <summary>
-        /// 
+        /// A value that specifies an edge of the screen.
         /// </summary>
         public enum ScreenEdge
         {
             /// <summary>
-            /// 
+            /// Undefined
             /// </summary>
             Undefined = -1,
-
             /// <summary>
-            /// 
+            /// Left edge.
             /// </summary>
-            Left = ABE_LEFT,
-
+            Left = 0,
             /// <summary>
-            /// 
+            /// Top edge.
             /// </summary>
-            Top = ABE_TOP,
-
+            Top = 1,
             /// <summary>
-            /// 
+            /// Right edge.
             /// </summary>
-            Right = ABE_RIGHT,
-
+            Right = 2,
             /// <summary>
-            /// 
+            /// Bottom edge.
             /// </summary>
-            Bottom = ABE_BOTTOM
+            Bottom = 3
         }
 
         [StructLayout(LayoutKind.Sequential)]

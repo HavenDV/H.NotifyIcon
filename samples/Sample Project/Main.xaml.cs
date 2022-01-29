@@ -1,16 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
-using Samples.Tutorials;
-using Samples.Tutorials.Balloons;
-using Samples.Tutorials.Commands;
-using Samples.Tutorials.ContextMenus;
-using Samples.Tutorials.DataBinding;
-using Samples.Tutorials.Events;
-using Samples.Tutorials.MvvmSample;
-using Samples.Tutorials.Popups;
-using Samples.Tutorials.ToolTips;
+using NotifyIconWpf.Sample.ShowCases.Showcase;
+using NotifyIconWpf.Sample.ShowCases.Tutorials;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases
 {
     /// <summary>
     /// Interaction logic for Main.xaml
@@ -20,8 +15,8 @@ namespace Samples
         public Main()
         {
             InitializeComponent();
+            DataContext = this;
         }
-
 
         /// <summary>
         /// Sets <see cref="Window.WindowStartupLocation"/> and
@@ -36,58 +31,79 @@ namespace Samples
             window.ShowDialog();
         }
 
-        private void btnDeclaration_Click(object sender, RoutedEventArgs e)
+        private static string Version
+        {
+            get
+            {
+                var executingAssembly = Assembly.GetExecutingAssembly();
+
+                // Use assembly version
+                string version = executingAssembly.GetName().Version.ToString();
+
+                // Use AssemblyFileVersion if available
+                var assemblyFileVersionAttribute = executingAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
+                if (!string.IsNullOrEmpty(assemblyFileVersionAttribute?.Version))
+                {
+                    var assemblyFileVersion = new Version(assemblyFileVersionAttribute.Version);
+                    version = assemblyFileVersion.ToString(3);
+                }
+
+                return version.Replace("+", " - ");
+            }
+        }
+        public string SampleTitle { get; } = $"WPF NotifyIcon {Version} - Samples";
+
+        private void BtnDeclaration_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new SimpleWindowWithNotifyIcon());
         }
 
-
-        private void btnInlineToolTip_Click(object sender, RoutedEventArgs e)
+        private void BtnInlineToolTip_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new InlineToolTipWindow());
         }
 
-        private void btnToolTipControl_Click(object sender, RoutedEventArgs e)
+        private void BtnToolTipControl_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new UserControlToolTipWindow());
         }
 
-        private void btnPopups_Click(object sender, RoutedEventArgs e)
+        private void BtnPopups_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new InlinePopupWindow());
         }
 
-        private void btnContextMenus_Click(object sender, RoutedEventArgs e)
+        private void BtnContextMenus_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new InlineContextMenuWindow());
         }
 
-        private void btnBalloons_Click(object sender, RoutedEventArgs e)
+        private void BtnBalloons_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new BalloonSampleWindow());
         }
 
-        private void btnCommands_Click(object sender, RoutedEventArgs e)
+        private void BtnCommands_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new CommandWindow());
         }
 
-        private void btnEvents_Click(object sender, RoutedEventArgs e)
+        private void BtnEvents_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new EventVisualizerWindow());
         }
 
-        private void btnDataBinding_Click(object sender, RoutedEventArgs e)
+        private void BtnDataBinding_Click(object sender, RoutedEventArgs e)
         {
             ShowDialog(new DataBoundToolTipWindow());
         }
 		
-		private void btnMvvm_Click(object sender, RoutedEventArgs e)
+		private void BtnMvvm_Click(object sender, RoutedEventArgs e)
 		{
 			ShowDialog(new MvvmSampleWindow());
 		}
 
-        private void btnMainSample_Click(object sender, RoutedEventArgs e)
+        private void BtnMainSample_Click(object sender, RoutedEventArgs e)
         {
             var sampleWindow = new ShowcaseWindow
             {
@@ -101,7 +117,13 @@ namespace Samples
 
         private void OnNavigationRequest(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.ToString());
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = e.Uri.ToString(),
+                // UseShellExecute is default to false on .NET Core while true on .NET Framework.
+                // Only this value is set to true, the url link can be opened.
+                UseShellExecute = true
+            });
             e.Handled = true;
         }
     }

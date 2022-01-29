@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Samples.Tutorials.MvvmSample
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
 	/// <summary>
 	/// Interaction logic for ClockPopup.xaml

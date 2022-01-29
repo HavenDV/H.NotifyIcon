@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples.Tutorials.DataBinding
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for DataBoundToolTipWindow.xaml

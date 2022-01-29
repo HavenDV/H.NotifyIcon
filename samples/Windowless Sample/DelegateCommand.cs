@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Windowless_Sample
+namespace NotifyIconWpf.Sample.Windowless
 {
     /// <summary>
     /// Simplistic delegate command for the demo.

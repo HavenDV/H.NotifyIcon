@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases.Showcase
 {
     /// <summary>
     /// Interaction logic for FancyBalloon.xaml

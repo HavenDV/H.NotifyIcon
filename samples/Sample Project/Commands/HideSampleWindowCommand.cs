@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace Samples.Commands
+namespace NotifyIconWpf.Sample.ShowCases.Commands
 {
     /// <summary>
     /// Hides the main window.

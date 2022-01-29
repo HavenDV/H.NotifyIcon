@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.ShowCases.Showcase
 {
     /// <summary>
     /// Interaction logic for FancyPopup.xaml

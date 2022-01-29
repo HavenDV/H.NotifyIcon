@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace Windowless_Sample
+namespace NotifyIconWpf.Sample.Windowless
 {
     /// <summary>
     /// Provides bindable properties and commands for the NotifyIcon. In this sample, the

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Samples.FancyBalloon"
+﻿<UserControl x:Class="NotifyIconWpf.Sample.ShowCases.Showcase.FancyBalloon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:tb="http://www.hardcodet.net/taskbar"

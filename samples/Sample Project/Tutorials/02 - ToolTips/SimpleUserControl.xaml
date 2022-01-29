@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Samples.Tutorials.ToolTips.SimpleUserControl"
+    x:Class="NotifyIconWpf.Sample.ShowCases.Tutorials.SimpleUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 

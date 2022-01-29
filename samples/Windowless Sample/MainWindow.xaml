@@ -1,4 +1,4 @@
-﻿<Window x:Class="Windowless_Sample.MainWindow"
+﻿<Window x:Class="NotifyIconWpf.Sample.Windowless.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">

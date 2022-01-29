@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsSample
+﻿namespace NotifyIconWpf.Sample.WindowsForms
 {
   partial class Form1
   {

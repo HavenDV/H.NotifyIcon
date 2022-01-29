@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="Samples.ShowcaseWindow"
+    x:Class="NotifyIconWpf.Sample.ShowCases.Showcase.ShowcaseWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:tb="http://www.hardcodet.net/taskbar"
@@ -10,8 +10,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:local="clr-namespace:Samples"
-    xmlns:Commands="clr-namespace:Samples.Commands"
+    xmlns:commands="clr-namespace:NotifyIconWpf.Sample.ShowCases.Commands"
+    xmlns:showcase="clr-namespace:NotifyIconWpf.Sample.ShowCases.Showcase"
     MinWidth="750"
     MinHeight="800"
     ResizeMode="NoResize">
@@ -68,17 +68,17 @@
             Visibility="{Binding Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=iconVisibility, Mode=Default}"
             MenuActivation="{Binding Path=SelectedItem, ElementName=lstMenuTrigger, Mode=Default}"
             PopupActivation="{Binding Path=SelectedItem, ElementName=lstPopupTrigger, Mode=Default}"
-            DoubleClickCommand="{Commands:ShowSampleWindowCommand}"
+            DoubleClickCommand="{commands:ShowSampleWindowCommand}"
             DoubleClickCommandParameter="{Binding RelativeSource={RelativeSource Self}}">
 
             <tb:TaskbarIcon.TrayPopup>
                 <!-- the control will be put into a popup with an explicit DataContext -->
-                <local:FancyPopup />
+                <showcase:FancyPopup />
             </tb:TaskbarIcon.TrayPopup>
 
             <tb:TaskbarIcon.TrayToolTip>
                 <!-- the control will be put into a tooltip with an explicit DataContext -->
-                <local:FancyToolTip
+                <showcase:FancyToolTip
                     Opacity="0.85"
                     InfoText="{Binding Path=ToolTipText}" />
             </tb:TaskbarIcon.TrayToolTip>

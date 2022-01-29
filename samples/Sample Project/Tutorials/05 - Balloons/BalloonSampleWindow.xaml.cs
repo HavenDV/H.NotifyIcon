@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
+using NotifyIconWpf.Sample.ShowCases.Showcase;
 
-namespace Samples.Tutorials.Balloons
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     /// <summary>
     /// Interaction logic for BalloonSampleWindow.xaml

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Samples.Tutorials.MvvmSample.ClockPopup"
+             x:Class="NotifyIconWpf.Sample.ShowCases.Tutorials.ClockPopup"
              x:Name="UserControl"
              Height="141"
              Width="304">

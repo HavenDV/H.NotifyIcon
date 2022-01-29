@@ -84,7 +84,6 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
         [DllImport(User32, SetLastError = true)]
         public static extern bool GetPhysicalCursorPos(ref Point lpPoint);
 
-
         /// <summary>
         /// 
         /// </summary>

@@ -5,7 +5,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:tb="http://www.hardcodet.net/taskbar"
   mc:Ignorable="d"
-  x:Class="Samples.FancyToolTip"
+  x:Class="NotifyIconWpf.Sample.ShowCases.Showcase.FancyToolTip"
   x:Name="me"
   Width="285"
   Height="136">

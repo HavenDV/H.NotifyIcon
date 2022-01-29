@@ -6,7 +6,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using Hardcodet.Wpf.TaskbarNotification;
 
-namespace Samples.Commands
+namespace NotifyIconWpf.Sample.ShowCases.Commands
 {
     /// <summary>
     /// Basic implementation of the <see cref="ICommand"/>

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Samples
+namespace NotifyIconWpf.Sample.WindowsForms
 {
     /// <summary>
     /// Interaction logic for FancyPopup.xaml

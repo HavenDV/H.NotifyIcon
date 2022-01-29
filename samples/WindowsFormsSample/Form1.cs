@@ -2,10 +2,9 @@
 using System.Windows;
 using System.Windows.Forms;
 using Hardcodet.Wpf.TaskbarNotification;
-using Samples;
-using Samples.Properties;
+using NotifyIconWpf.Sample.WindowsForms.Properties;
 
-namespace WindowsFormsSample
+namespace NotifyIconWpf.Sample.WindowsForms
 {
     public partial class Form1 : Form
     {
@@ -19,12 +18,14 @@ namespace WindowsFormsSample
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            notifyIcon = new TaskbarIcon();
-            notifyIcon.Icon = Resources.Led;
-            notifyIcon.ToolTipText = "Left-click to open popup";
-            notifyIcon.Visibility = Visibility.Visible;
+            notifyIcon = new TaskbarIcon
+            {
+                Icon = Resources.Led,
+                ToolTipText = "Left-click to open popup",
+                Visibility = Visibility.Visible,
+                TrayPopup = new FancyPopup()
+            };
 
-            notifyIcon.TrayPopup = new FancyPopup();
         }
 
         protected override void OnClosed(EventArgs e)

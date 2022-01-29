@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Samples.Tutorials.MvvmSample
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 {
     public class MvvmSampleViewModel : INotifyPropertyChanged
     {
