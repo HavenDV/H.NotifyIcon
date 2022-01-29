@@ -1,39 +1,11 @@
-name: .NET
+name: Build, test and publish
 on: [ push ]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        dotnet: [ '6.0.x' ]
-        os: [ windows-latest ]
-
-    runs-on: ${{ matrix.os }}
-    name: ${{ matrix.os }} - ${{ matrix.dotnet }}
-    env:
-      DOTNET_NOLOGO: true
-    
-    steps:
-    - name: Getting code
-      uses: actions/checkout@v1
-          
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ matrix.dotnet }}
-    
-    - name: Clean
-      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
-    
-    - name: Build
-      run: dotnet build --configuration Release
-    
-    - name: Run tests
-      run: dotnet test --configuration Release
-        
-    - name: Publish
-      run: dotnet nuget push
-        src\**.nupkg
-        --api-key ${{ secrets.NUGET_KEY }}
-        --source https://api.nuget.org/v3/index.json
-        --skip-duplicate
+  build-test-publish:
+    name: Build, test and publish
+    uses: HavenDV/workflows/.github/workflows/dotnet_build-test-publish.yml@main
+    with:
+      os: windows-latest
+    secrets:
+      nuget-key: ${{ secrets.NUGET_KEY }}
