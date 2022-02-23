@@ -6,7 +6,7 @@
     <DefineConstants>$(DefineConstants);HAS_WPF</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <AssemblyName>Hardcodet.Wpf.TaskbarNotification</AssemblyName>
-    <NoWarn>$(NoWarn);WPF0005;WPF0150;WPF0044;WPF0041</NoWarn>
+    <NoWarn>$(NoWarn);WPF0005;WPF0041</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

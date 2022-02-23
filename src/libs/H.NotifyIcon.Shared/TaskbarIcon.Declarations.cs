@@ -853,7 +853,7 @@ partial class TaskbarIcon
     /// TrayLeftMouseDown Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayLeftMouseDownEvent = EventManager.RegisterRoutedEvent(
-        "TrayLeftMouseDown",
+        nameof(TrayLeftMouseDown),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -896,7 +896,7 @@ partial class TaskbarIcon
     /// TrayRightMouseDown Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayRightMouseDownEvent =
-        EventManager.RegisterRoutedEvent("TrayRightMouseDown",
+        EventManager.RegisterRoutedEvent(nameof(TrayRightMouseDown),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -937,7 +937,7 @@ partial class TaskbarIcon
     /// TrayMiddleMouseDown Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayMiddleMouseDownEvent =
-        EventManager.RegisterRoutedEvent("TrayMiddleMouseDown",
+        EventManager.RegisterRoutedEvent(nameof(TrayMiddleMouseDown),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -977,7 +977,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayLeftMouseUp Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayLeftMouseUpEvent = EventManager.RegisterRoutedEvent("TrayLeftMouseUp",
+    public static readonly RoutedEvent TrayLeftMouseUpEvent = EventManager.RegisterRoutedEvent(nameof(TrayLeftMouseUp),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1017,7 +1017,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayRightMouseUp Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayRightMouseUpEvent = EventManager.RegisterRoutedEvent("TrayRightMouseUp",
+    public static readonly RoutedEvent TrayRightMouseUpEvent = EventManager.RegisterRoutedEvent(nameof(TrayRightMouseUp),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1058,7 +1058,7 @@ partial class TaskbarIcon
     /// TrayMiddleMouseUp Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayMiddleMouseUpEvent = EventManager.RegisterRoutedEvent(
-        "TrayMiddleMouseUp",
+        nameof(TrayMiddleMouseUp),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1099,7 +1099,7 @@ partial class TaskbarIcon
     /// TrayMouseDoubleClick Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayMouseDoubleClickEvent =
-        EventManager.RegisterRoutedEvent("TrayMouseDoubleClick",
+        EventManager.RegisterRoutedEvent(nameof(TrayMouseDoubleClick),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1141,7 +1141,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayMouseMove Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayMouseMoveEvent = EventManager.RegisterRoutedEvent("TrayMouseMove",
+    public static readonly RoutedEvent TrayMouseMoveEvent = EventManager.RegisterRoutedEvent(nameof(TrayMouseMove),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1182,7 +1182,7 @@ partial class TaskbarIcon
     /// TrayBalloonTipShown Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayBalloonTipShownEvent =
-        EventManager.RegisterRoutedEvent("TrayBalloonTipShown",
+        EventManager.RegisterRoutedEvent(nameof(TrayBalloonTipShown),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1223,7 +1223,7 @@ partial class TaskbarIcon
     /// TrayBalloonTipClosed Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayBalloonTipClosedEvent =
-        EventManager.RegisterRoutedEvent("TrayBalloonTipClosed",
+        EventManager.RegisterRoutedEvent(nameof(TrayBalloonTipClosed),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1264,7 +1264,7 @@ partial class TaskbarIcon
     /// TrayBalloonTipClicked Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayBalloonTipClickedEvent =
-        EventManager.RegisterRoutedEvent("TrayBalloonTipClicked",
+        EventManager.RegisterRoutedEvent(nameof(TrayBalloonTipClicked),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1305,7 +1305,7 @@ partial class TaskbarIcon
     /// TrayContextMenuOpen Routed Event
     /// </summary>
     public static readonly RoutedEvent TrayContextMenuOpenEvent =
-        EventManager.RegisterRoutedEvent("TrayContextMenuOpen",
+        EventManager.RegisterRoutedEvent(nameof(TrayContextMenuOpen),
             RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1342,7 +1342,7 @@ partial class TaskbarIcon
     /// PreviewTrayContextMenuOpen Routed Event
     /// </summary>
     public static readonly RoutedEvent PreviewTrayContextMenuOpenEvent =
-        EventManager.RegisterRoutedEvent("PreviewTrayContextMenuOpen",
+        EventManager.RegisterRoutedEvent(nameof(PreviewTrayContextMenuOpen),
             RoutingStrategy.Tunnel, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1382,7 +1382,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayPopupOpen Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayPopupOpenEvent = EventManager.RegisterRoutedEvent("TrayPopupOpen",
+    public static readonly RoutedEvent TrayPopupOpenEvent = EventManager.RegisterRoutedEvent(nameof(TrayPopupOpen),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1419,7 +1419,7 @@ partial class TaskbarIcon
     /// PreviewTrayPopupOpen Routed Event
     /// </summary>
     public static readonly RoutedEvent PreviewTrayPopupOpenEvent =
-        EventManager.RegisterRoutedEvent("PreviewTrayPopupOpen",
+        EventManager.RegisterRoutedEvent(nameof(PreviewTrayPopupOpen),
             RoutingStrategy.Tunnel, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1459,7 +1459,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayToolTipOpen Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayToolTipOpenEvent = EventManager.RegisterRoutedEvent("TrayToolTipOpen",
+    public static readonly RoutedEvent TrayToolTipOpenEvent = EventManager.RegisterRoutedEvent(nameof(TrayToolTipOpen),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1496,7 +1496,7 @@ partial class TaskbarIcon
     /// PreviewTrayToolTipOpen Routed Event
     /// </summary>
     public static readonly RoutedEvent PreviewTrayToolTipOpenEvent =
-        EventManager.RegisterRoutedEvent("PreviewTrayToolTipOpen",
+        EventManager.RegisterRoutedEvent(nameof(PreviewTrayToolTipOpen),
             RoutingStrategy.Tunnel, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1536,7 +1536,7 @@ partial class TaskbarIcon
     /// <summary>
     /// TrayToolTipClose Routed Event
     /// </summary>
-    public static readonly RoutedEvent TrayToolTipCloseEvent = EventManager.RegisterRoutedEvent("TrayToolTipClose",
+    public static readonly RoutedEvent TrayToolTipCloseEvent = EventManager.RegisterRoutedEvent(nameof(TrayToolTipClose),
         RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
@@ -1573,7 +1573,7 @@ partial class TaskbarIcon
     /// PreviewTrayToolTipClose Routed Event
     /// </summary>
     public static readonly RoutedEvent PreviewTrayToolTipCloseEvent =
-        EventManager.RegisterRoutedEvent("PreviewTrayToolTipClose",
+        EventManager.RegisterRoutedEvent(nameof(PreviewTrayToolTipClose),
             RoutingStrategy.Tunnel, typeof (RoutedEventHandler), typeof (TaskbarIcon));
 
     /// <summary>
