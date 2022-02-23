@@ -9,6 +9,7 @@
     <Import_RootNamespace>H.NotifyIcon.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interop\SystemInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoutedEventHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />

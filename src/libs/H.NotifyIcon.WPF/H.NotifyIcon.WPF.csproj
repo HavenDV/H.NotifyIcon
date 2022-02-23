@@ -9,6 +9,10 @@
     <NoWarn>$(NoWarn);WPF0005;WPF0150;WPF0044;WPF0041</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Using Remove="System.Net.Http"/>
+  </ItemGroup>
+
   <ItemGroup Label="AssemblyInfo">
     <AssemblyAttribute Include="System.Windows.ThemeInfo">
       <_Parameter1>System.Windows.ResourceDictionaryLocation.None</_Parameter1>
