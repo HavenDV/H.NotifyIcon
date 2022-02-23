@@ -32,7 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon", "src\libs\H.NotifyIcon\H.NotifyIcon.csproj", "{0485EE3E-3745-4E79-A396-19AE493FA9D3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "H.NotifyIcon.Shared", "src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.shproj", "{D97885EC-80E4-4343-8E68-3A2699B77633}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{7ac63864-7638-41c4-969c-d3197ef2bed9}*SharedItemsImports = 5
+		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{d97885ec-80e4-4343-8e68-3a2699b77633}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -68,6 +74,7 @@ Global
 		{F6DC0A6D-D1CE-4AD2-92ED-08FFF0AD4FA8} = {61B9888E-FE61-4B67-8077-AE4114B6BA44}
 		{964EBFBE-A600-49B2-BDD8-422B46F1D544} = {61B9888E-FE61-4B67-8077-AE4114B6BA44}
 		{0485EE3E-3745-4E79-A396-19AE493FA9D3} = {FCF55611-6E25-4F1E-8E88-705896171E71}
+		{D97885EC-80E4-4343-8E68-3A2699B77633} = {FCF55611-6E25-4F1E-8E88-705896171E71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C139BD97-A4F7-411B-99B1-824CE1ABA403}

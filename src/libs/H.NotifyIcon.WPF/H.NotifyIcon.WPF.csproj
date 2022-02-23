@@ -59,4 +59,6 @@ Source code and extensive sample application available at http://www.hardcodet.n
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
   </ItemGroup>
 
+  <Import Project="..\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems" Label="Shared" />
+
 </Project>

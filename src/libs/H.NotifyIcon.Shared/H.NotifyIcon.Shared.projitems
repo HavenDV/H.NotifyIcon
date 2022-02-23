@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d97885ec-80e4-4343-8e68-3a2699b77633</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>H.NotifyIcon.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Interop\SystemInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoutedEventHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Declarations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+  </ItemGroup>
+</Project>
