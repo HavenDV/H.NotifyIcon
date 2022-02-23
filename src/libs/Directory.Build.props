@@ -16,14 +16,17 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
+    <BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">1</BUILD_NUMBER>
+    <Version>1.1.$(BUILD_NUMBER)</Version>
+    <PackageReleaseNotes>$(PACKAGE_RELEASE_NOTES)</PackageReleaseNotes>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Copyright>Copyright (c) 2016 Philipp Sumi</Copyright>
+    <Copyright>Copyright (c) 2022 havendv and Philipp Sumi</Copyright>
     <Company>hardcodet.net</Company>
     <Authors>havendv -&gt; Lakritzator and Philipp Sumi</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon.WPF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon</PackageProjectUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

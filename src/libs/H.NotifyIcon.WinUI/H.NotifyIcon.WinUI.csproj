@@ -11,16 +11,10 @@
   </ItemGroup>
 	  
   <PropertyGroup Label="NuGet">
-    <Version>1.0.18</Version>
-    <PackageReleaseNotes>
-feat: To H.NotifyIcon core Interop package.
-    </PackageReleaseNotes>
-    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WPF platform. 
+    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WinUI platform. 
 It does not just rely on the Windows Forms NotifyIcon component, 
-but is a purely independent control which leverages several features of the WPF framework in order to display rich tooltips, 
+but is a purely independent control which leverages several features of the WinUI framework in order to display rich tooltips, 
 popups, context menus, and balloon messages. It can be used directly in code or embedded in any XAML file.
-
-Source code and extensive sample application available at http://www.hardcodet.net/projects/wpf-notifyicon
     </Description>
     <PackageTags>NotifyIcon, WinUI, Tray, Notify, ToolTip, Popup, Balloon, Toast</PackageTags>
   </PropertyGroup>
