@@ -10,6 +10,12 @@ namespace H.NotifyIcon.Apps;
 
 public sealed partial class App
 {
+    #region Properties
+
+    public static Window? MainWindow { get; private set; }
+
+    #endregion
+
     #region Constructors
 
     public App()
@@ -34,6 +40,7 @@ public sealed partial class App
 #else
         var window = Window.Current;
 #endif
+        MainWindow = window;
         if (window.Content is not Frame frame)
         {
             frame = new Frame();

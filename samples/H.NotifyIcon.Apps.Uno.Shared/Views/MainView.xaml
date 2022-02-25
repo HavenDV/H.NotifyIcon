@@ -9,11 +9,27 @@
     mc:Ignorable="d"
     >
     <Page.DataContext>
-        <viewModels:MainViewModel />
+        <viewModels:MainViewModel x:Name="ViewModel" />
     </Page.DataContext>
+
+    <Page.Resources>
+        <MenuFlyout x:Key="SysTrayMenu">
+            <MenuFlyoutItem
+                Text="Show/Hide Window"
+                Command="{x:Bind ViewModel.ShowHideWindowCommand}"
+                />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem
+                Text="Exit"
+                Command="{x:Bind ViewModel.ExitApplicationCommand}"
+                />
+        </MenuFlyout>
+    </Page.Resources>
 
     <tb:TaskbarIcon
         Visibility="Visible"
         ToolTipText="Fallback ToolTip for Windows xp"
+        ContextFlyout="{StaticResource SysTrayMenu}"
+        LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
         />
 </Page>
