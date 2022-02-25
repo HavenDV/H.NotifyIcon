@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.1.csproj" />
+    <ProjectReference Include="..\..\src\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.csproj" />
   </ItemGroup>
   
 </Project>
