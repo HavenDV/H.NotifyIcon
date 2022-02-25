@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32120.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.WPF", "src\libs\H.NotifyIcon.WPF\H.NotifyIcon.WPF.csproj", "{7AC63864-7638-41C4-969C-D3197EF2BED9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.Wpf.1", "src\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.1.csproj", "{7AC63864-7638-41C4-969C-D3197EF2BED9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample Project", "samples\Sample Project\Sample Project.csproj", "{71C74F29-F1C2-49C5-969F-C25AC4CDFCCC}"
 EndProject
