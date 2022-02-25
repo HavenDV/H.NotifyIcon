@@ -3,17 +3,30 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.18362.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <Platforms>x86;x64;arm64</Platforms>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
-    <WindowsPackageType>None</WindowsPackageType>
+    <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     <DefineConstants>$(DefineConstants);HAS_WINUI</DefineConstants>
+    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <NoWarn>$(NoWarn);CS8785</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\*.*" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
     <PackageReference Include="WinUIEx" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22557-preview" />
+    <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,4 +36,11 @@
   <Import Project="..\H.NotifyIcon.Apps.Shared\H.NotifyIcon.Apps.Shared.projitems" Label="Shared" />
   <Import Project="..\H.NotifyIcon.Apps.Uno.Shared\H.NotifyIcon.Apps.Uno.Shared.projitems" Label="Shared" />
 
+  <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+       Tools extension to be activated for this project even if the Windows App SDK Nuget
+       package has not yet been restored -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  
 </Project>

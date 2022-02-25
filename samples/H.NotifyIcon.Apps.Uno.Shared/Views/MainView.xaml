@@ -26,10 +26,13 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <tb:TaskbarIcon
-        Visibility="Visible"
-        ToolTipText="Fallback ToolTip for Windows xp"
-        ContextFlyout="{StaticResource SysTrayMenu}"
-        LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
-        />
+    <Grid>
+        <tb:TaskbarIcon
+            Visibility="Visible"
+            IconSource="ms-appx:///Assets/Red.ico"
+            ToolTipText="Fallback ToolTip for Windows xp"
+            ContextFlyout="{StaticResource SysTrayMenu}"
+            LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
+            />
+    </Grid>
 </Page>
