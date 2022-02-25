@@ -962,6 +962,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #if HAS_WPF
             // switch to UI thread
             this.GetDispatcher().Invoke(action);
+#else
+            DispatcherQueue.TryEnqueue(() => action());
 #endif
         }
     }
