@@ -10,9 +10,7 @@
   </ItemGroup>
 	  
   <PropertyGroup Label="NuGet">
-    <Version>1.0.18</Version>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <Description>Interop Core Package for Hardcodet.NotifyIcon.Wpf.NetCore</Description>
+    <Description>Interop Core Package for H.NotifyIcon platform packages</Description>
     <PackageTags>NotifyIcon, Interop</PackageTags>
   </PropertyGroup>
 
