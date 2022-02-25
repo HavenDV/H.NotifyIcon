@@ -218,6 +218,7 @@ partial class TaskbarIcon
     /// should be handled here.
     /// </summary>
     /// <param name="e">Provides information about the updated property.</param>
+#if HAS_WPF
     private void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         ImageSource newValue = (ImageSource) e.NewValue;
@@ -225,6 +226,14 @@ partial class TaskbarIcon
         //resolving the ImageSource at design time is unlikely to work
         if (!Util.IsDesignMode) Icon = newValue.ToIcon();
     }
+#else
+    private async void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        ImageSource newValue = (ImageSource) e.NewValue;
+
+        Icon = await newValue.ToIconAsync().ConfigureAwait(true);
+    }
+#endif
 
     #endregion
 

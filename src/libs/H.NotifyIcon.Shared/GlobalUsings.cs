@@ -24,9 +24,11 @@ global using Microsoft.UI.Xaml.Controls;
 global using Microsoft.UI.Xaml.Controls.Primitives;
 global using Microsoft.UI.Xaml.Input;
 global using Microsoft.UI.Xaml.Media;
+global using Microsoft.UI.Xaml.Media.Imaging;
 global using Microsoft.UI.Xaml.Interop;
 global using Microsoft.UI.Xaml.Resources;
 global using System.Windows.Input;
+global using Windows.Storage;
 #else
 global using Windows.UI.Xaml;
 global using Windows.UI.Xaml.Controls;

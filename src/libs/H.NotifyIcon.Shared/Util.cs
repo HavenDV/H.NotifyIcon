@@ -125,6 +125,8 @@ internal static class Util
     #endregion
 
     #region ImageSource to Icon
+    
+#if HAS_WPF
 
     /// <summary>
     /// Reads a given image resource into a WinForms icon.
@@ -137,7 +139,6 @@ internal static class Util
     {
         if (imageSource == null) return null;
 
-#if HAS_WPF
         Uri uri = new Uri(imageSource.ToString());
         StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
 
@@ -149,10 +150,27 @@ internal static class Util
         }
 
         return new Icon(streamInfo.Stream);
-#else
-        throw new NotImplementedException();
-#endif
     }
+
+#else
+
+    /// <summary>
+    /// Reads a given image resource into a WinForms icon.
+    /// </summary>
+    /// <param name="imageSource">Image source pointing to
+    /// an icon file (*.ico).</param>
+    /// <returns>An icon object that can be used with the
+    /// taskbar area.</returns>
+    public static async Task<Icon> ToIconAsync(this ImageSource imageSource)
+    {
+        var image = (BitmapImage)imageSource;
+        var test = await StorageFile.GetFileFromApplicationUriAsync(image.UriSource);
+        var stream = await test.OpenStreamForReadAsync();
+
+        return new Icon(stream);
+    }
+
+#endif
 
     #endregion
 
