@@ -41,19 +41,15 @@ partial class TaskbarIcon
     #region TrayPopupResolved
 
     /// <summary>
-    /// TrayPopupResolved Read-Only Dependency Property
-    /// </summary>
-    private static readonly DependencyPropertyKey TrayPopupResolvedPropertyKey
-        = DependencyProperty.RegisterReadOnly(nameof(TrayPopupResolved), typeof (Popup), typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
-
-
-    /// <summary>
     /// A read-only dependency property that returns the <see cref="Popup"/>
     /// that is being displayed in the taskbar area based on a user action.
     /// </summary>
     public static readonly DependencyProperty TrayPopupResolvedProperty
-        = TrayPopupResolvedPropertyKey.DependencyProperty;
+        = DependencyProperty.Register(
+            nameof(TrayPopupResolved),
+            typeof(Popup),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(null));
 
     /// <summary>
     /// Gets the TrayPopupResolved property. Returns
@@ -75,7 +71,7 @@ partial class TaskbarIcon
     /// <param name="value">The new value for the property.</param>
     protected void SetTrayPopupResolved(Popup value)
     {
-        SetValue(TrayPopupResolvedPropertyKey, value);
+        SetValue(TrayPopupResolvedProperty, value);
     }
 
     #endregion
@@ -83,19 +79,15 @@ partial class TaskbarIcon
     #region TrayToolTipResolved
 
     /// <summary>
-    /// TrayToolTipResolved Read-Only Dependency Property
-    /// </summary>
-    private static readonly DependencyPropertyKey TrayToolTipResolvedPropertyKey
-        = DependencyProperty.RegisterReadOnly(nameof(TrayToolTipResolved), typeof (ToolTip), typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
-
-
-    /// <summary>
     /// A read-only dependency property that returns the <see cref="ToolTip"/>
     /// that is being displayed.
     /// </summary>
     public static readonly DependencyProperty TrayToolTipResolvedProperty
-        = TrayToolTipResolvedPropertyKey.DependencyProperty;
+        = DependencyProperty.Register(
+            nameof(TrayToolTipResolved),
+            typeof(ToolTip),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(null));
 
     /// <summary>
     /// Gets the TrayToolTipResolved property. Returns 
@@ -118,7 +110,7 @@ partial class TaskbarIcon
     /// <param name="value">The new value for the property.</param>
     protected void SetTrayToolTipResolved(ToolTip value)
     {
-        SetValue(TrayToolTipResolvedPropertyKey, value);
+        SetValue(TrayToolTipResolvedProperty, value);
     }
 
     #endregion
@@ -126,17 +118,14 @@ partial class TaskbarIcon
     #region CustomBalloon
 
     /// <summary>
-    /// CustomBalloon Read-Only Dependency Property
-    /// </summary>
-    private static readonly DependencyPropertyKey CustomBalloonPropertyKey
-        = DependencyProperty.RegisterReadOnly(nameof(CustomBalloon), typeof (Popup), typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
-
-    /// <summary>
     /// Maintains a currently displayed custom balloon.
     /// </summary>
-    public static readonly DependencyProperty CustomBalloonProperty
-        = CustomBalloonPropertyKey.DependencyProperty;
+    private static readonly DependencyProperty CustomBalloonProperty
+        = DependencyProperty.Register(
+            nameof(CustomBalloon),
+            typeof(Popup),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A custom popup that is being displayed in the tray area in order
@@ -153,7 +142,7 @@ partial class TaskbarIcon
     /// <param name="value">The new value for the property.</param>
     protected void SetCustomBalloon(Popup value)
     {
-        SetValue(CustomBalloonPropertyKey, value);
+        SetValue(CustomBalloonProperty, value);
     }
 
     #endregion
@@ -191,7 +180,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(IconSource),
             typeof (ImageSource),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null, IconSourcePropertyChanged));
+            new PropertyMetadata(null, IconSourcePropertyChanged));
 
     /// <summary>
     /// A property wrapper for the <see cref="IconSourceProperty"/>
@@ -249,7 +238,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(ToolTipText),
             typeof (string),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(string.Empty, ToolTipTextPropertyChanged));
+            new PropertyMetadata(string.Empty, ToolTipTextPropertyChanged));
 
 
     /// <summary>
@@ -323,7 +312,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(TrayToolTip),
             typeof (UIElement),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null, TrayToolTipPropertyChanged));
+            new PropertyMetadata(null, TrayToolTipPropertyChanged));
 
     /// <summary>
     /// A property wrapper for the <see cref="TrayToolTipProperty"/>
@@ -368,6 +357,7 @@ partial class TaskbarIcon
         //recreate tooltip control
         CreateCustomToolTip();
 
+#if HAS_WPF
         if (e.OldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
@@ -379,6 +369,7 @@ partial class TaskbarIcon
             //set this taskbar icon as a reference to the new tooltip element
             SetParentTaskbarIcon((DependencyObject) e.NewValue, this);
         }
+#endif
 
         //update tooltip settings - needed to make sure a string is set, even
         //if the ToolTipText property is not set. Otherwise, the event that
@@ -397,7 +388,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(TrayPopup),
             typeof (UIElement),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null, TrayPopupPropertyChanged));
+            new PropertyMetadata(null, TrayPopupPropertyChanged));
 
     /// <summary>
     /// A property wrapper for the <see cref="TrayPopupProperty"/>
@@ -437,6 +428,7 @@ partial class TaskbarIcon
     /// <param name="e">Provides information about the updated property.</param>
     private void OnTrayPopupPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
+#if HAS_WPF
         if (e.OldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
@@ -449,6 +441,7 @@ partial class TaskbarIcon
             //set this taskbar icon as a reference to the new tooltip element
             SetParentTaskbarIcon((DependencyObject) e.NewValue, this);
         }
+#endif
 
         //create a pop
         CreatePopup();
@@ -466,7 +459,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(MenuActivation),
             typeof (PopupActivationMode),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(PopupActivationMode.RightClick));
+            new PropertyMetadata(PopupActivationMode.RightClick));
 
     /// <summary>
     /// A property wrapper for the <see cref="MenuActivationProperty"/>
@@ -494,7 +487,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(PopupActivation),
             typeof (PopupActivationMode),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(PopupActivationMode.LeftClick));
+            new PropertyMetadata(PopupActivationMode.LeftClick));
 
     /// <summary>
     /// A property wrapper for the <see cref="PopupActivationProperty"/>
@@ -609,13 +602,18 @@ partial class TaskbarIcon
         //ContextMenu
         UpdateDataContext(TrayPopupResolved, oldValue, newValue);
         UpdateDataContext(TrayToolTipResolved, oldValue, newValue);
+#if HAS_WPF
         UpdateDataContext(ContextMenu, oldValue, newValue);
+#else
+        //UpdateDataContext(ContextFlyout, oldValue, newValue);
+#endif
     }
 
     #endregion
 
     #region ContextMenu dependency property override
 
+#if HAS_WPF
     /// <summary>
     /// A static callback listener which is being invoked if the
     /// <see cref="FrameworkElement.ContextMenuProperty"/> dependency property has
@@ -653,6 +651,7 @@ partial class TaskbarIcon
 
         UpdateDataContext((ContextMenu) e.NewValue, null, DataContext);
     }
+#endif
 
     #endregion
 
@@ -666,7 +665,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(DoubleClickCommand),
             typeof (ICommand),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="DoubleClickCommandProperty"/>
@@ -693,7 +692,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(DoubleClickCommandParameter),
             typeof (object),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="DoubleClickCommandParameterProperty"/>
@@ -712,6 +711,8 @@ partial class TaskbarIcon
 
     #region DoubleClickCommandTarget dependency property
 
+#if HAS_WPF
+
     /// <summary>
     /// The target of the command that is fired if the notify icon is double clicked.
     /// </summary>
@@ -719,7 +720,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(DoubleClickCommandTarget),
             typeof (IInputElement),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="DoubleClickCommandTargetProperty"/>
@@ -734,6 +735,8 @@ partial class TaskbarIcon
         set { SetValue(DoubleClickCommandTargetProperty, value); }
     }
 
+#endif
+
     #endregion
 
     #region LeftClickCommand dependency property
@@ -746,7 +749,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(LeftClickCommand),
             typeof (ICommand),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="LeftClickCommandProperty"/>
@@ -773,7 +776,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(LeftClickCommandParameter),
             typeof (object),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="LeftClickCommandParameterProperty"/>
@@ -793,6 +796,8 @@ partial class TaskbarIcon
 
     #region LeftClickCommandTarget dependency property
 
+#if HAS_WPF
+
     /// <summary>
     /// The target of the command that is fired if the notify icon is clicked.
     /// </summary>
@@ -800,7 +805,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(LeftClickCommandTarget),
             typeof (IInputElement),
             typeof (TaskbarIcon),
-            new FrameworkPropertyMetadata(null));
+            new PropertyMetadata(null));
 
     /// <summary>
     /// A property wrapper for the <see cref="LeftClickCommandTargetProperty"/>
@@ -816,6 +821,8 @@ partial class TaskbarIcon
         set { SetValue(LeftClickCommandTargetProperty, value); }
     }
 
+#endif
+
     #endregion
 
     #region NoLeftClickDelay dependency property
@@ -827,7 +834,7 @@ partial class TaskbarIcon
         DependencyProperty.Register(nameof(NoLeftClickDelay),
             typeof(bool),
             typeof(TaskbarIcon),
-            new FrameworkPropertyMetadata(false));
+            new PropertyMetadata(false));
 
 
     /// <summary>
@@ -844,6 +851,8 @@ partial class TaskbarIcon
     }
 
     #endregion
+    
+#if HAS_WPF
 
     //EVENTS
 
@@ -1882,4 +1891,16 @@ partial class TaskbarIcon
         md = new FrameworkPropertyMetadata(ContextMenuPropertyChanged);
         ContextMenuProperty.OverrideMetadata(typeof (TaskbarIcon), md);
     }
+
+#else
+
+    //public TaskbarIcon()
+    //{
+    //    RegisterPropertyChangedCallback(ContextFlyoutProperty, (d, e) =>
+    //    {
+    //        ContextMenuPropertyChanged(d, new DependencyPropertyChangedEventArgs());
+    //    });
+    //}
+
+#endif
 }

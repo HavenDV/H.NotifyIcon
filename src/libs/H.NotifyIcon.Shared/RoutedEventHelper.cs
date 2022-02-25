@@ -8,6 +8,8 @@ internal static class RoutedEventHelper
 {
     #region RoutedEvent Helper Methods
 
+#if HAS_WPF
+
     /// <summary>
     /// A static helper method to raise a routed event on a target UIElement or ContentElement.
     /// </summary>
@@ -24,6 +26,8 @@ internal static class RoutedEventHelper
             contentElement.RaiseEvent(args);
         }
     }
+    
+#endif
 
     /// <summary>
     /// A static helper method that adds a handler for a routed event 
@@ -38,10 +42,12 @@ internal static class RoutedEventHelper
         {
             uie.AddHandler(routedEvent, handler, handledEventsToo: false);
         }
+#if HAS_WPF
         else if (element is ContentElement ce)
         {
             ce.AddHandler(routedEvent, handler, handledEventsToo: false);
         }
+#endif
     }
 
     /// <summary>
@@ -57,10 +63,12 @@ internal static class RoutedEventHelper
         {
             uie.RemoveHandler(routedEvent, handler);
         }
+#if HAS_WPF
         else if (element is ContentElement ce)
         {
             ce.RemoveHandler(routedEvent, handler);
         }
+#endif
     }
 
     #endregion

@@ -32,7 +32,7 @@ internal static class Util
 
     #region IsDesignMode
 
-    private static readonly bool isDesignMode;
+    private static readonly bool isDesignMode = false;
 
     /// <summary>
     /// Checks whether the application is currently in design mode.
