@@ -416,6 +416,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #if HAS_WPF
                 // bubble event
                 RaiseTrayMouseDoubleClickEvent();
+#else
+                DoubleClickCommand.ExecuteIfEnabled(DoubleClickCommandParameter);
 #endif
                 break;
             case MouseEvent.BalloonToolTipClicked:
