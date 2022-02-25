@@ -25,15 +25,14 @@ Install-Package H.NotifyIcon.WinUI
 
 ### Usage
 
-The sample below shows some of the properties of the control. 
-For a more comprehensive sample, have a look at the sample application that comes with the download.
-
-``` XML
+```xml
 <Window
   x:Class="Hardcodet.NetDrives.UI.SystemTray.Sample"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:tb="http://www.hardcodet.net/taskbar">
+  xmlns:tb="http://www.hardcodet.net/taskbar" // WPF
+  xmlns:tb="using:Hardcodet.Wpf.TaskbarNotification" // WinUI
+  >
 
     <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
