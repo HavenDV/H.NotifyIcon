@@ -41,6 +41,7 @@ public static class SystemInfo
     /// </summary>
     internal static void UpdateDpiFactors()
     {
+#if HAS_WPF
         using (var source = new HwndSource(new HwndSourceParameters()))
         {
             if (source.CompositionTarget?.TransformToDevice != null)
@@ -50,6 +51,7 @@ public static class SystemInfo
                 return;
             }
         }
+#endif
 
         DpiFactorX = DpiFactorY = 1;
     }

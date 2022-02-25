@@ -48,11 +48,13 @@ internal static class Util
 
     static Util()
     {
+#if HAS_WPF
         isDesignMode =
             (bool)
                 DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty,
                     typeof (FrameworkElement))
                     .Metadata.DefaultValue;
+#endif
     }
 
     #endregion
@@ -69,12 +71,14 @@ internal static class Util
     {
         return new Window
         {
+#if HAS_WPF
             Width = 0,
             Height = 0,
             ShowInTaskbar = false,
             WindowStyle = WindowStyle.None,
             AllowsTransparency = true,
             Opacity = 0
+#endif
         };
     }
 
@@ -133,6 +137,7 @@ internal static class Util
     {
         if (imageSource == null) return null;
 
+#if HAS_WPF
         Uri uri = new Uri(imageSource.ToString());
         StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
 
@@ -144,11 +149,35 @@ internal static class Util
         }
 
         return new Icon(streamInfo.Stream);
+#else
+        throw new NotImplementedException();
+#endif
     }
 
     #endregion
 
     #region execute command
+
+    /// <summary>
+    /// Executes a given command if its <see cref="ICommand.CanExecute"/> method
+    /// indicates it can run.
+    /// </summary>
+    /// <param name="command">The command to be executed, or a null reference.</param>
+    /// <param name="commandParameter">An optional parameter that is associated with
+    /// the command.</param>
+    public static void ExecuteIfEnabled(this ICommand command, object commandParameter)
+    {
+        if (command == null) return;
+        
+        if (command.CanExecute(commandParameter))
+        {
+            command.Execute(commandParameter);
+        }
+    }
+
+    #endregion
+
+#if HAS_WPF
 
     /// <summary>
     /// Executes a given command if its <see cref="ICommand.CanExecute"/> method
@@ -174,8 +203,6 @@ internal static class Util
         }
     }
 
-    #endregion
-
     /// <summary>
     /// Returns a dispatcher for multi-threaded scenarios
     /// </summary>
@@ -192,6 +219,7 @@ internal static class Util
         return Dispatcher.CurrentDispatcher;
     }
 
+#endif
 
     /// <summary>
     /// Checks whether the <see cref="FrameworkElement.DataContextProperty"/>

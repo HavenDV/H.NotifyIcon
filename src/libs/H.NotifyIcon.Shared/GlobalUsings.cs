@@ -26,6 +26,7 @@ global using Microsoft.UI.Xaml.Input;
 global using Microsoft.UI.Xaml.Media;
 global using Microsoft.UI.Xaml.Interop;
 global using Microsoft.UI.Xaml.Resources;
+global using System.Windows.Input;
 #else
 global using Windows.UI.Xaml;
 global using Windows.UI.Xaml.Controls;

@@ -547,12 +547,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 // PlacementTarget = this;
 
                 // make sure the tooltip is invisible
+#if HAS_WPF
                 HasDropShadow = false,
-                BorderThickness = new Thickness(0),
                 Background = System.Windows.Media.Brushes.Transparent,
                 // setting the
                 StaysOpen = true,
-                Content = TrayToolTip
+#endif
+                BorderThickness = new Thickness(0),
+                Content = TrayToolTip,
             };
         }
         else if (tt == null && !string.IsNullOrEmpty(ToolTipText))
@@ -628,20 +630,22 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             // create an invisible popup that hosts the UIElement
             popup = new Popup
             {
+#if HAS_WPF
                 AllowsTransparency = true,
                 // don't animate by default - developers can use attached events or override
                 PopupAnimation = PopupAnimation.None,
                 // the CreateRootPopup method outputs binding errors in the debug window because
                 // it tries to bind to "Popup-specific" properties in case they are provided by the child.
                 // We don't need that so just assign the control as the child.
-                Child = TrayPopup,
                 // do *not* set the placement target, as it causes the popup to become hidden if the
                 // TaskbarIcon's parent is hidden, too. At runtime, the parent can be resolved through
                 // the ParentTaskbarIcon attached dependency property:
                 // PlacementTarget = this;
 
                 Placement = PlacementMode.AbsolutePoint,
-                StaysOpen = false
+                StaysOpen = false,
+#endif
+                Child = TrayPopup,
             };
         }
 
