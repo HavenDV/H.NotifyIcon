@@ -374,30 +374,42 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
         switch (me)
         {
-#if HAS_WPF
             case MouseEvent.MouseMove:
+#if HAS_WPF
                 RaiseTrayMouseMoveEvent();
+#endif
                 // immediately return - there's nothing left to evaluate
                 return;
             case MouseEvent.IconRightMouseDown:
+#if HAS_WPF
                 RaiseTrayRightMouseDownEvent();
+#endif
                 break;
             case MouseEvent.IconLeftMouseDown:
+#if HAS_WPF
                 RaiseTrayLeftMouseDownEvent();
+#endif
                 break;
             case MouseEvent.IconRightMouseUp:
+#if HAS_WPF
                 RaiseTrayRightMouseUpEvent();
+#endif
                 break;
             case MouseEvent.IconLeftMouseUp:
+#if HAS_WPF
                 RaiseTrayLeftMouseUpEvent();
+#endif
                 break;
             case MouseEvent.IconMiddleMouseDown:
+#if HAS_WPF
                 RaiseTrayMiddleMouseDownEvent();
+#endif
                 break;
             case MouseEvent.IconMiddleMouseUp:
+#if HAS_WPF
                 RaiseTrayMiddleMouseUpEvent();
-                break;
 #endif
+                break;
             case MouseEvent.IconDoubleClick:
                 // cancel single click timer
                 singleClickTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -406,11 +418,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 RaiseTrayMouseDoubleClickEvent();
 #endif
                 break;
-#if HAS_WPF
             case MouseEvent.BalloonToolTipClicked:
+#if HAS_WPF
                 RaiseTrayBalloonTipClickedEvent();
-                break;
 #endif
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(me), "Missing handler for mouse event flag: " + me);
         }
