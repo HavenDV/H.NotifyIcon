@@ -816,6 +816,22 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
         // bubble event
         RaiseTrayContextMenuOpenEvent();
+#else
+        if (ContextFlyout == null)
+        {
+            return;
+        }
+
+        // use absolute positioning. We need to set the coordinates, or a delayed opening
+        // (e.g. when left-clicked) opens the context menu at the wrong place if the mouse
+        // is moved!
+        //ContextFlyout.Placement = FlyoutPlacementMode.Auto;
+        ContextFlyout.ShowAt(this, new FlyoutShowOptions
+        {
+            Placement = FlyoutPlacementMode.Auto,
+            Position = new Windows.Foundation.Point(cursorPosition.X, cursorPosition.Y),
+            ShowMode = FlyoutShowMode.Auto,
+        });
 #endif
     }
 
