@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
     <PackageReference Include="WinUIEx" Version="1.1.0" />
   </ItemGroup>
 
