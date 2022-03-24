@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Remove="System.Net.Http"/>
+    <Using Remove="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup Label="AssemblyInfo">
@@ -39,7 +39,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WpfAnalyzers" Version="4.0.1">
+    <PackageReference Include="WpfAnalyzers" Version="4.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
