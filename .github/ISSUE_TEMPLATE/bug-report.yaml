@@ -1,0 +1,62 @@
+name: Bug report
+description: File a bug report
+title: "Bug title"
+labels: [bug]
+body:
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Describe the bug
+      description: Please enter a short, clear description of the bug.
+      
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Steps to reproduce the bug
+      description: Please provide any required setup and steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: Please provide a description of what you expected to happen
+      
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots here to help explain your problem
+      
+  - type: textarea
+    attributes:
+      label: NuGet package version
+      description: Specify the version you're using.
+        
+  - type: dropdown
+    attributes:
+      label: Platform
+      description: Which platforms did you see the issue on?
+      multiple: true
+      options:
+        - "WPF"
+        - "WinUI"
+        
+  - type: dropdown
+    attributes:
+      label: IDE
+      description: Which IDE are you using?
+      multiple: true
+      options:
+        - "Visual Studio 2022-preview"
+        - "Visual Studio 2022"
+        - "Visual Studio 2019"
+        - "Visual Studio 2017"
+        - "Other"
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Enter any other applicable info here
