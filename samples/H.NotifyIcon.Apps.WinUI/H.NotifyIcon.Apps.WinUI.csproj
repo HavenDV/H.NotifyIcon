@@ -33,9 +33,6 @@
     <ProjectReference Include="..\..\src\libs\H.NotifyIcon.WinUI\H.NotifyIcon.WinUI.csproj" />
   </ItemGroup>
 
-  <Import Project="..\H.NotifyIcon.Apps.Shared\H.NotifyIcon.Apps.Shared.projitems" Label="Shared" />
-  <Import Project="..\H.NotifyIcon.Apps.Uno.Shared\H.NotifyIcon.Apps.Uno.Shared.projitems" Label="Shared" />
-
   <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
        Tools extension to be activated for this project even if the Windows App SDK Nuget
        package has not yet been restored -->
