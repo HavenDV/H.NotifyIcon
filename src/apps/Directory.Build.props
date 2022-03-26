@@ -1,12 +1,10 @@
 <Project>
 
+  <Import Project="..\Directory.Build.props" />
+  
   <ItemGroup>
     <None Remove="**\*.png;**\*.jpg;**\*.ico" />
     <Resource Include="**\*.png;**\*.jpg;**\*.ico" />
   </ItemGroup>
-
-  <PropertyGroup Label="Analyzers">
-    <NoWarn>$(NoWarn);0067</NoWarn>
-  </PropertyGroup>
 
 </Project>

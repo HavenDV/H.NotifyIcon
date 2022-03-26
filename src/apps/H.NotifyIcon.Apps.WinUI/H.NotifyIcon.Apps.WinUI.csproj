@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\libs\H.NotifyIcon.WinUI\H.NotifyIcon.WinUI.csproj" />
+    <ProjectReference Include="..\..\libs\H.NotifyIcon.WinUI\H.NotifyIcon.WinUI.csproj" />
   </ItemGroup>
 
   <!-- Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
