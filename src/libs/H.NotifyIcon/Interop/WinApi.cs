@@ -5,6 +5,12 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop;
 /// <summary>
 /// Win32 API imports.
 /// </summary>
+#if NET5_0_OR_GREATER
+[System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
 public static class WinApi
 {
     private const string User32 = "user32.dll";

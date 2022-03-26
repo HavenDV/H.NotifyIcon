@@ -31,6 +31,12 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop;
 /// Receives messages from the taskbar icon through
 /// window messages of an underlying helper window.
 /// </summary>
+#if NET5_0_OR_GREATER
+[System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
 public class WindowMessageSink : IDisposable
 {
     #region members
