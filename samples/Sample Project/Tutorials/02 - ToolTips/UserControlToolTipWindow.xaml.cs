@@ -1,23 +1,22 @@
 ﻿using System.Windows;
 
-namespace NotifyIconWpf.Sample.ShowCases.Tutorials
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
+
+/// <summary>
+/// Interaction logic for UserControlToolTipWindow.xaml
+/// </summary>
+public partial class UserControlToolTipWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for UserControlToolTipWindow.xaml
-    /// </summary>
-    public partial class UserControlToolTipWindow : Window
+    public UserControlToolTipWindow()
     {
-        public UserControlToolTipWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            //clean up notifyicon (would otherwise stay open until application finishes)
-            MyNotifyIcon.Dispose();
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        //clean up notifyicon (would otherwise stay open until application finishes)
+        MyNotifyIcon.Dispose();
 
-            base.OnClosing(e);
-        }
+        base.OnClosing(e);
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.Windows.Controls;
 
-namespace NotifyIconWpf.Sample.ShowCases.Showcase
+namespace NotifyIconWpf.Sample.ShowCases.Showcase;
+
+/// <summary>
+/// Interaction logic for WelcomeBalloon.xaml
+/// </summary>
+public partial class WelcomeBalloon : UserControl
 {
-    /// <summary>
-    /// Interaction logic for WelcomeBalloon.xaml
-    /// </summary>
-    public partial class WelcomeBalloon : UserControl
+    public WelcomeBalloon()
     {
-        public WelcomeBalloon()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

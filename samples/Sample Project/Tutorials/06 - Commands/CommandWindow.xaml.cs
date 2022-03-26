@@ -1,25 +1,24 @@
 ﻿using System.Windows;
 
-namespace NotifyIconWpf.Sample.ShowCases.Tutorials
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
+
+/// <summary>
+/// Interaction logic for CommandWindow.xaml
+/// </summary>
+public partial class CommandWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for CommandWindow.xaml
-    /// </summary>
-    public partial class CommandWindow : Window
+    public CommandWindow()
     {
-        public CommandWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            //clean up notifyicon (would otherwise stay open until application finishes)
-            CustomCommandNotifyIcon.Dispose();
-            RoutedCommandNotifyIcon.Dispose();
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        //clean up notifyicon (would otherwise stay open until application finishes)
+        CustomCommandNotifyIcon.Dispose();
+        RoutedCommandNotifyIcon.Dispose();
 
-            base.OnClosing(e);
-        }
+        base.OnClosing(e);
     }
 }

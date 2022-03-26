@@ -1,23 +1,22 @@
 ﻿using System.Windows;
 
-namespace NotifyIconWpf.Sample.ShowCases.Tutorials
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
+
+/// <summary>
+/// Interaction logic for SimpleWindowWithNotifyIcon.xaml
+/// </summary>
+public partial class SimpleWindowWithNotifyIcon : Window
 {
-    /// <summary>
-    /// Interaction logic for SimpleWindowWithNotifyIcon.xaml
-    /// </summary>
-    public partial class SimpleWindowWithNotifyIcon : Window
+    public SimpleWindowWithNotifyIcon()
     {
-        public SimpleWindowWithNotifyIcon()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            //clean up notifyicon (would otherwise stay open until application finishes)
-            MyNotifyIcon.Dispose();
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        //clean up notifyicon (would otherwise stay open until application finishes)
+        MyNotifyIcon.Dispose();
 
-            base.OnClosing(e);
-        }
+        base.OnClosing(e);
     }
 }

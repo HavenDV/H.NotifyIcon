@@ -2,47 +2,46 @@
 
 using System.Drawing;
 
-namespace Hardcodet.Wpf.TaskbarNotification.Interop
+namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+
+/// <summary>
+/// Resolves the current tray position.
+/// </summary>
+public static class TrayInfo
 {
     /// <summary>
-    /// Resolves the current tray position.
+    /// Gets the position of the system tray.
     /// </summary>
-    public static class TrayInfo
+    /// <returns>Tray coordinates.</returns>
+    public static Point GetTrayLocation()
     {
-        /// <summary>
-        /// Gets the position of the system tray.
-        /// </summary>
-        /// <returns>Tray coordinates.</returns>
-        public static Point GetTrayLocation()
+        int space = 2;
+        var info = new AppBarInfo();
+        info.GetSystemTaskBarPosition();
+
+        Rectangle rcWorkArea = info.WorkArea;
+
+        int x = 0, y = 0;
+        switch (info.Edge)
         {
-            int space = 2;
-            var info = new AppBarInfo();
-            info.GetSystemTaskBarPosition();
-
-            Rectangle rcWorkArea = info.WorkArea;
-
-            int x = 0, y = 0;
-            switch (info.Edge)
-            {
-                case AppBarInfo.ScreenEdge.Left:
-                    x = rcWorkArea.Right + space;
-                    y = rcWorkArea.Bottom;
-                    break;
-                case AppBarInfo.ScreenEdge.Bottom:
-                    x = rcWorkArea.Right;
-                    y = rcWorkArea.Bottom - rcWorkArea.Height - space;
-                    break;
-                case AppBarInfo.ScreenEdge.Top:
-                    x = rcWorkArea.Right;
-                    y = rcWorkArea.Top + rcWorkArea.Height + space;
-                    break;
-                case AppBarInfo.ScreenEdge.Right:
-                    x = rcWorkArea.Right - rcWorkArea.Width - space;
-                    y = rcWorkArea.Bottom;
-                    break;
-            }
-
-            return new Point {X = x, Y = y};
+            case AppBarInfo.ScreenEdge.Left:
+                x = rcWorkArea.Right + space;
+                y = rcWorkArea.Bottom;
+                break;
+            case AppBarInfo.ScreenEdge.Bottom:
+                x = rcWorkArea.Right;
+                y = rcWorkArea.Bottom - rcWorkArea.Height - space;
+                break;
+            case AppBarInfo.ScreenEdge.Top:
+                x = rcWorkArea.Right;
+                y = rcWorkArea.Top + rcWorkArea.Height + space;
+                break;
+            case AppBarInfo.ScreenEdge.Right:
+                x = rcWorkArea.Right - rcWorkArea.Width - space;
+                y = rcWorkArea.Bottom;
+                break;
         }
+
+        return new Point {X = x, Y = y};
     }
 }

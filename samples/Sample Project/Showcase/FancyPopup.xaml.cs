@@ -1,46 +1,45 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace NotifyIconWpf.Sample.ShowCases.Showcase
+namespace NotifyIconWpf.Sample.ShowCases.Showcase;
+
+/// <summary>
+/// Interaction logic for FancyPopup.xaml
+/// </summary>
+public partial class FancyPopup : UserControl
 {
+    #region ClickCount dependency property
+
     /// <summary>
-    /// Interaction logic for FancyPopup.xaml
+    /// The number of clicks on the popup button.
     /// </summary>
-    public partial class FancyPopup : UserControl
+    public static readonly DependencyProperty ClickCountProperty =
+        DependencyProperty.Register(nameof(ClickCount),
+            typeof (int),
+            typeof (FancyPopup),
+            new FrameworkPropertyMetadata(0));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="ClickCountProperty"/>
+    /// dependency property:<br/>
+    /// The number of clicks on the popup button.
+    /// </summary>
+    public int ClickCount
     {
-        #region ClickCount dependency property
+        get { return (int) GetValue(ClickCountProperty); }
+        set { SetValue(ClickCountProperty, value); }
+    }
 
-        /// <summary>
-        /// The number of clicks on the popup button.
-        /// </summary>
-        public static readonly DependencyProperty ClickCountProperty =
-            DependencyProperty.Register(nameof(ClickCount),
-                typeof (int),
-                typeof (FancyPopup),
-                new FrameworkPropertyMetadata(0));
+    #endregion
 
-        /// <summary>
-        /// A property wrapper for the <see cref="ClickCountProperty"/>
-        /// dependency property:<br/>
-        /// The number of clicks on the popup button.
-        /// </summary>
-        public int ClickCount
-        {
-            get { return (int) GetValue(ClickCountProperty); }
-            set { SetValue(ClickCountProperty, value); }
-        }
+    public FancyPopup()
+    {
+        InitializeComponent();
+    }
 
-        #endregion
-
-        public FancyPopup()
-        {
-            InitializeComponent();
-        }
-
-        private void OnButtonClick(object sender, RoutedEventArgs e)
-        {
-            //just increment a counter - will be displayed on screen
-            ClickCount++;
-        }
+    private void OnButtonClick(object sender, RoutedEventArgs e)
+    {
+        //just increment a counter - will be displayed on screen
+        ClickCount++;
     }
 }

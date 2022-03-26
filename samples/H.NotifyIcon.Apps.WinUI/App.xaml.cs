@@ -1,8 +1,5 @@
 ﻿using H.NotifyIcon.Apps.Views;
 using Microsoft.Extensions.Logging;
-#if !HAS_WPF
-using Windows.ApplicationModel.Activation;
-#endif
 
 #nullable enable
 

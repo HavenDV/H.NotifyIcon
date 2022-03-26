@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 
-namespace NotifyIconWpf.Sample.ShowCases.Tutorials
-{
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
+
 	/// <summary>
 	/// Interaction logic for ClockPopup.xaml
 	/// </summary>
@@ -12,4 +12,3 @@ namespace NotifyIconWpf.Sample.ShowCases.Tutorials
 			InitializeComponent();
 		}
 	}
-}

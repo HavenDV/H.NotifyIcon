@@ -1,25 +1,24 @@
 ﻿using System.Windows;
 
-namespace NotifyIconWpf.Sample.ShowCases.Tutorials
+namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
+
+/// <summary>
+/// Interaction logic for DataBoundToolTipWindow.xaml
+/// </summary>
+public partial class DataBoundToolTipWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for DataBoundToolTipWindow.xaml
-    /// </summary>
-    public partial class DataBoundToolTipWindow : Window
+    public DataBoundToolTipWindow()
     {
-        public DataBoundToolTipWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            //clean up notifyicon (would otherwise stay open until application finishes)
-            MyNotifyIcon1.Dispose();
-            MyNotifyIcon2.Dispose();
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        //clean up notifyicon (would otherwise stay open until application finishes)
+        MyNotifyIcon1.Dispose();
+        MyNotifyIcon2.Dispose();
 
-            base.OnClosing(e);
-        }
+        base.OnClosing(e);
     }
 }
