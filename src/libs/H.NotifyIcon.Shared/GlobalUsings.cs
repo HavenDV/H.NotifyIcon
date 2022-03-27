@@ -3,7 +3,7 @@ global using System.Diagnostics;
 global using System.ComponentModel;
 global using System.Diagnostics.Contracts;
 global using Hardcodet.Wpf.TaskbarNotification.Interop;
-global using Point = Hardcodet.Wpf.TaskbarNotification.Interop.Point;
+global using Point = System.Drawing.Point;
 #if HAS_AVALONIA
 global using Avalonia;
 global using Avalonia.Data;

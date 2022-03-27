@@ -32,7 +32,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop;
 /// window messages of an underlying helper window.
 /// </summary>
 #if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
+[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported
@@ -66,7 +66,7 @@ public class WindowMessageSink : IDisposable
     /// this reference makes sure we don't loose our reference
     /// to the message window.
     /// </summary>
-    private WindowProcedureHandler messageHandler;
+    private WNDPROC messageHandler;
 
     /// <summary>
     /// Window class ID.
@@ -76,7 +76,12 @@ public class WindowMessageSink : IDisposable
     /// <summary>
     /// Handle for the message window.
     /// </summary>
-    public IntPtr MessageWindowHandle { get; private set; }
+    private HWND HWND { get; set; }
+
+    /// <summary>
+    /// Handle for the message window.
+    /// </summary>
+    public IntPtr MessageWindowHandle => HWND;
 
     /// <summary>
     /// The version of the underlying icon. Defines how
@@ -146,7 +151,7 @@ public class WindowMessageSink : IDisposable
     {
         return new WindowMessageSink
         {
-            MessageWindowHandle = IntPtr.Zero,
+            HWND = default,
             Version = NotifyIconVersion.Vista
         };
     }
@@ -159,7 +164,7 @@ public class WindowMessageSink : IDisposable
     /// Creates the helper message window that is used
     /// to receive messages from the taskbar icon.
     /// </summary>
-    private void CreateMessageWindow()
+    private unsafe void CreateMessageWindow()
     {
         //generate a unique ID for the window
         WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
@@ -169,29 +174,44 @@ public class WindowMessageSink : IDisposable
 
         // Create a simple window class which is reference through
         //the messageHandler delegate
-        WindowClass wc;
+        WNDCLASSW wc;
 
-        wc.style = 0;
-        wc.lpfnWndProc = messageHandler;
-        wc.cbClsExtra = 0;
-        wc.cbWndExtra = 0;
-        wc.hInstance = IntPtr.Zero;
-        wc.hIcon = IntPtr.Zero;
-        wc.hCursor = IntPtr.Zero;
-        wc.hbrBackground = IntPtr.Zero;
-        wc.lpszMenuName = string.Empty;
-        wc.lpszClassName = WindowId;
+        fixed (char* menuName = string.Empty)
+        fixed (char* className = WindowId)
+        {
+            wc.style = 0;
+            wc.lpfnWndProc = messageHandler;
+            wc.cbClsExtra = 0;
+            wc.cbWndExtra = 0;
+            wc.hInstance = default;
+            wc.hIcon = default;
+            wc.hCursor = default;
+            wc.hbrBackground = default;
+            wc.lpszMenuName = menuName;
+            wc.lpszClassName = className;
 
-        // Register the window class
-        WinApi.RegisterClass(ref wc);
+            // Register the window class
+            PInvoke.RegisterClass(wc);
+        }
 
         // Get the message used to indicate the taskbar has been restarted
         // This is used to re-add icons when the taskbar restarts
-        taskbarRestartMessageId = WinApi.RegisterWindowMessage("TaskbarCreated");
+        taskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated");
 
         // Create the message window
-        MessageWindowHandle = WinApi.CreateWindowEx(0, WindowId, "", 0, 0, 0, 1, 1, IntPtr.Zero, IntPtr.Zero,
-            IntPtr.Zero, IntPtr.Zero);
+        HWND = PInvoke.CreateWindowEx(
+            dwExStyle: 0,
+            lpClassName: WindowId,
+            lpWindowName: "",
+            dwStyle: 0,
+            X: 0,
+            Y: 0,
+            nWidth: 1,
+            nHeight: 1,
+            hWndParent: default,
+            hMenu: new SafeWaitHandle(IntPtr.Zero, false),
+            hInstance: new SafeWaitHandle(IntPtr.Zero, false),
+            lpParam: (void*)0);
 
         if (MessageWindowHandle == IntPtr.Zero)
         {
@@ -206,7 +226,11 @@ public class WindowMessageSink : IDisposable
     /// <summary>
     /// Callback method that receives messages from the taskbar area.
     /// </summary>
-    private IntPtr OnWindowMessageReceived(IntPtr hWnd, uint messageId, IntPtr wParam, IntPtr lParam)
+    private LRESULT OnWindowMessageReceived(
+        HWND hWnd,
+        uint messageId,
+        WPARAM wParam,
+        LPARAM lParam)
     {
         if (messageId == taskbarRestartMessageId)
         {
@@ -219,7 +243,7 @@ public class WindowMessageSink : IDisposable
         ProcessWindowMessage(messageId, wParam, lParam);
 
         // Pass the message to the default window procedure
-        return WinApi.DefWindowProc(hWnd, messageId, wParam, lParam);
+        return PInvoke.DefWindowProc(hWnd, messageId, wParam, lParam);
     }
 
 
@@ -231,7 +255,7 @@ public class WindowMessageSink : IDisposable
     /// or higher, this parameter can be used to resolve mouse coordinates.
     /// Currently not in use.</param>
     /// <param name="lParam">Provides information about the event.</param>
-    private void ProcessWindowMessage(uint msg, IntPtr wParam, IntPtr lParam)
+    private void ProcessWindowMessage(uint msg, WPARAM wParam, IntPtr lParam)
     {
         // Check if it was a callback message
         if (msg != CallbackMessageId)
@@ -391,7 +415,7 @@ public class WindowMessageSink : IDisposable
         IsDisposed = true;
 
         //always destroy the unmanaged handle (even if called from the GC)
-        WinApi.DestroyWindow(MessageWindowHandle);
+        PInvoke.DestroyWindow(HWND);
         messageHandler = null;
     }
 

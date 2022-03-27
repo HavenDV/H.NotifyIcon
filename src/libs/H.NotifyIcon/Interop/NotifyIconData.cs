@@ -66,7 +66,7 @@ public struct NotifyIconData
 
     /// <summary>
     /// A value that specifies which bits of the state member are retrieved or modified.
-    /// For example, setting this member to <see cref="TaskbarNotification.Interop.IconState.Hidden"/>
+    /// For example, setting this member to <see cref="IconState.Hidden"/>
     /// causes only the item's hidden
     /// state to be retrieved.
     /// </summary>
@@ -110,7 +110,7 @@ public struct NotifyIconData
     /// <summary>
     /// Windows Vista (Shell32.dll version 6.0.6) and later. The handle of a customized
     /// balloon icon provided by the application that should be used independently
-    /// of the tray icon. If this member is non-NULL and the <see cref="TaskbarNotification.Interop.BalloonFlags.User"/>
+    /// of the tray icon. If this member is non-NULL and the <see cref="BalloonFlags.User"/>
     /// flag is set, this icon is used as the balloon icon.<br/>
     /// If this member is NULL, the legacy behavior is carried out.
     /// </summary>
@@ -124,7 +124,7 @@ public struct NotifyIconData
     /// <param name="handle"></param>
     /// <returns>NotifyIconData</returns>
 #if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported

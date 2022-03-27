@@ -13,6 +13,12 @@ public static class TrayInfo
     /// Gets the position of the system tray.
     /// </summary>
     /// <returns>Tray coordinates.</returns>
+#if NET5_0_OR_GREATER
+    [System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
     public static Point GetTrayLocation()
     {
         int space = 2;

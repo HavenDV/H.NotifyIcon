@@ -60,7 +60,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// The time we should wait for a double click.
     /// </summary>
-    private int DoubleClickWaitTime => NoLeftClickDelay ? 0 : WinApi.GetDoubleClickTime();
+    private int DoubleClickWaitTime => NoLeftClickDelay ? 0 : CursorUtilities.GetDoubleClickTime();
 
 #if HAS_WPF
     /// <summary>
@@ -431,16 +431,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
 
         // get mouse coordinates
-        Point cursorPosition = new Point();
-        if (messageSink.Version == NotifyIconVersion.Vista)
-        {
-            // physical cursor position is supported for Vista and above
-            WinApi.GetPhysicalCursorPos(ref cursorPosition);
-        }
-        else
-        {
-            WinApi.GetCursorPos(ref cursorPosition);
-        }
+        var cursorPosition = messageSink.Version == NotifyIconVersion.Vista
+            ? CursorUtilities.GetPhysicalCursorPos()
+            : CursorUtilities.GetCursorPos();
 
         cursorPosition = cursorPosition.ScaleWithDpi();
 
@@ -758,7 +751,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
         // activate either popup or message sink to track deactivation.
         // otherwise, the popup does not close if the user clicks somewhere else
-        WinApi.SetForegroundWindow(handle);
+        WindowUtilities.SetForegroundWindow(handle);
 
         // raise attached event - item should never be null unless developers
         // changed the CustomPopup directly...
@@ -814,7 +807,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
         // does not close if the user clicks somewhere else. With the message window
         // fallback, the context menu can't receive keyboard events - should not happen though
-        WinApi.SetForegroundWindow(handle);
+        WindowUtilities.SetForegroundWindow(handle);
 
         // bubble event
         RaiseTrayContextMenuOpenEvent();

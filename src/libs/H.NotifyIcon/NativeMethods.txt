@@ -1,0 +1,10 @@
+﻿CreateWindowEx
+RegisterClass
+DefWindowProc
+RegisterWindowMessage
+DestroyWindow
+SetForegroundWindow
+GetDoubleClickTime
+GetPhysicalCursorPos
+GetCursorPos
+FindWindow

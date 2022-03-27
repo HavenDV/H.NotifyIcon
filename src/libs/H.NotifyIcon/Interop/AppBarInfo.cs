@@ -10,15 +10,8 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop;
 /// </summary>
 public class AppBarInfo
 {
-    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
     [DllImport("shell32.dll")]
     private static extern uint SHAppBarMessage(uint dwMessage, ref APPBARDATA data);
-
-    [DllImport("user32.dll")]
-    private static extern int SystemParametersInfo(uint uiAction, uint uiParam,
-        IntPtr pvParam, uint fWinIni);
 
     private const int ABM_GETTASKBARPOS = 0x00000005;
 
@@ -51,12 +44,18 @@ public class AppBarInfo
     /// </summary>
     /// <param name="strClassName">string</param>
     /// <param name="strWindowName">string</param>
+#if NET5_0_OR_GREATER
+    [System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
     private void GetPosition(string strClassName, string strWindowName)
     {
         m_data = new APPBARDATA();
         m_data.cbSize = (uint) Marshal.SizeOf(m_data.GetType());
 
-        IntPtr hWnd = FindWindow(strClassName, strWindowName);
+        IntPtr hWnd = PInvoke.FindWindow(strClassName, strWindowName);
 
         if (hWnd != IntPtr.Zero)
         {
@@ -76,6 +75,12 @@ public class AppBarInfo
     /// <summary>
     /// Updates the system taskbar position
     /// </summary>
+#if NET5_0_OR_GREATER
+    [System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
     public void GetSystemTaskBarPosition()
     {
         GetPosition("Shell_TrayWnd", null);
