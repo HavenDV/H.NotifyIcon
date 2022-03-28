@@ -209,8 +209,8 @@ public class WindowMessageSink : IDisposable
             nWidth: 1,
             nHeight: 1,
             hWndParent: default,
-            hMenu: new SafeWaitHandle(IntPtr.Zero, false),
-            hInstance: new SafeWaitHandle(IntPtr.Zero, false),
+            hMenu: null,
+            hInstance: null,
             lpParam: (void*)0);
 
         if (MessageWindowHandle == IntPtr.Zero)
