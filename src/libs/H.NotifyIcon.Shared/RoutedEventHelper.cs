@@ -1,4 +1,4 @@
-﻿namespace Hardcodet.Wpf.TaskbarNotification;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// Helper class used by routed events of the

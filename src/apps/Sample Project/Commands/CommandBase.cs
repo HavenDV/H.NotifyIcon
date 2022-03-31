@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using Hardcodet.Wpf.TaskbarNotification;
+using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.ShowCases.Commands;
 

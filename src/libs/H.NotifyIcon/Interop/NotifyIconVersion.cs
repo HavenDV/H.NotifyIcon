@@ -1,4 +1,4 @@
-﻿namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// The notify icon version that is used. The higher
@@ -7,14 +7,12 @@
 public enum NotifyIconVersion
 {
     /// <summary>
-    /// Default behavior (legacy Win95). Expects
-    /// a <see cref="NotifyIconData"/> size of 488.
+    /// Default behavior (legacy Win95).
     /// </summary>
     Win95 = 0x0,
 
     /// <summary>
-    /// Behavior representing Win2000 an higher. Expects
-    /// a <see cref="NotifyIconData"/> size of 504.
+    /// Behavior representing Win2000 an higher.
     /// </summary>
     Win2000 = 0x3,
 

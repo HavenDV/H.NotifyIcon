@@ -1,4 +1,4 @@
-﻿namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// Event flags for clicked events.

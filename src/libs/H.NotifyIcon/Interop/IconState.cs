@@ -1,4 +1,4 @@
-namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// The state of the icon - can be set to
@@ -12,10 +12,12 @@ public enum IconState
     Visible = 0x00,
 
     /// <summary>
-    /// Hide the icon.
+    /// The icon is hidden.
     /// </summary>
-    Hidden = 0x01,
+    Hidden = (int)PInvoke.NIS_HIDDEN,
 
-    // The icon is shared - currently not supported, thus commented out.
-    //Shared = 0x02
+    /// <summary>
+    /// The icon resource is shared between multiple icons.
+    /// </summary>
+    Shared = (int)PInvoke.NIS_SHAREDICON,
 }

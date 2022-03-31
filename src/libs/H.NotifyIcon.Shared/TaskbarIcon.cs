@@ -1,29 +1,9 @@
-﻿// hardcodet.net NotifyIcon for WPF
-// Copyright (c) 2009 - 2020 Philipp Sumi
-// Contact and Information: http://www.hardcodet.net
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the Code Project Open License (CPOL);
-// either version 1.0 of the License, or (at your option) any later
-// version.
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
-//
-// THIS COPYRIGHT NOTICE MAY NOT BE REMOVED FROM THIS FILE
+﻿//using Microsoft.UI;
+//using Microsoft.UI.Windowing;
+//using Windows.Graphics;
+//using WinRT.Interop;
 
-
-
-namespace Hardcodet.Wpf.TaskbarNotification;
+namespace H.NotifyIcon;
 
 /// <summary>
 /// A WPF proxy to for a taskbar icon (NotifyIcon) that sits in the system's
@@ -38,12 +18,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Represents the current icon data.
     /// </summary>
-    private NotifyIconData iconData;
-
-    /// <summary>
-    /// Receives messages from the taskbar icon.
-    /// </summary>
-    private readonly WindowMessageSink messageSink;
+    private TrayIcon TrayIcon;
 
     /// <summary>
     /// An action that is being invoked if the
@@ -72,14 +47,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
     /// </summary>
-    public bool IsTaskbarIconCreated { get; private set; }
+    public bool IsTaskbarIconCreated => TrayIcon.IsCreated;
 
     /// <summary>
     /// Indicates whether custom tooltips are supported, which depends
     /// on the OS. Windows Vista or higher is required in order to
     /// support this feature.
     /// </summary>
-    public bool SupportsCustomToolTips => messageSink.Version == NotifyIconVersion.Vista;
+    public bool SupportsCustomToolTips => TrayIcon.SupportsCustomToolTips;
 
 
     /// <summary>
@@ -113,23 +88,13 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// </summary>
     public TaskbarIcon()
     {
-        // using dummy sink in design mode
-        messageSink = Util.IsDesignMode
-            ? WindowMessageSink.CreateEmpty()
-            : new WindowMessageSink(NotifyIconVersion.Win95);
-        messageSink.DpiChanged += () => SystemInfo.UpdateDpiFactors();
-
-        // init icon data structure
-        iconData = NotifyIconData.CreateDefault(messageSink.MessageWindowHandle);
-
-        // create the taskbar icon
-        CreateTaskbarIcon();
+        TrayIcon = new TrayIcon(Util.IsDesignMode);
+        TrayIcon.MessageSink.DpiChanged += SystemInfo.UpdateDpiFactors;
 
         // register event listeners
-        messageSink.MouseEventReceived += OnMouseEvent;
-        messageSink.TaskbarCreated += OnTaskbarCreated;
-        messageSink.ChangeToolTipStateRequest += OnToolTipChange;
-        messageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
+        TrayIcon.MessageSink.MouseEventReceived += OnMouseEvent;
+        TrayIcon.MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
+        TrayIcon.MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -203,7 +168,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         EnsureNotDisposed();
 
         // make sure we don't have an open balloon
-        lock (lockObject)
+        //lock (lockObject)
         {
             CloseBalloon();
         }
@@ -249,7 +214,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         popup.VerticalOffset = position.Y - 1;
 
         //store reference
-        lock (lockObject)
+        //lock (lockObject)
         {
             SetCustomBalloon(popup);
         }
@@ -281,7 +246,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     {
         if (IsDisposed) return;
 
-        lock (lockObject)
+        //lock (lockObject)
         {
             //reset timer in any case
             balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -304,7 +269,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             return;
         }
 
-        lock (lockObject)
+        //lock (lockObject)
         {
             // reset timer in any case
             balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -431,7 +396,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
 
         // get mouse coordinates
-        var cursorPosition = messageSink.Version == NotifyIconVersion.Vista
+        var cursorPosition = TrayIcon.MessageSink.Version == NotifyIconVersion.Vista
             ? CursorUtilities.GetPhysicalCursorPos()
             : CursorUtilities.GetCursorPos();
 
@@ -631,23 +596,20 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// </summary>
     private void WriteToolTipSettings()
     {
-        const IconDataMembers flags = IconDataMembers.Tip;
-        iconData.ToolTipText = ToolTipText;
-
-        if (messageSink.Version == NotifyIconVersion.Vista)
+        var text = ToolTipText;
+        if (TrayIcon.MessageSink.Version == NotifyIconVersion.Vista)
         {
             // we need to set a tooltip text to get tooltip events from the
             // taskbar icon
-            if (string.IsNullOrEmpty(iconData.ToolTipText) && TrayToolTipResolved != null)
+            if (string.IsNullOrEmpty(text) && TrayToolTipResolved != null)
             {
                 // if we have not tooltip text but a custom tooltip, we
                 // need to set a dummy value (we're displaying the ToolTip control, not the string)
-                iconData.ToolTipText = "ToolTip";
+                text = "ToolTip";
             }
         }
 
-        // update the tooltip text
-        Util.WriteIconData(ref iconData, NotifyCommand.Modify, flags);
+        TrayIcon.SetToolTip(text);
     }
 
     #endregion
@@ -747,7 +709,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         }
 
         // if we don't have a handle for the popup, fall back to the message sink
-        if (handle == IntPtr.Zero) handle = messageSink.MessageWindowHandle;
+        if (handle == IntPtr.Zero) handle = TrayIcon.MessageSink.MessageWindowHandle;
 
         // activate either popup or message sink to track deactivation.
         // otherwise, the popup does not close if the user clicks somewhere else
@@ -802,7 +764,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         }
 
         // if we don't have a handle for the popup, fall back to the message sink
-        if (handle == IntPtr.Zero) handle = messageSink.MessageWindowHandle;
+        if (handle == IntPtr.Zero) handle = TrayIcon.MessageSink.MessageWindowHandle;
 
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
         // does not close if the user clicks somewhere else. With the message window
@@ -816,11 +778,72 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         {
             return;
         }
-
+        
         // use absolute positioning. We need to set the coordinates, or a delayed opening
         // (e.g. when left-clicked) opens the context menu at the wrong place if the mouse
         // is moved!
         //ContextFlyout.Placement = FlyoutPlacementMode.Auto;
+        //var window = new Window()
+        //{
+        //};
+        //window.Activated += (_, args) =>
+        //{
+        //    if (args.WindowActivationState == WindowActivationState.Deactivated)
+        //    {
+        //        window.Close();
+        //    }
+        //};
+        //var handle = WindowNative.GetWindowHandle(window);
+        //PInvoke.SetLayeredWindowAttributes(new HWND(handle), 0U, 255, LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_ALPHA);
+
+        //var id = Win32Interop.GetWindowIdFromWindow(handle);
+        //var appWindow = AppWindow.GetFromWindowId(id);
+        //appWindow.MoveAndResize(new RectInt32(cursorPosition.X - 100, cursorPosition.Y - 100, 100, 100));
+
+        //var presenter = appWindow.Presenter as OverlappedPresenter;
+        //presenter.IsMaximizable = false;
+        //presenter.IsMinimizable = false;
+        //presenter.IsResizable = false;
+        //presenter.IsAlwaysOnTop = true;
+        //presenter.SetBorderAndTitleBar(false, false);
+
+        //var flyout = new MenuFlyout
+        //{
+        //    Items =
+        //    {
+        //        new MenuFlyoutItem
+        //        {
+        //            Text = "Show/Hide Window",
+        //        },
+        //        new MenuFlyoutSeparator(),
+        //        new MenuFlyoutItem
+        //        {
+        //            Text = "Exit",
+        //        },
+        //    },
+        //};
+        //var grid = new Grid
+        //{
+        //    ContextFlyout = flyout,
+        //};
+        //window.Content = new Frame
+        //{
+        //    Content = new Page
+        //    {
+        //        Content = grid,
+        //    },
+        //};
+        //window.Activate();
+
+        //flyout.Hide();
+        //flyout.ShowAt(grid, new FlyoutShowOptions
+        //{
+        //    Placement = FlyoutPlacementMode.Auto,
+        //    Position = new Windows.Foundation.Point(0, 0),
+        //    ShowMode = FlyoutShowMode.Auto,
+        //});
+
+        ContextFlyout.Hide();
         ContextFlyout.ShowAt(this, new FlyoutShowOptions
         {
             Placement = FlyoutPlacementMode.Auto,
@@ -863,10 +886,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <param name="symbol">A symbol that indicates the severity.</param>
     public void ShowBalloonTip(string title, string message, BalloonIcon symbol)
     {
-        lock (lockObject)
-        {
-            ShowBalloonTip(title, message, symbol.GetBalloonFlag(), IntPtr.Zero);
-        }
+        TrayIcon.ShowBalloonTip(title, message, symbol);
     }
 
     /// <summary>
@@ -883,42 +903,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     {
         if (customIcon == null) throw new ArgumentNullException(nameof(customIcon));
 
-        lock (lockObject)
-        {
-            var flags = BalloonFlags.User;
-
-            if (largeIcon)
-            {
-                // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
-                flags |= BalloonFlags.LargeIcon;
-            }
-
-            ShowBalloonTip(title, message, flags, customIcon.Handle);
-        }
+        TrayIcon.ShowBalloonTip(title, message, customIcon.Handle, largeIcon);
     }
-
-
-    /// <summary>
-    /// Invokes <see cref="WinApi.Shell_NotifyIcon"/> in order to display
-    /// a given balloon ToolTip.
-    /// </summary>
-    /// <param name="title">The title to display on the balloon tip.</param>
-    /// <param name="message">The text to display on the balloon tip.</param>
-    /// <param name="flags">Indicates what icon to use.</param>
-    /// <param name="balloonIconHandle">A handle to a custom icon, if any, or
-    /// <see cref="IntPtr.Zero"/>.</param>
-    private void ShowBalloonTip(string title, string message, BalloonFlags flags, IntPtr balloonIconHandle)
-    {
-        EnsureNotDisposed();
-
-        iconData.BalloonText = message ?? string.Empty;
-        iconData.BalloonTitle = title ?? string.Empty;
-
-        iconData.BalloonFlags = flags;
-        iconData.CustomBalloonIconHandle = balloonIconHandle;
-        Util.WriteIconData(ref iconData, NotifyCommand.Modify, IconDataMembers.Info | IconDataMembers.Icon);
-    }
-
 
     /// <summary>
     /// Hides a balloon ToolTip, if any is displayed.
@@ -927,9 +913,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     {
         EnsureNotDisposed();
 
-        // reset balloon by just setting the info to an empty string
-        iconData.BalloonText = iconData.BalloonTitle = string.Empty;
-        Util.WriteIconData(ref iconData, NotifyCommand.Modify, IconDataMembers.Info);
+        TrayIcon.HideBalloonTip();
     }
 
     #endregion
@@ -962,108 +946,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     }
 
     #endregion
-
-    #region Set Version (API)
-
-    /// <summary>
-    /// Sets the version flag for the <see cref="iconData"/>.
-    /// </summary>
-    private void SetVersion()
-    {
-        iconData.VersionOrTimeout = (uint)NotifyIconVersion.Vista;
-        bool status = WinApi.Shell_NotifyIcon(NotifyCommand.SetVersion, ref iconData);
-
-        if (!status)
-        {
-            iconData.VersionOrTimeout = (uint)NotifyIconVersion.Win2000;
-            status = Util.WriteIconData(ref iconData, NotifyCommand.SetVersion);
-        }
-
-        if (!status)
-        {
-            iconData.VersionOrTimeout = (uint)NotifyIconVersion.Win95;
-            status = Util.WriteIconData(ref iconData, NotifyCommand.SetVersion);
-        }
-
-        if (!status)
-        {
-            Debug.Fail("Could not set version");
-        }
-    }
-
-    #endregion
-
-    #region Create / Remove Taskbar Icon
-
-    /// <summary>
-    /// Recreates the taskbar icon if the whole taskbar was
-    /// recreated (e.g. because Explorer was shut down).
-    /// </summary>
-    private void OnTaskbarCreated()
-    {
-        RemoveTaskbarIcon();
-        CreateTaskbarIcon();
-    }
-
-
-    /// <summary>
-    /// Creates the taskbar icon. This message is invoked during initialization,
-    /// if the taskbar is restarted, and whenever the icon is displayed.
-    /// </summary>
-    private void CreateTaskbarIcon()
-    {
-        lock (lockObject)
-        {
-            if (IsTaskbarIconCreated)
-            {
-                return;
-            }
-
-            const IconDataMembers members = IconDataMembers.Message
-                                            | IconDataMembers.Icon
-                                            | IconDataMembers.Tip;
-
-            //write initial configuration
-            var status = Util.WriteIconData(ref iconData, NotifyCommand.Add, members);
-            if (!status)
-            {
-                // couldn't create the icon - we can assume this is because explorer is not running (yet!)
-                // -> try a bit later again rather than throwing an exception. Typically, if the windows
-                // shell is being loaded later, this method is being re-invoked from OnTaskbarCreated
-                // (we could also retry after a delay, but that's currently YAGNI)
-                return;
-            }
-
-            //set to most recent version
-            SetVersion();
-            messageSink.Version = (NotifyIconVersion)iconData.VersionOrTimeout;
-
-            IsTaskbarIconCreated = true;
-        }
-    }
-
-    /// <summary>
-    /// Closes the taskbar icon if required.
-    /// </summary>
-    private void RemoveTaskbarIcon()
-    {
-        lock (lockObject)
-        {
-            // make sure we didn't schedule a creation
-
-            if (!IsTaskbarIconCreated)
-            {
-                return;
-            }
-
-            Util.WriteIconData(ref iconData, NotifyCommand.Delete, IconDataMembers.Message);
-            IsTaskbarIconCreated = false;
-        }
-    }
-
-    #endregion
-
-
 
     #region Dispose / Exit
 
@@ -1146,7 +1028,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // don't do anything if the component is already disposed
         if (IsDisposed || !disposing) return;
 
-        lock (lockObject)
+        //lock (lockObject)
         {
             IsDisposed = true;
 
@@ -1164,11 +1046,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Dispose();
 #endif
 
-            // dispose message sink
-            messageSink.Dispose();
-
-            // remove icon
-            RemoveTaskbarIcon();
+            TrayIcon.Dispose();
         }
     }
 

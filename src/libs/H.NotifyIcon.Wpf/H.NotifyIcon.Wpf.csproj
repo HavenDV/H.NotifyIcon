@@ -25,7 +25,7 @@
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Windows.Markup.XmlnsDefinition">
       <_Parameter1>http://www.hardcodet.net/taskbar</_Parameter1>
-      <_Parameter2>Hardcodet.Wpf.TaskbarNotification</_Parameter2>
+      <_Parameter2>H.NotifyIcon</_Parameter2>
     </AssemblyAttribute>
   </ItemGroup>
 	  

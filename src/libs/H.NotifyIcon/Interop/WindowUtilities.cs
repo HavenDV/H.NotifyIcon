@@ -1,6 +1,4 @@
-using System.Drawing;
-
-namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// Win32 API imports.

@@ -1,31 +1,6 @@
-﻿// hardcodet.net NotifyIcon for WPF
-// Copyright (c) 2009 - 2020 Philipp Sumi
-// Contact and Information: http://www.hardcodet.net
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the Code Project Open License (CPOL);
-// either version 1.0 of the License, or (at your option) any later
-// version.
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
-//
-// THIS COPYRIGHT NOTICE MAY NOT BE REMOVED FROM THIS FILE
+﻿using System.ComponentModel;
 
-
-using System.ComponentModel;
-using System.Diagnostics;
-
-namespace Hardcodet.Wpf.TaskbarNotification.Interop;
+namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// Receives messages from the taskbar icon through
@@ -152,7 +127,7 @@ public class WindowMessageSink : IDisposable
         return new WindowMessageSink
         {
             HWND = default,
-            Version = NotifyIconVersion.Vista
+            Version = NotifyIconVersion.Vista,
         };
     }
 
@@ -235,8 +210,7 @@ public class WindowMessageSink : IDisposable
         if (messageId == taskbarRestartMessageId)
         {
             //recreate the icon if the taskbar was restarted (e.g. due to Win Explorer shutdown)
-            var listener = TaskbarCreated;
-            listener?.Invoke();
+            TaskbarCreated?.Invoke();
         }
 
         //forward message
@@ -255,40 +229,36 @@ public class WindowMessageSink : IDisposable
     /// or higher, this parameter can be used to resolve mouse coordinates.
     /// Currently not in use.</param>
     /// <param name="lParam">Provides information about the event.</param>
-    private void ProcessWindowMessage(uint msg, WPARAM wParam, IntPtr lParam)
+    private void ProcessWindowMessage(uint msg, WPARAM wParam, LPARAM lParam)
     {
         // Check if it was a callback message
         if (msg != CallbackMessageId)
         {
             // It was not a callback message, but make sure it's not something else we need to process
-            switch ((WindowsMessages) msg)
+            switch (msg)
             {
-                case WindowsMessages.WM_DPICHANGED:
-                    Debug.WriteLine("DPI Change");
+                case PInvoke.WM_DPICHANGED:
                     DpiChanged?.Invoke();
                     break;
             }
             return;
         }
 
-        var message = (WindowsMessages)lParam.ToInt32();
-        Debug.WriteLine("Got message " + message);
-        switch (message)
+        switch ((uint)lParam.Value)
         {
-            case WindowsMessages.WM_CONTEXTMENU:
+            case PInvoke.WM_CONTEXTMENU:
                 // TODO: Handle WM_CONTEXTMENU, see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
-                Debug.WriteLine("Unhandled WM_CONTEXTMENU");
                 break;
 
-            case WindowsMessages.WM_MOUSEMOVE:
+            case PInvoke.WM_MOUSEMOVE:
                 MouseEventReceived?.Invoke(MouseEvent.MouseMove);
                 break;
 
-            case WindowsMessages.WM_LBUTTONDOWN:
+            case PInvoke.WM_LBUTTONDOWN:
                 MouseEventReceived?.Invoke(MouseEvent.IconLeftMouseDown);
                 break;
 
-            case WindowsMessages.WM_LBUTTONUP:
+            case PInvoke.WM_LBUTTONUP:
                 if (!isDoubleClick)
                 {
                     MouseEventReceived?.Invoke(MouseEvent.IconLeftMouseUp);
@@ -296,68 +266,66 @@ public class WindowMessageSink : IDisposable
                 isDoubleClick = false;
                 break;
 
-            case WindowsMessages.WM_LBUTTONDBLCLK:
+            case PInvoke.WM_LBUTTONDBLCLK:
                 isDoubleClick = true;
                 MouseEventReceived?.Invoke(MouseEvent.IconDoubleClick);
                 break;
 
-            case WindowsMessages.WM_RBUTTONDOWN:
+            case PInvoke.WM_RBUTTONDOWN:
                 MouseEventReceived?.Invoke(MouseEvent.IconRightMouseDown);
                 break;
 
-            case WindowsMessages.WM_RBUTTONUP:
+            case PInvoke.WM_RBUTTONUP:
                 MouseEventReceived?.Invoke(MouseEvent.IconRightMouseUp);
                 break;
 
-            case WindowsMessages.WM_RBUTTONDBLCLK:
+            case PInvoke.WM_RBUTTONDBLCLK:
                 //double click with right mouse button - do not trigger event
                 break;
 
-            case WindowsMessages.WM_MBUTTONDOWN:
+            case PInvoke.WM_MBUTTONDOWN:
                 MouseEventReceived?.Invoke(MouseEvent.IconMiddleMouseDown);
                 break;
 
-            case WindowsMessages.WM_MBUTTONUP:
+            case PInvoke.WM_MBUTTONUP:
                 MouseEventReceived?.Invoke(MouseEvent.IconMiddleMouseUp);
                 break;
 
-            case WindowsMessages.WM_MBUTTONDBLCLK:
+            case PInvoke.WM_MBUTTONDBLCLK:
                 //double click with middle mouse button - do not trigger event
                 break;
 
-            case WindowsMessages.NIN_BALLOONSHOW:
+            case PInvoke.NIN_BALLOONSHOW:
                 BalloonToolTipChanged?.Invoke(true);
                 break;
 
-            case WindowsMessages.NIN_BALLOONHIDE:
-            case WindowsMessages.NIN_BALLOONTIMEOUT:
+            case PInvoke.NIN_BALLOONHIDE:
+            case PInvoke.NIN_BALLOONTIMEOUT:
                 BalloonToolTipChanged?.Invoke(false);
                 break;
 
-            case WindowsMessages.NIN_BALLOONUSERCLICK:
+            case PInvoke.NIN_BALLOONUSERCLICK:
                 MouseEventReceived?.Invoke(MouseEvent.BalloonToolTipClicked);
                 break;
 
-            case WindowsMessages.NIN_POPUPOPEN:
+            case PInvoke.NIN_POPUPOPEN:
                 ChangeToolTipStateRequest?.Invoke(true);
                 break;
 
-            case WindowsMessages.NIN_POPUPCLOSE:
+            case PInvoke.NIN_POPUPCLOSE:
                 ChangeToolTipStateRequest?.Invoke(false);
                 break;
 
-            case WindowsMessages.NIN_SELECT:
+            case PInvoke.NIN_SELECT:
                 // TODO: Handle NIN_SELECT see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
-                Debug.WriteLine("Unhandled NIN_SELECT");
                 break;
 
-            case WindowsMessages.NIN_KEYSELECT:
+            case PInvoke.NIN_SELECT | PInvoke.NINF_KEY:
                 // TODO: Handle NIN_KEYSELECT see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
-                Debug.WriteLine("Unhandled NIN_KEYSELECT");
                 break;
 
             default:
-                Debug.WriteLine("Unhandled NotifyIcon message ID: " + lParam);
+                //Debug.WriteLine("Unhandled NotifyIcon message ID: " + lParam);
                 break;
         }
     }
@@ -410,8 +378,11 @@ public class WindowMessageSink : IDisposable
     /// </summary>
     private void Dispose(bool disposing)
     {
-        //don't do anything if the component is already disposed
-        if (IsDisposed) return;
+        if (IsDisposed)
+        {
+            return;
+        }
+
         IsDisposed = true;
 
         //always destroy the unmanaged handle (even if called from the GC)

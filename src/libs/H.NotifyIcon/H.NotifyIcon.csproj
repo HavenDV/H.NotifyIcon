@@ -12,6 +12,7 @@
   <ItemGroup>
     <Using Include="Windows.Win32" />
     <Using Include="Windows.Win32.Foundation" />
+    <Using Include="Windows.Win32.UI.Shell" />
     <Using Include="Windows.Win32.UI.WindowsAndMessaging" />
     <Using Include="Microsoft.Win32.SafeHandles" />
   </ItemGroup>
@@ -22,7 +23,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-	  
+
   <PropertyGroup Label="NuGet">
     <Description>Interop Core Package for H.NotifyIcon platform packages</Description>
     <PackageTags>NotifyIcon, Interop</PackageTags>

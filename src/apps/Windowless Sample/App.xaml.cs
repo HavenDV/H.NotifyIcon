@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Hardcodet.Wpf.TaskbarNotification;
+using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.Windowless;
 

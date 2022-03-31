@@ -1,30 +1,4 @@
-﻿// hardcodet.net NotifyIcon for WPF
-// Copyright (c) 2009 - 2020 Philipp Sumi
-// Contact and Information: http://www.hardcodet.net
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the Code Project Open License (CPOL);
-// either version 1.0 of the License, or (at your option) any later
-// version.
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
-//
-// THIS COPYRIGHT NOTICE MAY NOT BE REMOVED FROM THIS FILE
-
-
-using Hardcodet.Wpf.TaskbarNotification.Interop;
-
-namespace Hardcodet.Wpf.TaskbarNotification;
+﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// Util and extension methods.
@@ -34,21 +8,21 @@ public static class Extensions
     #region GetBalloonFlag
 
     /// <summary>
-    /// Gets a <see cref="BalloonFlags"/> enum value that
-    /// matches a given <see cref="BalloonIcon"/>.
+    /// Gets Interop flags that matches a given <see cref="BalloonIcon"/>.
+    /// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#niif_none-0x00000000
     /// </summary>
-    public static BalloonFlags GetBalloonFlag(this BalloonIcon icon)
+    public static uint GetBalloonFlag(this BalloonIcon icon)
     {
         switch (icon)
         {
             case BalloonIcon.None:
-                return BalloonFlags.None;
+                return PInvoke.NIIF_NONE;
             case BalloonIcon.Info:
-                return BalloonFlags.Info;
+                return PInvoke.NIIF_INFO;
             case BalloonIcon.Warning:
-                return BalloonFlags.Warning;
+                return PInvoke.NIIF_WARNING;
             case BalloonIcon.Error:
-                return BalloonFlags.Error;
+                return PInvoke.NIIF_ERROR;
             default:
                 throw new ArgumentOutOfRangeException("icon");
         }

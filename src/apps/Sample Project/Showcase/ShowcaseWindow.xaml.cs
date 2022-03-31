@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
-using Hardcodet.Wpf.TaskbarNotification;
+using H.NotifyIcon;
+using H.NotifyIcon.Interop;
 
 namespace NotifyIconWpf.Sample.ShowCases.Showcase;
 

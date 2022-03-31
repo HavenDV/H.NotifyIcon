@@ -31,7 +31,7 @@ Install-Package H.NotifyIcon.WinUI
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:tb="http://www.hardcodet.net/taskbar" // WPF
-  xmlns:tb="using:Hardcodet.Wpf.TaskbarNotification" // WinUI
+  xmlns:tb="using:H.NotifyIcon" // WinUI
   >
 
     <tb:TaskbarIcon x:Name="myNotifyIcon"

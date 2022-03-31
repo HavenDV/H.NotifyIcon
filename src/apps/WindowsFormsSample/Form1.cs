@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Forms;
-using Hardcodet.Wpf.TaskbarNotification;
+using H.NotifyIcon;
 using NotifyIconWpf.Sample.WindowsForms.Properties;
 
 namespace NotifyIconWpf.Sample.WindowsForms;

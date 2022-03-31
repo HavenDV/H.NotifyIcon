@@ -1,27 +1,4 @@
-﻿// hardcodet.net NotifyIcon for WPF
-// Copyright (c) 2009 - 2020 Philipp Sumi
-// Contact and Information: http://www.hardcodet.net
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the Code Project Open License (CPOL);
-// either version 1.0 of the License, or (at your option) any later
-// version.
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
-//
-// THIS COPYRIGHT NOTICE MAY NOT BE REMOVED FROM THIS FILE
-
-namespace Hardcodet.Wpf.TaskbarNotification;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// Util and extension methods.
@@ -84,48 +61,8 @@ internal static class Util
 
     #endregion
 
-    #region WriteIconData
-
-    /// <summary>
-    /// Updates the taskbar icons with data provided by a given
-    /// <see cref="NotifyIconData"/> instance.
-    /// </summary>
-    /// <param name="data">Configuration settings for the NotifyIcon.</param>
-    /// <param name="command">Operation on the icon (e.g. delete the icon).</param>
-    /// <returns>True if the data was successfully written.</returns>
-    /// <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
-    public static bool WriteIconData(ref NotifyIconData data, NotifyCommand command)
-    {
-        return WriteIconData(ref data, command, data.ValidMembers);
-    }
-
-
-    /// <summary>
-    /// Updates the taskbar icons with data provided by a given
-    /// <see cref="NotifyIconData"/> instance.
-    /// </summary>
-    /// <param name="data">Configuration settings for the NotifyIcon.</param>
-    /// <param name="command">Operation on the icon (e.g. delete the icon).</param>
-    /// <param name="flags">Defines which members of the <paramref name="data"/>
-    /// structure are set.</param>
-    /// <returns>True if the data was successfully written.</returns>
-    /// <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
-    public static bool WriteIconData(ref NotifyIconData data, NotifyCommand command, IconDataMembers flags)
-    {
-        //do nothing if in design mode
-        if (IsDesignMode) return true;
-
-        data.ValidMembers = flags;
-        lock (SyncRoot)
-        {
-            return WinApi.Shell_NotifyIcon(command, ref data);
-        }
-    }
-
-    #endregion
-
     #region ImageSource to Icon
-    
+
 #if HAS_WPF
 
     /// <summary>

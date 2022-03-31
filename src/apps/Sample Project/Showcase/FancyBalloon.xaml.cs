@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
+using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.ShowCases.Showcase;
 
