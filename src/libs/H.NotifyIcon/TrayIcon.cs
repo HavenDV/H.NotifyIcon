@@ -354,7 +354,7 @@ public class TrayIcon : IDisposable
     /// <param name="flags">Indicates what icon to use.</param>
     /// <param name="balloonIconHandle">A handle to a custom icon, if any, or
     /// <see cref="IntPtr.Zero"/>.</param>
-    private unsafe void ShowBalloonTip(string title, string message, uint flags, IntPtr balloonIconHandle)
+    private unsafe bool ShowBalloonTip(string title, string message, uint flags, IntPtr balloonIconHandle)
     {
         EnsureNotDisposed();
 
@@ -387,7 +387,7 @@ public class TrayIcon : IDisposable
             iconData32.hBalloonIcon = new HICON(balloonIconHandle);
         }
 
-        SendModifyMessage(
+        return SendModifyMessage(
             NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
             NOTIFY_ICON_DATA_FLAGS.NIF_ICON);
     }
@@ -400,11 +400,11 @@ public class TrayIcon : IDisposable
     /// Creates the taskbar icon. This message is invoked during initialization,
     /// if the taskbar is restarted, and whenever the icon is displayed.
     /// </summary>
-    public void Create()
+    public bool Create()
     {
         if (IsCreated)
         {
-            return;
+            return true;
         }
 
         if (!SendAddMessage(
@@ -416,7 +416,7 @@ public class TrayIcon : IDisposable
             // -> try a bit later again rather than throwing an exception. Typically, if the windows
             // shell is being loaded later, this method is being re-invoked from OnTaskbarCreated
             // (we could also retry after a delay, but that's currently YAGNI)
-            return;
+            return false;
         }
 
         // Set to most recent version
@@ -424,26 +424,32 @@ public class TrayIcon : IDisposable
         MessageSink.Version = Version;
 
         IsCreated = true;
+        return true;
     }
 
     /// <summary>
     /// Closes the taskbar icon if required.
     /// </summary>
-    public void Remove()
+    public bool Remove()
     {
         if (!IsCreated)
         {
-            return;
+            return true;
         }
 
-        SendDeleteMessage(NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE);
+        if (!SendDeleteMessage(NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE))
+        {
+            return false;
+        }
+        
         IsCreated = false;
+        return true;
     }
 
     /// <summary>
     /// Sets tooltip message.
     /// </summary>
-    public unsafe void SetToolTip(string text)
+    public unsafe bool SetToolTip(string text)
     {
         if (Environment.Is64BitProcess)
         {
@@ -460,14 +466,14 @@ public class TrayIcon : IDisposable
             }
         }
 
-        SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_TIP);
+        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_TIP);
     }
 
     /// <summary>
     /// Set new icon data.
     /// </summary>
     /// <param name="handle">The title to display on the balloon tip.</param>
-    public void SetIcon(IntPtr handle)
+    public bool SetIcon(IntPtr handle)
     {
         // Dispose previos?
         if (Environment.Is64BitProcess)
@@ -479,7 +485,7 @@ public class TrayIcon : IDisposable
             iconData32.hIcon = new HICON(handle);
         }
 
-        SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_ICON);
+        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_ICON);
     }
 
     /// <summary>
@@ -489,9 +495,9 @@ public class TrayIcon : IDisposable
     /// <param name="title">The title to display on the balloon tip.</param>
     /// <param name="message">The text to display on the balloon tip.</param>
     /// <param name="symbol">A symbol that indicates the severity.</param>
-    public void ShowBalloonTip(string title, string message, BalloonIcon symbol)
+    public bool ShowBalloonTip(string title, string message, BalloonIcon symbol)
     {
-        ShowBalloonTip(title, message, symbol.GetBalloonFlag(), IntPtr.Zero);
+        return ShowBalloonTip(title, message, symbol.GetBalloonFlag(), IntPtr.Zero);
     }
 
     /// <summary>
@@ -504,7 +510,7 @@ public class TrayIcon : IDisposable
     /// <param name="largeIcon">True to allow large icons (Windows Vista and later).</param>
     /// <exception cref="ArgumentNullException">If <paramref name="customIcon"/>
     /// is a null reference.</exception>
-    public void ShowBalloonTip(string title, string message, IntPtr customIcon, bool largeIcon = false)
+    public bool ShowBalloonTip(string title, string message, IntPtr customIcon, bool largeIcon = false)
     {
         var flags = PInvoke.NIIF_USER;
         if (largeIcon)
@@ -512,13 +518,13 @@ public class TrayIcon : IDisposable
             flags |= PInvoke.NIIF_LARGE_ICON;
         }
 
-        ShowBalloonTip(title, message, flags, customIcon);
+        return ShowBalloonTip(title, message, flags, customIcon);
     }
 
     /// <summary>
     /// Hides a balloon ToolTip, if any is displayed.
     /// </summary>
-    public void HideBalloonTip()
+    public bool HideBalloonTip()
     {
         EnsureNotDisposed();
 
@@ -534,7 +540,7 @@ public class TrayIcon : IDisposable
             iconData32.szInfoTitle = default;
         }
 
-        SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_INFO);
+        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_INFO);
     }
 
     #endregion
@@ -628,7 +634,7 @@ public class TrayIcon : IDisposable
 
         IsDisposed = true;
         MessageSink.Dispose();
-        Remove();
+        _ =Remove();
     }
 
     #endregion
