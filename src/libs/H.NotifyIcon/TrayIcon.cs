@@ -57,12 +57,12 @@ public class TrayIcon : IDisposable
     /// </summary>
     public IconState IconState { get; set; } = IconState.Visible;
 
-    /// <summary>
-    /// A value that specifies which bits of the state member are retrieved or modified.
-    /// For example, setting this member to Hidden.
-    /// causes only the item's hidden
-    /// state to be retrieved.
-    /// </summary>
+    // <summary>
+    // A value that specifies which bits of the state member are retrieved or modified.
+    // For example, setting this member to Hidden.
+    // causes only the item's hidden
+    // state to be retrieved.
+    // </summary>
     //public uint StateMask => Environment.Is64BitProcess
     //    ? iconData64.dwStateMask
     //    : iconData32.dwStateMask;

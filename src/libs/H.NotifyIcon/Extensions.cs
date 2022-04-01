@@ -23,6 +23,8 @@ public static class Extensions
     /// is a null reference.</exception>
     public static bool Is<T>(this T value, params T[] candidates)
     {
+        value = value ?? throw new ArgumentNullException(nameof(value));
+
         if (candidates == null) return false;
 
         foreach (var t in candidates)

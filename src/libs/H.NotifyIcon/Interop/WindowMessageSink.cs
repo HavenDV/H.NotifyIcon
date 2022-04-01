@@ -41,7 +41,7 @@ public class WindowMessageSink : IDisposable
     /// this reference makes sure we don't loose our reference
     /// to the message window.
     /// </summary>
-    private WNDPROC messageHandler;
+    private WNDPROC? MessageHandler { get; set; }
 
     /// <summary>
     /// Window class ID.
@@ -71,30 +71,30 @@ public class WindowMessageSink : IDisposable
     /// <summary>
     /// The custom tooltip should be closed or hidden.
     /// </summary>
-    public event Action<bool> ChangeToolTipStateRequest;
+    public event Action<bool>? ChangeToolTipStateRequest;
 
     /// <summary>
     /// Fired in case the user clicked or moved within
     /// the taskbar icon area.
     /// </summary>
-    public event Action<MouseEvent> MouseEventReceived;
+    public event Action<MouseEvent>? MouseEventReceived;
 
     /// <summary>
     /// Fired if a balloon ToolTip was either displayed
     /// or closed (indicated by the boolean flag).
     /// </summary>
-    public event Action<bool> BalloonToolTipChanged;
+    public event Action<bool>? BalloonToolTipChanged;
 
     /// <summary>
     /// Fired if the taskbar was created or restarted. Requires the taskbar
     /// icon to be reset.
     /// </summary>
-    public event Action TaskbarCreated;
+    public event Action? TaskbarCreated;
 
     /// <summary>
     /// Fired if dpi change window message received.
     /// </summary>
-    public event Action DpiChanged;
+    public event Action? DpiChanged;
 
     #endregion
 
@@ -108,12 +108,13 @@ public class WindowMessageSink : IDisposable
     public WindowMessageSink(NotifyIconVersion version)
     {
         Version = version;
+        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
         CreateMessageWindow();
     }
 
-
     private WindowMessageSink()
     {
+        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
     }
 
     /// <summary>
@@ -141,11 +142,7 @@ public class WindowMessageSink : IDisposable
     /// </summary>
     private unsafe void CreateMessageWindow()
     {
-        //generate a unique ID for the window
-        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
-
-        //register window message handler
-        messageHandler = OnWindowMessageReceived;
+        MessageHandler = OnWindowMessageReceived;
 
         // Create a simple window class which is reference through
         //the messageHandler delegate
@@ -155,7 +152,7 @@ public class WindowMessageSink : IDisposable
         fixed (char* className = WindowId)
         {
             wc.style = 0;
-            wc.lpfnWndProc = messageHandler;
+            wc.lpfnWndProc = MessageHandler;
             wc.cbClsExtra = 0;
             wc.cbWndExtra = 0;
             wc.hInstance = default;
@@ -381,7 +378,7 @@ public class WindowMessageSink : IDisposable
 
         //always destroy the unmanaged handle (even if called from the GC)
         PInvoke.DestroyWindow(HWND); // .EnsureNonZero() Dispose should not throw.
-        messageHandler = null;
+        MessageHandler = null;
     }
 
     #endregion
