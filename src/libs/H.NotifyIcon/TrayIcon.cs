@@ -117,13 +117,9 @@ public class TrayIcon : IDisposable
         : iconData32.szInfo.ToString();
 
     /// <summary>
-    /// Mainly used to set the version when Shell_NotifyIcon is invoked
-    /// with <see cref="SetMostRecentVersion"/>. However, for legacy operations,
-    /// the same member is also used to set timeouts for balloon ToolTips.
+    /// Current version. Updates after <see cref="Create"/>.
     /// </summary>
-    public NotifyIconVersion Version => Environment.Is64BitProcess
-        ? (NotifyIconVersion)iconData64.Anonymous.uVersion
-        : (NotifyIconVersion)iconData32.Anonymous.uVersion;
+    public NotifyIconVersion Version { get; private set; } = NotifyIconVersion.Vista;
 
     /// <summary>
     /// String containing a title for a balloon ToolTip. This title appears in boldface
@@ -319,37 +315,6 @@ public class TrayIcon : IDisposable
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETFOCUS, flags);
     }
 
-    private bool SendSetVersionMessage(NotifyIconVersion version)
-    {
-        if (Environment.Is64BitProcess)
-        {
-            iconData64.Anonymous.uVersion = (uint)version;
-        }
-        else
-        {
-            iconData32.Anonymous.uVersion = (uint)version;
-        }
-
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETVERSION);
-    }
-
-    private void SetMostRecentVersion()
-    {
-        var status = SendSetVersionMessage(NotifyIconVersion.Vista);
-        if (!status)
-        {
-            status = SendSetVersionMessage(NotifyIconVersion.Win2000);
-        }
-        if (!status)
-        {
-            status = SendSetVersionMessage(NotifyIconVersion.Win95);
-        }
-        if (!status)
-        {
-            throw new InvalidOperationException("Could not set version");
-        }
-    }
-
     #endregion
 
     #region Public methods
@@ -377,9 +342,16 @@ public class TrayIcon : IDisposable
             return false;
         }
 
-        // Set to most recent version
-        SetMostRecentVersion();
-        MessageSink.Version = Version;
+        if (!TrayIconMethods.TrySetMostRecentVersion(
+            handle: MessageSink.MessageWindowHandle,
+            id: Id,
+            out var version))
+        {
+            throw new InvalidOperationException("Could not set version");
+        }
+
+        Version = version;
+        MessageSink.Version = version;
 
         IsCreated = true;
         return true;

@@ -42,6 +42,16 @@ internal static class TrayIconMethods
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
     }
 
+    public static bool SendSetVersionMessage(NOTIFYICONDATAW32 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, data);
+    }
+
+    public static bool SendSetVersionMessage(NOTIFYICONDATAW64 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, data);
+    }
+
     public static unsafe bool ShowNotification(
         IntPtr handle,
         Guid id,
@@ -74,9 +84,9 @@ internal static class TrayIconMethods
         }
         else
         {
-            var data = new NOTIFYICONDATAW64
+            var data = new NOTIFYICONDATAW32
             {
-                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags = flags,
                 hWnd = new HWND(handle),
                 guidItem = id,
@@ -92,5 +102,72 @@ internal static class TrayIconMethods
 
             return SendModifyMessage(data);
         }
+    }
+
+    public static unsafe bool TrySetVersion(
+        IntPtr handle,
+        Guid id,
+        NotifyIconVersion version)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                hWnd = new HWND(handle),
+                guidItem = id,
+                Anonymous =
+                {
+                    uVersion = (uint)version,
+                }
+            };
+
+            return SendSetVersionMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                hWnd = new HWND(handle),
+                guidItem = id,
+                Anonymous =
+                {
+                    uVersion = (uint)version,
+                }
+            };
+
+            return SendSetVersionMessage(data);
+        }
+    }
+
+    public static bool TrySetMostRecentVersion(
+        IntPtr handle,
+        Guid id,
+        out NotifyIconVersion version)
+    {
+        version = NotifyIconVersion.Vista;
+        var status = TrySetVersion(
+            handle: handle,
+            id: id,
+            version: version);
+        if (!status)
+        {
+            version = NotifyIconVersion.Win2000;
+            status = TrySetVersion(
+                handle: handle,
+                id: id,
+                version: version);
+        }
+        if (!status)
+        {
+            version = NotifyIconVersion.Win95;
+            status = TrySetVersion(
+                handle: handle,
+                id: id,
+                version: version);
+        }
+
+        return status;
     }
 }
