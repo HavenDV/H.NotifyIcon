@@ -18,7 +18,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Represents the current icon data.
     /// </summary>
-    private TrayIcon TrayIcon;
+    private TrayIcon TrayIcon { get; }
 
     /// <summary>
     /// An action that is being invoked if the
@@ -95,6 +95,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         TrayIcon.MessageSink.MouseEventReceived += OnMouseEvent;
         TrayIcon.MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
         TrayIcon.MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
+        _ = TrayIcon.Create();
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -609,7 +610,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             }
         }
 
-        TrayIcon.SetToolTip(text);
+        TrayIcon.UpdateToolTip(text);
     }
 
     #endregion
@@ -945,13 +946,17 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     }
 
     /// <summary>
-    /// Hides a balloon ToolTip, if any is displayed.
+    /// Clears all notifications(active and deffered) by recreating tray icon.
+    /// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#nif_info-0x00000010
+    /// There's a way to remove notifications without recreating here,
+    /// but I haven't been able to get it to work.
     /// </summary>
-    public void HideBalloonTip()
+    /// <returns></returns>
+    public void ClearNotifications()
     {
         EnsureNotDisposed();
 
-        TrayIcon.HideBalloonTip();
+        TrayIcon.ClearNotifications();
     }
 
     #endregion

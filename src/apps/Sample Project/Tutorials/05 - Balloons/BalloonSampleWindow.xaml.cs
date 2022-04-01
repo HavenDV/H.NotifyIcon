@@ -34,13 +34,13 @@ public partial class BalloonSampleWindow : Window
 
     private void btnHideStandardBalloon_Click(object sender, RoutedEventArgs e)
     {
-        MyNotifyIcon.HideBalloonTip();
+        MyNotifyIcon.ClearNotifications();
     }
 
 
     private void btnShowStandardBalloon_Click(object sender, RoutedEventArgs e)
     {
-        MyNotifyIcon.ShowNotification(
+        var test = MyNotifyIcon.ShowNotification(
             title: "WPF NotifyIcon",
             message: "This is a standard notification",
             customIcon: MyNotifyIcon.Icon);

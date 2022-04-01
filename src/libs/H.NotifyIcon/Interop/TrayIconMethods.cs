@@ -32,6 +32,16 @@ internal static class TrayIconMethods
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
     }
 
+    private static bool SendAddMessage(NOTIFYICONDATAW32 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_ADD, data);
+    }
+
+    private static bool SendAddMessage(NOTIFYICONDATAW64 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_ADD, data);
+    }
+
     private static bool SendDeleteMessage(NOTIFYICONDATAW32 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
@@ -62,8 +72,142 @@ internal static class TrayIconMethods
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETFOCUS, data);
     }
 
-    public static unsafe bool ShowNotification(
+    public static unsafe bool TryCreate(
+        Guid id,
         IntPtr handle,
+        NOTIFY_ICON_DATA_FLAGS flags,
+        string toolTip,
+        uint uCallbackMessage,
+        IntPtr iconHandle)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                uFlags = flags,
+                hWnd = new HWND(handle),
+                guidItem = id,
+                uCallbackMessage = uCallbackMessage,
+                hIcon = new HICON(iconHandle),
+            };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
+
+            return SendAddMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                uFlags = flags,
+                hWnd = new HWND(handle),
+                guidItem = id,
+                uCallbackMessage = uCallbackMessage,
+                hIcon = new HICON(iconHandle),
+            };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
+
+            return SendAddMessage(data);
+        }
+    }
+
+    public static unsafe bool TryModifyToolTip(
+        Guid id,
+        string toolTip)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+            };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
+
+            return SendModifyMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+            };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
+
+            return SendModifyMessage(data);
+        }
+    }
+
+    public static unsafe bool TryModifyIcon(
+        Guid id,
+        IntPtr iconHandle)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+                hIcon = new HICON(iconHandle),
+            };
+
+            return SendModifyMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+                hIcon = new HICON(iconHandle),
+            };
+
+            return SendModifyMessage(data);
+        }
+    }
+
+    public static unsafe bool TryDelete(
+        Guid id)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+            };
+
+            return SendDeleteMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+            };
+
+            return SendDeleteMessage(data);
+        }
+    }
+
+    public static unsafe bool TryShowNotification(
         Guid id,
         NOTIFY_ICON_DATA_FLAGS flags,
         string title,
@@ -77,8 +221,9 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW64
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-                uFlags = flags,
-                hWnd = new HWND(handle),
+                uFlags = flags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwInfoFlags = infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
@@ -97,8 +242,9 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW32
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-                uFlags = flags,
-                hWnd = new HWND(handle),
+                uFlags = flags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwInfoFlags = infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
@@ -115,7 +261,6 @@ internal static class TrayIconMethods
     }
 
     public static unsafe bool TrySetVersion(
-        IntPtr handle,
         Guid id,
         NotifyIconVersion version)
     {
@@ -124,7 +269,7 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW64
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-                hWnd = new HWND(handle),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 Anonymous =
                 {
@@ -139,7 +284,7 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW32
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-                hWnd = new HWND(handle),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 Anonymous =
                 {
@@ -152,20 +297,17 @@ internal static class TrayIconMethods
     }
 
     public static bool TrySetMostRecentVersion(
-        IntPtr handle,
         Guid id,
         out NotifyIconVersion version)
     {
         version = NotifyIconVersion.Vista;
         var status = TrySetVersion(
-            handle: handle,
             id: id,
             version: version);
         if (!status)
         {
             version = NotifyIconVersion.Win2000;
             status = TrySetVersion(
-                handle: handle,
                 id: id,
                 version: version);
         }
@@ -173,7 +315,6 @@ internal static class TrayIconMethods
         {
             version = NotifyIconVersion.Win95;
             status = TrySetVersion(
-                handle: handle,
                 id: id,
                 version: version);
         }
@@ -181,16 +322,14 @@ internal static class TrayIconMethods
         return status;
     }
 
-    public static unsafe bool SetFocus(
-        IntPtr handle,
-        Guid id)
+    public static unsafe bool TrySetFocus(Guid id)
     {
         if (Environment.Is64BitProcess)
         {
             var data = new NOTIFYICONDATAW64
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-                hWnd = new HWND(handle),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
             };
 
@@ -201,7 +340,7 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW32
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-                hWnd = new HWND(handle),
+                uFlags = NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
             };
 

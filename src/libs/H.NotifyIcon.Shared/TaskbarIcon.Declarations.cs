@@ -142,7 +142,7 @@ partial class TaskbarIcon
         set
         {
             icon = value;
-            TrayIcon.SetIcon(value == null ? IntPtr.Zero : icon.Handle);
+            TrayIcon.UpdateIcon(value == null ? IntPtr.Zero : icon.Handle);
         }
     }
 

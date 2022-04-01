@@ -44,7 +44,7 @@ public partial class ShowcaseWindow : Window
 
     private void hideBalloonTip_Click(object sender, RoutedEventArgs e)
     {
-        tb.HideBalloonTip();
+        tb.ClearNotifications();
     }
 
 

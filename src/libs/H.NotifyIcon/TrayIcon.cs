@@ -12,13 +12,6 @@
 #endif
 public class TrayIcon : IDisposable
 {
-    #region Fields
-
-    private NOTIFYICONDATAW32 iconData32;
-    private NOTIFYICONDATAW64 iconData64;
-
-    #endregion
-
     #region Properties
 
     /// <summary>
@@ -37,66 +30,32 @@ public class TrayIcon : IDisposable
     public bool IsCreated { get; private set; }
 
     /// <summary>
-    /// 
+    /// IsEnabled?
     /// </summary>
-    public bool IsDesignMode { get; }
+    public bool IsDesignMode { get; set; }
+
+    /// <summary>
+    /// A handle to the icon that should be displayed. Just
+    /// <c>Icon.Handle</c>.
+    /// </summary>
+    public IntPtr Icon { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public string ToolTipText => Environment.Is64BitProcess
-        ? iconData64.szTip.ToString()
-        : iconData32.szTip.ToString();
+    public string ToolTip { get; set; } = string.Empty;
 
     /// <summary>
     /// Handle to the window that receives notification messages associated with an icon in the
     /// taskbar status area. The Shell uses hWnd and uID to identify which icon to operate on
     /// when Shell_NotifyIcon is invoked.
     /// </summary>
-    public nint WindowHandle => Environment.Is64BitProcess
-        ? iconData64.hWnd
-        : iconData32.hWnd;
+    public nint WindowHandle => MessageSink.MessageWindowHandle;
 
     /// <summary>
-    /// Application-defined identifier of the taskbar icon. The Shell uses hWnd and uID to identify
-    /// which icon to operate on when Shell_NotifyIcon is invoked. You can have multiple icons
-    /// associated with a single hWnd by assigning each a different uID. This feature, however
-    /// is currently not used.
+    /// State of the icon. Remember to also set the StateMask.
     /// </summary>
-    public uint TaskbarIconId => Environment.Is64BitProcess
-        ? iconData64.uID
-        : iconData32.uID;
-
-    /// <summary>
-    /// Flags that indicate which of the other members contain valid data. This member can be
-    /// a combination of the NIF_XXX constants.
-    /// </summary>
-    public uint ValidMembers => Environment.Is64BitProcess
-        ? (uint)iconData64.uFlags
-        : (uint)iconData32.uFlags;
-
-    /// <summary>
-    /// Application-defined message identifier. The system uses this identifier to send
-    /// notifications to the window identified in hWnd.
-    /// </summary>
-    public uint CallbackMessageId => Environment.Is64BitProcess
-        ? iconData64.uCallbackMessage
-        : iconData32.uCallbackMessage;
-
-    /// <summary>
-    /// A handle to the icon that should be displayed. Just
-    /// <c>Icon.Handle</c>.
-    /// </summary>
-    public IntPtr IconHandle => Environment.Is64BitProcess
-        ? iconData64.hIcon
-        : iconData32.hIcon;
-
-    /// <summary>
-    /// State of the icon. Remember to also set the <see cref="StateMask"/>.
-    /// </summary>
-    public uint IconState => Environment.Is64BitProcess
-        ? iconData64.dwState
-        : iconData32.dwState;
+    public IconState IconState { get; set; } = IconState.Visible;
 
     /// <summary>
     /// A value that specifies which bits of the state member are retrieved or modified.
@@ -104,17 +63,9 @@ public class TrayIcon : IDisposable
     /// causes only the item's hidden
     /// state to be retrieved.
     /// </summary>
-    public uint StateMask => Environment.Is64BitProcess
-        ? iconData64.dwStateMask
-        : iconData32.dwStateMask;
-
-    /// <summary>
-    /// String with the text for a balloon ToolTip. It can have a maximum of 255 characters.
-    /// To remove the ToolTip, set the NIF_INFO flag in uFlags and set szInfo to an empty string.
-    /// </summary>
-    public string BalloonText => Environment.Is64BitProcess
-        ? iconData64.szInfo.ToString()
-        : iconData32.szInfo.ToString();
+    //public uint StateMask => Environment.Is64BitProcess
+    //    ? iconData64.dwStateMask
+    //    : iconData32.dwStateMask;
 
     /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
@@ -122,48 +73,21 @@ public class TrayIcon : IDisposable
     public NotifyIconVersion Version { get; private set; } = NotifyIconVersion.Vista;
 
     /// <summary>
-    /// String containing a title for a balloon ToolTip. This title appears in boldface
-    /// above the text. It can have a maximum of 63 characters.
-    /// </summary>
-    public string BalloonTitle => Environment.Is64BitProcess
-        ? iconData64.szInfoTitle.ToString()
-        : iconData32.szInfoTitle.ToString();
-
-    /// <summary>
-    /// Adds an icon to a balloon ToolTip, which is placed to the left of the title. If the
-    /// <see cref="BalloonTitle"/> member is zero-length, the icon is not shown.
-    /// </summary>
-    public uint BalloonFlags => Environment.Is64BitProcess
-        ? iconData64.dwInfoFlags
-        : iconData32.dwInfoFlags;
-
-    /// <summary>
-    /// Windows XP (Shell32.dll version 6.0) and later.<br/>
-    /// - Windows 7 and later: A registered GUID that identifies the icon.
-    ///   This value overrides uID and is the recommended method of identifying the icon.<br/>
-    /// - Windows XP through Windows Vista: Reserved.
-    /// </summary>
-    public Guid TaskbarIconGuid => Environment.Is64BitProcess
-        ? iconData64.guidItem
-        : iconData32.guidItem;
-
-    /// <summary>
-    /// Windows Vista (Shell32.dll version 6.0.6) and later. The handle of a customized
-    /// balloon icon provided by the application that should be used independently
-    /// of the tray icon. If this member is non-NULL and the User.
-    /// flag is set, this icon is used as the balloon icon.<br/>
-    /// If this member is NULL, the legacy behavior is carried out.
-    /// </summary>
-    public IntPtr CustomBalloonIconHandle => Environment.Is64BitProcess
-        ? iconData64.hBalloonIcon
-        : iconData32.hBalloonIcon;
-
-    /// <summary>
     /// Indicates whether custom tooltips are supported, which depends
     /// on the OS. Windows Vista or higher is required in order to
     /// support this feature.
     /// </summary>
     public bool SupportsCustomToolTips => MessageSink.Version == NotifyIconVersion.Vista;
+
+    /// <summary>
+    /// Windows Vista and later. 
+    /// Use the standard tooltip. 
+    /// Normally, when uVersion is set to NOTIFYICON_VERSION_4, 
+    /// the standard tooltip is suppressed and can be replaced by the application-drawn, 
+    /// pop-up UI. If the application wants to show the standard tooltip with NOTIFYICON_VERSION_4, 
+    /// it can specify NIF_SHOWTIP to indicate the standard tooltip should still be shown.
+    /// </summary>
+    public bool UseStandardTooltip { get; set; } = false;
 
     #endregion
 
@@ -179,135 +103,7 @@ public class TrayIcon : IDisposable
         MessageSink = isDesignMode
             ? WindowMessageSink.CreateEmpty()
             : new WindowMessageSink(NotifyIconVersion.Win95);
-
-        iconData32 = CreateDefault32(MessageSink.MessageWindowHandle, Id);
-        iconData64 = CreateDefault64(MessageSink.MessageWindowHandle, Id);
-
-        Create();
-
         MessageSink.TaskbarCreated += OnTaskbarCreated;
-    }
-
-    #endregion
-
-    #region Private methods
-
-    /// <summary>
-    /// Creates a default data structure that provides
-    /// a hidden taskbar icon without the icon being set.
-    /// </summary>
-    /// <param name="handle"></param>
-    /// <param name="id"></param>
-    /// <returns>NotifyIconData</returns>
-    private static unsafe NOTIFYICONDATAW32 CreateDefault32(
-        IntPtr handle,
-        Guid id)
-    {
-        return new NOTIFYICONDATAW32
-        {
-            cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-
-            hWnd = new HWND(handle),
-            guidItem = id,
-            uCallbackMessage = WindowMessageSink.CallbackMessageId,
-
-            hIcon = new HICON(IntPtr.Zero),
-
-            dwState = PInvoke.NIS_HIDDEN,
-            dwStateMask = PInvoke.NIS_HIDDEN,
-
-            uFlags =
-                NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
-                NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
-                NOTIFY_ICON_DATA_FLAGS.NIF_TIP,
-
-            Anonymous =
-            {
-                uVersion = (uint)NotifyIconVersion.Win95,
-            },
-        };
-    }
-
-    /// <summary>
-    /// Creates a default data structure that provides
-    /// a hidden taskbar icon without the icon being set.
-    /// </summary>
-    /// <param name="handle"></param>
-    /// <param name="id"></param>
-    /// <returns>NotifyIconData</returns>
-    private static unsafe NOTIFYICONDATAW64 CreateDefault64(
-        IntPtr handle,
-        Guid id)
-    {
-        return new NOTIFYICONDATAW64
-        {
-            cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-
-            hWnd = new HWND(handle),
-            guidItem = id,
-            uCallbackMessage = WindowMessageSink.CallbackMessageId,
-
-            hIcon = new HICON(IntPtr.Zero),
-
-            dwState = PInvoke.NIS_HIDDEN,
-            dwStateMask = PInvoke.NIS_HIDDEN,
-
-            uFlags =
-                NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
-                NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
-                NOTIFY_ICON_DATA_FLAGS.NIF_TIP,
-
-            Anonymous =
-            {
-                uVersion = (uint)NotifyIconVersion.Win95,
-            },
-        };
-    }
-
-    private bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFY_ICON_DATA_FLAGS flags)
-    {
-        if (IsDesignMode)
-        {
-            return true;
-        }
-
-        BOOL result;
-        if (Environment.Is64BitProcess)
-        {
-            iconData64.uFlags = flags;
-
-            result = PInvoke.Shell_NotifyIcon(command, in iconData64);
-        }
-        else
-        {
-            iconData32.uFlags = flags;
-
-            result = PInvoke.Shell_NotifyIcon(command, in iconData32);
-        }
-
-        return result;
-    }
-
-    private bool SendMessage(NOTIFY_ICON_MESSAGE command)
-    {
-        return SendMessage(command, Environment.Is64BitProcess
-            ? iconData64.uFlags
-            : iconData32.uFlags);
-    }
-
-    private bool SendModifyMessage(NOTIFY_ICON_DATA_FLAGS flags)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, flags);
-    }
-
-    private bool SendAddMessage(NOTIFY_ICON_DATA_FLAGS flags)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_ADD, flags);
-    }
-
-    private bool SendDeleteMessage(NOTIFY_ICON_DATA_FLAGS flags)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, flags);
     }
 
     #endregion
@@ -325,10 +121,24 @@ public class TrayIcon : IDisposable
             return true;
         }
 
-        if (!SendAddMessage(
+        var flags =
             NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
             NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
-            NOTIFY_ICON_DATA_FLAGS.NIF_TIP))
+            NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
+            NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
+            NOTIFY_ICON_DATA_FLAGS.NIF_GUID;
+        if (UseStandardTooltip)
+        {
+            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
+
+        if (!TrayIconMethods.TryCreate(
+            id: Id,
+            handle: MessageSink.MessageWindowHandle,
+            flags: flags,
+            toolTip: ToolTip,
+            uCallbackMessage: WindowMessageSink.CallbackMessageId,
+            iconHandle: new HICON(Icon)))
         {
             // couldn't create the icon - we can assume this is because explorer is not running (yet!)
             // -> try a bit later again rather than throwing an exception. Typically, if the windows
@@ -338,7 +148,6 @@ public class TrayIcon : IDisposable
         }
 
         if (!TrayIconMethods.TrySetMostRecentVersion(
-            handle: MessageSink.MessageWindowHandle,
             id: Id,
             out var version))
         {
@@ -362,7 +171,7 @@ public class TrayIcon : IDisposable
             return true;
         }
 
-        if (!SendDeleteMessage(NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE))
+        if (!TrayIconMethods.TryDelete(Id))
         {
             return false;
         }
@@ -374,43 +183,18 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Sets tooltip message.
     /// </summary>
-    public unsafe bool SetToolTip(string text)
+    public unsafe bool UpdateToolTip(string text)
     {
-        if (Environment.Is64BitProcess)
-        {
-            fixed (char* p0 = &iconData64.szTip._0)
-            {
-                text.SetTo(p0, iconData64.szTip.Length);
-            }
-        }
-        else
-        {
-            fixed (char* p0 = &iconData32.szTip._0)
-            {
-                text.SetTo(p0, iconData32.szTip.Length);
-            }
-        }
-
-        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_TIP);
+        return TrayIconMethods.TryModifyToolTip(Id, text);
     }
 
     /// <summary>
     /// Set new icon data.
     /// </summary>
     /// <param name="handle">The title to display on the balloon tip.</param>
-    public bool SetIcon(IntPtr handle)
+    public bool UpdateIcon(IntPtr handle)
     {
-        // Dispose previos?
-        if (Environment.Is64BitProcess)
-        {
-            iconData64.hIcon = new HICON(handle);
-        }
-        else
-        {
-            iconData32.hIcon = new HICON(handle);
-        }
-
-        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_ICON);
+        return TrayIconMethods.TryModifyIcon(Id, handle);
     }
 
     /// <summary>
@@ -468,7 +252,7 @@ public class TrayIcon : IDisposable
     {
         EnsureNotDisposed();
 
-        var flags = NOTIFY_ICON_DATA_FLAGS.NIF_INFO;
+        var flags = (NOTIFY_ICON_DATA_FLAGS)0;
         if (realtime)
         {
             flags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
@@ -490,8 +274,7 @@ public class TrayIcon : IDisposable
             infoFlags |= PInvoke.NIIF_LARGE_ICON;
         }
 
-        return TrayIconMethods.ShowNotification(
-            handle: MessageSink.MessageWindowHandle,
+        return TrayIconMethods.TryShowNotification(
             id: Id,
             flags: flags,
             title: title,
@@ -535,9 +318,7 @@ public class TrayIcon : IDisposable
     {
         EnsureNotDisposed();
 
-        return TrayIconMethods.SetFocus(
-            handle: MessageSink.MessageWindowHandle,
-            id: Id);
+        return TrayIconMethods.TrySetFocus(Id);
     }
 
     #endregion
