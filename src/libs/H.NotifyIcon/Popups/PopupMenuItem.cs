@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace H.NotifyIcon.Core;
+﻿namespace H.NotifyIcon.Core;
 
 /// <inheritdoc/>
 public class PopupMenuItem : PopupItem
@@ -37,7 +35,7 @@ public class PopupMenuItem : PopupItem
     /// <inheritdoc/>
     public SystemPopupMenuItemBreak Break { get; set; } = SystemPopupMenuItemBreak.None;
 
-    internal override MENU_ITEM_FLAGS NativeFlags
+    internal MENU_ITEM_FLAGS NativeFlags
     {
         get
         {
@@ -76,38 +74,6 @@ public class PopupMenuItem : PopupItem
             //}
 
             return flags;
-        }
-    }
-
-    internal override PCWSTR NativeHandle
-    {
-        get
-        {
-            // HACK: We needed to unsafely convert IntPtr's to char*'s
-            var flags = NativeFlags;
-            var handle = IntPtr.Zero;
-
-            if (flags.HasFlag(MENU_ITEM_FLAGS.MF_BITMAP))
-            {
-                //var bitmap = (Bitmap)Image;
-                //handle = bitmap.GetHbitmap();
-            }
-            else if (flags.HasFlag(MENU_ITEM_FLAGS.MF_STRING))
-            {
-                handle = Marshal.StringToHGlobalUni(Text);
-            }
-
-            if (handle == IntPtr.Zero)
-            {
-                return null;
-            }
-            else
-            {
-                unsafe
-                {
-                    return (char*)handle;
-                }
-            }
         }
     }
 

@@ -13,14 +13,14 @@ namespace H.NotifyIcon.Core;
 #endif
 public class PopupMenu : IDisposable, IList<PopupItem>
 {
-    private readonly HMENU _hMenu;
+    private readonly DestroyMenuSafeHandle _hMenu;
     private List<PopupItem> _items;
     private bool _disposed;
 
     /// <inheritdoc/>
     public PopupMenu()
     {
-        _hMenu = PInvoke.CreatePopupMenu();
+        _hMenu = PInvoke.CreatePopupMenu_SafeHandle();
         _items = new();
     }
 
@@ -56,11 +56,21 @@ public class PopupMenu : IDisposable, IList<PopupItem>
             item.Id = NextId + 1;
         }
 
-        var result = PInvoke.AppendMenu(
-            hMenu: _hMenu,
-            uFlags: item.NativeFlags,
-            uIDNewItem: (nuint)item.Id,
-            lpNewItem: item.NativeHandle);
+        var result = item switch
+        {
+            PopupMenuItem menuItem => PInvoke.AppendMenu(
+                hMenu: _hMenu,
+                uFlags: menuItem.NativeFlags,
+                uIDNewItem: (nuint)item.Id,
+                lpNewItem: menuItem.Text),
+            PopupMenuSeparator => PInvoke.AppendMenu(
+                hMenu: _hMenu,
+                uFlags: MENU_ITEM_FLAGS.MF_SEPARATOR,
+                uIDNewItem: (nuint)item.Id,
+                lpNewItem: null),
+            _ => throw new NotImplementedException(),
+        }
+        ;
         if (!result)
         {
             throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -137,7 +147,7 @@ public class PopupMenu : IDisposable, IList<PopupItem>
         unsafe
         {
             id = PInvoke.TrackPopupMenuEx(
-                hMenu: new SafeFileHandle(_hMenu, false),
+                hMenu: _hMenu,
                 uFlags: (uint)flags,
                 x: x,
                 y: y,
@@ -208,7 +218,7 @@ public class PopupMenu : IDisposable, IList<PopupItem>
     {
         if (!_disposed)
         {
-            PInvoke.DestroyMenu(_hMenu);
+            _hMenu.Dispose();
             _disposed = true;
         }
     }

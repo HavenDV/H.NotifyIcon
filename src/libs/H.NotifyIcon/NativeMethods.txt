@@ -58,6 +58,5 @@ NOTIFYICON_VERSION_4
 AppendMenu
 CreatePopupMenu
 DeleteMenu
-DestroyMenu
 TrackPopupMenuEx
 TRACK_POPUP_MENU_FLAGS
