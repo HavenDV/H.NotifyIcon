@@ -173,7 +173,7 @@ public class TrayIcon : IDisposable
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
     /// </summary>
-    public TrayIcon(bool isDesignMode)
+    public TrayIcon(bool isDesignMode = false)
     {
         IsDesignMode = isDesignMode;
         MessageSink = isDesignMode

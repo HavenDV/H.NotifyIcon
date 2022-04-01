@@ -1,13 +1,19 @@
 ﻿using System.Drawing;
 using H.NotifyIcon.Interop;
 
-using var trayIcon = new TrayIcon(false);
+using var trayIcon = new TrayIcon();
 using var iconStream = H.Resources.Red_ico.AsStream();
 using var icon = new Icon(iconStream);
 trayIcon.SetIcon(icon.Handle);
-trayIcon.SetToolTip(nameof(TrayIcon));
+trayIcon.SetToolTip(nameof(trayIcon));
 
-while(true)
+using var trayIcon2 = new TrayIcon();
+using var iconStream2 = H.Resources.icon_ico.AsStream();
+using var icon2 = new Icon(iconStream2);
+trayIcon2.SetIcon(icon2.Handle);
+trayIcon2.SetToolTip(nameof(trayIcon2));
+
+while (true)
 {
     var line = Console.ReadLine();
     var result = false;
