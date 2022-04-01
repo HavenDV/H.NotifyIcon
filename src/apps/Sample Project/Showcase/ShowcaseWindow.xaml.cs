@@ -31,20 +31,15 @@ public partial class ShowcaseWindow : Window
     /// </summary>
     private void showBalloonTip_Click(object sender, RoutedEventArgs e)
     {
-        string title = txtBalloonTitle.Text;
-        string message = txtBalloonText.Text;
-
-        if (rbCustomIcon.IsChecked == true)
-        {
-            //just display the icon on the tray
-            var icon = tb.Icon;
-            tb.ShowBalloonTip(title, message, icon);
-        }
-        else
-        {
-            BalloonIcon bi = rbInfo.IsChecked == true ? BalloonIcon.Info : BalloonIcon.Error;
-            tb.ShowBalloonTip(title, message, bi);
-        }
+        tb.ShowNotification(
+            title: txtBalloonTitle.Text,
+            message: txtBalloonText.Text,
+            icon: rbInfo.IsChecked == true
+                ? NotificationIcon.Info
+                : NotificationIcon.Error,
+            customIcon: rbCustomIcon.IsChecked == true
+                ? tb.Icon
+                : null);
     }
 
     private void hideBalloonTip_Click(object sender, RoutedEventArgs e)

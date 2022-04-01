@@ -5,31 +5,6 @@
 /// </summary>
 public static class Extensions
 {
-    #region GetBalloonFlag
-
-    /// <summary>
-    /// Gets Interop flags that matches a given <see cref="BalloonIcon"/>.
-    /// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#niif_none-0x00000000
-    /// </summary>
-    public static uint GetBalloonFlag(this BalloonIcon icon)
-    {
-        switch (icon)
-        {
-            case BalloonIcon.None:
-                return PInvoke.NIIF_NONE;
-            case BalloonIcon.Info:
-                return PInvoke.NIIF_INFO;
-            case BalloonIcon.Warning:
-                return PInvoke.NIIF_WARNING;
-            case BalloonIcon.Error:
-                return PInvoke.NIIF_ERROR;
-            default:
-                throw new ArgumentOutOfRangeException("icon");
-        }
-    }
-
-    #endregion
-
     #region evaluate listings
 
     /// <summary>

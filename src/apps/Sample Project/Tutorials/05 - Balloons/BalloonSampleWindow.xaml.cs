@@ -40,10 +40,10 @@ public partial class BalloonSampleWindow : Window
 
     private void btnShowStandardBalloon_Click(object sender, RoutedEventArgs e)
     {
-        string title = "WPF NotifyIcon";
-        string text = "This is a standard balloon";
-
-        MyNotifyIcon.ShowBalloonTip(title, text, MyNotifyIcon.Icon);
+        MyNotifyIcon.ShowNotification(
+            title: "WPF NotifyIcon",
+            message: "This is a standard notification",
+            customIcon: MyNotifyIcon.Icon);
     }
 
     private void btnCloseCustomBalloon_Click(object sender, RoutedEventArgs e)

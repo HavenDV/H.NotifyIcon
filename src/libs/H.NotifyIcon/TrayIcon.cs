@@ -268,6 +268,36 @@ public class TrayIcon : IDisposable
         };
     }
 
+    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW32 data)
+    {
+        return PInvoke.Shell_NotifyIcon(command, in data);
+    }
+
+    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW64 data)
+    {
+        return PInvoke.Shell_NotifyIcon(command, in data);
+    }
+
+    private static bool SendModifyMessage(NOTIFYICONDATAW32 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
+    }
+
+    private static bool SendModifyMessage(NOTIFYICONDATAW64 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
+    }
+
+    private static bool SendDeleteMessage(NOTIFYICONDATAW32 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
+    }
+
+    private static bool SendDeleteMessage(NOTIFYICONDATAW64 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
+    }
+
     private bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFY_ICON_DATA_FLAGS flags)
     {
         if (IsDesignMode)
@@ -350,51 +380,46 @@ public class TrayIcon : IDisposable
         }
     }
 
-    /// <summary>
-    /// Invokes in order to display
-    /// a given balloon ToolTip.
-    /// </summary>
-    /// <param name="title">The title to display on the balloon tip.</param>
-    /// <param name="message">The text to display on the balloon tip.</param>
-    /// <param name="flags">Indicates what icon to use.</param>
-    /// <param name="balloonIconHandle">A handle to a custom icon, if any, or
-    /// <see cref="IntPtr.Zero"/>.</param>
-    private unsafe bool ShowBalloonTip(string title, string message, uint flags, IntPtr balloonIconHandle)
+    private static unsafe bool ShowNotification(
+        IntPtr handle,
+        Guid id,
+        NOTIFY_ICON_DATA_FLAGS flags,
+        string title,
+        string message,
+        uint infoFlags,
+        IntPtr balloonIconHandle,
+        uint timeoutInMilliseconds)
     {
-        EnsureNotDisposed();
-
         if (Environment.Is64BitProcess)
         {
-            fixed (char* p0 = &iconData64.szInfo._0)
-            {
-                message.SetTo(p0, iconData64.szInfo.Length);
-            }
-            fixed (char* p0 = &iconData64.szInfoTitle._0)
-            {
-                title.SetTo(p0, iconData64.szInfoTitle.Length);
-            }
+            var data = new NOTIFYICONDATAW64();
+            data.cbSize = (uint)sizeof(NOTIFYICONDATAW64);
+            data.uFlags = flags;
+            data.hWnd = new HWND(handle);
+            data.guidItem = id;
+            data.dwInfoFlags = infoFlags;
+            data.hBalloonIcon = new HICON(balloonIconHandle);
+            data.Anonymous.uTimeout = timeoutInMilliseconds;
+            message.SetTo(&data.szInfo._0, data.szInfo.Length);
+            title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
-            iconData64.dwInfoFlags = flags;
-            iconData64.hBalloonIcon = new HICON(balloonIconHandle);
+            return SendModifyMessage(data);
         }
         else
         {
-            fixed (char* p0 = &iconData32.szInfo._0)
-            {
-                message.SetTo(p0, iconData32.szInfo.Length);
-            }
-            fixed (char* p0 = &iconData32.szInfoTitle._0)
-            {
-                title.SetTo(p0, iconData32.szInfoTitle.Length);
-            }
+            var data = new NOTIFYICONDATAW32();
+            data.cbSize = (uint)sizeof(NOTIFYICONDATAW32);
+            data.uFlags = flags;
+            data.hWnd = new HWND(handle);
+            data.guidItem = id;
+            data.dwInfoFlags = infoFlags;
+            data.hBalloonIcon = new HICON(balloonIconHandle);
+            data.Anonymous.uTimeout = timeoutInMilliseconds;
+            message.SetTo(&data.szInfo._0, data.szInfo.Length);
+            title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
-            iconData32.dwInfoFlags = flags;
-            iconData32.hBalloonIcon = new HICON(balloonIconHandle);
+            return SendModifyMessage(data);
         }
-
-        return SendModifyMessage(
-            NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
-            NOTIFY_ICON_DATA_FLAGS.NIF_ICON);
     }
 
     #endregion
@@ -494,36 +519,114 @@ public class TrayIcon : IDisposable
     }
 
     /// <summary>
-    /// Displays a balloon tip with the specified title,
-    /// text, and icon in the taskbar for the specified time period.
+    /// Displays a balloon notification with the specified title,
+    /// text, and predefined icon or custom icon in the taskbar for the specified time period.
     /// </summary>
     /// <param name="title">The title to display on the balloon tip.</param>
     /// <param name="message">The text to display on the balloon tip.</param>
-    /// <param name="symbol">A symbol that indicates the severity.</param>
-    public bool ShowBalloonTip(string title, string message, BalloonIcon symbol)
+    /// <param name="icon">A symbol that indicates the severity.</param>
+    /// <param name="customIcon">A custom icon.</param>
+    /// <param name="largeIcon">True to allow large icons (Windows Vista and later).</param>
+    /// <param name="sound">If false do not play the associated sound.</param>
+    /// <param name="respectQuietTime">
+    /// Do not display the balloon notification if the current user is in "quiet time", 
+    /// which is the first hour after a new user logs into his or her account for the first time. 
+    /// During this time, most notifications should not be sent or shown. 
+    /// This lets a user become accustomed to a new computer system without those distractions. 
+    /// Quiet time also occurs for each user after an operating system upgrade or clean installation. 
+    /// A notification sent with this flag during quiet time is not queued; 
+    /// it is simply dismissed unshown. The application can resend the notification later 
+    /// if it is still valid at that time. <br/>
+    /// Because an application cannot predict when it might encounter quiet time, 
+    /// we recommended that this flag always be set on all appropriate notifications 
+    /// by any application that means to honor quiet time. <br/>
+    /// During quiet time, certain notifications should still be sent because 
+    /// they are expected by the user as feedback in response to a user action, 
+    /// for instance when he or she plugs in a USB device or prints a document.<br/>
+    /// If the current user is not in quiet time, this flag has no effect.
+    /// </param>
+    /// <param name="realtime">
+    /// Windows Vista and later. <br/>
+    /// If the balloon notification cannot be displayed immediately, discard it. 
+    /// Use this flag for notifications that represent real-time information 
+    /// which would be meaningless or misleading if displayed at a later time.  <br/>
+    /// For example, a message that states "Your telephone is ringing."
+    /// </param>
+    /// <param name="timeout">
+    /// This member is deprecated as of Windows Vista. <br/>
+    /// Notification display times are now based on system accessibility settings. <br/>
+    /// The system enforces minimum and maximum timeout values.  <br/>
+    /// Values specified in uTimeout that are too large are set to the maximum value. <br/>
+    /// Values that are too small default to the minimum value. <br/>
+    /// The system minimum and maximum timeout values are currently set at 10 seconds and 30 seconds, respectively.
+    /// </param>
+    public bool ShowNotification(
+        string title,
+        string message,
+        NotificationIcon icon = NotificationIcon.None,
+        IntPtr? customIcon = null,
+        bool largeIcon = false,
+        bool sound = true,
+        bool respectQuietTime = true,
+        bool realtime = false,
+        TimeSpan? timeout = null)
     {
-        return ShowBalloonTip(title, message, symbol.GetBalloonFlag(), IntPtr.Zero);
+        EnsureNotDisposed();
+
+        var flags = NOTIFY_ICON_DATA_FLAGS.NIF_INFO;
+        if (realtime)
+        {
+            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
+        }
+
+        var infoFlags = customIcon != null
+            ? PInvoke.NIIF_USER
+            : (uint)icon;
+        if (!sound)
+        {
+            infoFlags |= PInvoke.NIIF_NOSOUND;
+        }
+        if (respectQuietTime)
+        {
+            infoFlags |= PInvoke.NIIF_RESPECT_QUIET_TIME;
+        }
+        if (largeIcon)
+        {
+            infoFlags |= PInvoke.NIIF_LARGE_ICON;
+        }
+
+        return ShowNotification(
+            handle: MessageSink.MessageWindowHandle,
+            id: Id,
+            flags: flags,
+            title: title,
+            message: message,
+            infoFlags: infoFlags,
+            balloonIconHandle: customIcon ?? IntPtr.Zero,
+            timeoutInMilliseconds: (uint)(timeout ?? TimeSpan.Zero).TotalMilliseconds);
     }
 
     /// <summary>
-    /// Displays a balloon tip with the specified title,
-    /// text, and a custom icon in the taskbar for the specified time period.
+    /// Clears all notifications(active and deffered) by recreating tray icon.
+    /// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#nif_info-0x00000010
+    /// There's a way to remove notifications without recreating here,
+    /// but I haven't been able to get it to work.
     /// </summary>
-    /// <param name="title">The title to display on the balloon tip.</param>
-    /// <param name="message">The text to display on the balloon tip.</param>
-    /// <param name="customIcon">A custom icon.</param>
-    /// <param name="largeIcon">True to allow large icons (Windows Vista and later).</param>
-    /// <exception cref="ArgumentNullException">If <paramref name="customIcon"/>
-    /// is a null reference.</exception>
-    public bool ShowBalloonTip(string title, string message, IntPtr customIcon, bool largeIcon = false)
+    /// <returns></returns>
+    public bool ClearNotifications()
     {
-        var flags = PInvoke.NIIF_USER;
-        if (largeIcon)
+        EnsureNotDisposed();
+
+        if (!Remove())
         {
-            flags |= PInvoke.NIIF_LARGE_ICON;
+            return false;
+        }
+        if (!Create())
+        {
+            return false;
         }
 
-        return ShowBalloonTip(title, message, flags, customIcon);
+        return true;
     }
 
     /// <summary>
