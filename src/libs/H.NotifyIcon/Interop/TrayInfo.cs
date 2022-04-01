@@ -19,11 +19,7 @@ public static class TrayInfo
     /// <returns>Tray coordinates.</returns>
     public static unsafe Point GetTrayLocation(int space = 2)
     {
-        var hWnd = PInvoke.FindWindow("Shell_TrayWnd", null);
-        if (hWnd == IntPtr.Zero)
-        {
-            throw new Exception("Failed to find an AppBar that matched the given criteria");
-        }
+        _ = PInvoke.FindWindow("Shell_TrayWnd", null).EnsureNonNull();
 
         uint edge;
         Rectangle workArea;
@@ -36,7 +32,7 @@ public static class TrayInfo
             var result = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data);
             if (result != 1)
             {
-                throw new Exception("Failed to communicate with the given AppBar");
+                throw new Exception("Failed to communicate with the given AppBar.");
             }
 
             edge = data.uEdge;

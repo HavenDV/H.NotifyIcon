@@ -165,13 +165,12 @@ public class WindowMessageSink : IDisposable
             wc.lpszMenuName = menuName;
             wc.lpszClassName = className;
 
-            // Register the window class
-            PInvoke.RegisterClass(wc);
+            _ = PInvoke.RegisterClass(wc).EnsureNonZero();
         }
 
         // Get the message used to indicate the taskbar has been restarted
         // This is used to re-add icons when the taskbar restarts
-        taskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated");
+        taskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated").EnsureNonZero();
 
         // Create the message window
         HWND = PInvoke.CreateWindowEx(
@@ -186,12 +185,7 @@ public class WindowMessageSink : IDisposable
             hWndParent: default,
             hMenu: null,
             hInstance: null,
-            lpParam: (void*)0);
-
-        if (MessageWindowHandle == IntPtr.Zero)
-        {
-            throw new Win32Exception("Message window handle was not a valid pointer");
-        }
+            lpParam: (void*)0).EnsureNonNull();
     }
 
     #endregion
@@ -386,7 +380,7 @@ public class WindowMessageSink : IDisposable
         IsDisposed = true;
 
         //always destroy the unmanaged handle (even if called from the GC)
-        PInvoke.DestroyWindow(HWND);
+        PInvoke.DestroyWindow(HWND); // .EnsureNonZero() Dispose should not throw.
         messageHandler = null;
     }
 
