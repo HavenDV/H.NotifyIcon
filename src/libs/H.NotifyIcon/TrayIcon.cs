@@ -22,6 +22,11 @@ public class TrayIcon : IDisposable
     #region Properties
 
     /// <summary>
+    /// Unique ID.
+    /// </summary>
+    public Guid Id { get; } = Guid.NewGuid();
+
+    /// <summary>
     /// Receives messages from the taskbar icon.
     /// </summary>
     public WindowMessageSink MessageSink { get; }
@@ -179,8 +184,8 @@ public class TrayIcon : IDisposable
             ? WindowMessageSink.CreateEmpty()
             : new WindowMessageSink(NotifyIconVersion.Win95);
 
-        iconData32 = CreateDefault32(MessageSink.MessageWindowHandle);
-        iconData64 = CreateDefault64(MessageSink.MessageWindowHandle);
+        iconData32 = CreateDefault32(MessageSink.MessageWindowHandle, Id);
+        iconData64 = CreateDefault64(MessageSink.MessageWindowHandle, Id);
 
         Create();
 
@@ -196,15 +201,18 @@ public class TrayIcon : IDisposable
     /// a hidden taskbar icon without the icon being set.
     /// </summary>
     /// <param name="handle"></param>
+    /// <param name="id"></param>
     /// <returns>NotifyIconData</returns>
-    private static unsafe NOTIFYICONDATAW32 CreateDefault32(IntPtr handle)
+    private static unsafe NOTIFYICONDATAW32 CreateDefault32(
+        IntPtr handle,
+        Guid id)
     {
         return new NOTIFYICONDATAW32
         {
             cbSize = (uint)sizeof(NOTIFYICONDATAW32),
 
             hWnd = new HWND(handle),
-            uID = 0x0,
+            guidItem = id,
             uCallbackMessage = WindowMessageSink.CallbackMessageId,
 
             hIcon = new HICON(IntPtr.Zero),
@@ -229,15 +237,18 @@ public class TrayIcon : IDisposable
     /// a hidden taskbar icon without the icon being set.
     /// </summary>
     /// <param name="handle"></param>
+    /// <param name="id"></param>
     /// <returns>NotifyIconData</returns>
-    private static unsafe NOTIFYICONDATAW64 CreateDefault64(IntPtr handle)
+    private static unsafe NOTIFYICONDATAW64 CreateDefault64(
+        IntPtr handle,
+        Guid id)
     {
         return new NOTIFYICONDATAW64
         {
             cbSize = (uint)sizeof(NOTIFYICONDATAW64),
 
             hWnd = new HWND(handle),
-            uID = 0x0,
+            guidItem = id,
             uCallbackMessage = WindowMessageSink.CallbackMessageId,
 
             hIcon = new HICON(IntPtr.Zero),
