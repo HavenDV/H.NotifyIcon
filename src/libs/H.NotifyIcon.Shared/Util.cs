@@ -177,7 +177,7 @@ internal static class Util
 #endif
 
     /// <summary>
-    /// Checks whether the <see cref="FrameworkElement.DataContextProperty"/>
+    /// Checks whether the DataContextProperty
     ///  is bound or not.
     /// </summary>
     /// <param name="element">The element to be checked.</param>

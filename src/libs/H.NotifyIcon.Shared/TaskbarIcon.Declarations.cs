@@ -530,10 +530,10 @@ partial class TaskbarIcon
     #region DataContext dependency property override / target update
 
     /// <summary>
-    /// Updates the <see cref="FrameworkElement.DataContextProperty"/> of a given
+    /// Updates the DataContextProperty of a given
     /// <see cref="FrameworkElement"/>. This method only updates target elements
     /// that do not already have a data context of their own, and either assigns
-    /// the <see cref="FrameworkElement.DataContext"/> of the NotifyIcon, or the
+    /// the DataContext of the NotifyIcon, or the
     /// NotifyIcon itself, if no data context was assigned at all.
     /// </summary>
     private void UpdateDataContext(FrameworkElement target, object oldDataContextValue, object newDataContextValue)
@@ -554,7 +554,7 @@ partial class TaskbarIcon
 
     /// <summary>
     /// A static callback listener which is being invoked if the
-    /// <see cref="FrameworkElement.DataContextProperty"/> dependency property has
+    /// DataContextProperty dependency property has
     /// been changed. Invokes the <see cref="OnDataContextPropertyChanged"/>
     /// instance method of the changed instance.
     /// </summary>
@@ -568,9 +568,9 @@ partial class TaskbarIcon
 
 
     /// <summary>
-    /// Handles changes of the <see cref="FrameworkElement.DataContextProperty"/> dependency property. As
+    /// Handles changes of the DataContextProperty dependency property. As
     /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="FrameworkElement.DataContext"/> property wrapper, updates of the property's value
+    /// DataContext property wrapper, updates of the property's value
     /// should be handled here.
     /// </summary>
     /// <param name="e">Provides information about the updated property.</param>

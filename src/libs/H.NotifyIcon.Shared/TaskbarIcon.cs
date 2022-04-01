@@ -939,6 +939,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #if HAS_WPF
             // switch to UI thread
             this.GetDispatcher().Invoke(action);
+#elif HAS_UNO && !HAS_WINUI
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
 #else
             DispatcherQueue.TryEnqueue(() => action());
 #endif
@@ -995,7 +997,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <remarks>This method is not virtual by design. Derived classes
     /// should override <see cref="Dispose(bool)"/>.
     /// </remarks>
+#if HAS_UNO
+    public new void Dispose()
+#else
     public void Dispose()
+#endif
     {
         Dispose(true);
 
@@ -1050,5 +1056,5 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         }
     }
 
-    #endregion
+#endregion
 }
