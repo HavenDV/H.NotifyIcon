@@ -781,7 +781,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         {
             return;
         }
-        
+
         // use absolute positioning. We need to set the coordinates, or a delayed opening
         // (e.g. when left-clicked) opens the context menu at the wrong place if the mouse
         // is moved!
@@ -846,13 +846,47 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         //    ShowMode = FlyoutShowMode.Auto,
         //});
 
-        ContextFlyout.Hide();
-        ContextFlyout.ShowAt(this, new FlyoutShowOptions
+        using var menu = new PopupMenu();
+        foreach(var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
         {
-            Placement = FlyoutPlacementMode.Auto,
-            Position = new Windows.Foundation.Point(cursorPosition.X, cursorPosition.Y),
-            ShowMode = FlyoutShowMode.Auto,
-        });
+            switch (flyoutItemBase)
+            {
+                case MenuFlyoutItem flyoutItem:
+                    {
+                        var item = new PopupMenuItem()
+                        {   
+                            Text = flyoutItem.Text,
+                        };
+                        item.Click += (_, args) =>
+                        {
+                            flyoutItem.Command?.ExecuteIfEnabled(flyoutItem.CommandParameter);
+                        };
+                        menu.Add(item);
+                        break;
+                    }
+                case MenuFlyoutSeparator separator:
+                    {
+                        menu.Add(new PopupMenuSeparator());
+                        break;
+                    }
+            }
+        }
+
+        var handle = TrayIcon.MessageSink.MessageWindowHandle;
+
+        WindowUtilities.SetForegroundWindow(handle);
+        menu.Show(
+            ownerHandle: handle,
+            x: cursorPosition.X,
+            y: cursorPosition.Y);
+        
+        //ContextFlyout.Hide();
+        //ContextFlyout.ShowAt(this, new FlyoutShowOptions
+        //{
+        //    Placement = FlyoutPlacementMode.Auto,
+        //    Position = new Windows.Foundation.Point(cursorPosition.X, cursorPosition.Y),
+        //    ShowMode = FlyoutShowMode.Auto,
+        //});
 #endif
     }
 
