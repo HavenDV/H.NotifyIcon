@@ -3,6 +3,8 @@
 //using Windows.Graphics;
 //using WinRT.Interop;
 
+using H.NotifyIcon.Core;
+
 namespace H.NotifyIcon;
 
 /// <summary>

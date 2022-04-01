@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿using H.NotifyIcon.Interop;
+
+namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// A Interop proxy to for a taskbar icon (NotifyIcon) that sits in the system's

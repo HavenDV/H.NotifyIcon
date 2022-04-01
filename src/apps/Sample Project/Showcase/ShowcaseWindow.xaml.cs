@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 using H.NotifyIcon;
+using H.NotifyIcon.Core;
 using H.NotifyIcon.Interop;
 
 namespace NotifyIconWpf.Sample.ShowCases.Showcase;

@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using H.NotifyIcon.Interop;
+using H.NotifyIcon.Core;
 
 namespace H.NotifyIcon.IntegrationTests;
 
@@ -10,10 +10,11 @@ public class TrayIconTests
     public async Task SimpleTest()
     {
         using var trayIcon = new TrayIcon();
+        trayIcon.Create();
         using var iconStream = H.Resources.Red_ico.AsStream();
         using var icon = new Icon(iconStream);
-        trayIcon.SetIcon(icon.Handle);
-        trayIcon.SetToolTip(nameof(SimpleTest));
+        trayIcon.UpdateIcon(icon.Handle);
+        trayIcon.UpdateToolTip(nameof(SimpleTest));
 
         await Task.Delay(TimeSpan.FromSeconds(15));
     }

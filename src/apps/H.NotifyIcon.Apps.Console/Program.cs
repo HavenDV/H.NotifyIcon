@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using H.NotifyIcon.Interop;
+using H.NotifyIcon.Core;
 
 using var iconStream = H.Resources.Red_ico.AsStream();
 using var icon = new Icon(iconStream);

@@ -1,4 +1,4 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Core;
 
 ///<summary>
 /// Supported icons for the tray's balloon messages.
