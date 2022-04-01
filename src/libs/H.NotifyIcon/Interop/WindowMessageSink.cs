@@ -41,7 +41,7 @@ public class WindowMessageSink : IDisposable
     /// this reference makes sure we don't loose our reference
     /// to the message window.
     /// </summary>
-    private WNDPROC? MessageHandler { get; set; }
+    private WNDPROC MessageHandler { get; set; }
 
     /// <summary>
     /// Window class ID.
@@ -62,7 +62,7 @@ public class WindowMessageSink : IDisposable
     /// The version of the underlying icon. Defines how
     /// incoming messages are interpreted.
     /// </summary>
-    public NotifyIconVersion Version { get; set; }
+    public NotifyIconVersion Version { get; set; } = NotifyIconVersion.Win95;
 
     #endregion
 
@@ -104,32 +104,10 @@ public class WindowMessageSink : IDisposable
     /// Creates a new message sink that receives message from
     /// a given taskbar icon.
     /// </summary>
-    /// <param name="version"></param>
-    public WindowMessageSink(NotifyIconVersion version)
-    {
-        Version = version;
-        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
-        CreateMessageWindow();
-    }
-
-    private WindowMessageSink()
+    public WindowMessageSink()
     {
         WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
-    }
-
-    /// <summary>
-    /// Creates a dummy instance that provides an empty
-    /// pointer rather than a real window handler.<br/>
-    /// Used at design time.
-    /// </summary>
-    /// <returns>WindowMessageSink</returns>
-    public static WindowMessageSink CreateEmpty()
-    {
-        return new WindowMessageSink
-        {
-            HWND = default,
-            Version = NotifyIconVersion.Vista,
-        };
+        MessageHandler = OnWindowMessageReceived;
     }
 
     #endregion
@@ -140,27 +118,17 @@ public class WindowMessageSink : IDisposable
     /// Creates the helper message window that is used
     /// to receive messages from the taskbar icon.
     /// </summary>
-    private unsafe void CreateMessageWindow()
+    public unsafe void Create()
     {
-        MessageHandler = OnWindowMessageReceived;
-
-        // Create a simple window class which is reference through
-        //the messageHandler delegate
-        WNDCLASSW wc;
-
         fixed (char* menuName = string.Empty)
         fixed (char* className = WindowId)
         {
-            wc.style = 0;
-            wc.lpfnWndProc = MessageHandler;
-            wc.cbClsExtra = 0;
-            wc.cbWndExtra = 0;
-            wc.hInstance = default;
-            wc.hIcon = default;
-            wc.hCursor = default;
-            wc.hbrBackground = default;
-            wc.lpszMenuName = menuName;
-            wc.lpszClassName = className;
+            var wc = new WNDCLASSW
+            {
+                lpfnWndProc = MessageHandler,
+                lpszMenuName = menuName,
+                lpszClassName = className
+            };
 
             _ = PInvoke.RegisterClass(wc).EnsureNonZero();
         }
@@ -169,7 +137,6 @@ public class WindowMessageSink : IDisposable
         // This is used to re-add icons when the taskbar restarts
         taskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated").EnsureNonZero();
 
-        // Create the message window
         HWND = PInvoke.CreateWindowEx(
             dwExStyle: 0,
             lpClassName: WindowId,
@@ -378,7 +345,6 @@ public class WindowMessageSink : IDisposable
 
         //always destroy the unmanaged handle (even if called from the GC)
         PInvoke.DestroyWindow(HWND); // .EnsureNonZero() Dispose should not throw.
-        MessageHandler = null;
     }
 
     #endregion

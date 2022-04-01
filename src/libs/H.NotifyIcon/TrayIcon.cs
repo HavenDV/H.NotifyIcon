@@ -24,7 +24,7 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Receives messages from the taskbar icon.
     /// </summary>
-    public WindowMessageSink MessageSink { get; }
+    public WindowMessageSink MessageSink { get; } = new();
 
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
@@ -102,10 +102,10 @@ public class TrayIcon : IDisposable
     public TrayIcon(bool isDesignMode = false)
     {
         IsDesignMode = isDesignMode;
-        MessageSink = isDesignMode
-            ? WindowMessageSink.CreateEmpty()
-            : new WindowMessageSink(NotifyIconVersion.Win95);
-        MessageSink.TaskbarCreated += OnTaskbarCreated;
+        if (!IsDesignMode)
+        {
+            MessageSink.Create();
+        }
     }
 
     #endregion
@@ -160,6 +160,7 @@ public class TrayIcon : IDisposable
         MessageSink.Version = version;
 
         IsCreated = true;
+        MessageSink.TaskbarCreated += OnTaskbarCreated;
         return true;
     }
 
@@ -179,6 +180,7 @@ public class TrayIcon : IDisposable
         }
         
         IsCreated = false;
+        MessageSink.TaskbarCreated -= OnTaskbarCreated;
         return true;
     }
 
@@ -187,6 +189,9 @@ public class TrayIcon : IDisposable
     /// </summary>
     public unsafe bool UpdateToolTip(string text)
     {
+        EnsureNotDisposed();
+        EnsureCreated();
+
         return TrayIconMethods.TryModifyToolTip(Id, text);
     }
 
@@ -196,6 +201,9 @@ public class TrayIcon : IDisposable
     /// <param name="handle">The title to display on the balloon tip.</param>
     public bool UpdateIcon(IntPtr handle)
     {
+        EnsureNotDisposed();
+        EnsureCreated();
+
         return TrayIconMethods.TryModifyIcon(Id, handle);
     }
 
@@ -253,6 +261,7 @@ public class TrayIcon : IDisposable
         TimeSpan? timeout = null)
     {
         EnsureNotDisposed();
+        EnsureCreated();
 
         var flags = (NOTIFY_ICON_DATA_FLAGS)0;
         if (realtime)
@@ -296,6 +305,7 @@ public class TrayIcon : IDisposable
     public bool ClearNotifications()
     {
         EnsureNotDisposed();
+        EnsureCreated();
 
         if (!Remove())
         {
@@ -319,6 +329,7 @@ public class TrayIcon : IDisposable
     public bool SetFocus()
     {
         EnsureNotDisposed();
+        EnsureCreated();
 
         return TrayIconMethods.TrySetFocus(Id);
     }
@@ -333,8 +344,14 @@ public class TrayIcon : IDisposable
     /// </summary>
     private void OnTaskbarCreated()
     {
-        Remove();
-        Create();
+        try
+        {
+            Remove();
+            Create();
+        }
+        catch (Exception)
+        {
+        }
     }
 
     #endregion
@@ -356,6 +373,19 @@ public class TrayIcon : IDisposable
         if (IsDisposed)
         {
             throw new ObjectDisposedException("TrayIcon is disposed.");
+        }
+    }
+
+    /// <summary>
+    /// Checks if the object has been disposed and
+    /// raises a <see cref="ObjectDisposedException"/> in case
+    /// the <see cref="IsDisposed"/> flag is true.
+    /// </summary>
+    private void EnsureCreated()
+    {
+        if (!IsCreated)
+        {
+            throw new ObjectDisposedException("TrayIcon is not created.");
         }
     }
 
