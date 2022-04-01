@@ -8,7 +8,6 @@ jobs:
     with:
       os: windows-2022
       use-msbuild: true
-      install-latest-msbuild: true
       project-path: 
         /target:libs\H_NotifyIcon_Uno
         /target:libs\H_NotifyIcon_Uno_WinUI
