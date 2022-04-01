@@ -540,28 +540,6 @@ public class TrayIcon : IDisposable
             id: Id);
     }
 
-    /// <summary>
-    /// Hides a balloon ToolTip, if any is displayed.
-    /// </summary>
-    public bool HideBalloonTip()
-    {
-        EnsureNotDisposed();
-
-        // reset balloon by just setting the info to an empty string
-        if (Environment.Is64BitProcess)
-        {
-            iconData64.szInfo = default;
-            iconData64.szInfoTitle = default;
-        }
-        else
-        {
-            iconData32.szInfo = default;
-            iconData32.szInfoTitle = default;
-        }
-
-        return SendModifyMessage(NOTIFY_ICON_DATA_FLAGS.NIF_INFO);
-    }
-
     #endregion
 
     #region Event handlers
