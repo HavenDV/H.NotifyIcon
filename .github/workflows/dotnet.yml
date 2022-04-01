@@ -9,5 +9,10 @@ jobs:
       os: windows-2022
       use-msbuild: true
       install-latest-msbuild: true
+      project-path: 
+        /target:libs\H_NotifyIcon_Uno
+        /target:libs\H_NotifyIcon_Uno_WinUI
+        /target:libs\H_NotifyIcon_WinUI
+        /target:libs\H_NotifyIcon_Wpf
     secrets:
       nuget-key: ${{ secrets.NUGET_KEY }}
