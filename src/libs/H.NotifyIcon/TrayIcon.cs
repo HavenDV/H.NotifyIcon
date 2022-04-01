@@ -310,11 +310,6 @@ public class TrayIcon : IDisposable
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, flags);
     }
 
-    private bool SendSetFocusMessage(NOTIFY_ICON_DATA_FLAGS flags)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETFOCUS, flags);
-    }
-
     #endregion
 
     #region Public methods
@@ -527,6 +522,22 @@ public class TrayIcon : IDisposable
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Returns focus to the taskbar notification area. 
+    /// Notification area icons should use this when they have completed their UI operation. 
+    /// For example, if the icon displays a shortcut menu, but the user presses ESC to cancel it, 
+    /// use it to return focus to the notification area.
+    /// </summary>
+    /// <returns></returns>
+    public bool SetFocus()
+    {
+        EnsureNotDisposed();
+
+        return TrayIconMethods.SetFocus(
+            handle: MessageSink.MessageWindowHandle,
+            id: Id);
     }
 
     /// <summary>

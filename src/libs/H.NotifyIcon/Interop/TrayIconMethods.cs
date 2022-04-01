@@ -12,44 +12,54 @@
 #endif
 internal static class TrayIconMethods
 {
-    public static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW32 data)
+    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW32 data)
     {
         return PInvoke.Shell_NotifyIcon(command, in data);
     }
 
-    public static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW64 data)
+    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW64 data)
     {
         return PInvoke.Shell_NotifyIcon(command, in data);
     }
 
-    public static bool SendModifyMessage(NOTIFYICONDATAW32 data)
+    private static bool SendModifyMessage(NOTIFYICONDATAW32 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
     }
 
-    public static bool SendModifyMessage(NOTIFYICONDATAW64 data)
+    private static bool SendModifyMessage(NOTIFYICONDATAW64 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
     }
 
-    public static bool SendDeleteMessage(NOTIFYICONDATAW32 data)
+    private static bool SendDeleteMessage(NOTIFYICONDATAW32 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
     }
 
-    public static bool SendDeleteMessage(NOTIFYICONDATAW64 data)
+    private static bool SendDeleteMessage(NOTIFYICONDATAW64 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
     }
 
-    public static bool SendSetVersionMessage(NOTIFYICONDATAW32 data)
+    private static bool SendSetVersionMessage(NOTIFYICONDATAW32 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, data);
     }
 
-    public static bool SendSetVersionMessage(NOTIFYICONDATAW64 data)
+    private static bool SendSetVersionMessage(NOTIFYICONDATAW64 data)
     {
         return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETVERSION, data);
+    }
+
+    private static bool SendSetFocusMessage(NOTIFYICONDATAW32 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETFOCUS, data);
+    }
+
+    private static bool SendSetFocusMessage(NOTIFYICONDATAW64 data)
+    {
+        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_SETFOCUS, data);
     }
 
     public static unsafe bool ShowNotification(
@@ -169,5 +179,33 @@ internal static class TrayIconMethods
         }
 
         return status;
+    }
+
+    public static unsafe bool SetFocus(
+        IntPtr handle,
+        Guid id)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                hWnd = new HWND(handle),
+                guidItem = id,
+            };
+
+            return SendSetFocusMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                hWnd = new HWND(handle),
+                guidItem = id,
+            };
+
+            return SendSetFocusMessage(data);
+        }
     }
 }
