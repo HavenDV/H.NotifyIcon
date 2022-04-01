@@ -27,7 +27,7 @@ public static class TrayInfo
         {
             var data = new APPBARDATA64
             {
-                cbSize = (uint)sizeof(APPBARDATA64)
+                cbSize = (uint)sizeof(APPBARDATA64),
             };
             var result = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data);
             if (result != 1)
@@ -46,7 +46,7 @@ public static class TrayInfo
         {
             var data = new APPBARDATA32
             {
-                cbSize = (uint)sizeof(APPBARDATA64)
+                cbSize = (uint)sizeof(APPBARDATA64),
             };
             var result = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data);
             if (result != 1)

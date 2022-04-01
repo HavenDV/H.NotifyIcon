@@ -5,7 +5,7 @@
 /// taskbar notification area ("system tray").
 /// </summary>
 #if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
+[System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported
@@ -257,7 +257,7 @@ public class TrayIcon : IDisposable
         };
     }
 
-    private unsafe bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFY_ICON_DATA_FLAGS flags)
+    private bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFY_ICON_DATA_FLAGS flags)
     {
         if (IsDesignMode)
         {
@@ -269,19 +269,13 @@ public class TrayIcon : IDisposable
         {
             iconData64.uFlags = flags;
 
-            fixed (NOTIFYICONDATAW64* data = &iconData64)
-            {
-                result = PInvoke.Shell_NotifyIcon(command, data);
-            }
+            result = PInvoke.Shell_NotifyIcon(command, in iconData64);
         }
         else
         {
             iconData32.uFlags = flags;
 
-            fixed (NOTIFYICONDATAW32* data = &iconData32)
-            {
-                result = PInvoke.Shell_NotifyIcon(command, data);
-            }
+            result = PInvoke.Shell_NotifyIcon(command, in iconData32);
         }
 
         return result;

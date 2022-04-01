@@ -22,6 +22,19 @@ namespace Windows.Win32
     /// </content>
     internal static partial class PInvoke
     {
+        /// <inheritdoc cref="SHAppBarMessage(uint, winmdroot.UI.Shell.APPBARDATA32*)"/>
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
+        internal static unsafe nuint SHAppBarMessage(uint dwMessage, ref winmdroot.UI.Shell.APPBARDATA32 pData)
+        {
+            fixed (winmdroot.UI.Shell.APPBARDATA32* pDataLocal = &pData)
+            {
+                nuint __result = PInvoke.SHAppBarMessage(dwMessage, pDataLocal);
+                return __result;
+            }
+        }
+
         /// <summary>Sends an appbar message to the system.</summary>
         /// <param name="dwMessage">Type: <b>DWORD</b></param>
         /// <param name="pData">
@@ -36,8 +49,24 @@ namespace Windows.Win32
         /// </remarks>
         [DllImport("Shell32", ExactSpelling = true)]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
         internal static extern unsafe nuint SHAppBarMessage(uint dwMessage, winmdroot.UI.Shell.APPBARDATA32* pData);
 
+        /// <inheritdoc cref="SHAppBarMessage(uint, winmdroot.UI.Shell.APPBARDATA64*)"/>
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
+        internal static unsafe nuint SHAppBarMessage(uint dwMessage, ref winmdroot.UI.Shell.APPBARDATA64 pData)
+        {
+            fixed (winmdroot.UI.Shell.APPBARDATA64* pDataLocal = &pData)
+            {
+                nuint __result = PInvoke.SHAppBarMessage(dwMessage, pDataLocal);
+                return __result;
+            }
+        }
+
         /// <summary>Sends an appbar message to the system.</summary>
         /// <param name="dwMessage">Type: <b>DWORD</b></param>
         /// <param name="pData">
@@ -52,23 +81,23 @@ namespace Windows.Win32
         /// </remarks>
         [DllImport("Shell32", ExactSpelling = true)]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
         internal static extern unsafe nuint SHAppBarMessage(uint dwMessage, winmdroot.UI.Shell.APPBARDATA64* pData);
 
-        /// <summary>Sends a message to the taskbar's status area.</summary>
-        /// <param name="dwMessage">Type: <b>DWORD</b></param>
-        /// <param name="lpData">
-        /// <para>Type: <b>PNOTIFYICONDATA</b> A pointer to a <a href="https://docs.microsoft.com/windows/desktop/api/shellapi/ns-shellapi-notifyicondataa">NOTIFYICONDATA</a> structure. The content of the structure depends on the value of <i>dwMessage</i>. It can define an icon to add to the notification area, cause that icon to display a notification, or identify an icon to modify or delete.</para>
-        /// <para><see href="https://docs.microsoft.com/windows/win32/api//shellapi/nf-shellapi-shell_notifyiconw#parameters">Read more on docs.microsoft.com</see>.</para>
-        /// </param>
-        /// <returns>
-        /// <para>Type: <b>BOOL</b> Returns <b>TRUE</b> if successful, or <b>FALSE</b> otherwise. If <i>dwMessage</i> is set to NIM_SETVERSION, the function returns <b>TRUE</b> if the version was successfully changed, or <b>FALSE</b> if the requested version is not supported.</para>
-        /// </returns>
-        /// <remarks>
-        /// <para><see href="https://docs.microsoft.com/windows/win32/api//shellapi/nf-shellapi-shell_notifyiconw">Learn more about this API from docs.microsoft.com</see>.</para>
-        /// </remarks>
-        [DllImport("Shell32", ExactSpelling = true, EntryPoint = "Shell_NotifyIconW")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-        internal static extern unsafe winmdroot.Foundation.BOOL Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE dwMessage, winmdroot.UI.Shell.NOTIFYICONDATAW32* lpData);
+        /// <inheritdoc cref="Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE, winmdroot.UI.Shell.NOTIFYICONDATAW64*)"/>
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
+        internal static unsafe winmdroot.Foundation.BOOL Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE dwMessage, in winmdroot.UI.Shell.NOTIFYICONDATAW64 lpData)
+        {
+            fixed (winmdroot.UI.Shell.NOTIFYICONDATAW64* lpDataLocal = &lpData)
+            {
+                winmdroot.Foundation.BOOL __result = PInvoke.Shell_NotifyIcon(dwMessage, lpDataLocal);
+                return __result;
+            }
+        }
 
         /// <summary>Sends a message to the taskbar's status area.</summary>
         /// <param name="dwMessage">Type: <b>DWORD</b></param>
@@ -84,6 +113,41 @@ namespace Windows.Win32
         /// </remarks>
         [DllImport("Shell32", ExactSpelling = true, EntryPoint = "Shell_NotifyIconW")]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
+        internal static extern unsafe winmdroot.Foundation.BOOL Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE dwMessage, winmdroot.UI.Shell.NOTIFYICONDATAW32* lpData);
+
+        /// <inheritdoc cref="Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE, winmdroot.UI.Shell.NOTIFYICONDATAW32*)"/>
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
+        internal static unsafe winmdroot.Foundation.BOOL Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE dwMessage, in winmdroot.UI.Shell.NOTIFYICONDATAW32 lpData)
+        {
+            fixed (winmdroot.UI.Shell.NOTIFYICONDATAW32* lpDataLocal = &lpData)
+            {
+                winmdroot.Foundation.BOOL __result = PInvoke.Shell_NotifyIcon(dwMessage, lpDataLocal);
+                return __result;
+            }
+        }
+
+        /// <summary>Sends a message to the taskbar's status area.</summary>
+        /// <param name="dwMessage">Type: <b>DWORD</b></param>
+        /// <param name="lpData">
+        /// <para>Type: <b>PNOTIFYICONDATA</b> A pointer to a <a href="https://docs.microsoft.com/windows/desktop/api/shellapi/ns-shellapi-notifyicondataa">NOTIFYICONDATA</a> structure. The content of the structure depends on the value of <i>dwMessage</i>. It can define an icon to add to the notification area, cause that icon to display a notification, or identify an icon to modify or delete.</para>
+        /// <para><see href="https://docs.microsoft.com/windows/win32/api//shellapi/nf-shellapi-shell_notifyiconw#parameters">Read more on docs.microsoft.com</see>.</para>
+        /// </param>
+        /// <returns>
+        /// <para>Type: <b>BOOL</b> Returns <b>TRUE</b> if successful, or <b>FALSE</b> otherwise. If <i>dwMessage</i> is set to NIM_SETVERSION, the function returns <b>TRUE</b> if the version was successfully changed, or <b>FALSE</b> if the requested version is not supported.</para>
+        /// </returns>
+        /// <remarks>
+        /// <para><see href="https://docs.microsoft.com/windows/win32/api//shellapi/nf-shellapi-shell_notifyiconw">Learn more about this API from docs.microsoft.com</see>.</para>
+        /// </remarks>
+        [DllImport("Shell32", ExactSpelling = true, EntryPoint = "Shell_NotifyIconW")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+#if NET5_0_OR_GREATER
+        [global::System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
         internal static extern unsafe winmdroot.Foundation.BOOL Shell_NotifyIcon(winmdroot.UI.Shell.NOTIFY_ICON_MESSAGE dwMessage, winmdroot.UI.Shell.NOTIFYICONDATAW64* lpData);
     }
 }
