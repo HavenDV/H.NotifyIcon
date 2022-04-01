@@ -268,36 +268,6 @@ public class TrayIcon : IDisposable
         };
     }
 
-    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW32 data)
-    {
-        return PInvoke.Shell_NotifyIcon(command, in data);
-    }
-
-    private static bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFYICONDATAW64 data)
-    {
-        return PInvoke.Shell_NotifyIcon(command, in data);
-    }
-
-    private static bool SendModifyMessage(NOTIFYICONDATAW32 data)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
-    }
-
-    private static bool SendModifyMessage(NOTIFYICONDATAW64 data)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_MODIFY, data);
-    }
-
-    private static bool SendDeleteMessage(NOTIFYICONDATAW32 data)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
-    }
-
-    private static bool SendDeleteMessage(NOTIFYICONDATAW64 data)
-    {
-        return SendMessage(NOTIFY_ICON_MESSAGE.NIM_DELETE, data);
-    }
-
     private bool SendMessage(NOTIFY_ICON_MESSAGE command, NOTIFY_ICON_DATA_FLAGS flags)
     {
         if (IsDesignMode)
@@ -377,48 +347,6 @@ public class TrayIcon : IDisposable
         if (!status)
         {
             throw new InvalidOperationException("Could not set version");
-        }
-    }
-
-    private static unsafe bool ShowNotification(
-        IntPtr handle,
-        Guid id,
-        NOTIFY_ICON_DATA_FLAGS flags,
-        string title,
-        string message,
-        uint infoFlags,
-        IntPtr balloonIconHandle,
-        uint timeoutInMilliseconds)
-    {
-        if (Environment.Is64BitProcess)
-        {
-            var data = new NOTIFYICONDATAW64();
-            data.cbSize = (uint)sizeof(NOTIFYICONDATAW64);
-            data.uFlags = flags;
-            data.hWnd = new HWND(handle);
-            data.guidItem = id;
-            data.dwInfoFlags = infoFlags;
-            data.hBalloonIcon = new HICON(balloonIconHandle);
-            data.Anonymous.uTimeout = timeoutInMilliseconds;
-            message.SetTo(&data.szInfo._0, data.szInfo.Length);
-            title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
-
-            return SendModifyMessage(data);
-        }
-        else
-        {
-            var data = new NOTIFYICONDATAW32();
-            data.cbSize = (uint)sizeof(NOTIFYICONDATAW32);
-            data.uFlags = flags;
-            data.hWnd = new HWND(handle);
-            data.guidItem = id;
-            data.dwInfoFlags = infoFlags;
-            data.hBalloonIcon = new HICON(balloonIconHandle);
-            data.Anonymous.uTimeout = timeoutInMilliseconds;
-            message.SetTo(&data.szInfo._0, data.szInfo.Length);
-            title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
-
-            return SendModifyMessage(data);
         }
     }
 
@@ -595,7 +523,7 @@ public class TrayIcon : IDisposable
             infoFlags |= PInvoke.NIIF_LARGE_ICON;
         }
 
-        return ShowNotification(
+        return TrayIconMethods.ShowNotification(
             handle: MessageSink.MessageWindowHandle,
             id: Id,
             flags: flags,
