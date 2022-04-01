@@ -15,6 +15,7 @@ public class TrayIconTests
         using var icon = new Icon(iconStream);
         trayIcon.UpdateIcon(icon.Handle);
         trayIcon.UpdateToolTip(nameof(SimpleTest));
+        trayIcon.ShowNotification("test", "test");
 
         await Task.Delay(TimeSpan.FromSeconds(15));
     }

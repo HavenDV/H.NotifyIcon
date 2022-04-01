@@ -91,13 +91,13 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     public TaskbarIcon()
     {
         TrayIcon = new TrayIcon(Util.IsDesignMode);
+        _ = TrayIcon.Create();
         TrayIcon.MessageSink.DpiChanged += SystemInfo.UpdateDpiFactors;
 
         // register event listeners
         TrayIcon.MessageSink.MouseEventReceived += OnMouseEvent;
         TrayIcon.MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
         TrayIcon.MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
-        _ = TrayIcon.Create();
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -922,7 +922,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Values that are too small default to the minimum value. <br/>
     /// The system minimum and maximum timeout values are currently set at 10 seconds and 30 seconds, respectively.
     /// </param>
-    public bool ShowNotification(
+    public void ShowNotification(
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
@@ -935,7 +935,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     {
         EnsureNotDisposed();
 
-        return TrayIcon.ShowNotification(
+        TrayIcon.ShowNotification(
             title: title,
             message: message,
             icon: icon,

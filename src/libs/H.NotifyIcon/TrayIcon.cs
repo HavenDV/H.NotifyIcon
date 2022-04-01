@@ -153,7 +153,7 @@ public class TrayIcon : IDisposable
             id: Id,
             out var version))
         {
-            throw new InvalidOperationException("Could not set version");
+            throw new InvalidOperationException("SetVersion failed.");
         }
 
         Version = version;
@@ -187,24 +187,36 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Sets tooltip message.
     /// </summary>
-    public unsafe bool UpdateToolTip(string text)
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public unsafe void UpdateToolTip(string text)
     {
         EnsureNotDisposed();
         EnsureCreated();
 
-        return TrayIconMethods.TryModifyToolTip(Id, text);
+        if (!TrayIconMethods.TryModifyToolTip(Id, text))
+        {
+            throw new InvalidOperationException("UpdateToolTip failed.");
+        }
+        ToolTip = text;
     }
 
     /// <summary>
     /// Set new icon data.
     /// </summary>
     /// <param name="handle">The title to display on the balloon tip.</param>
-    public bool UpdateIcon(IntPtr handle)
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void UpdateIcon(IntPtr handle)
     {
         EnsureNotDisposed();
         EnsureCreated();
 
-        return TrayIconMethods.TryModifyIcon(Id, handle);
+        if (!TrayIconMethods.TryModifyIcon(Id, handle))
+        {
+            throw new InvalidOperationException("UpdateIcon failed.");
+        }
+        Icon = handle;
     }
 
     /// <summary>
@@ -249,7 +261,9 @@ public class TrayIcon : IDisposable
     /// Values that are too small default to the minimum value. <br/>
     /// The system minimum and maximum timeout values are currently set at 10 seconds and 30 seconds, respectively.
     /// </param>
-    public bool ShowNotification(
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void ShowNotification(
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
@@ -285,14 +299,17 @@ public class TrayIcon : IDisposable
             infoFlags |= PInvoke.NIIF_LARGE_ICON;
         }
 
-        return TrayIconMethods.TryShowNotification(
+        if (!TrayIconMethods.TryShowNotification(
             id: Id,
             flags: flags,
             title: title,
             message: message,
             infoFlags: infoFlags,
             balloonIconHandle: customIcon ?? IntPtr.Zero,
-            timeoutInMilliseconds: (uint)(timeout ?? TimeSpan.Zero).TotalMilliseconds);
+            timeoutInMilliseconds: (uint)(timeout ?? TimeSpan.Zero).TotalMilliseconds))
+        {
+            throw new InvalidOperationException("Show notification failed.");
+        }
     }
 
     /// <summary>
@@ -302,21 +319,21 @@ public class TrayIcon : IDisposable
     /// but I haven't been able to get it to work.
     /// </summary>
     /// <returns></returns>
-    public bool ClearNotifications()
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void ClearNotifications()
     {
         EnsureNotDisposed();
         EnsureCreated();
 
         if (!Remove())
         {
-            return false;
+            throw new InvalidOperationException("Remove failed.");
         }
         if (!Create())
         {
-            return false;
+            throw new InvalidOperationException("Create failed.");
         }
-
-        return true;
     }
 
     /// <summary>
@@ -326,12 +343,17 @@ public class TrayIcon : IDisposable
     /// use it to return focus to the notification area.
     /// </summary>
     /// <returns></returns>
-    public bool SetFocus()
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void SetFocus()
     {
         EnsureNotDisposed();
         EnsureCreated();
 
-        return TrayIconMethods.TrySetFocus(Id);
+        if (!TrayIconMethods.TrySetFocus(Id))
+        {
+            throw new InvalidOperationException("SetFocus failed.");
+        }
     }
 
     #endregion
@@ -368,6 +390,7 @@ public class TrayIcon : IDisposable
     /// raises a <see cref="ObjectDisposedException"/> in case
     /// the <see cref="IsDisposed"/> flag is true.
     /// </summary>
+    /// <exception cref="ObjectDisposedException"></exception>
     private void EnsureNotDisposed()
     {
         if (IsDisposed)
@@ -378,14 +401,15 @@ public class TrayIcon : IDisposable
 
     /// <summary>
     /// Checks if the object has been disposed and
-    /// raises a <see cref="ObjectDisposedException"/> in case
+    /// raises a <see cref="InvalidOperationException"/> in case
     /// the <see cref="IsDisposed"/> flag is true.
     /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     private void EnsureCreated()
     {
         if (!IsCreated)
         {
-            throw new ObjectDisposedException("TrayIcon is not created.");
+            throw new InvalidOperationException("TrayIcon is not created.");
         }
     }
 

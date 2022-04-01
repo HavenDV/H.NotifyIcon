@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using NotifyIconWpf.Sample.ShowCases.Showcase;
 
@@ -32,22 +33,20 @@ public partial class BalloonSampleWindow : Window
         MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 4000);
     }
 
-    private void btnHideStandardBalloon_Click(object sender, RoutedEventArgs e)
-    {
-        MyNotifyIcon.ClearNotifications();
-    }
-
-
-    private void btnShowStandardBalloon_Click(object sender, RoutedEventArgs e)
-    {
-        var test = MyNotifyIcon.ShowNotification(
-            title: "WPF NotifyIcon",
-            message: "This is a standard notification",
-            customIcon: MyNotifyIcon.Icon);
-    }
-
     private void btnCloseCustomBalloon_Click(object sender, RoutedEventArgs e)
     {
         MyNotifyIcon.CloseBalloon();
+    }
+
+    private void btnShowStandardBalloon_Click(object sender, RoutedEventArgs e)
+    {
+        MyNotifyIcon.ShowNotification(
+            title: "WPF NotifyIcon",
+            message: "This is a standard notification");
+    }
+
+    private void btnHideStandardBalloon_Click(object sender, RoutedEventArgs e)
+    {
+        MyNotifyIcon.ClearNotifications();
     }
 }
