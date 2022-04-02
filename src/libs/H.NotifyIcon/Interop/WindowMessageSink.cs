@@ -334,7 +334,7 @@ public class WindowMessageSink : IDisposable
     /// Removes the windows hook that receives window
     /// messages and closes the underlying helper window.
     /// </summary>
-    private void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (IsDisposed)
         {

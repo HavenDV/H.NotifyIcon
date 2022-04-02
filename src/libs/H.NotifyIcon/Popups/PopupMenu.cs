@@ -46,6 +46,7 @@ public class PopupMenu : IDisposable, IList<PopupItem>
     /// <inheritdoc/>
     public void Add(PopupItem item)
     {
+        item = item ?? throw new ArgumentNullException(nameof(item));
         if (!item.Visible)
         {
             return;

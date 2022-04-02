@@ -63,7 +63,7 @@ public static class Extensions
                 //return true for everything except mouse movements
                 return me != MouseEvent.MouseMove;
             default:
-                throw new ArgumentOutOfRangeException("activationMode");
+                throw new ArgumentOutOfRangeException(nameof(activationMode));
         }
     }
 

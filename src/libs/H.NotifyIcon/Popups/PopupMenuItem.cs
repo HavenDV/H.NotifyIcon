@@ -27,7 +27,7 @@ public class PopupMenuItem : PopupItem
     //public Image? Image { get; set; }
 
     /// <inheritdoc/>
-    public PopupMenu? SubMenu { get; set; }
+    public PopupMenu? SubMenu { get; }
 
     /// <inheritdoc/>
     public string Text { get; set; } = string.Empty;

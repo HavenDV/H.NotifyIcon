@@ -89,7 +89,7 @@ public class TrayIcon : IDisposable
     /// pop-up UI. If the application wants to show the standard tooltip with NOTIFYICON_VERSION_4, 
     /// it can specify NIF_SHOWTIP to indicate the standard tooltip should still be shown.
     /// </summary>
-    public bool UseStandardTooltip { get; set; } = false;
+    public bool UseStandardTooltip { get; set; }
 
     #endregion
 
@@ -411,6 +411,7 @@ public class TrayIcon : IDisposable
         }
         catch (Exception)
         {
+            // ignored.
         }
     }
 
@@ -497,7 +498,7 @@ public class TrayIcon : IDisposable
     /// be disposed.</param>
     /// <remarks>Check the <see cref="IsDisposed"/> property to determine whether
     /// the method has already been called.</remarks>
-    private void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (IsDisposed || !disposing)
         {
