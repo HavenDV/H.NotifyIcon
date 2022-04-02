@@ -4,8 +4,6 @@
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net4.6.1;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <RootNamespace>NotifyIconWpf.Sample.Windowless</RootNamespace>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
 
