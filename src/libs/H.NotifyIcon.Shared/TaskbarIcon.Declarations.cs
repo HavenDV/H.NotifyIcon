@@ -11,7 +11,6 @@ partial class TaskbarIcon
     /// </summary>
     public const string CategoryName = "NotifyIcon";
 
-
     //POPUP CONTROLS
 
     #region TrayPopupResolved
@@ -146,7 +145,6 @@ partial class TaskbarIcon
         }
     }
 
-
     /// <summary>
     /// Resolves an image source and updates the <see cref="Icon" /> property accordingly.
     /// </summary>
@@ -165,49 +163,35 @@ partial class TaskbarIcon
     [Description("Sets the displayed taskbar icon.")]
     public ImageSource IconSource
     {
-        get { return (ImageSource) GetValue(IconSourceProperty); }
-        set { SetValue(IconSourceProperty, value); }
+        get => (ImageSource)GetValue(IconSourceProperty);
+        set => SetValue(IconSourceProperty, value);
     }
 
-
-    /// <summary>
-    /// A static callback listener which is being invoked if the
-    /// <see cref="IconSourceProperty"/> dependency property has
-    /// been changed. Invokes the <see cref="OnIconSourcePropertyChanged"/>
-    /// instance method of the changed instance.
-    /// </summary>
-    /// <param name="d">The currently processed owner of the property.</param>
-    /// <param name="e">Provides information about the updated property.</param>
-    private static void IconSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        TaskbarIcon owner = (TaskbarIcon) d;
-        owner.OnIconSourcePropertyChanged(e);
-    }
-
-
-    /// <summary>
-    /// Handles changes of the <see cref="IconSourceProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="IconSource"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
 #if HAS_WPF
-    private void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        ImageSource newValue = (ImageSource) e.NewValue;
-
-        //resolving the ImageSource at design time is unlikely to work
-        if (!Util.IsDesignMode) Icon = newValue.ToIcon();
-    }
+    private static void IconSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 #else
-    private async void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        ImageSource newValue = (ImageSource) e.NewValue;
-
-        Icon = await newValue.ToIconAsync().ConfigureAwait(true);
-    }
+    private static async void IconSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 #endif
+    {
+        if (d is not TaskbarIcon control)
+        {
+            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
+        }
+        if (e.NewValue is not ImageSource source)
+        {
+            throw new InvalidOperationException($"Value should be {nameof(ImageSource)}");
+        }
+        if (Util.IsDesignMode)
+        {
+            return;
+        }
+
+#if HAS_WPF
+        control.Icon = source.ToIcon();
+#else
+        control.Icon = await source.ToIconAsync().ConfigureAwait(true);
+#endif
+    }
 
     #endregion
 

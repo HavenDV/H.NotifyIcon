@@ -36,81 +36,6 @@ internal static class Util
 
     #endregion
 
-    #region CreateHelperWindow
-
-    /// <summary>
-    /// Creates an transparent window without dimension that
-    /// can be used to temporarily obtain focus and/or
-    /// be used as a window message sink.
-    /// </summary>
-    /// <returns>Empty window.</returns>
-    public static Window CreateHelperWindow()
-    {
-        return new Window
-        {
-#if HAS_WPF
-            Width = 0,
-            Height = 0,
-            ShowInTaskbar = false,
-            WindowStyle = WindowStyle.None,
-            AllowsTransparency = true,
-            Opacity = 0
-#endif
-        };
-    }
-
-    #endregion
-
-    #region ImageSource to Icon
-
-#if HAS_WPF
-
-    /// <summary>
-    /// Reads a given image resource into a WinForms icon.
-    /// </summary>
-    /// <param name="imageSource">Image source pointing to
-    /// an icon file (*.ico).</param>
-    /// <returns>An icon object that can be used with the
-    /// taskbar area.</returns>
-    public static Icon ToIcon(this ImageSource imageSource)
-    {
-        if (imageSource == null) return null;
-
-        Uri uri = new Uri(imageSource.ToString());
-        StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-
-        if (streamInfo == null)
-        {
-            string msg = "The supplied image source '{0}' could not be resolved.";
-            msg = string.Format(msg, imageSource);
-            throw new ArgumentException(msg);
-        }
-
-        return new Icon(streamInfo.Stream);
-    }
-
-#else
-
-    /// <summary>
-    /// Reads a given image resource into a WinForms icon.
-    /// </summary>
-    /// <param name="imageSource">Image source pointing to
-    /// an icon file (*.ico).</param>
-    /// <returns>An icon object that can be used with the
-    /// taskbar area.</returns>
-    public static async Task<Icon> ToIconAsync(this ImageSource imageSource)
-    {
-        var image = (BitmapImage)imageSource;
-        var test = await StorageFile.GetFileFromApplicationUriAsync(image.UriSource);
-        var stream = await test.OpenStreamForReadAsync();
-
-        return new Icon(stream);
-    }
-
-#endif
-
-    #endregion
-
     #region execute command
 
     /// <summary>
@@ -130,7 +55,7 @@ internal static class Util
         }
     }
 
-    #endregion
+#endregion
 
 #if HAS_WPF
 

@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RoutedEventHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Declarations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
   </ItemGroup>
 </Project>
