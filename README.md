@@ -53,6 +53,9 @@ Install-Package H.NotifyIcon
 ```
 
 ### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
+The minimum supported version of the .Net Framework is 4.5.1.  
+So in some cases to build the project you will need to install this -  
+https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
 
 ### Contacts
 * [mail](mailto:havendv@gmail.com)
