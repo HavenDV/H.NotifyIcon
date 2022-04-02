@@ -60,7 +60,7 @@ public partial class ShowcaseWindow : Window
 
     private void showCustomBalloon_Click(object sender, RoutedEventArgs e)
     {
-        FancyBalloon balloon = new FancyBalloon();
+        var balloon = new FancyBalloon();
         balloon.BalloonText = customBalloonTitle.Text;
         //show and close after 2.5 seconds
         tb.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);

@@ -25,11 +25,17 @@ public static class Extensions
     {
         value = value ?? throw new ArgumentNullException(nameof(value));
 
-        if (candidates == null) return false;
+        if (candidates == null)
+        {
+            return false;
+        }
 
         foreach (var t in candidates)
         {
-            if (value.Equals(t)) return true;
+            if (value.Equals(t))
+            {
+                return true;
+            }
         }
 
         return false;

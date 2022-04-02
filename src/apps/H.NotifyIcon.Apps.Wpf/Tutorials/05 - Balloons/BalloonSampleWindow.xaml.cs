@@ -26,7 +26,7 @@ public partial class BalloonSampleWindow : Window
 
     private void btnShowCustomBalloon_Click(object sender, RoutedEventArgs e)
     {
-        FancyBalloon balloon = new FancyBalloon();
+        var balloon = new FancyBalloon();
         balloon.BalloonText = "Custom Balloon";
 
         //show balloon and close it after 4 seconds

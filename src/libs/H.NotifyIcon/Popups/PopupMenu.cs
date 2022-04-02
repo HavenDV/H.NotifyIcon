@@ -176,7 +176,7 @@ public class PopupMenu : IDisposable, IList<PopupItem>
     {
         get
         {
-            int itemCount = Count;
+            var itemCount = Count;
 
             foreach (var item in this)
             {
@@ -207,7 +207,9 @@ public class PopupMenu : IDisposable, IList<PopupItem>
             {
                 var foundItems = SearchForId(menuItem.SubMenu, itemId);
                 if (foundItems != null)
+                {
                     return foundItems;
+                }
             }
         }
 

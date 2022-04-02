@@ -38,7 +38,7 @@ public partial class Main : Window
             var executingAssembly = Assembly.GetExecutingAssembly();
 
             // Use assembly version
-            string version = executingAssembly.GetName().Version.ToString();
+            var version = executingAssembly.GetName().Version.ToString();
 
             // Use AssemblyFileVersion if available
             var assemblyFileVersionAttribute = executingAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>();

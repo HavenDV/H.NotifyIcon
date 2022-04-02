@@ -64,7 +64,7 @@ public partial class FancyBalloon : UserControl
     private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
     {
         //the tray icon assigned this attached property to simplify access
-        TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
+        var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
         taskbarIcon.CloseBalloon();
     }
 
@@ -75,10 +75,13 @@ public partial class FancyBalloon : UserControl
     {
         //if we're already running the fade-out animation, do not interrupt anymore
         //(makes things too complicated for the sample)
-        if (isClosing) return;
+        if (isClosing)
+        {
+            return;
+        }
 
         //the tray icon assigned this attached property to simplify access
-        TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
+        var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
         taskbarIcon.ResetBalloonCloseTimer();
     }
 
@@ -90,7 +93,7 @@ public partial class FancyBalloon : UserControl
     /// </summary>
     private void OnFadeOutCompleted(object sender, EventArgs e)
     {
-        Popup pp = (Popup) Parent;
+        var pp = (Popup) Parent;
         pp.IsOpen = false;
     }
 }

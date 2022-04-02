@@ -9,10 +9,7 @@ public class MvvmSampleViewModel : INotifyPropertyChanged
 {
     private DispatcherTimer timer;
 
-    public string Timestamp
-    {
-        get { return DateTime.Now.ToLongTimeString(); }
-    }
+    public string Timestamp => DateTime.Now.ToLongTimeString();
 
 
     public MvvmSampleViewModel()
@@ -30,7 +27,10 @@ public class MvvmSampleViewModel : INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName)
     {
-        PropertyChangedEventHandler handler = PropertyChanged;
-        if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        var handler = PropertyChanged;
+        if (handler != null)
+        {
+            handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -17,7 +17,7 @@ public class CloseWindowCommand : CommandBase<CloseWindowCommand>
 
     public override bool CanExecute(object parameter)
     {
-        Window win = GetTaskbarWindow(parameter);
+        var win = GetTaskbarWindow(parameter);
         return win != null;
     }
 }

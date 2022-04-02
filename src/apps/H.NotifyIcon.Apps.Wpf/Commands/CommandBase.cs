@@ -26,7 +26,11 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// </summary>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        if (command == null) command = new T();
+        if (command == null)
+        {
+            command = new T();
+        }
+
         return command;
     }
 
@@ -66,16 +70,10 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     }
 
 
-    public static bool IsDesignMode
-    {
-        get
-        {
-            return (bool)
+    public static bool IsDesignMode => (bool)
                 DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty,
-                    typeof (FrameworkElement))
+                    typeof(FrameworkElement))
                     .Metadata.DefaultValue;
-        }
-    }
 
 
     /// <summary>
@@ -85,11 +83,13 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// <returns>Window</returns>
     protected Window GetTaskbarWindow(object commandParameter)
     {
-        if (IsDesignMode) return null;
+        if (IsDesignMode)
+        {
+            return null;
+        }
 
         // get the showcase window off the taskbar icon
-        var tb = commandParameter as TaskbarIcon;
-        return tb == null ? null : TryFindParent<Window>(tb);
+        return commandParameter is not TaskbarIcon tb ? null : TryFindParent<Window>(tb);
     }
 
     #region TryFindParent helper
@@ -106,10 +106,13 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     public static TParent TryFindParent<TParent>(DependencyObject child) where TParent : DependencyObject
     {
         //get parent item
-        DependencyObject parentObject = GetParentObject(child);
+        var parentObject = GetParentObject(child);
 
         //we've reached the end of the tree
-        if (parentObject == null) return null;
+        if (parentObject == null)
+        {
+            return null;
+        }
 
         //check if the parent matches the type we're looking for
         if (parentObject is TParent parent)
@@ -132,14 +135,20 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// null.</returns>
     public static DependencyObject GetParentObject(DependencyObject child)
     {
-        if (child == null) return null;
+        if (child == null)
+        {
+            return null;
+        }
 
         if (child is ContentElement contentElement)
         {
-            DependencyObject parent = ContentOperations.GetParent(contentElement);
-            if (parent != null) return parent;
+            var parent = ContentOperations.GetParent(contentElement);
+            if (parent != null)
+            {
+                return parent;
+            }
 
-            FrameworkContentElement fce = contentElement as FrameworkContentElement;
+            var fce = contentElement as FrameworkContentElement;
             return fce?.Parent;
         }
 

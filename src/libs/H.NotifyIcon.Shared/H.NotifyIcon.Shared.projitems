@@ -10,11 +10,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interop\SystemInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RoutedEventHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.AttachedProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Events.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DpiUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\RoutedEventHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Declarations.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ImageExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Properties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DesignTimeUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ICommandExtensions.cs" />
   </ItemGroup>
 </Project>
