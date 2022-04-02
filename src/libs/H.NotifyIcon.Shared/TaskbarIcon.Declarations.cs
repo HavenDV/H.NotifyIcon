@@ -474,39 +474,20 @@ partial class TaskbarIcon
 
     #region Visibility dependency property override
 
-    /// <summary>
-    /// A static callback listener which is being invoked if the
-    /// <see cref="UIElement.VisibilityProperty"/> dependency property has
-    /// been changed. Invokes the <see cref="OnVisibilityPropertyChanged"/>
-    /// instance method of the changed instance.
-    /// </summary>
-    /// <param name="d">The currently processed owner of the property.</param>
-    /// <param name="e">Provides information about the updated property.</param>
     private static void VisibilityPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        TaskbarIcon owner = (TaskbarIcon) d;
-        owner.OnVisibilityPropertyChanged(e);
+        var owner = (TaskbarIcon) d;
+        var newValue = (Visibility)e.NewValue;
+
+        owner.SetTrayIconVisibility(newValue);
     }
 
-
-    /// <summary>
-    /// Handles changes of the <see cref="UIElement.VisibilityProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="Visibility"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnVisibilityPropertyChanged(DependencyPropertyChangedEventArgs e)
+    private void SetTrayIconVisibility(Visibility value)
     {
-        var newValue = (Visibility) e.NewValue;
-        if (newValue == Visibility.Visible)
-        {
-            TrayIcon.Create();
-        }
-        else
-        {
-            TrayIcon.Remove();
-        }
+        TrayIcon.UpdateIconState(
+            value == Visibility.Visible
+                ? IconState.Visible
+                : IconState.Hidden);
     }
 
     #endregion
@@ -1836,36 +1817,6 @@ partial class TaskbarIcon
     }
 
     #endregion
-
-    //BASE CLASS PROPERTY OVERRIDES
-
-    /// <summary>
-    /// Registers properties.
-    /// </summary>
-    static TaskbarIcon()
-    {
-        //register change listener for the Visibility property
-        var md = new PropertyMetadata(Visibility.Visible, VisibilityPropertyChanged);
-        VisibilityProperty.OverrideMetadata(typeof (TaskbarIcon), md);
-
-        //register change listener for the DataContext property
-        md = new FrameworkPropertyMetadata(DataContextPropertyChanged);
-        DataContextProperty.OverrideMetadata(typeof (TaskbarIcon), md);
-
-        //register change listener for the ContextMenu property
-        md = new FrameworkPropertyMetadata(ContextMenuPropertyChanged);
-        ContextMenuProperty.OverrideMetadata(typeof (TaskbarIcon), md);
-    }
-
-#else
-
-    //public TaskbarIcon()
-    //{
-    //    RegisterPropertyChangedCallback(ContextFlyoutProperty, (d, e) =>
-    //    {
-    //        ContextMenuPropertyChanged(d, new DependencyPropertyChangedEventArgs());
-    //    });
-    //}
 
 #endif
 }

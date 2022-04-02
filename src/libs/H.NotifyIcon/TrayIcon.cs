@@ -220,6 +220,44 @@ public class TrayIcon : IDisposable
     }
 
     /// <summary>
+    /// Set new icon state.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void UpdateIconState(IconState state)
+    {
+        EnsureNotDisposed();
+        EnsureCreated();
+
+        if (!TrayIconMethods.TryModifyState(Id, (uint)state))
+        {
+            throw new InvalidOperationException("UpdateState failed.");
+        }
+        IconState = state;
+    }
+
+    /// <summary>
+    /// Shows tray icon.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void Show()
+    {
+        UpdateIconState(IconState.Visible);
+    }
+
+    /// <summary>
+    /// Hides tray icon.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void Hide()
+    {
+        UpdateIconState(IconState.Hidden);
+    }
+
+    /// <summary>
     /// Displays a balloon notification with the specified title,
     /// text, and predefined icon or custom icon in the taskbar for the specified time period.
     /// </summary>

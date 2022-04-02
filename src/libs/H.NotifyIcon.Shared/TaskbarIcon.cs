@@ -84,12 +84,38 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
     #region Construction
 
+#if HAS_WPF
+
+    static TaskbarIcon()
+    {
+        VisibilityProperty.OverrideMetadata(
+            typeof(TaskbarIcon),
+            new PropertyMetadata(Visibility.Visible, VisibilityPropertyChanged));
+
+        DataContextProperty.OverrideMetadata(
+            typeof(TaskbarIcon),
+            new FrameworkPropertyMetadata(DataContextPropertyChanged));
+
+        ContextMenuProperty.OverrideMetadata(
+            typeof(TaskbarIcon),
+            new FrameworkPropertyMetadata(ContextMenuPropertyChanged));
+    }
+
+#endif
+
     /// <summary>
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
     /// </summary>
     public TaskbarIcon()
     {
+#if !HAS_WPF
+        RegisterPropertyChangedCallback(VisibilityProperty, (_, _) =>
+        {
+            SetTrayIconVisibility(Visibility);
+        });
+#endif
+
         TrayIcon = new TrayIcon(Util.IsDesignMode);
         _ = TrayIcon.Create();
         _ = TrayIcon.Remove();

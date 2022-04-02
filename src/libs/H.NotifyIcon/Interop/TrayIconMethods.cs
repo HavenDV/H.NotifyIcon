@@ -180,6 +180,42 @@ internal static class TrayIconMethods
         }
     }
 
+    public static unsafe bool TryModifyState(
+        Guid id,
+        uint state)
+    {
+        if (Environment.Is64BitProcess)
+        {
+            var data = new NOTIFYICONDATAW64
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW64),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+                dwState = state,
+                dwStateMask = state,
+            };
+
+            return SendModifyMessage(data);
+        }
+        else
+        {
+            var data = new NOTIFYICONDATAW32
+            {
+                cbSize = (uint)sizeof(NOTIFYICONDATAW32),
+                uFlags =
+                    NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                guidItem = id,
+                dwState = state,
+                dwStateMask = state,
+            };
+
+            return SendModifyMessage(data);
+        }
+    }
+
     public static unsafe bool TryDelete(
         Guid id)
     {
