@@ -35,7 +35,7 @@ public partial class Main : Window
     {
         get
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
+            var executingAssembly = typeof(H.NotifyIcon.Core.TrayIcon).Assembly;
 
             // Use assembly version
             var version = executingAssembly.GetName().Version.ToString();

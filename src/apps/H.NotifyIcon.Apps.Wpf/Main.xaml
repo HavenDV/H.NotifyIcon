@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="NotifyIcon Samples"
-    Height="626"
-    Width="703"
+    Height="527"
+    Width="688"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -156,65 +156,6 @@
             Data="M269,57 L269,390.18163"
             Opacity="0.325"
             />
-        <TextBlock
-            Margin="255.31,191,10,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"
-            >
-            <Run Text="The latest news related to the component can be found on the project page:" />
-            <LineBreak />
-            <Hyperlink NavigateUri="http://www.hardcodet.net/wpf-notifyicon">
-                <Run Text="http://www.hardcodet.net/wpf-notifyicon" />
-            </Hyperlink>
-            <LineBreak />
-            <LineBreak />
-            <Run Text="Critical feedback is appreciated - please post bug reports, requests, questions etc. to the CodeProject forum" />
-            <Run
-                Language="de-ch"
-                Text=":"
-                />
-            <LineBreak />
-            <Hyperlink NavigateUri="http://www.codeproject.com/KB/WPF/wpf_notifyicon.aspx">
-                <Run Text="http://www.codeproject.com/KB/WPF/wpf_notifyicon.aspx" />
-            </Hyperlink>
-            <LineBreak />
-            <LineBreak />
-            <LineBreak />
-            <TextBlock>
-                <Run Text="Love it or hate it? Please let me know and " />
-                <Hyperlink NavigateUri="http://www.codeproject.com/KB/WPF/wpf_notifyicon.aspx">
-                    <Run
-                        FontWeight="Bold"
-                        Text="rate the project"
-                        />
-                </Hyperlink>
-                <Run Text=" - thanks!" />
-            </TextBlock>
-
-        </TextBlock>
-        <TextBlock
-            Margin="10,0,10,10"
-            VerticalAlignment="Bottom"
-            Height="22.42"
-            TextWrapping="Wrap"
-            FontWeight="Bold"
-            >
-            <Run Text="WPF NotifyIcon is free software, released under the" />
-            <Run Text=" " />
-            <Hyperlink NavigateUri="http://www.codeproject.com/info/cpol10.aspx">
-                <Run Text="CodeProject Open License" />
-            </Hyperlink>
-        </TextBlock>
-        <Path
-            Fill="#FFFFFFFF"
-            Stretch="Fill"
-            Stroke="#FF60758A"
-            Margin="11,0,17.926,41"
-            VerticalAlignment="Bottom"
-            Height="1"
-            Data="M11,517 L561.07363,517"
-            Opacity="0.33"
-            />
         <Button
             Margin="10,466,0,0"
             Content="Events"
@@ -245,22 +186,6 @@
             x:Name="BtnMvvm"
             Click="BtnMvvm_Click"
             />
-        <Image
-            Margin="562.24,-19,-41.24,440"
-            Source="Images/Logo.png"
-            Stretch="Fill"
-            RenderTransformOrigin="0.5,0.5"
-            Opacity="0.235"
-            >
-            <Image.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform Angle="-34.915" />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Image.RenderTransform>
-        </Image>
 
     </Grid>
 </Window>
