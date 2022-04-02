@@ -15,6 +15,12 @@
     <AssemblyOriginatorKeyFile>$(SolutionDir)src\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
+  <ItemGroup Label="CLSCompliant">
+    <AssemblyAttribute Include="System.CLSCompliantAttribute">
+      <_Parameter1>true</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
   <PropertyGroup Label="Nuget">
     <BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">1</BUILD_NUMBER>
     <Version>2.0.$(BUILD_NUMBER)</Version>
@@ -50,10 +56,10 @@
     </PackageReference>
   </ItemGroup>
 
-  <!--<PropertyGroup Label="Analyzers">
+  <PropertyGroup Label="Analyzers">
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-  </PropertyGroup>-->
+    <AnalysisMode>All</AnalysisMode>
+  </PropertyGroup>
 
 </Project>

@@ -8,13 +8,14 @@ using H.NotifyIcon.Core;
 namespace H.NotifyIcon;
 
 /// <summary>
-/// A WPF proxy to for a taskbar icon (NotifyIcon) that sits in the system's
+/// A proxy to for a taskbar icon (NotifyIcon) that sits in the system's
 /// taskbar notification area ("system tray").
 /// </summary>
+#if HAS_WINUI || HAS_UNO
+[CLSCompliant(false)]
+#endif
 public partial class TaskbarIcon : FrameworkElement, IDisposable
 {
-    private readonly object lockObject = new object();
-
     #region Members
 
     /// <summary>
@@ -169,7 +170,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Returns the location of the system tray
     /// </summary>
     /// <returns>Point</returns>
-    public Point GetPopupTrayPosition()
+    public static Point GetPopupTrayPosition()
     {
         return TrayInfo.GetTrayLocation().ScaleWithDpi();
     }
@@ -246,7 +247,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         popup.StaysOpen = true;
 
 
-        Point position = CustomPopupPosition != null ? CustomPopupPosition() : GetPopupTrayPosition();
+        var position = CustomPopupPosition != null
+            ? CustomPopupPosition()
+            : GetPopupTrayPosition();
         popup.HorizontalOffset = position.X - 1;
         popup.VerticalOffset = position.Y - 1;
 
@@ -994,6 +997,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Values that are too small default to the minimum value. <br/>
     /// The system minimum and maximum timeout values are currently set at 10 seconds and 30 seconds, respectively.
     /// </param>
+    [CLSCompliant(false)]
     public void ShowNotification(
         string title,
         string message,
@@ -1146,7 +1150,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// be disposed.</param>
     /// <remarks>Check the <see cref="IsDisposed"/> property to determine whether
     /// the method has already been called.</remarks>
-    private void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         // don't do anything if the component is already disposed
         if (IsDisposed || !disposing) return;

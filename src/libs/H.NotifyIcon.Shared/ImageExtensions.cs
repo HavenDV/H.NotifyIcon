@@ -15,7 +15,7 @@ internal static class ImageExtensions
         var stream = streamInfo.Stream;
 #else
         var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-        var stream = await file.OpenStreamForReadAsync();
+        var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
 #endif
 
         return new Icon(stream);

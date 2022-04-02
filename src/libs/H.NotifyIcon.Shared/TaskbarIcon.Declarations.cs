@@ -436,6 +436,7 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Defines what mouse events display the context menu.")]
+    [CLSCompliant(false)]
     public PopupActivationMode MenuActivation
     {
         get { return (PopupActivationMode) GetValue(MenuActivationProperty); }
@@ -464,6 +465,7 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Defines what mouse events display the TaskbarIconPopup.")]
+    [CLSCompliant(false)]
     public PopupActivationMode PopupActivation
     {
         get { return (PopupActivationMode) GetValue(PopupActivationProperty); }
@@ -1775,7 +1777,7 @@ partial class TaskbarIcon
     /// </summary>
     public static TaskbarIcon? GetParentTaskbarIcon(DependencyObject d)
     {
-        return (TaskbarIcon?) d.GetValue(ParentTaskbarIconProperty);
+        return (TaskbarIcon?) d?.GetValue(ParentTaskbarIconProperty);
     }
 
     /// <summary>
@@ -1784,7 +1786,7 @@ partial class TaskbarIcon
     /// </summary>
     public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon? value)
     {
-        d.SetValue(ParentTaskbarIconProperty, value);
+        d?.SetValue(ParentTaskbarIconProperty, value);
     }
 
     #endregion
