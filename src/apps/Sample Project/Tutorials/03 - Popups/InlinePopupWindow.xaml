@@ -5,39 +5,44 @@
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:commands="clr-namespace:NotifyIconWpf.Sample.ShowCases.Commands"
     Height="300"
-    Width="300">
+    Width="300"
+    >
     <Grid>
 
         <tb:TaskbarIcon
             x:Name="MyNotifyIcon"
             IconSource="/Icons/Error.ico"
-            ToolTipText="hello world">
+            ToolTipText="hello world"
+            >
 
             <!--
-        We can use arbitrary UI elements as Popups.
-        Popups stay open if the user moves away from the tray area
-      -->
+                We can use arbitrary UI elements as Popups.
+                Popups stay open if the user moves away from the tray area
+            -->
             <tb:TaskbarIcon.TrayPopup>
                 <Border
                     Background="White"
                     BorderBrush="Orange"
                     BorderThickness="2"
                     CornerRadius="4"
-                    Width="160">
+                    Width="160"
+                    >
                     <StackPanel>
                         <TextBox
                             x:Name="popupText"
                             Margin="5,10,5,10"
                             Width="200"
                             Height="24"
-                            Text="Enter Text..." />
+                            Text="Enter Text..."
+                            />
                         <Button
                             Content="Click Me!"
                             Command="{commands:CloseWindowCommand}"
                             CommandParameter="{Binding}"
                             Margin="5,0,5,10"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            />
                     </StackPanel>
                 </Border>
             </tb:TaskbarIcon.TrayPopup>
@@ -47,14 +52,18 @@
             Margin="26,26,24,0"
             VerticalAlignment="Top"
             FontWeight="Bold"
-            Text="Left-Click NotifyIcon to open popup." />
+            Text="Left-Click NotifyIcon to open popup."
+            />
 
         <TextBlock
             Text="Text on Popup: "
             Margin="26,66,24,0"
-            VerticalAlignment="Top">
-            <TextBlock Foreground="Red"
-                       Text="{Binding ElementName=popupText, Path=Text}" />
+            VerticalAlignment="Top"
+            >
+            <TextBlock
+                Foreground="Red"
+                Text="{Binding ElementName=popupText, Path=Text}"
+                />
         </TextBlock>
 
     </Grid>
