@@ -45,7 +45,7 @@ internal static class Util
     /// <param name="command">The command to be executed, or a null reference.</param>
     /// <param name="commandParameter">An optional parameter that is associated with
     /// the command.</param>
-    public static void ExecuteIfEnabled(this ICommand command, object commandParameter)
+    public static void ExecuteIfEnabled(this ICommand command, object? commandParameter)
     {
         if (command == null) return;
         
@@ -67,11 +67,11 @@ internal static class Util
     /// <param name="commandParameter">An optional parameter that is associated with
     /// the command.</param>
     /// <param name="target">The target element on which to raise the command.</param>
-    public static void ExecuteIfEnabled(this ICommand command, object commandParameter, IInputElement target)
+    public static void ExecuteIfEnabled(this ICommand command, object? commandParameter, IInputElement target)
     {
         if (command == null) return;
 
-        RoutedCommand rc = command as RoutedCommand;
+        var rc = command as RoutedCommand;
         if (rc != null)
         {
             //routed commands work on a target

@@ -6,6 +6,7 @@
     <DefineConstants>$(DefineConstants);HAS_WPF</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <NoWarn>$(NoWarn);WPF0005;WPF0041</NoWarn>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

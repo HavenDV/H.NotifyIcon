@@ -26,7 +26,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// An action that is being invoked if the
     /// <see cref="singleClickTimer"/> fires.
     /// </summary>
-    private Action singleClickTimerAction;
+    private Action? singleClickTimerAction;
 
     /// <summary>
     /// A timer that is used to differentiate between single
@@ -163,7 +163,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Specify a custom popup position
     /// </summary>
-    public GetCustomPopupPosition CustomPopupPosition { get; set; }
+    public GetCustomPopupPosition? CustomPopupPosition { get; set; }
 
     /// <summary>
     /// Returns the location of the system tray
@@ -312,16 +312,16 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // reset old popup, if we still have one
-            Popup popup = CustomBalloon;
+            var popup = CustomBalloon;
             if (popup == null)
             {
                 return;
             }
 
-            UIElement element = popup.Child;
+            var element = popup.Child;
 
             // announce closing
-            RoutedEventArgs eventArgs = RaiseBalloonClosingEvent(element, this);
+            var eventArgs = RaiseBalloonClosingEvent(element, this);
             if (!eventArgs.Handled)
             {
                 // if the event was handled, clear the reference to the popup,
@@ -348,7 +348,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Timer-invoke event which closes the currently open balloon and
     /// resets the <see cref="CustomBalloon"/> dependency property.
     /// </summary>
-    private void CloseBalloonCallback(object state)
+    private void CloseBalloonCallback(object? state)
     {
         if (IsDisposed) return;
 
@@ -414,12 +414,12 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 break;
             case MouseEvent.IconDoubleClick:
                 // cancel single click timer
-                singleClickTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                singleClickTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 #if HAS_WPF
                 // bubble event
                 RaiseTrayMouseDoubleClickEvent();
 #else
-                DoubleClickCommand.ExecuteIfEnabled(DoubleClickCommandParameter);
+                DoubleClickCommand?.ExecuteIfEnabled(DoubleClickCommandParameter);
 #endif
                 break;
             case MouseEvent.BalloonToolTipClicked:
@@ -450,13 +450,13 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 singleClickTimerAction = () =>
                 {
 #if HAS_WPF
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter);
 #endif
                     ShowTrayPopup(cursorPosition);
                 };
-                singleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
+                singleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
                 isLeftClickCommandInvoked = true;
             }
             else
@@ -476,13 +476,13 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 singleClickTimerAction = () =>
                 {
 #if HAS_WPF
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter);
 #endif
                     ShowContextMenu(cursorPosition);
                 };
-                singleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
+                singleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
                 isLeftClickCommandInvoked = true;
             }
             else
@@ -500,12 +500,12 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 () =>
                 {
 #if HAS_WPF
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
-                    LeftClickCommand.ExecuteIfEnabled(LeftClickCommandParameter);
+                    LeftClickCommand?.ExecuteIfEnabled(LeftClickCommandParameter);
 #endif
                 };
-            singleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
+            singleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
         }
     }
 
@@ -582,7 +582,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private void CreateCustomToolTip()
     {
         // check if the item itself is a tooltip
-        ToolTip tt = TrayToolTip as ToolTip;
+        var tt = TrayToolTip as ToolTip;
 
         if (tt == null && TrayToolTip != null)
         {
@@ -669,7 +669,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private void CreatePopup()
     {
         // check if the item itself is a popup
-        Popup popup = TrayPopup as Popup;
+        var popup = TrayPopup as Popup;
 
         if (popup == null && TrayPopup != null)
         {
@@ -722,6 +722,10 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
         if (TrayPopup == null)
+        {
+            return;
+        }
+        if (TrayPopupResolved == null)
         {
             return;
         }
@@ -994,7 +998,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
-        Icon customIcon = null,
+        Icon? customIcon = null,
         bool largeIcon = false,
         bool sound = true,
         bool respectQuietTime = true,
@@ -1038,12 +1042,12 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// based on a single click of the left mouse.<br/>
     /// This method is invoked by the <see cref="singleClickTimer"/>.
     /// </summary>
-    private void DoSingleClickAction(object state)
+    private void DoSingleClickAction(object? state)
     {
         if (IsDisposed) return;
 
         // run action
-        Action action = singleClickTimerAction;
+        var action = singleClickTimerAction;
         if (action != null)
         {
             // cleanup action
@@ -1160,7 +1164,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
             // stop timers
-            singleClickTimer.Dispose();
+            singleClickTimer?.Dispose();
 #if HAS_WPF
             balloonCloseTimer.Dispose();
 #endif

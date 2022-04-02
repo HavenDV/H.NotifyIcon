@@ -5,6 +5,7 @@
     <SignAssembly>false</SignAssembly>
     <DefineConstants>$(DefineConstants);HAS_UNO</DefineConstants>
     <NoWarn>$(NoWarn);Uno0001</NoWarn>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

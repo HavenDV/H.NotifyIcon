@@ -22,9 +22,9 @@ internal static class ImageExtensions
     }
 
 #if HAS_WPF
-    public static Icon ToIcon(this ImageSource imageSource)
+    public static Icon? ToIcon(this ImageSource imageSource)
 #else
-    public static async Task<Icon> ToIconAsync(this ImageSource imageSource)
+    public static async Task<Icon?> ToIconAsync(this ImageSource imageSource)
 #endif
     {
         switch(imageSource)

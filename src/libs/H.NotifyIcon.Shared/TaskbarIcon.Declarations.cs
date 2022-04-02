@@ -34,9 +34,9 @@ partial class TaskbarIcon
     /// <see cref="TrayPopup"/>.
     /// </summary>
     [Category(CategoryName)]
-    public Popup TrayPopupResolved
+    public Popup? TrayPopupResolved
     {
-        get { return (Popup) GetValue(TrayPopupResolvedProperty); }
+        get { return (Popup?) GetValue(TrayPopupResolvedProperty); }
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ partial class TaskbarIcon
     /// This dependency property indicates ....
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetTrayPopupResolved(Popup value)
+    protected void SetTrayPopupResolved(Popup? value)
     {
         SetValue(TrayPopupResolvedProperty, value);
     }
@@ -73,9 +73,9 @@ partial class TaskbarIcon
     [Category(CategoryName)]
     [Browsable(true)]
     [Bindable(true)]
-    public ToolTip TrayToolTipResolved
+    public ToolTip? TrayToolTipResolved
     {
-        get { return (ToolTip) GetValue(TrayToolTipResolvedProperty); }
+        get { return (ToolTip?) GetValue(TrayToolTipResolvedProperty); }
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ partial class TaskbarIcon
     /// property.  
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetTrayToolTipResolved(ToolTip value)
+    protected void SetTrayToolTipResolved(ToolTip? value)
     {
         SetValue(TrayToolTipResolvedProperty, value);
     }
@@ -106,16 +106,16 @@ partial class TaskbarIcon
     /// A custom popup that is being displayed in the tray area in order
     /// to display messages to the user.
     /// </summary>
-    public Popup CustomBalloon
+    public Popup? CustomBalloon
     {
-        get { return (Popup) GetValue(CustomBalloonProperty); }
+        get { return (Popup?) GetValue(CustomBalloonProperty); }
     }
 
     /// <summary>
     /// Provides a secure method for setting the <see cref="CustomBalloon"/> property.  
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetCustomBalloon(Popup value)
+    protected void SetCustomBalloon(Popup? value)
     {
         SetValue(CustomBalloonProperty, value);
     }
@@ -126,7 +126,7 @@ partial class TaskbarIcon
 
     #region Icon property / IconSource dependency property
 
-    private Icon icon;
+    private Icon? icon;
 
     /// <summary>
     /// Gets or sets the icon to be displayed. This is not a
@@ -135,13 +135,13 @@ partial class TaskbarIcon
     /// dependency property.
     /// </summary>
     [Browsable(false)]
-    public Icon Icon
+    public Icon? Icon
     {
         get { return icon; }
         set
         {
             icon = value;
-            TrayIcon.UpdateIcon(value == null ? IntPtr.Zero : icon.Handle);
+            TrayIcon.UpdateIcon(value?.Handle ?? IntPtr.Zero);
         }
     }
 
@@ -161,9 +161,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Sets the displayed taskbar icon.")]
-    public ImageSource IconSource
+    public ImageSource? IconSource
     {
-        get => (ImageSource)GetValue(IconSourceProperty);
+        get => (ImageSource?)GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);
     }
 
@@ -250,7 +250,7 @@ partial class TaskbarIcon
         //do not touch tooltips if we have a custom tooltip element
         if (TrayToolTip == null)
         {
-            ToolTip currentToolTip = TrayToolTipResolved;
+            var currentToolTip = TrayToolTipResolved;
             if (currentToolTip == null)
             {
                 //if we don't have a wrapper tooltip for the tooltip text, create it now
@@ -290,9 +290,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Custom UI element that is displayed as a tooltip. Only on Vista and above")]
-    public UIElement TrayToolTip
+    public UIElement? TrayToolTip
     {
-        get { return (UIElement) GetValue(TrayToolTipProperty); }
+        get { return (UIElement?) GetValue(TrayToolTipProperty); }
         set { SetValue(TrayToolTipProperty, value); }
     }
 
@@ -364,9 +364,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Displayed as a Popup if the user clicks on the taskbar icon.")]
-    public UIElement TrayPopup
+    public UIElement? TrayPopup
     {
-        get { return (UIElement) GetValue(TrayPopupProperty); }
+        get { return (UIElement?) GetValue(TrayPopupProperty); }
         set { SetValue(TrayPopupProperty, value); }
     }
 
@@ -502,9 +502,9 @@ partial class TaskbarIcon
     /// NotifyIcon itself, if no data context was assigned at all.
     /// </summary>
     private void UpdateDataContext(
-        FrameworkElement target,
-        object oldDataContextValue,
-        object newDataContextValue)
+        FrameworkElement? target,
+        object? oldDataContextValue,
+        object? newDataContextValue)
     {
         //if there is no target or it's data context is determined through a binding
         //of its own, keep it
@@ -529,8 +529,8 @@ partial class TaskbarIcon
 
     private void UpdateContextFlyoutDataContext(
         FlyoutBase flyout,
-        object oldValue,
-        object newValue)
+        object? oldValue,
+        object? newValue)
     {
         void UpdateMenuFlyoutDataContext(MenuFlyoutItemBase item)
         {
@@ -562,7 +562,7 @@ partial class TaskbarIcon
         owner.UpdateDataContext(e.OldValue, e.NewValue);
     }
 
-    private void UpdateDataContext(object oldValue, object newValue)
+    private void UpdateDataContext(object? oldValue, object? newValue)
     {
         UpdateDataContext(TrayPopupResolved, oldValue, newValue);
         UpdateDataContext(TrayToolTipResolved, oldValue, newValue);
@@ -601,6 +601,7 @@ partial class TaskbarIcon
     /// <param name="e">Provides information about the updated property.</param>
     private void OnContextMenuPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
+        var contextMenu = (ContextMenu)e.NewValue;
         if (e.OldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
@@ -613,7 +614,7 @@ partial class TaskbarIcon
             SetParentTaskbarIcon((DependencyObject) e.NewValue, this);
         }
 
-        UpdateDataContext((ContextMenu) e.NewValue, null, DataContext);
+        UpdateDataContext(contextMenu, null, DataContext);
     }
 #endif
 
@@ -639,9 +640,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("A command that is being executed if the tray icon is being double-clicked.")]
-    public ICommand DoubleClickCommand
+    public ICommand? DoubleClickCommand
     {
-        get { return (ICommand) GetValue(DoubleClickCommandProperty); }
+        get { return (ICommand?) GetValue(DoubleClickCommandProperty); }
         set { SetValue(DoubleClickCommandProperty, value); }
     }
 
@@ -665,7 +666,7 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Parameter to submit to the DoubleClickCommand when the user double clicks on the NotifyIcon.")]
-    public object DoubleClickCommandParameter
+    public object? DoubleClickCommandParameter
     {
         get { return GetValue(DoubleClickCommandParameterProperty); }
         set { SetValue(DoubleClickCommandParameterProperty, value); }
@@ -693,9 +694,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("The target of the command that is fired if the notify icon is double clicked.")]
-    public IInputElement DoubleClickCommandTarget
+    public IInputElement? DoubleClickCommandTarget
     {
-        get { return (IInputElement) GetValue(DoubleClickCommandTargetProperty); }
+        get { return (IInputElement?) GetValue(DoubleClickCommandTargetProperty); }
         set { SetValue(DoubleClickCommandTargetProperty, value); }
     }
 
@@ -723,9 +724,9 @@ partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("A command that is being executed if the tray icon is being left-clicked.")]
-    public ICommand LeftClickCommand
+    public ICommand? LeftClickCommand
     {
-        get { return (ICommand) GetValue(LeftClickCommandProperty); }
+        get { return (ICommand?) GetValue(LeftClickCommandProperty); }
         set { SetValue(LeftClickCommandProperty, value); }
     }
 
@@ -750,7 +751,7 @@ partial class TaskbarIcon
     [Category(CategoryName)]
     [Description("The target of the command that is fired if the notify icon is clicked with the left mouse button."
         )]
-    public object LeftClickCommandParameter
+    public object? LeftClickCommandParameter
     {
         get { return GetValue(LeftClickCommandParameterProperty); }
         set { SetValue(LeftClickCommandParameterProperty, value); }
@@ -779,9 +780,9 @@ partial class TaskbarIcon
     [Category(CategoryName)]
     [Description("The target of the command that is fired if the notify icon is clicked with the left mouse button."
         )]
-    public IInputElement LeftClickCommandTarget
+    public IInputElement? LeftClickCommandTarget
     {
-        get { return (IInputElement) GetValue(LeftClickCommandTargetProperty); }
+        get { return (IInputElement?) GetValue(LeftClickCommandTargetProperty); }
         set { SetValue(LeftClickCommandTargetProperty, value); }
     }
 
@@ -854,8 +855,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayLeftMouseDownEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayLeftMouseDownEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -895,8 +894,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayRightMouseDownEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayRightMouseDownEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -936,8 +933,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayMiddleMouseDownEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayMiddleMouseDownEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -976,8 +971,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayLeftMouseUpEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayLeftMouseUpEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1016,8 +1009,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayRightMouseUpEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayRightMouseUpEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1057,8 +1048,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayMiddleMouseUpEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayMiddleMouseUpEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1090,7 +1079,7 @@ partial class TaskbarIcon
     protected RoutedEventArgs RaiseTrayMouseDoubleClickEvent()
     {
         RoutedEventArgs args = RaiseTrayMouseDoubleClickEvent(this);
-        DoubleClickCommand.ExecuteIfEnabled(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
+        DoubleClickCommand?.ExecuteIfEnabled(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
         return args;
     }
 
@@ -1100,8 +1089,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayMouseDoubleClickEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayMouseDoubleClickEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1140,8 +1127,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayMouseMoveEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayMouseMoveEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1181,8 +1166,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayBalloonTipShownEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayBalloonTipShownEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1222,8 +1205,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayBalloonTipClosedEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayBalloonTipClosedEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1263,8 +1244,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayBalloonTipClickedEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayBalloonTipClickedEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1304,8 +1283,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayContextMenuOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayContextMenuOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1341,8 +1318,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaisePreviewTrayContextMenuOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(PreviewTrayContextMenuOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1381,8 +1356,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayPopupOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayPopupOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1418,8 +1391,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaisePreviewTrayPopupOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(PreviewTrayPopupOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1458,8 +1429,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayToolTipOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayToolTipOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1495,8 +1464,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaisePreviewTrayToolTipOpenEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(PreviewTrayToolTipOpenEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1535,8 +1502,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseTrayToolTipCloseEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(TrayToolTipCloseEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1572,8 +1537,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaisePreviewTrayToolTipCloseEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(PreviewTrayToolTipCloseEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1617,8 +1580,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaisePopupOpenedEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(PopupOpenedEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1660,8 +1621,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseToolTipOpenedEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(ToolTipOpenedEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1703,8 +1662,6 @@ partial class TaskbarIcon
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     internal static RoutedEventArgs RaiseToolTipCloseEvent(DependencyObject target)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(ToolTipCloseEvent);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1747,8 +1704,6 @@ partial class TaskbarIcon
     /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
     internal static RoutedEventArgs RaiseBalloonShowingEvent(DependencyObject target, TaskbarIcon source)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(BalloonShowingEvent, source);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1791,8 +1746,6 @@ partial class TaskbarIcon
     /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
     internal static RoutedEventArgs RaiseBalloonClosingEvent(DependencyObject target, TaskbarIcon source)
     {
-        if (target == null) return null;
-
         RoutedEventArgs args = new RoutedEventArgs(BalloonClosingEvent, source);
         RoutedEventHelper.RaiseEvent(target, args);
         return args;
@@ -1820,16 +1773,16 @@ partial class TaskbarIcon
     /// Gets the ParentTaskbarIcon property.  This dependency property 
     /// indicates ....
     /// </summary>
-    public static TaskbarIcon GetParentTaskbarIcon(DependencyObject d)
+    public static TaskbarIcon? GetParentTaskbarIcon(DependencyObject d)
     {
-        return (TaskbarIcon) d.GetValue(ParentTaskbarIconProperty);
+        return (TaskbarIcon?) d.GetValue(ParentTaskbarIconProperty);
     }
 
     /// <summary>
     /// Sets the ParentTaskbarIcon property.  This dependency property 
     /// indicates ....
     /// </summary>
-    public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon value)
+    public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon? value)
     {
         d.SetValue(ParentTaskbarIconProperty, value);
     }
