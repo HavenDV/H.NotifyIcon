@@ -412,7 +412,7 @@ public partial class TaskbarIcon
 
     private void SetTrayIconVisibility(Visibility value)
     {
-        TrayIcon.UpdateIconState(
+        TrayIcon.UpdateVisibility(
             value == Visibility.Visible
                 ? IconState.Visible
                 : IconState.Hidden);

@@ -57,17 +57,7 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// State of the icon. Remember to also set the StateMask.
     /// </summary>
-    public IconState IconState { get; set; } = IconState.Visible;
-
-    // <summary>
-    // A value that specifies which bits of the state member are retrieved or modified.
-    // For example, setting this member to Hidden.
-    // causes only the item's hidden
-    // state to be retrieved.
-    // </summary>
-    //public uint StateMask => Environment.Is64BitProcess
-    //    ? iconData64.dwStateMask
-    //    : iconData32.dwStateMask;
+    public IconState Visibility { get; set; } = IconState.Visible;
 
     /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
@@ -222,19 +212,19 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Set new icon state.
     /// </summary>
-    /// <param name="state"></param>
+    /// <param name="visibility"></param>
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="ObjectDisposedException"></exception>
-    public void UpdateIconState(IconState state)
+    public void UpdateVisibility(IconState visibility)
     {
         EnsureNotDisposed();
         EnsureCreated();
 
-        if (!TrayIconMethods.TryModifyState(Id, (uint)state))
+        if (!TrayIconMethods.TryModifyState(Id, (uint)visibility))
         {
             throw new InvalidOperationException("UpdateState failed.");
         }
-        IconState = state;
+        Visibility = visibility;
     }
 
     /// <summary>
@@ -244,7 +234,7 @@ public class TrayIcon : IDisposable
     /// <exception cref="ObjectDisposedException"></exception>
     public void Show()
     {
-        UpdateIconState(IconState.Visible);
+        UpdateVisibility(IconState.Visible);
     }
 
     /// <summary>
@@ -254,7 +244,7 @@ public class TrayIcon : IDisposable
     /// <exception cref="ObjectDisposedException"></exception>
     public void Hide()
     {
-        UpdateIconState(IconState.Hidden);
+        UpdateVisibility(IconState.Hidden);
     }
 
     /// <summary>
