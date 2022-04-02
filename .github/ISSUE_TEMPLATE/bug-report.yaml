@@ -4,15 +4,11 @@ title: "Bug title"
 labels: [bug]
 body:
   - type: textarea
-    validations:
-      required: true
     attributes:
       label: Describe the bug
       description: Please enter a short, clear description of the bug.
       
   - type: textarea
-    validations:
-      required: true
     attributes:
       label: Steps to reproduce the bug
       description: Please provide any required setup and steps to reproduce the behavior.
@@ -41,8 +37,11 @@ body:
       description: Which platforms did you see the issue on?
       multiple: true
       options:
+        - "All"
         - "WPF"
         - "WinUI"
+        - "Console"
+        - "Uno"
         
   - type: dropdown
     attributes:

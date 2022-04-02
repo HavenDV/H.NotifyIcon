@@ -13,8 +13,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90AF73FD-213A-4054-B99B-58E1864D7142}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.github\ISSUE_TEMPLATE\bug-report.yaml = .github\ISSUE_TEMPLATE\bug-report.yaml
 		src\Directory.Build.props = src\Directory.Build.props
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\FUNDING.yml = .github\FUNDING.yml
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
