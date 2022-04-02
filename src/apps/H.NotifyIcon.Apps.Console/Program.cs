@@ -25,13 +25,13 @@ while (true)
     try
     {
         var line = Console.ReadLine();
-        var result = false;
         if (line.StartsWith("message"))
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.None),
                 message: line.Substring("message".Length + 1),
                 icon: NotificationIcon.None);
+            Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
         else if (line.StartsWith("info"))
         {
@@ -39,6 +39,7 @@ while (true)
                 title: nameof(NotificationIcon.Info),
                 message: line.Substring("info".Length + 1),
                 icon: NotificationIcon.Info);
+            Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
         else if (line.StartsWith("warning"))
         {
@@ -46,6 +47,7 @@ while (true)
                 title: nameof(NotificationIcon.Warning),
                 message: line.Substring("warning".Length + 1),
                 icon: NotificationIcon.Warning);
+            Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
         else if (line.StartsWith("error"))
         {
@@ -53,6 +55,7 @@ while (true)
                 title: nameof(NotificationIcon.Error),
                 message: line.Substring("error".Length + 1),
                 icon: NotificationIcon.Error);
+            Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
         else if (line.StartsWith("custom"))
         {
@@ -60,25 +63,47 @@ while (true)
                 title: "Custom",
                 message: line.Substring("custom".Length + 1),
                 customIcon: icon.Handle);
+            Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
         else if (line.StartsWith("clear"))
         {
             trayIcon.ClearNotifications();
+            Console.WriteLine(nameof(trayIcon.ClearNotifications));
         }
         else if (line.StartsWith("set-focus"))
         {
             trayIcon.SetFocus();
+            Console.WriteLine(nameof(trayIcon.SetFocus));
         }
         else if (line.StartsWith("remove"))
         {
-            result = trayIcon.Remove();
+            var result = trayIcon.Remove();
+            Console.WriteLine($"{line}: {result}");
         }
         else if (line.StartsWith("create"))
         {
-            result = trayIcon.Create();
+            var result = trayIcon.Create();
+            Console.WriteLine($"{line}: {result}");
         }
-
-        Console.WriteLine($"{line}: {result}");
+        else if (line.StartsWith("show"))
+        {
+            trayIcon.Show();
+            Console.WriteLine(nameof(trayIcon.Show));
+        }
+        else if (line.StartsWith("hide"))
+        {
+            trayIcon.Hide();
+            Console.WriteLine(nameof(trayIcon.Hide));
+        }
+        else if (line.StartsWith("exit"))
+        {
+            Console.WriteLine($"Exit.");
+            break;
+        }
+        else
+        {
+            Console.WriteLine($"Command {line} not found.");
+        }
     }
     catch (Exception exception)
     {
