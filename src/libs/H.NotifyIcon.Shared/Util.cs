@@ -100,19 +100,4 @@ internal static class Util
     }
 
 #endif
-
-    /// <summary>
-    /// Checks whether the DataContextProperty
-    ///  is bound or not.
-    /// </summary>
-    /// <param name="element">The element to be checked.</param>
-    /// <returns>True if the data context property is being managed by a
-    /// binding expression.</returns>
-    /// <exception cref="ArgumentNullException">If <paramref name="element"/>
-    /// is a null reference.</exception>
-    public static bool IsDataContextDataBound(this FrameworkElement element)
-    {
-        if (element == null) throw new ArgumentNullException("element");
-        return element.GetBindingExpression(FrameworkElement.DataContextProperty) != null;
-    }
 }

@@ -492,7 +492,7 @@ partial class TaskbarIcon
 
     #endregion
 
-    #region DataContext dependency property override / target update
+    #region DataContext
 
     /// <summary>
     /// Updates the DataContextProperty of a given
@@ -501,15 +501,23 @@ partial class TaskbarIcon
     /// the DataContext of the NotifyIcon, or the
     /// NotifyIcon itself, if no data context was assigned at all.
     /// </summary>
-    private void UpdateDataContext(FrameworkElement target, object oldDataContextValue, object newDataContextValue)
+    private void UpdateDataContext(
+        FrameworkElement target,
+        object oldDataContextValue,
+        object newDataContextValue)
     {
         //if there is no target or it's data context is determined through a binding
         //of its own, keep it
-        if (target == null || target.IsDataContextDataBound()) return;
+        if (target == null ||
+            target.GetBindingExpression(DataContextProperty) != null)
+        { 
+            return;
+        }
 
         //if the target's data context is the NotifyIcon's old DataContext or the NotifyIcon itself,
         //update it
-        if (ReferenceEquals(this, target.DataContext) || Equals(oldDataContextValue, target.DataContext))
+        if (ReferenceEquals(this, target.DataContext) ||
+            Equals(oldDataContextValue, target.DataContext))
         {
             //assign own data context, if available. If there is no data
             //context at all, assign NotifyIcon itself.
@@ -517,41 +525,51 @@ partial class TaskbarIcon
         }
     }
 
-    /// <summary>
-    /// A static callback listener which is being invoked if the
-    /// DataContextProperty dependency property has
-    /// been changed. Invokes the <see cref="OnDataContextPropertyChanged"/>
-    /// instance method of the changed instance.
-    /// </summary>
-    /// <param name="d">The currently processed owner of the property.</param>
-    /// <param name="e">Provides information about the updated property.</param>
-    private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+#if !HAS_WPF
+
+    private void UpdateContextFlyoutDataContext(
+        FlyoutBase flyout,
+        object oldValue,
+        object newValue)
     {
-        TaskbarIcon owner = (TaskbarIcon) d;
-        owner.OnDataContextPropertyChanged(e);
+        void UpdateMenuFlyoutDataContext(MenuFlyoutItemBase item)
+        {
+            UpdateDataContext(item, oldValue, newValue);
+
+            if (item is MenuFlyoutSubItem subItem)
+            {
+                foreach (var innerItem in subItem.Items)
+                {
+                    UpdateMenuFlyoutDataContext(innerItem);
+                }
+            }
+        }
+
+        if (flyout is MenuFlyout menuFlyout)
+        {
+            foreach (var item in menuFlyout.Items)
+            {
+                UpdateMenuFlyoutDataContext(item);
+            }
+        }
     }
 
+#endif
 
-    /// <summary>
-    /// Handles changes of the DataContextProperty dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// DataContext property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnDataContextPropertyChanged(DependencyPropertyChangedEventArgs e)
+    private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        object newValue = e.NewValue;
-        object oldValue = e.OldValue;
+        var owner = (TaskbarIcon) d;
+        owner.UpdateDataContext(e.OldValue, e.NewValue);
+    }
 
-        //replace custom data context for ToolTips, Popup, and
-        //ContextMenu
+    private void UpdateDataContext(object oldValue, object newValue)
+    {
         UpdateDataContext(TrayPopupResolved, oldValue, newValue);
         UpdateDataContext(TrayToolTipResolved, oldValue, newValue);
 #if HAS_WPF
         UpdateDataContext(ContextMenu, oldValue, newValue);
 #else
-        //UpdateDataContext(ContextFlyout, oldValue, newValue);
+        UpdateContextFlyoutDataContext(ContextFlyout, oldValue, newValue);
 #endif
     }
 

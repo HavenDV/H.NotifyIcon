@@ -91,11 +91,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         VisibilityProperty.OverrideMetadata(
             typeof(TaskbarIcon),
             new PropertyMetadata(Visibility.Visible, VisibilityPropertyChanged));
-
         DataContextProperty.OverrideMetadata(
             typeof(TaskbarIcon),
             new FrameworkPropertyMetadata(DataContextPropertyChanged));
-
         ContextMenuProperty.OverrideMetadata(
             typeof(TaskbarIcon),
             new FrameworkPropertyMetadata(ContextMenuPropertyChanged));
@@ -113,6 +111,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         RegisterPropertyChangedCallback(VisibilityProperty, (_, _) =>
         {
             SetTrayIconVisibility(Visibility);
+        });
+        RegisterPropertyChangedCallback(DataContextProperty, (_, _) =>
+        {
+            UpdateDataContext(null, DataContext);
+        });
+        RegisterPropertyChangedCallback(ContextFlyoutProperty, (_, _) =>
+        {
+            UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
         });
 #endif
 
