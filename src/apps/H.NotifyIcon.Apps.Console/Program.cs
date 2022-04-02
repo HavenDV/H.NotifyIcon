@@ -6,26 +6,33 @@ using var icon = new Icon(iconStream);
 using var trayIcon = new TrayIcon
 {
     Icon = icon.Handle,
-    ToolTip = "StandardTooltip",
-    UseStandardTooltip = true,
+    ToolTip = "Tooltip",
 };
 _ = trayIcon.Create();
-
-using var iconStream2 = H.Resources.icon_ico.AsStream();
-using var icon2 = new Icon(iconStream2);
-using var trayIcon2 = new TrayIcon
-{
-    Icon = icon2.Handle,
-    ToolTip = "ModernTooltip",
-};
-_ = trayIcon2.Create();
 
 while (true)
 {
     try
     {
         var line = Console.ReadLine();
-        if (line.StartsWith("message"))
+        if (line.StartsWith("create-second"))
+        {
+            using var iconStream2 = H.Resources.icon_ico.AsStream();
+            using var icon2 = new Icon(iconStream2);
+            using var trayIcon2 = new TrayIcon
+            {
+                Icon = icon2.Handle,
+                ToolTip = "Tooltip",
+            };
+            _ = trayIcon2.Create();
+
+            Console.WriteLine("Second icon created. It will removed after 5 seconds.");
+
+            await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+
+            Console.WriteLine("Second icon removed.");
+        }
+        else if (line.StartsWith("message"))
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.None),
