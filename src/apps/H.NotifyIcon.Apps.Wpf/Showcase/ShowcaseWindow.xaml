@@ -20,16 +20,6 @@
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-        <ObjectDataProvider
-            MethodName="GetValues"
-            ObjectType="{x:Type sys:Enum}"
-            x:Key="ActivationModes"
-            >
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="tb:PopupActivationMode" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-
     </Window.Resources>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.771,0.907" StartPoint="0.229,0.093">
@@ -230,7 +220,7 @@
             <ListBox
                 IsSynchronizedWithCurrentItem="False"
                 x:Name="lstPopupTrigger"
-                ItemsSource="{Binding Mode=OneWay, Source={StaticResource ActivationModes}}"
+                ItemsSource="{Binding ActivationModes}"
                 Margin="10,0,190,10"
                 SelectedIndex="0"
                 Height="117"
@@ -391,7 +381,7 @@
                 Margin="10,0,95,10"
                 IsSynchronizedWithCurrentItem="False"
                 x:Name="lstMenuTrigger"
-                ItemsSource="{Binding Mode=OneWay, Source={StaticResource ActivationModes}}"
+                ItemsSource="{Binding ActivationModes}"
                 Height="124"
                 VerticalAlignment="Bottom"
                 SelectedIndex="1"

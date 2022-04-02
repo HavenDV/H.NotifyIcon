@@ -13,6 +13,10 @@ namespace NotifyIconWpf.Sample.ShowCases.Showcase;
 /// </summary>
 public partial class ShowcaseWindow : Window
 {
+    public IEnumerable<PopupActivationMode> ActivationModes => Enum
+        .GetValues(typeof(PopupActivationMode))
+        .Cast<PopupActivationMode>();
+
     public ShowcaseWindow()
     {
         InitializeComponent();
