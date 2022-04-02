@@ -8,7 +8,7 @@ using var trayIcon = new TrayIcon
     Icon = icon.Handle,
     ToolTip = "Tooltip",
 };
-_ = trayIcon.Create();
+trayIcon.CreateAndShow();
 
 while (true)
 {
@@ -24,7 +24,7 @@ while (true)
                 Icon = icon2.Handle,
                 ToolTip = "Tooltip",
             };
-            _ = trayIcon2.Create();
+            trayIcon2.CreateAndShow();
 
             Console.WriteLine("Second icon created. It will removed after 5 seconds.");
 
@@ -89,8 +89,8 @@ while (true)
         }
         else if (line.StartsWith("create"))
         {
-            var result = trayIcon.Create();
-            Console.WriteLine($"{line}: {result}");
+            trayIcon.CreateAndShow();
+            Console.WriteLine(nameof(trayIcon.CreateAndShow));
         }
         else if (line.StartsWith("show"))
         {

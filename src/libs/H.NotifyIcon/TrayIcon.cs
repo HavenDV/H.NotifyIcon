@@ -57,7 +57,7 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// State of the icon. Remember to also set the StateMask.
     /// </summary>
-    public IconState Visibility { get; set; } = IconState.Visible;
+    public IconState Visibility { get; set; } = IconState.Hidden;
 
     /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
@@ -104,8 +104,10 @@ public class TrayIcon : IDisposable
 
     /// <summary>
     /// Creates the taskbar icon. This message is invoked during initialization,
-    /// if the taskbar is restarted, and whenever the icon is displayed.
+    /// if the taskbar is restarted, and whenever the icon is displayed. <br/>
+    /// Created icon will be hidden. Use Show() to show it.
     /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public bool Create()
     {
         if (IsCreated)
@@ -113,21 +115,16 @@ public class TrayIcon : IDisposable
             return true;
         }
 
-        var flags =
-            NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
-            NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
-            NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
-            NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
-            NOTIFY_ICON_DATA_FLAGS.NIF_GUID;
+        var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
         if (UseStandardTooltip)
         {
-            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
         }
 
         if (!TrayIconMethods.TryCreate(
             id: Id,
             handle: MessageSink.MessageWindowHandle,
-            flags: flags,
+            additionalFlags: additionalFlags,
             toolTip: ToolTip,
             uCallbackMessage: WindowMessageSink.CallbackMessageId,
             iconHandle: new HICON(Icon)))
@@ -152,6 +149,20 @@ public class TrayIcon : IDisposable
         IsCreated = true;
         MessageSink.TaskbarCreated += OnTaskbarCreated;
         return true;
+    }
+
+    /// <summary>
+    /// Creates and shows icon.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void CreateAndShow()
+    {
+        if (!Create())
+        {
+            throw new InvalidOperationException("Create failed.");
+        }
+
+        Show();
     }
 
     /// <summary>
@@ -305,10 +316,10 @@ public class TrayIcon : IDisposable
         EnsureNotDisposed();
         EnsureCreated();
 
-        var flags = (NOTIFY_ICON_DATA_FLAGS)0;
+        var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
         if (realtime)
         {
-            flags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
         }
 
         var infoFlags = customIcon != null
@@ -329,7 +340,7 @@ public class TrayIcon : IDisposable
 
         if (!TrayIconMethods.TryShowNotification(
             id: Id,
-            flags: flags,
+            additionalFlags: additionalFlags,
             title: title,
             message: message,
             infoFlags: infoFlags,
@@ -396,8 +407,8 @@ public class TrayIcon : IDisposable
     {
         try
         {
-            Remove();
-            Create();
+            _ = Remove();
+            _ = Create();
         }
         catch (Exception)
         {
@@ -497,7 +508,7 @@ public class TrayIcon : IDisposable
 
         IsDisposed = true;
         MessageSink.Dispose();
-        _ =Remove();
+        _ = Remove();
     }
 
     #endregion

@@ -10,7 +10,7 @@ public class TrayIconTests
     public async Task SimpleTest()
     {
         using var trayIcon = new TrayIcon();
-        trayIcon.Create();
+        trayIcon.CreateAndShow();
         using var iconStream = H.Resources.Red_ico.AsStream();
         using var icon = new Icon(iconStream);
         trayIcon.UpdateIcon(icon.Handle);

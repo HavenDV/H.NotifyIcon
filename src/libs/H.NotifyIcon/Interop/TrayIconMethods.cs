@@ -75,7 +75,7 @@ internal static class TrayIconMethods
     public static unsafe bool TryCreate(
         Guid id,
         IntPtr handle,
-        NOTIFY_ICON_DATA_FLAGS flags,
+        NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string toolTip,
         uint uCallbackMessage,
         IntPtr iconHandle)
@@ -85,11 +85,19 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW64
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-                uFlags = flags,
+                uFlags =
+                    additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 hWnd = new HWND(handle),
                 guidItem = id,
                 uCallbackMessage = uCallbackMessage,
                 hIcon = new HICON(iconHandle),
+                dwState = PInvoke.NIS_HIDDEN,
+                dwStateMask = PInvoke.NIS_HIDDEN,
             };
             toolTip.SetTo(&data.szTip._0, data.szTip.Length);
 
@@ -100,11 +108,19 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW32
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-                uFlags = flags,
+                uFlags =
+                    additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 hWnd = new HWND(handle),
                 guidItem = id,
                 uCallbackMessage = uCallbackMessage,
                 hIcon = new HICON(iconHandle),
+                dwState = PInvoke.NIS_HIDDEN,
+                dwStateMask = PInvoke.NIS_HIDDEN,
             };
             toolTip.SetTo(&data.szTip._0, data.szTip.Length);
 
@@ -194,7 +210,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwState = state,
-                dwStateMask = state,
+                dwStateMask = PInvoke.NIS_HIDDEN,
             };
 
             return SendModifyMessage(data);
@@ -209,7 +225,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwState = state,
-                dwStateMask = state,
+                dwStateMask = PInvoke.NIS_HIDDEN,
             };
 
             return SendModifyMessage(data);
@@ -245,7 +261,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryShowNotification(
         Guid id,
-        NOTIFY_ICON_DATA_FLAGS flags,
+        NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string title,
         string message,
         uint infoFlags,
@@ -257,7 +273,7 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW64
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
-                uFlags = flags |
+                uFlags = additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
@@ -278,7 +294,7 @@ internal static class TrayIconMethods
             var data = new NOTIFYICONDATAW32
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
-                uFlags = flags |
+                uFlags = additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,

@@ -125,9 +125,10 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
         TrayIcon = new TrayIcon(DesignTimeUtilities.IsDesignMode);
-        _ = TrayIcon.Create();
-        _ = TrayIcon.Remove();
-        _ = TrayIcon.Create();
+        if (TrayIcon.Create())
+        {
+            TrayIcon.Show();
+        }
         TrayIcon.MessageSink.DpiChanged += DpiUtilities.UpdateDpiFactors;
 
         // register event listeners
