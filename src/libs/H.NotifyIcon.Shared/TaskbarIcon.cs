@@ -119,6 +119,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         });
         RegisterPropertyChangedCallback(ContextFlyoutProperty, (_, _) =>
         {
+            SetParentTaskbarIcon(ContextFlyout, this);
             UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
         });
 #endif
