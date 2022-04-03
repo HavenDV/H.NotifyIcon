@@ -1249,6 +1249,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
             TrayIcon.Dispose();
+            Icon?.Dispose();
         }
     }
 
