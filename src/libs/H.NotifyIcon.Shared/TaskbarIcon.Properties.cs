@@ -109,26 +109,47 @@ public partial class TaskbarIcon
 
     //DEPENDENCY PROPERTIES
 
-    #region Icon property / IconSource dependency property
+    #region Icon/IconSource
 
-    private Icon? icon;
+    /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register(nameof(Icon),
+            typeof(Icon),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(null, IconPropertyChanged));
 
     /// <summary>
-    /// Gets or sets the icon to be displayed. This is not a
-    /// dependency property - if you want to assign the property
-    /// through XAML, please use the <see cref="IconSource"/>
-    /// dependency property.
+    /// Gets or sets the icon to be displayed.
+    /// Use this for dynamically generated System.Drawing.Icons.
     /// </summary>
-    [Browsable(false)]
+    [Category(CategoryName)]
+    [Description("Sets the displayed taskbar icon.")]
     public Icon? Icon
     {
-        get { return icon; }
-        set
+        get => (Icon?)GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
+    }
+
+    private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not TaskbarIcon control)
         {
-            icon?.Dispose();
-            icon = value;
-            TrayIcon.UpdateIcon(value?.Handle ?? IntPtr.Zero);
+            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
         }
+        if (e.OldValue is Icon oldIcon)
+        {
+            oldIcon.Dispose();
+        }
+        if (e.NewValue is not Icon newIcon)
+        {
+            throw new InvalidOperationException($"Value should be {nameof(Icon)}");
+        }
+        if (DesignTimeUtilities.IsDesignMode)
+        {
+            return;
+        }
+
+        control.TrayIcon.UpdateIcon(newIcon?.Handle ?? IntPtr.Zero);
     }
 
     /// <summary>Identifies the <see cref="IconSource"/> dependency property.</summary>
