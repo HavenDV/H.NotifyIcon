@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.IO;
+
+namespace H.NotifyIcon;
 
 internal static class ImageExtensions
 {
@@ -22,6 +24,29 @@ internal static class ImageExtensions
     }
 
 #if HAS_WPF
+
+    public static Icon ToIcon(this BitmapFrame frame)
+    {
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(frame);
+
+        using var stream = new MemoryStream();
+        encoder.Save(stream);
+
+        var iconBytes = stream.ToArray().ConvertPngToIco();
+        using var iconStream = new MemoryStream(iconBytes);
+        
+        return new Icon(iconStream);
+    }
+
+    public static Icon ToIcon(this BitmapSource bitmap)
+    {
+        return BitmapFrame.Create(bitmap).ToIcon();
+    }
+
+#endif
+
+#if HAS_WPF
     public static Icon? ToIcon(this ImageSource imageSource)
 #else
     public static async Task<Icon?> ToIconAsync(this ImageSource imageSource)
@@ -35,7 +60,7 @@ internal static class ImageExtensions
             case BitmapImage bitmapImage:
                 {
                     var uri = bitmapImage.UriSource;
-
+                    
 #if HAS_WPF
                     return uri.ToIcon();
 #else

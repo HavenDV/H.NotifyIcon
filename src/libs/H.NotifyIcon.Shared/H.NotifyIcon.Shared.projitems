@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.AttachedProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Events.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DpiUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\PngToIcoConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RoutedEventHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Properties.cs" />
