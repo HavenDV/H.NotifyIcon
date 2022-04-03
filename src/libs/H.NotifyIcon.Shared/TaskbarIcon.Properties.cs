@@ -125,6 +125,7 @@ public partial class TaskbarIcon
         get { return icon; }
         set
         {
+            icon?.Dispose();
             icon = value;
             TrayIcon.UpdateIcon(value?.Handle ?? IntPtr.Zero);
         }
