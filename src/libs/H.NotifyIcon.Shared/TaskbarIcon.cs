@@ -167,6 +167,18 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
     #endregion
 
+    #region Methods
+
+    /// <summary>
+    /// Use it to force create icon if it placed in resources.
+    /// </summary>
+    public bool TryForceCreate()
+    {
+        return TrayIcon.Create();
+    }
+
+    #endregion
+
     #region Custom Balloons
 
 #if HAS_WPF

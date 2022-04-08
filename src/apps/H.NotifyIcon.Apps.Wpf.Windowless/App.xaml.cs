@@ -16,6 +16,7 @@ public partial class App : Application
 
         //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
         notifyIcon = (TaskbarIcon) FindResource("NotifyIcon");
+        _ = notifyIcon.TryForceCreate();
     }
 
     protected override void OnExit(ExitEventArgs e)
