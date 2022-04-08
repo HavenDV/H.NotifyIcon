@@ -6,9 +6,24 @@ using var icon = new Icon(iconStream);
 using var trayIcon = new TrayIcon
 {
     Icon = icon.Handle,
-    ToolTip = "Tooltip",
+    ToolTip = "ToolTip",
 };
-trayIcon.CreateAndShow();
+_ = trayIcon.Create();
+
+Console.WriteLine("TrayIcon created.");
+Console.WriteLine("Available commands:");
+Console.WriteLine("create-second   - Creates second tray icon");
+Console.WriteLine("message [text]  - Shows notification without icon");
+Console.WriteLine("warning [text]  - Shows notification with warning icon");
+Console.WriteLine("error [text]    - Shows notification with error icon");
+Console.WriteLine("custom [text]   - Shows notification with custom icon");
+Console.WriteLine("clear           - Clears notifications");
+Console.WriteLine("set-focus       - Sets focus on tray icon");
+Console.WriteLine("remove          - Removes tray icon");
+Console.WriteLine("create          - Creates tray icon");
+Console.WriteLine("show            - Shows tray icon");
+Console.WriteLine("hide            - Hides tray icon");
+Console.WriteLine("exit            - Closes console application and clears resources.");
 
 while (true)
 {
@@ -22,9 +37,9 @@ while (true)
             using var trayIcon2 = new TrayIcon("H.NotifyIcon.Apps.Console.SecondTrayIcon")
             {
                 Icon = icon2.Handle,
-                ToolTip = "Tooltip",
+                ToolTip = "Second Tray Icon",
             };
-            trayIcon2.CreateAndShow();
+            _ = trayIcon2.Create();
 
             Console.WriteLine("Second icon created. It will removed after 5 seconds.");
 
@@ -36,7 +51,7 @@ while (true)
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.None),
-                message: line.Substring("message".Length + 1),
+                message: line.Substring("message".Length).TrimStart(),
                 icon: NotificationIcon.None);
             Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
@@ -44,7 +59,7 @@ while (true)
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.Info),
-                message: line.Substring("info".Length + 1),
+                message: line.Substring("info".Length).TrimStart(),
                 icon: NotificationIcon.Info);
             Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
@@ -52,7 +67,7 @@ while (true)
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.Warning),
-                message: line.Substring("warning".Length + 1),
+                message: line.Substring("warning".Length).TrimStart(),
                 icon: NotificationIcon.Warning);
             Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
@@ -60,7 +75,7 @@ while (true)
         {
             trayIcon.ShowNotification(
                 title: nameof(NotificationIcon.Error),
-                message: line.Substring("error".Length + 1),
+                message: line.Substring("error".Length).TrimStart(),
                 icon: NotificationIcon.Error);
             Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
@@ -68,7 +83,7 @@ while (true)
         {
             trayIcon.ShowNotification(
                 title: "Custom",
-                message: line.Substring("custom".Length + 1),
+                message: line.Substring("custom".Length).TrimStart(),
                 customIcon: icon.Handle);
             Console.WriteLine(nameof(trayIcon.ShowNotification));
         }
@@ -89,8 +104,8 @@ while (true)
         }
         else if (line.StartsWith("create"))
         {
-            trayIcon.CreateAndShow();
-            Console.WriteLine(nameof(trayIcon.CreateAndShow));
+            var result = trayIcon.Create();
+            Console.WriteLine($"{line}: {result}");
         }
         else if (line.StartsWith("show"))
         {
