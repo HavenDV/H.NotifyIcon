@@ -60,9 +60,9 @@ public class TrayIcon : IDisposable
     public nint WindowHandle => MessageSink.MessageWindowHandle;
 
     /// <summary>
-    /// State of the icon. Remember to also set the StateMask.
+    /// Icon visibility.
     /// </summary>
-    public IconState Visibility { get; set; } = IconState.Hidden;
+    public IconState Visibility { get; set; } = IconState.Visible;
 
     /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
@@ -93,7 +93,7 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// TrayIcon was created.<br/>
     /// This can happen in the following cases:<br/>
-    /// - Via direct <see cref="Create"/> or <see cref="CreateAndShow"/> call<br/>
+    /// - Via direct <see cref="Create"/> call<br/>
     /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
     /// - After Explorer has been restarted<br/>
     /// </summary>
@@ -249,7 +249,12 @@ public class TrayIcon : IDisposable
             id: Id,
             out var version))
         {
-            throw new InvalidOperationException("SetVersion failed.");
+            throw new InvalidOperationException($"{nameof(TrayIconMethods.TrySetMostRecentVersion)} failed.");
+        }
+        if (Visibility == IconState.Visible &&
+            !TrayIconMethods.TryModifyState(Id, (uint)Visibility))
+        {
+            throw new InvalidOperationException($"{nameof(TrayIconMethods.TryModifyState)} failed.");
         }
 
         Version = version;
@@ -259,20 +264,6 @@ public class TrayIcon : IDisposable
         OnCreated();
         MessageSink.TaskbarCreated += OnTaskbarCreated;
         return true;
-    }
-
-    /// <summary>
-    /// Creates and shows icon.
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    public void CreateAndShow()
-    {
-        if (!Create())
-        {
-            throw new InvalidOperationException("Create failed.");
-        }
-
-        Show();
     }
 
     /// <summary>
