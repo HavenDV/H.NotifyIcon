@@ -1,4 +1,7 @@
-﻿using H.NotifyIcon.Interop;
+﻿using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
 
@@ -17,9 +20,11 @@ public class TrayIcon : IDisposable
     #region Properties
 
     /// <summary>
-    /// Unique ID.
+    /// Unique ID. <br/>
+    /// It will be used by the system to store your TrayIcon settings, 
+    /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
     /// </summary>
-    public Guid Id { get; } = Guid.NewGuid();
+    public Guid Id { get; }
 
     /// <summary>
     /// Receives messages from the taskbar icon.
@@ -89,13 +94,81 @@ public class TrayIcon : IDisposable
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
     /// </summary>
-    public TrayIcon(bool isDesignMode = false)
+    /// <param name="id">
+    /// Unique ID. <br/>
+    /// It will be used by the system to store your TrayIcon settings, 
+    /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
+    /// </param>
+    /// <param name="isDesignMode"></param>
+    public TrayIcon(Guid id, bool isDesignMode = false)
     {
+        Id = id;
         IsDesignMode = isDesignMode;
         if (!IsDesignMode)
         {
             MessageSink.Create();
         }
+    }
+
+    /// <summary>
+    /// Initializes the taskbar icon and registers a message listener
+    /// in order to receive events from the taskbar area. <br/>
+    /// Creates <see cref="Id"/> based on the simple name of an Entry assembly. <br/>
+    /// Use other overloads to create multiple icons for the same application.
+    /// </summary>
+    /// <param name="isDesignMode"></param>
+    public TrayIcon(bool isDesignMode = false) : this(CreateUniqueGuidForEntryAssembly(), isDesignMode)
+    {
+    }
+
+    /// <summary>
+    /// Initializes the taskbar icon and registers a message listener
+    /// in order to receive events from the taskbar area. <br/>
+    /// Creates <see cref="Id"/> based on the specified name. <br/>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="isDesignMode"></param>
+    public TrayIcon(string name, bool isDesignMode = false) : this(CreateUniqueGuidFromString(name), isDesignMode)
+    {
+    }
+
+    #endregion
+
+    #region Static methods
+
+    /// <summary>
+    /// Creates a unique Guid for the given string using hashing.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static Guid CreateUniqueGuidFromString(string input)
+    {
+        input = input ?? throw new ArgumentNullException(nameof(input));
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            throw new ArgumentException("Please enter a non-empty string.", nameof(input));
+        }
+
+        using var sha256 = SHA256.Create();
+        var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+        return new Guid(hash.Take(16).ToArray());
+    }
+
+    /// <summary>
+    /// Creates a unique Guid for the entry assembly simple name using hashing.
+    /// </summary>
+    /// <returns></returns>
+    public static Guid CreateUniqueGuidForEntryAssembly()
+    {
+        var assembly =
+            Assembly.GetEntryAssembly() ??
+            throw new InvalidOperationException("Entry assembly is not found.");
+        var name =
+            assembly.GetName().Name ??
+            throw new InvalidOperationException("Entry assembly should have simple name.");
+
+        return CreateUniqueGuidFromString(name);
     }
 
     #endregion
@@ -114,6 +187,10 @@ public class TrayIcon : IDisposable
         {
             return true;
         }
+
+        // We are trying to delete in case the last launch of the application did not clear the icon correctly.
+        // Otherwise, in this case TryCreate will return false.
+        _ = TrayIconMethods.TryDelete(Id);
 
         var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
         if (UseStandardTooltip)

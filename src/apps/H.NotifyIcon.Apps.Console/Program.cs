@@ -19,7 +19,7 @@ while (true)
         {
             using var iconStream2 = H.Resources.icon_ico.AsStream();
             using var icon2 = new Icon(iconStream2);
-            using var trayIcon2 = new TrayIcon
+            using var trayIcon2 = new TrayIcon("H.NotifyIcon.Apps.Console.SecondTrayIcon")
             {
                 Icon = icon2.Handle,
                 ToolTip = "Tooltip",
