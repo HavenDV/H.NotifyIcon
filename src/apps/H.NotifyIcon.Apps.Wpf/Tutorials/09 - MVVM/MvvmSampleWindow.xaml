@@ -19,6 +19,7 @@
             declaring view. Alternatively, you could just assign it manually
         -->
         <tb:TaskbarIcon
+            x:Name="TaskbarIcon"
             IconSource="/Icons/Inactive.ico"
             ToolTipText="{Binding Timestamp}"
             >

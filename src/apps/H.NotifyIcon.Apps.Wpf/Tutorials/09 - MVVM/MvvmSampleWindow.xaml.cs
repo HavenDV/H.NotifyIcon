@@ -10,5 +10,13 @@ public partial class MvvmSampleWindow : Window
     public MvvmSampleWindow()
     {
         InitializeComponent();
+
+        Closed += (_, _) =>
+        {
+            var viewModel = (MvvmSampleViewModel)DataContext;
+            viewModel.Dispose();
+
+            TaskbarIcon.Dispose();
+        };
     }
 }

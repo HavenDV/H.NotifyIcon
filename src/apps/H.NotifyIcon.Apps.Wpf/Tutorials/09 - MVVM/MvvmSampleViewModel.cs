@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace NotifyIconWpf.Sample.ShowCases.Tutorials;
 
-public class MvvmSampleViewModel : INotifyPropertyChanged
+public class MvvmSampleViewModel : INotifyPropertyChanged, IDisposable
 {
     private DispatcherTimer timer;
 
@@ -32,5 +32,10 @@ public class MvvmSampleViewModel : INotifyPropertyChanged
         {
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public void Dispose()
+    {
+        timer.Stop();
     }
 }
