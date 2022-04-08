@@ -88,6 +88,38 @@ public class TrayIcon : IDisposable
 
     #endregion
 
+    #region Events
+
+    /// <summary>
+    /// TrayIcon was created.<br/>
+    /// This can happen in the following cases:<br/>
+    /// - Via direct <see cref="Create"/> or <see cref="CreateAndShow"/> call<br/>
+    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
+    /// - After Explorer has been restarted<br/>
+    /// </summary>
+    public event EventHandler? Created;
+
+    /// <summary>
+    /// TrayIcon was removed.<br/>
+    /// This can happen in the following cases:<br/>
+    /// - Via direct <see cref="Remove"/> call<br/>
+    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
+    /// - After Explorer has been restarted<br/>
+    /// </summary>
+    public event EventHandler? Removed;
+
+    private void OnCreated()
+    {
+        Created?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnRemoved()
+    {
+        Removed?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
+
     #region Constructors
 
     /// <summary>
@@ -224,6 +256,7 @@ public class TrayIcon : IDisposable
         MessageSink.Version = version;
 
         IsCreated = true;
+        OnCreated();
         MessageSink.TaskbarCreated += OnTaskbarCreated;
         return true;
     }
@@ -258,6 +291,7 @@ public class TrayIcon : IDisposable
         }
         
         IsCreated = false;
+        OnRemoved();
         MessageSink.TaskbarCreated -= OnTaskbarCreated;
         return true;
     }

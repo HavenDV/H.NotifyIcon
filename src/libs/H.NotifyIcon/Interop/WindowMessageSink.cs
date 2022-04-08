@@ -66,7 +66,7 @@ public class WindowMessageSink : IDisposable
 
     #endregion
 
-    #region events
+    #region Events
 
     /// <summary>
     /// The custom tooltip should be closed or hidden.
