@@ -3,6 +3,7 @@
 //using Windows.Graphics;
 //using WinRT.Interop;
 
+using System.Diagnostics;
 using H.NotifyIcon.Core;
 
 namespace H.NotifyIcon;
@@ -50,7 +51,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
     /// </summary>
-    public bool IsTaskbarIconCreated => TrayIcon.IsCreated;
+    public bool IsCreated => TrayIcon.IsCreated;
 
     /// <summary>
     /// Indicates whether custom tooltips are supported, which depends
@@ -101,7 +102,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     }
 
 #endif
-
+    
     /// <summary>
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
@@ -125,10 +126,22 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
         TrayIcon = new TrayIcon(DesignTimeUtilities.IsDesignMode);
-        if (TrayIcon.Create())
+        Loaded += (_, _) =>
         {
-            TrayIcon.Show();
-        }
+            if (DesignTimeUtilities.IsDesignMode)
+            {
+                return;
+            }
+
+            try
+            {
+                _ = TrayIcon.Create();
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+            }
+        };
         TrayIcon.MessageSink.DpiChanged += DpiUtilities.UpdateDpiFactors;
 
         // register event listeners
@@ -687,6 +700,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 // need to set a dummy value (we're displaying the ToolTip control, not the string)
                 text = "ToolTip";
             }
+        }
+
+        if (!TrayIcon.IsCreated)
+        {
+            return;
         }
 
         TrayIcon.UpdateToolTip(text);

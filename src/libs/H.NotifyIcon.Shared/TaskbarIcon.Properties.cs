@@ -109,6 +109,59 @@ public partial class TaskbarIcon
 
     //DEPENDENCY PROPERTIES
 
+    #region Id
+
+    /// <summary>Identifies the <see cref="Id"/> dependency property.</summary>
+    public static readonly DependencyProperty IdProperty =
+        DependencyProperty.Register(nameof(Id),
+            typeof(Guid),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(Guid.Empty, IdPropertyChanged));
+
+    /// <summary>
+    /// Gets or sets the TrayIcon Id.
+    /// Use this for second TrayIcon in same app.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Sets the TrayIcon Id.")]
+    public Guid Id
+    {
+        get => (Guid)GetValue(IdProperty);
+        set => SetValue(IdProperty, value);
+    }
+
+    private static void IdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not TaskbarIcon control)
+        {
+            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
+        }
+        if (e.OldValue is not Guid oldId)
+        {
+            throw new InvalidOperationException($"Value should be {nameof(Guid)}");
+        }
+        if (e.NewValue is not Guid newId)
+        {
+            throw new InvalidOperationException($"Value should be {nameof(Guid)}");
+        }
+
+        var wasCreated = control.IsCreated;
+        if (oldId != Guid.Empty &&
+            wasCreated)
+        {
+            _ = control.TrayIcon.Remove();
+        }
+
+        control.Id = newId;
+
+        if (wasCreated)
+        {
+            _ = control.TrayIcon.Create();
+        }
+    }
+
+    #endregion
+
     #region Icon/IconSource
 
     /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
@@ -144,12 +197,15 @@ public partial class TaskbarIcon
         {
             throw new InvalidOperationException($"Value should be {nameof(Icon)}");
         }
-        if (DesignTimeUtilities.IsDesignMode)
+
+        var icon = newIcon?.Handle ?? IntPtr.Zero;
+        if (!control.TrayIcon.IsCreated)
         {
+            control.TrayIcon.Icon = icon;
             return;
         }
 
-        control.TrayIcon.UpdateIcon(newIcon?.Handle ?? IntPtr.Zero);
+        control.TrayIcon.UpdateIcon(icon);
     }
 
     /// <summary>Identifies the <see cref="IconSource"/> dependency property.</summary>
@@ -185,10 +241,6 @@ public partial class TaskbarIcon
         if (e.NewValue is not ImageSource source)
         {
             throw new InvalidOperationException($"Value should be {nameof(ImageSource)}");
-        }
-        if (DesignTimeUtilities.IsDesignMode)
-        {
-            return;
         }
 
 #if HAS_WPF
@@ -422,7 +474,7 @@ public partial class TaskbarIcon
 
     #endregion
 
-    #region Visibility dependency property override
+    #region Visibility
 
     private static void VisibilityPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -434,10 +486,16 @@ public partial class TaskbarIcon
 
     private void SetTrayIconVisibility(Visibility value)
     {
-        TrayIcon.UpdateVisibility(
-            value == Visibility.Visible
-                ? IconState.Visible
-                : IconState.Hidden);
+        var state = value == Visibility.Visible
+            ? IconState.Visible
+            : IconState.Hidden;
+        if (!IsCreated)
+        {
+            TrayIcon.Visibility = state;
+            return;
+        }
+
+        TrayIcon.UpdateVisibility(state);
     }
 
     #endregion

@@ -5,7 +5,7 @@
     <SignAssembly>false</SignAssembly>
     <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI</DefineConstants>
     <Nullable>enable</Nullable>
-    <NoWarn>$(NoWarn);Uno0001;CA1010</NoWarn>
+    <NoWarn>$(NoWarn);Uno0001;CA1010;CA1031</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
