@@ -19,7 +19,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// <summary>
     /// A singleton instance.
     /// </summary>
-    private static T command;
+    private static T? command;
 
     /// <summary>
     /// Gets a shared command instance.
@@ -38,7 +38,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// Fires when changes occur that affect whether
     /// or not the command should execute.
     /// </summary>
-    public event EventHandler CanExecuteChanged
+    public event EventHandler? CanExecuteChanged
     {
         add { CommandManager.RequerySuggested += value; }
         remove { CommandManager.RequerySuggested -= value; }
@@ -51,7 +51,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// If the command does not require data to be passed,
     /// this object can be set to null.
     /// </param>
-    public abstract void Execute(object parameter);
+    public abstract void Execute(object? parameter);
 
     /// <summary>
     /// Defines the method that determines whether the command
@@ -64,7 +64,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// If the command does not require data to be passed,
     /// this object can be set to null.
     /// </param>
-    public virtual bool CanExecute(object parameter)
+    public virtual bool CanExecute(object? parameter)
     {
         return !IsDesignMode;
     }
@@ -81,7 +81,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// </summary>
     /// <param name="commandParameter"></param>
     /// <returns>Window</returns>
-    protected Window GetTaskbarWindow(object commandParameter)
+    protected Window? GetTaskbarWindow(object? commandParameter)
     {
         if (IsDesignMode)
         {
@@ -103,7 +103,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// <returns>The first parent item that matches the submitted
     /// type parameter. If not matching item can be found, a null
     /// reference is being returned.</returns>
-    public static TParent TryFindParent<TParent>(DependencyObject child) where TParent : DependencyObject
+    public static TParent? TryFindParent<TParent>(DependencyObject child) where TParent : DependencyObject
     {
         //get parent item
         var parentObject = GetParentObject(child);
@@ -133,7 +133,7 @@ public abstract class CommandBase<T> : MarkupExtension, ICommand
     /// <param name="child">The item to be processed.</param>
     /// <returns>The submitted item's parent, if available. Otherwise
     /// null.</returns>
-    public static DependencyObject GetParentObject(DependencyObject child)
+    public static DependencyObject? GetParentObject(DependencyObject child)
     {
         if (child == null)
         {

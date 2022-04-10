@@ -16,13 +16,18 @@ public class MainViewModel
             command.ExecuteRequested += (sender, e) =>
             {
                 var window = App.MainWindow;
+                if (window == null)
+                {
+                    return;
+                }
+
                 if (window.Visible)
                 {
-                    App.MainWindow.Hide();
+                    window.Hide();
                 }
                 else
                 {
-                    App.MainWindow.Show();
+                    window.Show();
                 }
             };
 
@@ -41,7 +46,7 @@ public class MainViewModel
             var command = new XamlUICommand();
             command.ExecuteRequested += (sender, e) =>
             {
-                App.MainWindow.Close();
+                App.MainWindow?.Close();
             };
 
             return command;

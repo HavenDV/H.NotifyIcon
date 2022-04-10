@@ -65,7 +65,7 @@ public partial class FancyBalloon : UserControl
     {
         //the tray icon assigned this attached property to simplify access
         var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-        taskbarIcon.CloseBalloon();
+        taskbarIcon?.CloseBalloon();
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public partial class FancyBalloon : UserControl
 
         //the tray icon assigned this attached property to simplify access
         var taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-        taskbarIcon.ResetBalloonCloseTimer();
+        taskbarIcon?.ResetBalloonCloseTimer();
     }
 
 

@@ -13,8 +13,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <NoWarn>$(NoWarn);CS8785</NoWarn>
     <LangVersion>preview</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

@@ -29,7 +29,7 @@ public partial class InlineContextMenuWindow : Window
     private void MyNotifyIcon_PreviewTrayContextMenuOpen(object sender, RoutedEventArgs e)
     {
         //marking the event as handled suppresses the context menu
-        e.Handled = (bool) SuppressContextMenu.IsChecked;
+        e.Handled = SuppressContextMenu.IsChecked ?? false;
 
         PreviewOpenEventCounter.Text = (int.Parse(PreviewOpenEventCounter.Text) + 1).ToString();
     }

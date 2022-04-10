@@ -17,13 +17,13 @@ public class MvvmSampleViewModel : INotifyPropertyChanged, IDisposable
         timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, OnTimerTick, Application.Current.Dispatcher);
     }
 
-    private void OnTimerTick(object sender, EventArgs e)
+    private void OnTimerTick(object? sender, EventArgs e)
     {
         //fire a property change event for the timestamp
         Application.Current.Dispatcher.BeginInvoke(new Action(() => OnPropertyChanged("Timestamp")));
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged(string propertyName)
     {

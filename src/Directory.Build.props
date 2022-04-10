@@ -2,7 +2,7 @@
 
   <PropertyGroup Label="Common">
     <LangVersion>preview</LangVersion>
-    <!--<Nullable>enable</Nullable>-->
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   

@@ -8,14 +8,14 @@ namespace NotifyIconWpf.Sample.ShowCases.Commands;
 /// </summary>
 public class ShowSampleWindowCommand : CommandBase<ShowSampleWindowCommand>
 {
-    public override void Execute(object parameter)
+    public override void Execute(object? parameter)
     {
-        GetTaskbarWindow(parameter).Show();
+        GetTaskbarWindow(parameter)?.Show();
         CommandManager.InvalidateRequerySuggested();
     }
 
 
-    public override bool CanExecute(object parameter)
+    public override bool CanExecute(object? parameter)
     {
         var win = GetTaskbarWindow(parameter);
         return win != null && !win.IsVisible;

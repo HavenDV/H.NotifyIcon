@@ -38,11 +38,12 @@ public partial class Main : Window
             var executingAssembly = typeof(H.NotifyIcon.Core.TrayIcon).Assembly;
 
             // Use assembly version
-            var version = executingAssembly.GetName().Version.ToString();
+            var version = executingAssembly.GetName().Version?.ToString() ?? string.Empty;
 
             // Use AssemblyFileVersion if available
             var assemblyFileVersionAttribute = executingAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
-            if (!string.IsNullOrEmpty(assemblyFileVersionAttribute?.Version))
+            if (assemblyFileVersionAttribute != null &&
+                !string.IsNullOrEmpty(assemblyFileVersionAttribute.Version))
             {
                 var assemblyFileVersion = new Version(assemblyFileVersionAttribute.Version);
                 version = assemblyFileVersion.ToString(3);

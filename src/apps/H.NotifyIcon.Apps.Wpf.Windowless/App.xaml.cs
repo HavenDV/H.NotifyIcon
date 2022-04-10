@@ -8,7 +8,7 @@ namespace NotifyIconWpf.Sample.Windowless;
 /// </summary>
 public partial class App : Application
 {
-    private TaskbarIcon notifyIcon;
+    private TaskbarIcon? notifyIcon;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -21,7 +21,7 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
-        notifyIcon.Dispose(); //the icon would clean up automatically, but this is cleaner
+        notifyIcon?.Dispose(); //the icon would clean up automatically, but this is cleaner
         base.OnExit(e);
     }
 }

@@ -8,14 +8,14 @@ namespace NotifyIconWpf.Sample.ShowCases.Commands;
 /// </summary>
 public class CloseWindowCommand : CommandBase<CloseWindowCommand>
 {
-    public override void Execute(object parameter)
+    public override void Execute(object? parameter)
     {
-        GetTaskbarWindow(parameter).Close();
+        GetTaskbarWindow(parameter)?.Close();
         CommandManager.InvalidateRequerySuggested();
     }
 
 
-    public override bool CanExecute(object parameter)
+    public override bool CanExecute(object? parameter)
     {
         var win = GetTaskbarWindow(parameter);
         return win != null;
