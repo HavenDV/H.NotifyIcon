@@ -4,18 +4,6 @@ internal static class RoutedEventHelper
 {
 #if HAS_WPF
 
-    internal static void RaiseEvent(DependencyObject target, RoutedEventArgs args)
-    {
-        if (target is UIElement uiElement)
-        {
-            uiElement.RaiseEvent(args);
-        }
-        else if (target is ContentElement contentElement)
-        {
-            contentElement.RaiseEvent(args);
-        }
-    }
-
     internal static RoutedEventArgs RaiseRoutedEvent(this UIElement target, RoutedEventArgs args)
     {
         target.RaiseEvent(args);
