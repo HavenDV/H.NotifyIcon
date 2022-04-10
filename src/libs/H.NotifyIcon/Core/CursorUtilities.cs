@@ -1,4 +1,5 @@
 using System.Drawing;
+using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
 
@@ -27,7 +28,7 @@ public static class CursorUtilities
     {
         var point = new POINT();
 
-        _ = PInvoke.GetPhysicalCursorPos(&point);
+        _ = PInvoke.GetPhysicalCursorPos(&point).EnsureNonZero();
 
         return new Point
         {
@@ -44,7 +45,7 @@ public static class CursorUtilities
     {
         var point = new POINT();
 
-        _ = PInvoke.GetCursorPos(&point);
+        _ = PInvoke.GetCursorPos(&point).EnsureNonZero();
 
         return new Point
         {

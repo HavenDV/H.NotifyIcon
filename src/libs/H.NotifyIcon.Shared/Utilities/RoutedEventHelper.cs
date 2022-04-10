@@ -2,8 +2,6 @@
 
 internal static class RoutedEventHelper
 {
-    #region RoutedEvent Helper Methods
-
 #if HAS_WPF
 
     internal static void RaiseEvent(DependencyObject target, RoutedEventArgs args)
@@ -22,31 +20,29 @@ internal static class RoutedEventHelper
 
     internal static void AddHandler(DependencyObject element, RoutedEvent routedEvent, Delegate handler)
     {
-        if (element is UIElement uie)
+        if (element is UIElement uIElement)
         {
-            uie.AddHandler(routedEvent, handler, handledEventsToo: false);
+            uIElement.AddHandler(routedEvent, handler, handledEventsToo: false);
         }
 #if HAS_WPF
-        else if (element is ContentElement ce)
+        else if (element is ContentElement contentElement)
         {
-            ce.AddHandler(routedEvent, handler, handledEventsToo: false);
+            contentElement.AddHandler(routedEvent, handler, handledEventsToo: false);
         }
 #endif
     }
 
     internal static void RemoveHandler(DependencyObject element, RoutedEvent routedEvent, Delegate handler)
     {
-        if (element is UIElement uie)
+        if (element is UIElement uIElement)
         {
-            uie.RemoveHandler(routedEvent, handler);
+            uIElement.RemoveHandler(routedEvent, handler);
         }
 #if HAS_WPF
-        else if (element is ContentElement ce)
+        else if (element is ContentElement contentElement)
         {
-            ce.RemoveHandler(routedEvent, handler);
+            contentElement.RemoveHandler(routedEvent, handler);
         }
 #endif
     }
-
-    #endregion
 }
