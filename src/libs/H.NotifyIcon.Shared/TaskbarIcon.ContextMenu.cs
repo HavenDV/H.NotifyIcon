@@ -10,6 +10,39 @@ namespace H.NotifyIcon;
 /// <inheritdoc/>
 public partial class TaskbarIcon
 {
+    #region Properties
+
+    #region MenuActivation
+
+    /// <summary>Identifies the <see cref="MenuActivation"/> dependency property.</summary>
+    public static readonly DependencyProperty MenuActivationProperty =
+        DependencyProperty.Register(
+            nameof(MenuActivation),
+            typeof(PopupActivationMode),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(PopupActivationMode.RightClick));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="MenuActivationProperty"/>
+    /// dependency property:<br/>
+    /// Defines what mouse events display the context menu.
+    /// Defaults to <see cref="PopupActivationMode.RightClick"/>.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Defines what mouse events display the context menu.")]
+#if !HAS_WPF
+    [CLSCompliant(false)]
+#endif
+    public PopupActivationMode MenuActivation
+    {
+        get { return (PopupActivationMode)GetValue(MenuActivationProperty); }
+        set { SetValue(MenuActivationProperty, value); }
+    }
+
+    #endregion
+
+    #endregion
+
     #region Events
 
 #if HAS_WPF

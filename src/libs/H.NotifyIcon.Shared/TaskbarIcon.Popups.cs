@@ -7,6 +7,35 @@ public partial class TaskbarIcon
 {
     #region Properties
 
+    #region PopupActivation dependency property
+
+    /// <summary>Identifies the <see cref="PopupActivation"/> dependency property.</summary>
+    public static readonly DependencyProperty PopupActivationProperty =
+        DependencyProperty.Register(
+            nameof(PopupActivation),
+            typeof(PopupActivationMode),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(PopupActivationMode.LeftClick));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="PopupActivationProperty"/>
+    /// dependency property:<br/>
+    /// Defines what mouse events trigger the <see cref="TrayPopup" />.
+    /// Default is <see cref="PopupActivationMode.LeftClick" />.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Defines what mouse events display the TaskbarIconPopup.")]
+#if !HAS_WPF
+    [CLSCompliant(false)]
+#endif
+    public PopupActivationMode PopupActivation
+    {
+        get { return (PopupActivationMode)GetValue(PopupActivationProperty); }
+        set { SetValue(PopupActivationProperty, value); }
+    }
+
+    #endregion
+
     #region TrayPopup
 
     /// <summary>Identifies the <see cref="TrayPopup"/> dependency property.</summary>

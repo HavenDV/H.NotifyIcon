@@ -156,6 +156,191 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region Events
+
+#if HAS_WPF
+
+    #region TrayToolTipOpen (and PreviewTrayToolTipOpen)
+
+    /// <summary>Identifies the <see cref="TrayToolTipOpen"/> routed event.</summary>
+    public static readonly RoutedEvent TrayToolTipOpenEvent = EventManager.RegisterRoutedEvent(
+        nameof(TrayToolTipOpen),
+        RoutingStrategy.Bubble,
+        typeof(RoutedEventHandler),
+        typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Bubbled event that occurs when the custom ToolTip is being displayed.
+    /// </summary>
+    public event RoutedEventHandler TrayToolTipOpen
+    {
+        add { AddHandler(TrayToolTipOpenEvent, value); }
+        remove { RemoveHandler(TrayToolTipOpenEvent, value); }
+    }
+
+    /// <summary>
+    /// A helper method to raise the TrayToolTipOpen event.
+    /// </summary>
+    protected RoutedEventArgs RaiseTrayToolTipOpenEvent()
+    {
+        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayToolTipOpenEvent));
+    }
+
+    /// <summary>Identifies the <see cref="PreviewTrayToolTipOpen"/> routed event.</summary>
+    public static readonly RoutedEvent PreviewTrayToolTipOpenEvent =
+        EventManager.RegisterRoutedEvent(
+            nameof(PreviewTrayToolTipOpen),
+            RoutingStrategy.Tunnel,
+            typeof(RoutedEventHandler),
+            typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Tunneled event that occurs when the custom ToolTip is being displayed.
+    /// </summary>
+    public event RoutedEventHandler PreviewTrayToolTipOpen
+    {
+        add { AddHandler(PreviewTrayToolTipOpenEvent, value); }
+        remove { RemoveHandler(PreviewTrayToolTipOpenEvent, value); }
+    }
+
+    /// <summary>
+    /// A helper method to raise the PreviewTrayToolTipOpen event.
+    /// </summary>
+    protected RoutedEventArgs RaisePreviewTrayToolTipOpenEvent()
+    {
+        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayToolTipOpenEvent));
+    }
+
+    #endregion
+
+    #region TrayToolTipClose (and PreviewTrayToolTipClose)
+
+    /// <summary>Identifies the <see cref="TrayToolTipClose"/> routed event.</summary>
+    public static readonly RoutedEvent TrayToolTipCloseEvent =
+        EventManager.RegisterRoutedEvent(
+            nameof(TrayToolTipClose),
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Bubbled event that occurs when a custom tooltip is being closed.
+    /// </summary>
+    public event RoutedEventHandler TrayToolTipClose
+    {
+        add { AddHandler(TrayToolTipCloseEvent, value); }
+        remove { RemoveHandler(TrayToolTipCloseEvent, value); }
+    }
+
+    /// <summary>
+    /// A helper method to raise the TrayToolTipClose event.
+    /// </summary>
+    protected RoutedEventArgs RaiseTrayToolTipCloseEvent()
+    {
+        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayToolTipCloseEvent));
+    }
+
+    /// <summary>Identifies the <see cref="PreviewTrayToolTipClose"/> routed event.</summary>
+    public static readonly RoutedEvent PreviewTrayToolTipCloseEvent =
+        EventManager.RegisterRoutedEvent(
+            nameof(PreviewTrayToolTipClose),
+            RoutingStrategy.Tunnel,
+            typeof(RoutedEventHandler),
+            typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Tunneled event that occurs when a custom tooltip is being closed.
+    /// </summary>
+    public event RoutedEventHandler PreviewTrayToolTipClose
+    {
+        add { AddHandler(PreviewTrayToolTipCloseEvent, value); }
+        remove { RemoveHandler(PreviewTrayToolTipCloseEvent, value); }
+    }
+
+    /// <summary>
+    /// A helper method to raise the PreviewTrayToolTipClose event.
+    /// </summary>
+    protected RoutedEventArgs RaisePreviewTrayToolTipCloseEvent()
+    {
+        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayToolTipCloseEvent));
+    }
+
+    #endregion
+
+    //ATTACHED EVENTS
+
+    #region ToolTipOpened
+
+    /// <summary>
+    /// ToolTipOpened Attached Routed Event
+    /// </summary>
+    public static readonly RoutedEvent ToolTipOpenedEvent =
+        EventManager.RegisterRoutedEvent(
+            "ToolTipOpened",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Adds a handler for the ToolTipOpened attached event
+    /// </summary>
+    /// <param name="element">UIElement or ContentElement that listens to the event</param>
+    /// <param name="handler">Event handler to be added</param>
+    public static void AddToolTipOpenedHandler(DependencyObject element, RoutedEventHandler handler)
+    {
+        RoutedEventHelper.AddHandler(element, ToolTipOpenedEvent, handler);
+    }
+
+    /// <summary>
+    /// Removes a handler for the ToolTipOpened attached event
+    /// </summary>
+    /// <param name="element">UIElement or ContentElement that listens to the event</param>
+    /// <param name="handler">Event handler to be removed</param>
+    public static void RemoveToolTipOpenedHandler(DependencyObject element, RoutedEventHandler handler)
+    {
+        RoutedEventHelper.RemoveHandler(element, ToolTipOpenedEvent, handler);
+    }
+
+    #endregion
+
+    #region ToolTipClose
+
+    /// <summary>
+    /// ToolTipClose Attached Routed Event
+    /// </summary>
+    public static readonly RoutedEvent ToolTipCloseEvent =
+        EventManager.RegisterRoutedEvent(
+            "ToolTipClose",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(TaskbarIcon));
+
+    /// <summary>
+    /// Adds a handler for the ToolTipClose attached event
+    /// </summary>
+    /// <param name="element">UIElement or ContentElement that listens to the event</param>
+    /// <param name="handler">Event handler to be added</param>
+    public static void AddToolTipCloseHandler(DependencyObject element, RoutedEventHandler handler)
+    {
+        RoutedEventHelper.AddHandler(element, ToolTipCloseEvent, handler);
+    }
+
+    /// <summary>
+    /// Removes a handler for the ToolTipClose attached event
+    /// </summary>
+    /// <param name="element">UIElement or ContentElement that listens to the event</param>
+    /// <param name="handler">Event handler to be removed</param>
+    public static void RemoveToolTipCloseHandler(DependencyObject element, RoutedEventHandler handler)
+    {
+        RoutedEventHelper.RemoveHandler(element, ToolTipCloseEvent, handler);
+    }
+
+    #endregion
+
+#endif
+
+    #endregion
+
     #region Methods
 
     /// <summary>
@@ -285,7 +470,7 @@ public partial class TaskbarIcon
             // raise attached event first
             if (TrayToolTip != null)
             {
-                RaiseToolTipOpenedEvent(TrayToolTip);
+                TrayToolTip.RaiseRoutedEvent(new RoutedEventArgs(ToolTipOpenedEvent));
             }
 
             // bubble routed event
@@ -304,7 +489,7 @@ public partial class TaskbarIcon
             // raise attached event first
             if (TrayToolTip != null)
             {
-                RaiseToolTipCloseEvent(TrayToolTip);
+                TrayToolTip.RaiseRoutedEvent(new RoutedEventArgs(ToolTipCloseEvent));
             }
 #endif
 
