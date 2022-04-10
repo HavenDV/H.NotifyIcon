@@ -135,7 +135,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
             try
             {
-                _ = TrayIcon.Create();
+                _ = TryForceCreate();
             }
             catch (Exception)
             {
@@ -169,12 +169,21 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
     #region Methods
 
+    // Workaround for https://github.com/HavenDV/H.NotifyIcon/issues/14
+    private static Guid RefreshTrayIconGuid { get; set; } = new Guid("d9654bf3-7e41-46b8-97c1-8899915d91fd");
+
     /// <summary>
     /// Use it to force create icon if it placed in resources.
     /// </summary>
     public bool TryForceCreate()
     {
-        return TrayIcon.Create();
+        var result = TrayIcon.Create();
+
+        // Workaround for https://github.com/HavenDV/H.NotifyIcon/issues/14
+        using var refreshTrayIcon = new TrayIcon(RefreshTrayIconGuid);
+        refreshTrayIcon.Create();
+
+        return result;
     }
 
     #endregion
