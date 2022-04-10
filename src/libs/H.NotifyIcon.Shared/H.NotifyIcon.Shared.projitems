@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Notifications.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ContextMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.AttachedProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Events.cs" />
