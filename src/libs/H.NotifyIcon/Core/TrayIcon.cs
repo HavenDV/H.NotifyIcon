@@ -64,19 +64,19 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Icon visibility.
     /// </summary>
-    public IconState Visibility { get; set; } = IconState.Visible;
+    public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
 
     /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
     /// </summary>
-    public NotifyIconVersion Version { get; private set; } = NotifyIconVersion.Vista;
+    public IconVersion Version { get; private set; } = IconVersion.Vista;
 
     /// <summary>
     /// Indicates whether custom tooltips are supported, which depends
     /// on the OS. Windows Vista or higher is required in order to
     /// support this feature.
     /// </summary>
-    public bool SupportsCustomToolTips => Version == NotifyIconVersion.Vista;
+    public bool SupportsCustomToolTips => Version == IconVersion.Vista;
 
     /// <summary>
     /// Windows Vista and later. 
@@ -114,7 +114,7 @@ public class TrayIcon : IDisposable
     /// - Via direct <see cref="Create"/> call<br/>
     /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
     /// </summary>
-    public event EventHandler<NotifyIconVersion>? VersionChanged;
+    public event EventHandler<IconVersion>? VersionChanged;
 
     private void OnCreated()
     {
@@ -126,7 +126,7 @@ public class TrayIcon : IDisposable
         Removed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnVersionChanged(NotifyIconVersion value)
+    private void OnVersionChanged(IconVersion value)
     {
         VersionChanged?.Invoke(this, value);
     }
@@ -258,7 +258,7 @@ public class TrayIcon : IDisposable
         {
             throw new InvalidOperationException($"{nameof(TrayIconMethods.TrySetMostRecentVersion)} failed.");
         }
-        if (Visibility == IconState.Visible &&
+        if (Visibility == IconVisibility.Visible &&
             !TrayIconMethods.TryModifyState(Id, (uint)Visibility))
         {
             throw new InvalidOperationException($"{nameof(TrayIconMethods.TryModifyState)} failed.");
@@ -344,7 +344,7 @@ public class TrayIcon : IDisposable
     /// <param name="visibility"></param>
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="ObjectDisposedException"></exception>
-    public void UpdateVisibility(IconState visibility)
+    public void UpdateVisibility(IconVisibility visibility)
     {
         EnsureNotDisposed();
         EnsureCreated();
@@ -363,7 +363,7 @@ public class TrayIcon : IDisposable
     /// <exception cref="ObjectDisposedException"></exception>
     public void Show()
     {
-        UpdateVisibility(IconState.Visible);
+        UpdateVisibility(IconVisibility.Visible);
     }
 
     /// <summary>
@@ -373,7 +373,7 @@ public class TrayIcon : IDisposable
     /// <exception cref="ObjectDisposedException"></exception>
     public void Hide()
     {
-        UpdateVisibility(IconState.Hidden);
+        UpdateVisibility(IconVisibility.Hidden);
     }
 
     /// <summary>

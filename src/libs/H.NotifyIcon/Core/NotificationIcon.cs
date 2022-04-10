@@ -1,9 +1,9 @@
 ﻿namespace H.NotifyIcon.Core;
 
-///<summary>
-/// Supported icons for the tray's balloon messages.
+/// <summary>
+/// Supported icons for the tray's notification messages.
 /// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#niif_none-0x00000000
-///</summary>
+/// </summary>
 public enum NotificationIcon
 {
     /// <summary>

@@ -66,7 +66,7 @@ public class MessageWindow : IDisposable
     /// The version of the underlying icon. Defines how
     /// incoming messages are interpreted.
     /// </summary>
-    public NotifyIconVersion Version { get; set; } = NotifyIconVersion.Win95;
+    public IconVersion Version { get; set; } = IconVersion.Win95;
 
     #endregion
 
@@ -185,7 +185,7 @@ public class MessageWindow : IDisposable
     /// Processes incoming system messages.
     /// </summary>
     /// <param name="msg">Callback ID.</param>
-    /// <param name="wParam">If the version is <see cref="NotifyIconVersion.Vista"/>
+    /// <param name="wParam">If the version is <see cref="IconVersion.Vista"/>
     /// or higher, this parameter can be used to resolve mouse coordinates.
     /// Currently not in use.</param>
     /// <param name="lParam">Provides information about the event.</param>

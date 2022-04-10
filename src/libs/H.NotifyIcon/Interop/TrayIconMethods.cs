@@ -316,7 +316,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TrySetVersion(
         Guid id,
-        NotifyIconVersion version)
+        IconVersion version)
     {
         if (Environment.Is64BitProcess)
         {
@@ -352,22 +352,22 @@ internal static class TrayIconMethods
 
     public static bool TrySetMostRecentVersion(
         Guid id,
-        out NotifyIconVersion version)
+        out IconVersion version)
     {
-        version = NotifyIconVersion.Vista;
+        version = IconVersion.Vista;
         var status = TrySetVersion(
             id: id,
             version: version);
         if (!status)
         {
-            version = NotifyIconVersion.Win2000;
+            version = IconVersion.Win2000;
             status = TrySetVersion(
                 id: id,
                 version: version);
         }
         if (!status)
         {
-            version = NotifyIconVersion.Win95;
+            version = IconVersion.Win95;
             status = TrySetVersion(
                 id: id,
                 version: version);

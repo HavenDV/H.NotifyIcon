@@ -1,10 +1,9 @@
 ﻿namespace H.NotifyIcon.Core;
 
 /// <summary>
-/// The state of the icon - can be set to
-/// hide the icon.
+/// The visibility of the icon.
 /// </summary>
-public enum IconState
+public enum IconVisibility
 {
     /// <summary>
     /// The icon is visible.

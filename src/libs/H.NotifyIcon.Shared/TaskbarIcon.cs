@@ -528,7 +528,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
 
         // get mouse coordinates
-        var cursorPosition = TrayIcon.Version == NotifyIconVersion.Vista
+        var cursorPosition = TrayIcon.Version == IconVersion.Vista
             ? CursorUtilities.GetPhysicalCursorPos()
             : CursorUtilities.GetCursorPos();
 
@@ -788,7 +788,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private void WriteToolTipSettings()
     {
         var text = ToolTipText;
-        if (TrayIcon.Version == NotifyIconVersion.Vista)
+        if (TrayIcon.Version == IconVersion.Vista)
         {
             // we need to set a tooltip text to get tooltip events from the
             // taskbar icon
