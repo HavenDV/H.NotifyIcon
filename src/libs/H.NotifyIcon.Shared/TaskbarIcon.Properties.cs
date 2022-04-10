@@ -15,37 +15,6 @@ public partial class TaskbarIcon
 
     //POPUP CONTROLS
 
-    #region TrayPopupResolved
-
-    /// <summary>Identifies the <see cref="TrayPopupResolved"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayPopupResolvedProperty
-        = DependencyProperty.Register(
-            nameof(TrayPopupResolved),
-            typeof(Popup),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets the TrayPopupResolved property. Returns
-    /// a <see cref="Popup"/> which is either the
-    /// <see cref="TrayPopup"/> control itself or a
-    /// <see cref="Popup"/> control that contains the
-    /// <see cref="TrayPopup"/>.
-    /// </summary>
-    [Category(CategoryName)]
-    public Popup? TrayPopupResolved => (Popup?)GetValue(TrayPopupResolvedProperty);
-
-    /// <summary>
-    /// Provides a secure method for setting the TrayPopupResolved property.  
-    /// This dependency property indicates ....
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
-    protected void SetTrayPopupResolved(Popup? value)
-    {
-        SetValue(TrayPopupResolvedProperty, value);
-    }
-
-    #endregion
 
     #region CustomBalloon
 
@@ -217,59 +186,6 @@ public partial class TaskbarIcon
 #else
         control.Icon = await source.ToIconAsync().ConfigureAwait(true);
 #endif
-    }
-
-    #endregion
-
-    #region TrayPopup dependency property
-
-    /// <summary>Identifies the <see cref="TrayPopup"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayPopupProperty =
-        DependencyProperty.Register(nameof(TrayPopup),
-            typeof (UIElement),
-            typeof (TaskbarIcon),
-            new PropertyMetadata(null, (d, e) => ((TaskbarIcon) d).OnTrayPopupPropertyChanged(e)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="TrayPopupProperty"/>
-    /// dependency property:<br/>
-    /// A control that is displayed as a popup when the taskbar icon is clicked.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Displayed as a Popup if the user clicks on the taskbar icon.")]
-    public UIElement? TrayPopup
-    {
-        get { return (UIElement?) GetValue(TrayPopupProperty); }
-        set { SetValue(TrayPopupProperty, value); }
-    }
-
-
-    /// <summary>
-    /// Handles changes of the <see cref="TrayPopupProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="TrayPopup"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnTrayPopupPropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-#if HAS_WPF
-        if (e.OldValue != null)
-        {
-            //remove the taskbar icon reference from the previously used element
-            SetParentTaskbarIcon((DependencyObject) e.OldValue, null);
-        }
-
-
-        if (e.NewValue != null)
-        {
-            //set this taskbar icon as a reference to the new tooltip element
-            SetParentTaskbarIcon((DependencyObject) e.NewValue, this);
-        }
-#endif
-
-        //create a pop
-        CreatePopup();
     }
 
     #endregion

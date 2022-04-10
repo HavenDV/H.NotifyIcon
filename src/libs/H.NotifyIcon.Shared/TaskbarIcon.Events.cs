@@ -424,75 +424,6 @@ public partial class TaskbarIcon
 
     #endregion
 
-    #region TrayPopupOpen (and PreviewTrayPopupOpen)
-
-    /// <summary>Identifies the <see cref="TrayPopupOpen"/> routed event.</summary>
-    public static readonly RoutedEvent TrayPopupOpenEvent = EventManager.RegisterRoutedEvent(nameof(TrayPopupOpen),
-        RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
-
-    /// <summary>
-    /// Bubbled event that occurs when the custom popup is being opened.
-    /// </summary>
-    public event RoutedEventHandler TrayPopupOpen
-    {
-        add { AddHandler(TrayPopupOpenEvent, value); }
-        remove { RemoveHandler(TrayPopupOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayPopupOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayPopupOpenEvent()
-    {
-        return RaiseTrayPopupOpenEvent(this);
-    }
-
-    /// <summary>
-    /// A static helper method to raise the TrayPopupOpen event on a target element.
-    /// </summary>
-    /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayPopupOpenEvent(DependencyObject target)
-    {
-        var args = new RoutedEventArgs(TrayPopupOpenEvent);
-        RoutedEventHelper.RaiseEvent(target, args);
-        return args;
-    }
-
-    /// <summary>Identifies the <see cref="PreviewTrayPopupOpen"/> routed event.</summary>
-    public static readonly RoutedEvent PreviewTrayPopupOpenEvent =
-        EventManager.RegisterRoutedEvent(nameof(PreviewTrayPopupOpen),
-            RoutingStrategy.Tunnel, typeof (RoutedEventHandler), typeof (TaskbarIcon));
-
-    /// <summary>
-    /// Tunneled event that occurs when the custom popup is being opened.
-    /// </summary>
-    public event RoutedEventHandler PreviewTrayPopupOpen
-    {
-        add { AddHandler(PreviewTrayPopupOpenEvent, value); }
-        remove { RemoveHandler(PreviewTrayPopupOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the PreviewTrayPopupOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaisePreviewTrayPopupOpenEvent()
-    {
-        return RaisePreviewTrayPopupOpenEvent(this);
-    }
-
-    /// <summary>
-    /// A static helper method to raise the PreviewTrayPopupOpen event on a target element.
-    /// </summary>
-    /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePreviewTrayPopupOpenEvent(DependencyObject target)
-    {
-        var args = new RoutedEventArgs(PreviewTrayPopupOpenEvent);
-        RoutedEventHelper.RaiseEvent(target, args);
-        return args;
-    }
-
-    #endregion
-
     #region TrayToolTipOpen (and PreviewTrayToolTipOpen)
 
     /// <summary>Identifies the <see cref="TrayToolTipOpen"/> routed event.</summary>
@@ -632,47 +563,6 @@ public partial class TaskbarIcon
     #endregion
 
     //ATTACHED EVENTS
-
-    #region PopupOpened
-
-    /// <summary>
-    /// PopupOpened Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent PopupOpenedEvent = EventManager.RegisterRoutedEvent("PopupOpened",
-        RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the PopupOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddPopupOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, PopupOpenedEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the PopupOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemovePopupOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, PopupOpenedEvent, handler);
-    }
-
-    /// <summary>
-    /// A static helper method to raise the PopupOpened event on a target element.
-    /// </summary>
-    /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePopupOpenedEvent(DependencyObject target)
-    {
-        var args = new RoutedEventArgs(PopupOpenedEvent);
-        RoutedEventHelper.RaiseEvent(target, args);
-        return args;
-    }
-
-    #endregion
 
     #region ToolTipOpened
 
