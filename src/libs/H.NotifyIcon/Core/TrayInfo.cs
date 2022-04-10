@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using H.NotifyIcon.Interop;
 
-namespace H.NotifyIcon.Interop;
+namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// Resolves the current tray position.

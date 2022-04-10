@@ -1,4 +1,4 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// The notify icon version that is used. The higher

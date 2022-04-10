@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using H.NotifyIcon.Core;
+
+namespace H.NotifyIcon;
 
 /// <summary>
 /// Contains declarations of WPF dependency properties

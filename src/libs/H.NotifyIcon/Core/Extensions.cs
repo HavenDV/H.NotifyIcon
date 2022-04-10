@@ -1,4 +1,4 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// Util and extension methods.

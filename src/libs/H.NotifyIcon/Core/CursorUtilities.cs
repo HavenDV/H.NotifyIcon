@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace H.NotifyIcon.Interop;
+namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// Win32 API imports.

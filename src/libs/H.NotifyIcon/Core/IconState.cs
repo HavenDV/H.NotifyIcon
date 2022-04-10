@@ -1,4 +1,4 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// The state of the icon - can be set to

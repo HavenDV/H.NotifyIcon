@@ -1,4 +1,4 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// Possible keyboard events.
