@@ -27,11 +27,6 @@ public class TrayIcon : IDisposable
     public Guid Id { get; }
 
     /// <summary>
-    /// Receives messages from the taskbar icon.
-    /// </summary>
-    public WindowMessageSink MessageSink { get; } = new();
-
-    /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
     /// </summary>
     public bool IsCreated { get; private set; }
@@ -57,7 +52,13 @@ public class TrayIcon : IDisposable
     /// taskbar status area. The Shell uses hWnd and uID to identify which icon to operate on
     /// when Shell_NotifyIcon is invoked.
     /// </summary>
-    public nint WindowHandle => MessageSink.MessageWindowHandle;
+    public nint WindowHandle { get; set; }
+
+    /// <summary>
+    /// The ID of messages that are received from the the
+    /// taskbar icon.
+    /// </summary>
+    public int CallbackMessage { get; set; }
 
     /// <summary>
     /// Icon visibility.
@@ -145,15 +146,9 @@ public class TrayIcon : IDisposable
     /// It will be used by the system to store your TrayIcon settings, 
     /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
     /// </param>
-    /// <param name="isDesignMode"></param>
-    public TrayIcon(Guid id, bool isDesignMode = false)
+    public TrayIcon(Guid id)
     {
         Id = id;
-        IsDesignMode = isDesignMode;
-        if (!IsDesignMode)
-        {
-            MessageSink.Create();
-        }
     }
 
     /// <summary>
@@ -162,8 +157,7 @@ public class TrayIcon : IDisposable
     /// Creates <see cref="Id"/> based on the simple name of an Entry assembly. <br/>
     /// Use other overloads to create multiple icons for the same application.
     /// </summary>
-    /// <param name="isDesignMode"></param>
-    public TrayIcon(bool isDesignMode = false) : this(CreateUniqueGuidForEntryAssembly(), isDesignMode)
+    public TrayIcon() : this(CreateUniqueGuidForEntryAssembly())
     {
     }
 
@@ -173,8 +167,7 @@ public class TrayIcon : IDisposable
     /// Creates <see cref="Id"/> based on the specified name. <br/>
     /// </summary>
     /// <param name="name"></param>
-    /// <param name="isDesignMode"></param>
-    public TrayIcon(string name, bool isDesignMode = false) : this(CreateUniqueGuidFromString(name), isDesignMode)
+    public TrayIcon(string name) : this(CreateUniqueGuidFromString(name))
     {
     }
 
@@ -246,10 +239,10 @@ public class TrayIcon : IDisposable
 
         if (!TrayIconMethods.TryCreate(
             id: Id,
-            handle: MessageSink.MessageWindowHandle,
+            handle: WindowHandle,
             additionalFlags: additionalFlags,
             toolTip: ToolTip,
-            uCallbackMessage: WindowMessageSink.CallbackMessageId,
+            uCallbackMessage: (uint)CallbackMessage,
             iconHandle: new HICON(Icon)))
         {
             // couldn't create the icon - we can assume this is because explorer is not running (yet!)
@@ -274,11 +267,9 @@ public class TrayIcon : IDisposable
         Version = version;
         OnVersionChanged(version);
 
-        MessageSink.Version = version;
-
         IsCreated = true;
         OnCreated();
-        MessageSink.TaskbarCreated += OnTaskbarCreated;
+
         return true;
     }
 
@@ -299,7 +290,6 @@ public class TrayIcon : IDisposable
         
         IsCreated = false;
         OnRemoved();
-        MessageSink.TaskbarCreated -= OnTaskbarCreated;
         return true;
     }
 
@@ -515,27 +505,6 @@ public class TrayIcon : IDisposable
 
     #endregion
 
-    #region Event handlers
-
-    /// <summary>
-    /// Recreates the taskbar icon if the whole taskbar was
-    /// recreated (e.g. because Explorer was shut down).
-    /// </summary>
-    private void OnTaskbarCreated()
-    {
-        try
-        {
-            _ = Remove();
-            _ = Create();
-        }
-        catch (Exception)
-        {
-            // ignored.
-        }
-    }
-
-    #endregion
-
     #region Dispose
 
     /// <summary>
@@ -625,7 +594,6 @@ public class TrayIcon : IDisposable
         }
 
         IsDisposed = true;
-        MessageSink.Dispose();
         _ = Remove();
     }
 

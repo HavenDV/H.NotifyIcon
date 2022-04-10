@@ -25,6 +25,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private TrayIcon TrayIcon { get; }
 
     /// <summary>
+    /// Receives messages from the taskbar icon.
+    /// </summary>
+    public WindowMessageSink MessageSink { get; } = new();
+
+    /// <summary>
     /// An action that is being invoked if the
     /// <see cref="singleClickTimer"/> fires.
     /// </summary>
@@ -124,8 +129,17 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
         });
 #endif
+        if (!DesignTimeUtilities.IsDesignMode)
+        {
+            MessageSink.Create();
+        }
 
-        TrayIcon = new TrayIcon(DesignTimeUtilities.IsDesignMode);
+        TrayIcon = new TrayIcon()
+        {
+            WindowHandle = MessageSink.MessageWindowHandle,
+            CallbackMessage = WindowMessageSink.CallbackMessageId,
+        };
+        TrayIcon.VersionChanged += (_, version) => MessageSink.Version = version;
         Loaded += (_, _) =>
         {
             if (DesignTimeUtilities.IsDesignMode)
@@ -142,13 +156,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-        TrayIcon.MessageSink.DpiChanged += DpiUtilities.UpdateDpiFactors;
+        MessageSink.DpiChanged += DpiUtilities.UpdateDpiFactors;
+        MessageSink.TaskbarCreated += OnTaskbarCreated;
 
         // register event listeners
-        TrayIcon.MessageSink.MouseEventReceived += OnMouseEvent;
-        TrayIcon.MessageSink.KeyboardEventReceived += OnKeyboardEvent;
-        TrayIcon.MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
-        TrayIcon.MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
+        MessageSink.MouseEventReceived += OnMouseEvent;
+        MessageSink.KeyboardEventReceived += OnKeyboardEvent;
+        MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
+        MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -164,6 +179,27 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             Application.Current.Exit += OnExit;
         }
 #endif
+    }
+
+    #endregion
+
+    #region Event handlers
+
+    /// <summary>
+    /// Recreates the taskbar icon if the whole taskbar was
+    /// recreated (e.g. because Explorer was shut down).
+    /// </summary>
+    private void OnTaskbarCreated()
+    {
+        try
+        {
+            _ = TrayIcon.Remove();
+            _ = TrayIcon.Create();
+        }
+        catch (Exception)
+        {
+            // ignored.
+        }
     }
 
     #endregion
@@ -496,7 +532,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
 
         // get mouse coordinates
-        var cursorPosition = TrayIcon.MessageSink.Version == NotifyIconVersion.Vista
+        var cursorPosition = TrayIcon.Version == NotifyIconVersion.Vista
             ? CursorUtilities.GetPhysicalCursorPos()
             : CursorUtilities.GetCursorPos();
 
@@ -754,7 +790,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private void WriteToolTipSettings()
     {
         var text = ToolTipText;
-        if (TrayIcon.MessageSink.Version == NotifyIconVersion.Vista)
+        if (TrayIcon.Version == NotifyIconVersion.Vista)
         {
             // we need to set a tooltip text to get tooltip events from the
             // taskbar icon
@@ -886,7 +922,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = TrayIcon.MessageSink.MessageWindowHandle;
+            handle = MessageSink.MessageWindowHandle;
         }
 
         // activate either popup or message sink to track deactivation.
@@ -953,7 +989,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = TrayIcon.MessageSink.MessageWindowHandle;
+            handle = MessageSink.MessageWindowHandle;
         }
 
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
@@ -1330,6 +1366,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Dispose();
 #endif
 
+            MessageSink.Dispose();
             TrayIcon.Dispose();
             Icon?.Dispose();
         }
