@@ -1,5 +1,9 @@
 ﻿using System.Drawing;
 using H.NotifyIcon.Core;
+using H.NotifyIcon.Interop;
+
+using var messageSink = new WindowMessageSink();
+messageSink.Create();
 
 using var iconStream = H.Resources.Red_ico.AsStream();
 using var icon = new Icon(iconStream);
@@ -7,6 +11,7 @@ using var trayIcon = new TrayIcon
 {
     Icon = icon.Handle,
     ToolTip = "ToolTip",
+    WindowHandle = messageSink.MessageWindowHandle,
 };
 _ = trayIcon.Create();
 
