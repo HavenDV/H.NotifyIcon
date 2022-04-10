@@ -104,8 +104,8 @@ while (true)
         }
         else if (line.StartsWith("remove"))
         {
-            var result = trayIcon.TryRemove();
-            Console.WriteLine($"{line}: {result}");
+            trayIcon.Remove();
+            Console.WriteLine(nameof(trayIcon.Remove));
         }
         else if (line.StartsWith("create"))
         {

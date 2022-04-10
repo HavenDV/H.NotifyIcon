@@ -274,6 +274,18 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Closes the taskbar icon if required.
     /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void Remove()
+    {
+        if (!TryRemove())
+        {
+            throw new InvalidOperationException($"{nameof(TryRemove)} failed.");
+        }
+    }
+
+    /// <summary>
+    /// Closes the taskbar icon if required.
+    /// </summary>
     public bool TryRemove()
     {
         if (!IsCreated)
@@ -471,10 +483,7 @@ public class TrayIcon : IDisposable
         EnsureNotDisposed();
         EnsureCreated();
 
-        if (!TryRemove())
-        {
-            throw new InvalidOperationException("Remove failed.");
-        }
+        Remove();
         Create();
     }
 
