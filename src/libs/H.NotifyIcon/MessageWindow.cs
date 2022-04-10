@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon.Interop;
+﻿using H.NotifyIcon.Interop;
+
+namespace H.NotifyIcon.Core;
 
 /// <summary>
 /// Receives messages from the taskbar icon through
@@ -10,9 +12,9 @@
 #else
 #error Target Framework is not supported
 #endif
-public class WindowMessageSink : IDisposable
+public class MessageWindow : IDisposable
 {
-    #region members
+    #region Constants
 
     /// <summary>
     /// The ID of messages that are received from the the
@@ -20,18 +22,22 @@ public class WindowMessageSink : IDisposable
     /// </summary>
     public const int CallbackMessageId = 0x400;
 
+    #endregion
+
+    #region Properties
+
     /// <summary>
     /// The ID of the message that is being received if the
     /// taskbar is (re)started.
     /// </summary>
-    private uint taskbarRestartMessageId;
+    private uint TaskbarRestartMessageId { get; set; }
 
     /// <summary>
     /// Used to track whether a mouse-up event is just
     /// the aftermath of a double-click and therefore needs
     /// to be suppressed.
     /// </summary>
-    private bool isDoubleClick;
+    private bool IsDoubleClick { get; set; }
 
     /// <summary>
     /// A delegate that processes messages of the hidden
@@ -54,7 +60,7 @@ public class WindowMessageSink : IDisposable
     /// <summary>
     /// Handle for the message window.
     /// </summary>
-    public IntPtr MessageWindowHandle => HWND;
+    public IntPtr Handle => HWND;
 
     /// <summary>
     /// The version of the underlying icon. Defines how
@@ -108,7 +114,7 @@ public class WindowMessageSink : IDisposable
     /// Creates a new message sink that receives message from
     /// a given taskbar icon.
     /// </summary>
-    public WindowMessageSink()
+    public MessageWindow()
     {
         WindowId = "H.NotifyIcon_" + Guid.NewGuid();
         MessageHandler = OnWindowMessageReceived;
@@ -116,7 +122,7 @@ public class WindowMessageSink : IDisposable
 
     #endregion
 
-    #region CreateMessageWindow
+    #region Methods
 
     /// <summary>
     /// Creates the helper message window that is used
@@ -137,7 +143,7 @@ public class WindowMessageSink : IDisposable
 
         // Get the message used to indicate the taskbar has been restarted
         // This is used to re-add icons when the taskbar restarts
-        taskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated").EnsureNonZero();
+        TaskbarRestartMessageId = PInvoke.RegisterWindowMessage("TaskbarCreated").EnsureNonZero();
 
         HWND = PInvoke.CreateWindowEx(
             dwExStyle: 0,
@@ -156,7 +162,7 @@ public class WindowMessageSink : IDisposable
 
     #endregion
 
-    #region Handle Window Messages
+    #region Event handlers
 
     private LRESULT OnWindowMessageReceived(
         HWND hWnd,
@@ -164,7 +170,7 @@ public class WindowMessageSink : IDisposable
         WPARAM wParam,
         LPARAM lParam)
     {
-        if (messageId == taskbarRestartMessageId)
+        if (messageId == TaskbarRestartMessageId)
         {
             //recreate the icon if the taskbar was restarted (e.g. due to Win Explorer shutdown)
             TaskbarCreated?.Invoke(this, EventArgs.Empty);
@@ -213,15 +219,15 @@ public class WindowMessageSink : IDisposable
                 break;
 
             case PInvoke.WM_LBUTTONUP:
-                if (!isDoubleClick)
+                if (!IsDoubleClick)
                 {
                     MouseEventReceived?.Invoke(this, MouseEvent.IconLeftMouseUp);
                 }
-                isDoubleClick = false;
+                IsDoubleClick = false;
                 break;
 
             case PInvoke.WM_LBUTTONDBLCLK:
-                isDoubleClick = true;
+                IsDoubleClick = true;
                 MouseEventReceived?.Invoke(this, MouseEvent.IconDoubleClick);
                 break;
 
@@ -320,7 +326,7 @@ public class WindowMessageSink : IDisposable
     /// this class.
     /// </para>
     /// </summary>
-    ~WindowMessageSink()
+    ~MessageWindow()
     {
         Dispose(false);
     }

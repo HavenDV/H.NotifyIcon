@@ -27,7 +27,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Receives messages from the taskbar icon.
     /// </summary>
-    public WindowMessageSink MessageSink { get; } = new();
+    public MessageWindow MessageWindow { get; } = new();
 
     /// <summary>
     /// An action that is being invoked if the
@@ -131,15 +131,15 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
         if (!DesignTimeUtilities.IsDesignMode)
         {
-            MessageSink.Create();
+            MessageWindow.Create();
         }
 
         TrayIcon = new TrayIcon()
         {
-            WindowHandle = MessageSink.MessageWindowHandle,
-            CallbackMessage = WindowMessageSink.CallbackMessageId,
+            WindowHandle = MessageWindow.Handle,
+            CallbackMessage = MessageWindow.CallbackMessageId,
         };
-        TrayIcon.VersionChanged += (_, version) => MessageSink.Version = version;
+        TrayIcon.VersionChanged += (_, version) => MessageWindow.Version = version;
         Loaded += (_, _) =>
         {
             if (DesignTimeUtilities.IsDesignMode)
@@ -156,14 +156,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-        MessageSink.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
-        MessageSink.TaskbarCreated += OnTaskbarCreated;
+        MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
+        MessageWindow.TaskbarCreated += OnTaskbarCreated;
 
         // register event listeners
-        MessageSink.MouseEventReceived += OnMouseEvent;
-        MessageSink.KeyboardEventReceived += OnKeyboardEvent;
-        MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
-        MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
+        MessageWindow.MouseEventReceived += OnMouseEvent;
+        MessageWindow.KeyboardEventReceived += OnKeyboardEvent;
+        MessageWindow.ChangeToolTipStateRequest += OnToolTipChange;
+        MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -920,7 +920,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = MessageSink.MessageWindowHandle;
+            handle = MessageWindow.Handle;
         }
 
         // activate either popup or message sink to track deactivation.
@@ -987,7 +987,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = MessageSink.MessageWindowHandle;
+            handle = MessageWindow.Handle;
         }
 
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
@@ -1093,7 +1093,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             }
         }
 
-        var handle = MessageSink.MessageWindowHandle;
+        var handle = MessageWindow.Handle;
 
         WindowUtilities.SetForegroundWindow(handle);
         menu.Show(
@@ -1222,7 +1222,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
 #endregion
 
-#region Single Click Timer event
+    #region Single Click Timer event
 
     /// <summary>
     /// Performs a delayed action if the user requested an action
@@ -1254,9 +1254,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         }
     }
 
-#endregion
+    #endregion
 
-#region Dispose / Exit
+    #region Dispose / Exit
 
     /// <summary>
     /// Set to true as soon as <c>Dispose</c> has been invoked.
@@ -1365,11 +1365,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Dispose();
 #endif
 
-            MessageSink.Dispose();
+            MessageWindow.Dispose();
             TrayIcon.Dispose();
             Icon?.Dispose();
         }
     }
 
-#endregion
+    #endregion
 }
