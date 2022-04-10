@@ -10,26 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
-	  
+
   <PropertyGroup Label="NuGet">
-    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WinUI platform. 
-It does not just rely on the Windows Forms NotifyIcon component, 
-but is a purely independent control which leverages several features of the WinUI framework in order to display rich tooltips, 
+    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the WinUI platform.
+It does not just rely on the Windows Forms NotifyIcon component,
+but is a purely independent control which leverages several features of the WinUI framework in order to display rich tooltips,
 popups, context menus, and balloon messages. It can be used directly in code or embedded in any XAML file.
     </Description>
     <PackageTags>NotifyIcon, WinUI, Tray, Notify, ToolTip, Popup, Balloon, Toast</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.17763.0' ">
-    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" PrivateAssets="All" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-windows10.0.17763.0' ">
-    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" PrivateAssets="All" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
