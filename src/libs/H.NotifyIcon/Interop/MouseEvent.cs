@@ -1,7 +1,7 @@
 ﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
-/// Event flags for clicked events.
+/// Possible mouse events.
 /// </summary>
 public enum MouseEvent
 {
@@ -49,5 +49,5 @@ public enum MouseEvent
     /// <summary>
     /// The balloon tip was clicked.
     /// </summary>
-    BalloonToolTipClicked
+    BalloonToolTipClicked,
 }

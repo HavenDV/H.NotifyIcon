@@ -146,6 +146,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
         // register event listeners
         TrayIcon.MessageSink.MouseEventReceived += OnMouseEvent;
+        TrayIcon.MessageSink.KeyboardEventReceived += OnKeyboardEvent;
         TrayIcon.MessageSink.ChangeToolTipStateRequest += OnToolTipChange;
         TrayIcon.MessageSink.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
@@ -568,6 +569,48 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
                 };
             singleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
+        }
+    }
+
+    #endregion
+
+    #region Process Incoming Keyboard Events
+
+    /// <summary>
+    /// Processes keyboard events, which are bubbled
+    /// through the class' routed events, trigger
+    /// certain actions (e.g. show a popup), or
+    /// both.
+    /// </summary>
+    /// <param name="event">Keyboard event</param>
+    private void OnKeyboardEvent(KeyboardEvent @event)
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        switch (@event)
+        {
+            case KeyboardEvent.ContextMenu:
+#if HAS_WPF
+                RaiseTrayKeyboardContextMenuEvent();
+#endif
+                break;
+            case KeyboardEvent.KeySelect:
+#if HAS_WPF
+                RaiseTrayKeyboardKeySelectEvent();
+#endif
+                break;
+            case KeyboardEvent.Select:
+#if HAS_WPF
+                RaiseTrayKeyboardSelectEvent();
+#endif
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(
+                    nameof(@event),
+                    $"Missing handler for keyboard event flag: {@event}");
         }
     }
 

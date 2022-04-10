@@ -80,6 +80,12 @@ public class WindowMessageSink : IDisposable
     public event Action<MouseEvent>? MouseEventReceived;
 
     /// <summary>
+    /// Fired in case the user interacted with the taskbar
+    /// icon area with keyboard shortcuts.
+    /// </summary>
+    public event Action<KeyboardEvent>? KeyboardEventReceived;
+
+    /// <summary>
     /// Fired if a balloon ToolTip was either displayed
     /// or closed (indicated by the boolean flag).
     /// </summary>
@@ -205,7 +211,7 @@ public class WindowMessageSink : IDisposable
         switch ((uint)lParam.Value)
         {
             case PInvoke.WM_CONTEXTMENU:
-                // TODO: Handle WM_CONTEXTMENU, see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
+                KeyboardEventReceived?.Invoke(KeyboardEvent.ContextMenu);
                 break;
 
             case PInvoke.WM_MOUSEMOVE:
@@ -275,11 +281,11 @@ public class WindowMessageSink : IDisposable
                 break;
 
             case PInvoke.NIN_SELECT:
-                // TODO: Handle NIN_SELECT see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
+                KeyboardEventReceived?.Invoke(KeyboardEvent.Select);
                 break;
 
             case PInvoke.NIN_SELECT | PInvoke.NINF_KEY:
-                // TODO: Handle NIN_KEYSELECT see https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shell_notifyiconw
+                KeyboardEventReceived?.Invoke(KeyboardEvent.KeySelect);
                 break;
 
             default:
