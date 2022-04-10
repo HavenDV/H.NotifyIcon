@@ -74,7 +74,7 @@ public class TrayIcon : IDisposable
     /// on the OS. Windows Vista or higher is required in order to
     /// support this feature.
     /// </summary>
-    public bool SupportsCustomToolTips => MessageSink.Version == NotifyIconVersion.Vista;
+    public bool SupportsCustomToolTips => Version == NotifyIconVersion.Vista;
 
     /// <summary>
     /// Windows Vista and later. 
@@ -108,6 +108,15 @@ public class TrayIcon : IDisposable
     /// </summary>
     public event EventHandler? Removed;
 
+    /// <summary>
+    /// Version was changed.<br/>
+    /// This can happen in the following cases:<br/>
+    /// - Via direct <see cref="Create"/> call<br/>
+    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
+    /// - After Explorer has been restarted<br/>
+    /// </summary>
+    public event EventHandler<NotifyIconVersion>? VersionChanged;
+
     private void OnCreated()
     {
         Created?.Invoke(this, EventArgs.Empty);
@@ -116,6 +125,11 @@ public class TrayIcon : IDisposable
     private void OnRemoved()
     {
         Removed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnVersionChanged(NotifyIconVersion value)
+    {
+        VersionChanged?.Invoke(this, value);
     }
 
     #endregion
@@ -258,6 +272,8 @@ public class TrayIcon : IDisposable
         }
 
         Version = version;
+        OnVersionChanged(version);
+
         MessageSink.Version = version;
 
         IsCreated = true;

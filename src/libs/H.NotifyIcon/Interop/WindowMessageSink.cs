@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace H.NotifyIcon.Interop;
+﻿namespace H.NotifyIcon.Interop;
 
 /// <summary>
 /// Receives messages from the taskbar icon through
