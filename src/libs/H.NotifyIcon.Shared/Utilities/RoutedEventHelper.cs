@@ -15,7 +15,14 @@ internal static class RoutedEventHelper
             contentElement.RaiseEvent(args);
         }
     }
-    
+
+    internal static RoutedEventArgs RaiseRoutedEvent(this UIElement target, RoutedEventArgs args)
+    {
+        target.RaiseEvent(args);
+
+        return args;
+    }
+
 #endif
 
     internal static void AddHandler(DependencyObject element, RoutedEvent routedEvent, Delegate handler)
