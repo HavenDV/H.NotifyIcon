@@ -124,17 +124,15 @@ public class WindowMessageSink : IDisposable
     /// </summary>
     public unsafe void Create()
     {
-        fixed (char* menuName = string.Empty)
         fixed (char* className = WindowId)
         {
-            var wc = new WNDCLASSW
+            var @class = new WNDCLASSW
             {
                 lpfnWndProc = MessageHandler,
-                lpszMenuName = menuName,
-                lpszClassName = className
+                lpszClassName = className,
             };
 
-            _ = PInvoke.RegisterClass(wc).EnsureNonZero();
+            _ = PInvoke.RegisterClass(@class).EnsureNonZero();
         }
 
         // Get the message used to indicate the taskbar has been restarted
@@ -144,25 +142,22 @@ public class WindowMessageSink : IDisposable
         HWND = PInvoke.CreateWindowEx(
             dwExStyle: 0,
             lpClassName: WindowId,
-            lpWindowName: "",
+            lpWindowName: WindowId,
             dwStyle: 0,
             X: 0,
             Y: 0,
-            nWidth: 1,
-            nHeight: 1,
-            hWndParent: default,
+            nWidth: 0,
+            nHeight: 0,
+            hWndParent: PInvoke.HWND_MESSAGE,
             hMenu: null,
             hInstance: null,
-            lpParam: (void*)0).EnsureNonNull();
+            lpParam: null).EnsureNonNull();
     }
 
     #endregion
 
     #region Handle Window Messages
 
-    /// <summary>
-    /// Callback method that receives messages from the taskbar area.
-    /// </summary>
     private LRESULT OnWindowMessageReceived(
         HWND hWnd,
         uint messageId,
@@ -175,13 +170,10 @@ public class WindowMessageSink : IDisposable
             TaskbarCreated?.Invoke(this, EventArgs.Empty);
         }
 
-        //forward message
         ProcessWindowMessage(messageId, wParam, lParam);
 
-        // Pass the message to the default window procedure
         return PInvoke.DefWindowProc(hWnd, messageId, wParam, lParam);
     }
-
 
     /// <summary>
     /// Processes incoming system messages.
