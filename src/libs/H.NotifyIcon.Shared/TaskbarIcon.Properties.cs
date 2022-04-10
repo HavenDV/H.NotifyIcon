@@ -13,38 +13,6 @@ public partial class TaskbarIcon
     /// </summary>
     public const string CategoryName = "NotifyIcon";
 
-    //POPUP CONTROLS
-
-
-    #region CustomBalloon
-
-    /// <summary>
-    /// Maintains a currently displayed custom balloon.
-    /// </summary>
-    private static readonly DependencyProperty CustomBalloonProperty
-        = DependencyProperty.Register(
-            nameof(CustomBalloon),
-            typeof(Popup),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// A custom popup that is being displayed in the tray area in order
-    /// to display messages to the user.
-    /// </summary>
-    public Popup? CustomBalloon => (Popup?)GetValue(CustomBalloonProperty);
-
-    /// <summary>
-    /// Provides a secure method for setting the <see cref="CustomBalloon"/> property.  
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
-    protected void SetCustomBalloon(Popup? value)
-    {
-        SetValue(CustomBalloonProperty, value);
-    }
-
-    #endregion
-
     //DEPENDENCY PROPERTIES
 
     #region Id
@@ -305,37 +273,6 @@ public partial class TaskbarIcon
         }
     }
 
-#if !HAS_WPF
-
-    private void UpdateContextFlyoutDataContext(
-        FlyoutBase flyout,
-        object? oldValue,
-        object? newValue)
-    {
-        void UpdateMenuFlyoutDataContext(MenuFlyoutItemBase item)
-        {
-            UpdateDataContext(item, oldValue, newValue);
-
-            if (item is MenuFlyoutSubItem subItem)
-            {
-                foreach (var innerItem in subItem.Items)
-                {
-                    UpdateMenuFlyoutDataContext(innerItem);
-                }
-            }
-        }
-
-        if (flyout is MenuFlyout menuFlyout)
-        {
-            foreach (var item in menuFlyout.Items)
-            {
-                UpdateMenuFlyoutDataContext(item);
-            }
-        }
-    }
-
-#endif
-
     private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var owner = (TaskbarIcon) d;
@@ -352,51 +289,6 @@ public partial class TaskbarIcon
         UpdateContextFlyoutDataContext(ContextFlyout, oldValue, newValue);
 #endif
     }
-
-    #endregion
-
-    #region ContextMenu dependency property override
-
-#if HAS_WPF
-    /// <summary>
-    /// A static callback listener which is being invoked if the
-    /// <see cref="FrameworkElement.ContextMenuProperty"/> dependency property has
-    /// been changed. Invokes the <see cref="OnContextMenuPropertyChanged"/>
-    /// instance method of the changed instance.
-    /// </summary>
-    /// <param name="d">The currently processed owner of the property.</param>
-    /// <param name="e">Provides information about the updated property.</param>
-    private static void ContextMenuPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var owner = (TaskbarIcon) d;
-        owner.OnContextMenuPropertyChanged(e);
-    }
-
-
-    /// <summary>
-    /// Releases the old and updates the new <see cref="ContextMenu"/> property
-    /// in order to reflect both the NotifyIcon's <see cref="FrameworkElement.DataContext"/>
-    /// property and have the <see cref="ParentTaskbarIconProperty"/> assigned.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnContextMenuPropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        var contextMenu = (ContextMenu)e.NewValue;
-        if (e.OldValue != null)
-        {
-            //remove the taskbar icon reference from the previously used element
-            SetParentTaskbarIcon((DependencyObject) e.OldValue, null);
-        }
-
-        if (e.NewValue != null)
-        {
-            //set this taskbar icon as a reference to the new tooltip element
-            SetParentTaskbarIcon((DependencyObject) e.NewValue, this);
-        }
-
-        UpdateDataContext(contextMenu, null, DataContext);
-    }
-#endif
 
     #endregion
 
