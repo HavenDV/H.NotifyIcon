@@ -69,40 +69,40 @@ public class WindowMessageSink : IDisposable
     /// <summary>
     /// The custom tooltip should be closed or hidden.
     /// </summary>
-    public event Action<bool>? ChangeToolTipStateRequest;
+    public event EventHandler<bool>? ChangeToolTipStateRequest;
 
     /// <summary>
     /// Fired in case the user clicked or moved within
     /// the taskbar icon area.
     /// </summary>
-    public event Action<MouseEvent>? MouseEventReceived;
+    public event EventHandler<MouseEvent>? MouseEventReceived;
 
     /// <summary>
     /// Fired in case the user interacted with the taskbar
     /// icon area with keyboard shortcuts.
     /// </summary>
-    public event Action<KeyboardEvent>? KeyboardEventReceived;
+    public event EventHandler<KeyboardEvent>? KeyboardEventReceived;
 
     /// <summary>
     /// Fired if a balloon ToolTip was either displayed
     /// or closed (indicated by the boolean flag).
     /// </summary>
-    public event Action<bool>? BalloonToolTipChanged;
+    public event EventHandler<bool>? BalloonToolTipChanged;
 
     /// <summary>
     /// Fired if the taskbar was created or restarted. Requires the taskbar
     /// icon to be reset.
     /// </summary>
-    public event Action? TaskbarCreated;
+    public event EventHandler? TaskbarCreated;
 
     /// <summary>
     /// Fired if dpi change window message received.
     /// </summary>
-    public event Action? DpiChanged;
+    public event EventHandler? DpiChanged;
 
     #endregion
 
-    #region construction
+    #region Constructors
 
     /// <summary>
     /// Creates a new message sink that receives message from
@@ -110,7 +110,7 @@ public class WindowMessageSink : IDisposable
     /// </summary>
     public WindowMessageSink()
     {
-        WindowId = "WPFTaskbarIcon_" + Guid.NewGuid();
+        WindowId = "H.NotifyIcon_" + Guid.NewGuid();
         MessageHandler = OnWindowMessageReceived;
     }
 
@@ -172,7 +172,7 @@ public class WindowMessageSink : IDisposable
         if (messageId == taskbarRestartMessageId)
         {
             //recreate the icon if the taskbar was restarted (e.g. due to Win Explorer shutdown)
-            TaskbarCreated?.Invoke();
+            TaskbarCreated?.Invoke(this, EventArgs.Empty);
         }
 
         //forward message
@@ -200,7 +200,7 @@ public class WindowMessageSink : IDisposable
             switch (msg)
             {
                 case PInvoke.WM_DPICHANGED:
-                    DpiChanged?.Invoke();
+                    DpiChanged?.Invoke(this, EventArgs.Empty);
                     break;
             }
             return;
@@ -209,36 +209,36 @@ public class WindowMessageSink : IDisposable
         switch ((uint)lParam.Value)
         {
             case PInvoke.WM_CONTEXTMENU:
-                KeyboardEventReceived?.Invoke(KeyboardEvent.ContextMenu);
+                KeyboardEventReceived?.Invoke(this, KeyboardEvent.ContextMenu);
                 break;
 
             case PInvoke.WM_MOUSEMOVE:
-                MouseEventReceived?.Invoke(MouseEvent.MouseMove);
+                MouseEventReceived?.Invoke(this, MouseEvent.MouseMove);
                 break;
 
             case PInvoke.WM_LBUTTONDOWN:
-                MouseEventReceived?.Invoke(MouseEvent.IconLeftMouseDown);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconLeftMouseDown);
                 break;
 
             case PInvoke.WM_LBUTTONUP:
                 if (!isDoubleClick)
                 {
-                    MouseEventReceived?.Invoke(MouseEvent.IconLeftMouseUp);
+                    MouseEventReceived?.Invoke(this, MouseEvent.IconLeftMouseUp);
                 }
                 isDoubleClick = false;
                 break;
 
             case PInvoke.WM_LBUTTONDBLCLK:
                 isDoubleClick = true;
-                MouseEventReceived?.Invoke(MouseEvent.IconDoubleClick);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconDoubleClick);
                 break;
 
             case PInvoke.WM_RBUTTONDOWN:
-                MouseEventReceived?.Invoke(MouseEvent.IconRightMouseDown);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconRightMouseDown);
                 break;
 
             case PInvoke.WM_RBUTTONUP:
-                MouseEventReceived?.Invoke(MouseEvent.IconRightMouseUp);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconRightMouseUp);
                 break;
 
             case PInvoke.WM_RBUTTONDBLCLK:
@@ -246,11 +246,11 @@ public class WindowMessageSink : IDisposable
                 break;
 
             case PInvoke.WM_MBUTTONDOWN:
-                MouseEventReceived?.Invoke(MouseEvent.IconMiddleMouseDown);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconMiddleMouseDown);
                 break;
 
             case PInvoke.WM_MBUTTONUP:
-                MouseEventReceived?.Invoke(MouseEvent.IconMiddleMouseUp);
+                MouseEventReceived?.Invoke(this, MouseEvent.IconMiddleMouseUp);
                 break;
 
             case PInvoke.WM_MBUTTONDBLCLK:
@@ -258,32 +258,32 @@ public class WindowMessageSink : IDisposable
                 break;
 
             case PInvoke.NIN_BALLOONSHOW:
-                BalloonToolTipChanged?.Invoke(true);
+                BalloonToolTipChanged?.Invoke(this, true);
                 break;
 
             case PInvoke.NIN_BALLOONHIDE:
             case PInvoke.NIN_BALLOONTIMEOUT:
-                BalloonToolTipChanged?.Invoke(false);
+                BalloonToolTipChanged?.Invoke(this, false);
                 break;
 
             case PInvoke.NIN_BALLOONUSERCLICK:
-                MouseEventReceived?.Invoke(MouseEvent.BalloonToolTipClicked);
+                MouseEventReceived?.Invoke(this, MouseEvent.BalloonToolTipClicked);
                 break;
 
             case PInvoke.NIN_POPUPOPEN:
-                ChangeToolTipStateRequest?.Invoke(true);
+                ChangeToolTipStateRequest?.Invoke(this, true);
                 break;
 
             case PInvoke.NIN_POPUPCLOSE:
-                ChangeToolTipStateRequest?.Invoke(false);
+                ChangeToolTipStateRequest?.Invoke(this, false);
                 break;
 
             case PInvoke.NIN_SELECT:
-                KeyboardEventReceived?.Invoke(KeyboardEvent.Select);
+                KeyboardEventReceived?.Invoke(this, KeyboardEvent.Select);
                 break;
 
             case PInvoke.NIN_SELECT | PInvoke.NINF_KEY:
-                KeyboardEventReceived?.Invoke(KeyboardEvent.KeySelect);
+                KeyboardEventReceived?.Invoke(this, KeyboardEvent.KeySelect);
                 break;
 
             default:
@@ -300,7 +300,6 @@ public class WindowMessageSink : IDisposable
     /// Set to true as soon as <c>Dispose</c> has been invoked.
     /// </summary>
     public bool IsDisposed { get; private set; }
-
 
     /// <summary>
     /// Disposes the object.

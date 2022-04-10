@@ -156,7 +156,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-        MessageSink.DpiChanged += DpiUtilities.UpdateDpiFactors;
+        MessageSink.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
         MessageSink.TaskbarCreated += OnTaskbarCreated;
 
         // register event listeners
@@ -189,7 +189,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Recreates the taskbar icon if the whole taskbar was
     /// recreated (e.g. because Explorer was shut down).
     /// </summary>
-    private void OnTaskbarCreated()
+    private void OnTaskbarCreated(object? sender, EventArgs args)
     {
         try
         {
@@ -465,8 +465,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// certain actions (e.g. show a popup), or
     /// both.
     /// </summary>
+    /// <param name="sender"></param>
     /// <param name="me">Event flag.</param>
-    private void OnMouseEvent(MouseEvent me)
+    private void OnMouseEvent(object? sender, MouseEvent me)
     {
         if (IsDisposed)
         {
@@ -618,8 +619,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// certain actions (e.g. show a popup), or
     /// both.
     /// </summary>
+    /// <param name="sender"></param>
     /// <param name="event">Keyboard event</param>
-    private void OnKeyboardEvent(KeyboardEvent @event)
+    private void OnKeyboardEvent(object? sender, KeyboardEvent @event)
     {
         if (IsDisposed)
         {
@@ -658,8 +660,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Displays a custom tooltip, if available. This method is only
     /// invoked for Windows Vista and above.
     /// </summary>
+    /// <param name="sender"></param>
     /// <param name="visible">Whether to show or hide the tooltip.</param>
-    private void OnToolTipChange(bool visible)
+    private void OnToolTipChange(object? sender, bool visible)
     {
         // if we don't have a tooltip, there's nothing to do here...
         if (TrayToolTipResolved == null)
@@ -1095,7 +1098,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             }
         }
 
-        var handle = TrayIcon.MessageSink.MessageWindowHandle;
+        var handle = MessageSink.MessageWindowHandle;
 
         WindowUtilities.SetForegroundWindow(handle);
         menu.Show(
@@ -1123,7 +1126,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// </summary>
     /// <param name="visible">Whether the ToolTip was just displayed
     /// or removed.</param>
-    private void OnBalloonToolTipChanged(bool visible)
+    /// <param name="sender"></param>
+    private void OnBalloonToolTipChanged(object? sender, bool visible)
     {
 #if HAS_WPF
         if (visible)
