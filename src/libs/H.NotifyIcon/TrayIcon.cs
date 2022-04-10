@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 using H.NotifyIcon.Interop;
@@ -206,8 +207,11 @@ public class TrayIcon : IDisposable
         var name =
             assembly.GetName().Name ??
             throw new InvalidOperationException("Entry assembly should have simple name.");
+        var targetFramework =
+            assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName ??
+            string.Empty;
 
-        return CreateUniqueGuidFromString(name);
+        return CreateUniqueGuidFromString($"{name}_{targetFramework}");
     }
 
     #endregion
