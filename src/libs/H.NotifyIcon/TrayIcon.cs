@@ -196,7 +196,7 @@ public class TrayIcon : IDisposable
     /// Creates a unique Guid for the entry assembly simple name using hashing.
     /// </summary>
     /// <returns></returns>
-    public static Guid CreateUniqueGuidForEntryAssembly()
+    public static Guid CreateUniqueGuidForEntryAssembly(string? postfix = null)
     {
         var assembly =
             Assembly.GetEntryAssembly() ??
@@ -207,8 +207,11 @@ public class TrayIcon : IDisposable
         var targetFramework =
             assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName ??
             string.Empty;
+        var configuration =
+            assembly.GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ??
+            string.Empty;
 
-        return CreateUniqueGuidFromString($"{name}_{targetFramework}");
+        return CreateUniqueGuidFromString($"{name}_{targetFramework}_{configuration}_{postfix}");
     }
 
     #endregion
