@@ -13,7 +13,7 @@ using var trayIcon = new TrayIcon
     ToolTip = "ToolTip",
     WindowHandle = messageSink.MessageWindowHandle,
 };
-_ = trayIcon.Create();
+trayIcon.Create();
 
 Console.WriteLine("TrayIcon created.");
 Console.WriteLine("Available commands:");
@@ -34,7 +34,7 @@ while (true)
 {
     try
     {
-        var line = Console.ReadLine();
+        var line = Console.ReadLine() ?? string.Empty;
         if (line.StartsWith("create-second"))
         {
             using var iconStream2 = H.Resources.icon_ico.AsStream();
@@ -44,7 +44,7 @@ while (true)
                 Icon = icon2.Handle,
                 ToolTip = "Second Tray Icon",
             };
-            _ = trayIcon2.Create();
+            trayIcon2.Create();
 
             Console.WriteLine("Second icon created. It will removed after 5 seconds.");
 
@@ -104,13 +104,13 @@ while (true)
         }
         else if (line.StartsWith("remove"))
         {
-            var result = trayIcon.Remove();
+            var result = trayIcon.TryRemove();
             Console.WriteLine($"{line}: {result}");
         }
         else if (line.StartsWith("create"))
         {
-            var result = trayIcon.Create();
-            Console.WriteLine($"{line}: {result}");
+            trayIcon.Create();
+            Console.WriteLine(nameof(trayIcon.Create));
         }
         else if (line.StartsWith("show"))
         {

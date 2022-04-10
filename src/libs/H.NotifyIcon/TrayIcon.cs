@@ -97,16 +97,14 @@ public class TrayIcon : IDisposable
     /// This can happen in the following cases:<br/>
     /// - Via direct <see cref="Create"/> call<br/>
     /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
-    /// - After Explorer has been restarted<br/>
     /// </summary>
     public event EventHandler? Created;
 
     /// <summary>
     /// TrayIcon was removed.<br/>
     /// This can happen in the following cases:<br/>
-    /// - Via direct <see cref="Remove"/> call<br/>
+    /// - Via direct <see cref="TryRemove"/> call<br/>
     /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
-    /// - After Explorer has been restarted<br/>
     /// </summary>
     public event EventHandler? Removed;
 
@@ -115,7 +113,6 @@ public class TrayIcon : IDisposable
     /// This can happen in the following cases:<br/>
     /// - Via direct <see cref="Create"/> call<br/>
     /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
-    /// - After Explorer has been restarted<br/>
     /// </summary>
     public event EventHandler<NotifyIconVersion>? VersionChanged;
 
@@ -224,11 +221,11 @@ public class TrayIcon : IDisposable
     /// Created icon will be hidden. Use Show() to show it.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public bool Create()
+    public void Create()
     {
         if (IsCreated)
         {
-            return true;
+            return;
         }
 
         // We are trying to delete in case the last launch of the application did not clear the icon correctly.
@@ -249,11 +246,7 @@ public class TrayIcon : IDisposable
             uCallbackMessage: (uint)CallbackMessage,
             iconHandle: new HICON(Icon)))
         {
-            // couldn't create the icon - we can assume this is because explorer is not running (yet!)
-            // -> try a bit later again rather than throwing an exception. Typically, if the windows
-            // shell is being loaded later, this method is being re-invoked from OnTaskbarCreated
-            // (we could also retry after a delay, but that's currently YAGNI)
-            return false;
+            throw new InvalidOperationException($"{nameof(TrayIconMethods.TryCreate)} failed.");
         }
 
         if (!TrayIconMethods.TrySetMostRecentVersion(
@@ -273,14 +266,12 @@ public class TrayIcon : IDisposable
 
         IsCreated = true;
         OnCreated();
-
-        return true;
     }
 
     /// <summary>
     /// Closes the taskbar icon if required.
     /// </summary>
-    public bool Remove()
+    public bool TryRemove()
     {
         if (!IsCreated)
         {
@@ -477,14 +468,11 @@ public class TrayIcon : IDisposable
         EnsureNotDisposed();
         EnsureCreated();
 
-        if (!Remove())
+        if (!TryRemove())
         {
             throw new InvalidOperationException("Remove failed.");
         }
-        if (!Create())
-        {
-            throw new InvalidOperationException("Create failed.");
-        }
+        Create();
     }
 
     /// <summary>
@@ -598,7 +586,7 @@ public class TrayIcon : IDisposable
         }
 
         IsDisposed = true;
-        _ = Remove();
+        _ = TryRemove();
     }
 
     #endregion

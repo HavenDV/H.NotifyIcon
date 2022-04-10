@@ -22,7 +22,7 @@ public sealed partial class App
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         TaskbarIcon = (TaskbarIcon)Resources["TaskbarIcon"];
-        _ = TaskbarIcon.TryForceCreate();
+        TaskbarIcon.ForceCreate();
     }
 
     #endregion

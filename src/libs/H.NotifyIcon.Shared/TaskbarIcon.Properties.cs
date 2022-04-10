@@ -149,14 +149,14 @@ public partial class TaskbarIcon
         if (oldId != Guid.Empty &&
             wasCreated)
         {
-            _ = control.TrayIcon.Remove();
+            _ = control.TrayIcon.TryRemove();
         }
 
         control.Id = newId;
 
         if (wasCreated)
         {
-            _ = control.TrayIcon.Create();
+            control.TrayIcon.Create();
         }
     }
 
