@@ -208,8 +208,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         TrayIcon.Create();
 
         // Workaround for https://github.com/HavenDV/H.NotifyIcon/issues/14
-        using var refreshTrayIcon = new TrayIcon(TrayIcon.CreateUniqueGuidForEntryAssembly("RefreshWorkaround"));
-        refreshTrayIcon.Create();
+        // This seems to have been fixed in Windows 22598.1 but I'll leave it here for now
+        //using var refreshTrayIcon = new TrayIcon(TrayIcon.CreateUniqueGuidForEntryAssembly("RefreshWorkaround"));
+        //refreshTrayIcon.Create();
     }
 
     #endregion
