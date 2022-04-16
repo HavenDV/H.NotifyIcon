@@ -28,9 +28,9 @@
 
     <Grid>
         <tb:TaskbarIcon
-            Visibility="Visible"
             IconSource="ms-appx:///Assets/Red.ico"
             ToolTipText="Simple ToolTip"
+            NoLeftClickDelay="True"
             ContextFlyout="{StaticResource SysTrayMenu}"
             LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
             />
