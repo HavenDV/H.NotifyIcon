@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <NoWarn>$(NoWarn);CA1031;CA1003</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +11,6 @@
   <ItemGroup>
     <Using Include="Windows.Win32" />
     <Using Include="Windows.Win32.Foundation" />
-    <Using Include="Windows.Win32.UI.Shell" />
     <Using Include="Windows.Win32.UI.WindowsAndMessaging" />
     <Using Include="Microsoft.Win32.SafeHandles" />
   </ItemGroup>
@@ -25,8 +23,8 @@
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
-    <Description>This package allows to create TrayIcon for any platform.</Description>
-    <PackageTags>tray-icon,notify-icon,interop,console</PackageTags>
+    <Description>This package adds support for ContextMenu for platforms that don't support this directly</Description>
+    <PackageTags>NotifyIcon, Interop</PackageTags>
   </PropertyGroup>
 
 </Project>

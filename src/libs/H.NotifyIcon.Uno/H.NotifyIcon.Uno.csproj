@@ -24,6 +24,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
 
   <ItemGroup>
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
+    <ProjectReference Include="..\H.NotifyIcon.PopupMenus\H.NotifyIcon.PopupMenus.csproj" />
   </ItemGroup>
 
   <Import Project="..\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems" Label="Shared" />
