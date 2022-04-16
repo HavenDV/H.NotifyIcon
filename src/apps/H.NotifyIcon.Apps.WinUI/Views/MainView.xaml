@@ -30,7 +30,7 @@
         <tb:TaskbarIcon
             Visibility="Visible"
             IconSource="ms-appx:///Assets/Red.ico"
-            ToolTipText="Fallback ToolTip for Windows xp"
+            ToolTipText="Simple ToolTip"
             ContextFlyout="{StaticResource SysTrayMenu}"
             LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
             />

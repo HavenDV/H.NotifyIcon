@@ -31,13 +31,6 @@ public partial class TaskbarIcon
         set { SetValue(ToolTipTextProperty, value); }
     }
 
-    /// <summary>
-    /// Handles changes of the <see cref="ToolTipTextProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="ToolTipText"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
     private void OnToolTipTextPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         //do not touch tooltips if we have a custom tooltip element
@@ -420,11 +413,6 @@ public partial class TaskbarIcon
                 // need to set a dummy value (we're displaying the ToolTip control, not the string)
                 text = "ToolTip";
             }
-        }
-
-        if (!TrayIcon.IsCreated)
-        {
-            return;
         }
 
         TrayIcon.UpdateToolTip(text);

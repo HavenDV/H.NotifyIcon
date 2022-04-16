@@ -103,11 +103,6 @@ public partial class TaskbarIcon
         }
 
         var icon = newIcon?.Handle ?? IntPtr.Zero;
-        if (!control.TrayIcon.IsCreated)
-        {
-            control.TrayIcon.Icon = icon;
-            return;
-        }
 
         control.TrayIcon.UpdateIcon(icon);
     }
@@ -171,11 +166,6 @@ public partial class TaskbarIcon
         var state = value == Visibility.Visible
             ? IconVisibility.Visible
             : IconVisibility.Hidden;
-        if (!IsCreated)
-        {
-            TrayIcon.Visibility = state;
-            return;
-        }
 
         TrayIcon.UpdateVisibility(state);
     }

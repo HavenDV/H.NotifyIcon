@@ -304,14 +304,20 @@ public class TrayIcon : IDisposable
     }
 
     /// <summary>
-    /// Sets tooltip message.
+    /// Sets tooltip message. <br/>
+    /// If <see cref="IsCreated"/> is <see langword="false"/>, then it simply sets the corresponding property.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="ObjectDisposedException"></exception>
-    public unsafe void UpdateToolTip(string text)
+    public void UpdateToolTip(string text)
     {
         EnsureNotDisposed();
-        EnsureCreated();
+
+        if (!IsCreated)
+        {
+            ToolTip = text;
+            return;
+        }
 
         if (!TrayIconMethods.TryModifyToolTip(Id, text))
         {
@@ -321,7 +327,8 @@ public class TrayIcon : IDisposable
     }
 
     /// <summary>
-    /// Set new icon data.
+    /// Set new icon data. <br/>
+    /// If <see cref="IsCreated"/> is <see langword="false"/>, then it simply sets the corresponding property.
     /// </summary>
     /// <param name="handle">The title to display on the balloon tip.</param>
     /// <exception cref="InvalidOperationException"></exception>
@@ -329,7 +336,12 @@ public class TrayIcon : IDisposable
     public void UpdateIcon(IntPtr handle)
     {
         EnsureNotDisposed();
-        EnsureCreated();
+
+        if (!IsCreated)
+        {
+            Icon = handle;
+            return;
+        }
 
         if (!TrayIconMethods.TryModifyIcon(Id, handle))
         {
@@ -339,7 +351,8 @@ public class TrayIcon : IDisposable
     }
 
     /// <summary>
-    /// Set new icon state.
+    /// Set new icon state. <br/>
+    /// If <see cref="IsCreated"/> is <see langword="false"/>, then it simply sets the corresponding property.
     /// </summary>
     /// <param name="visibility"></param>
     /// <exception cref="InvalidOperationException"></exception>
@@ -347,7 +360,12 @@ public class TrayIcon : IDisposable
     public void UpdateVisibility(IconVisibility visibility)
     {
         EnsureNotDisposed();
-        EnsureCreated();
+
+        if (!IsCreated)
+        {
+            Visibility = visibility;
+            return;
+        }
 
         if (!TrayIconMethods.TryModifyState(Id, (uint)visibility))
         {
