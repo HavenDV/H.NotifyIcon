@@ -461,6 +461,66 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region BorderThickness
+
+    /// <summary>Identifies the <see cref="GeneratedIconBorderThickness"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconBorderThicknessProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconBorderThickness),
+            typeof(float),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+                0.0F,
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconBorderThicknessProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon border thickness.
+    /// Defaults to 0.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon border thickness.")]
+    public float GeneratedIconBorderThickness
+    {
+        get { return (float)GetValue(GeneratedIconBorderThicknessProperty); }
+        set { SetValue(GeneratedIconBorderThicknessProperty, value); }
+    }
+
+    #endregion
+
+    #region BorderBrush
+
+    /// <summary>Identifies the <see cref="GeneratedIconBorderBrush"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconBorderBrushProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconBorderBrush),
+            typeof(Brush),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+#if HAS_WPF
+                Brushes.Black,
+#else
+                new SolidColorBrush(Colors.Black),
+#endif
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconBorderBrushProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon border brush.
+    /// Defaults to Black.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon border brush.")]
+    public Brush? GeneratedIconBorderBrush
+    {
+        get { return (Brush?)GetValue(GeneratedIconBorderBrushProperty); }
+        set { SetValue(GeneratedIconBorderBrushProperty, value); }
+    }
+
+    #endregion
+
     #endregion
 
     #region Methods
@@ -476,10 +536,14 @@ public partial class TaskbarIcon
             (float)GeneratedIconFontSize,
             GeneratedIconFontStyle.ToSystemDrawingFontStyle(GeneratedIconFontWeight));
         using var baseImage = Icon?.ToBitmap();
+        using var pen = GeneratedIconBorderBrush.ToSystemDrawingPen(GeneratedIconBorderThickness);
 
         GeneratedIcon = IconGenerator.Generate(
             backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
             foregroundColor: GeneratedIconForeground.ToSystemDrawingColor(),
+            pen: GeneratedIconBorderThickness > 0.01F
+                ? pen
+                : null,
             backgroundType: GeneratedIconBackgroundType,
             cornerRadius: (float)GeneratedIconCornerRadius.TopLeft,
             rectangle: GeneratedIconMargin == default

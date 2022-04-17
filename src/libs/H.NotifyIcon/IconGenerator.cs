@@ -54,6 +54,7 @@ public static class IconGenerator
     public static Icon Generate(
         Color backgroundColor,
         Color foregroundColor,
+        Pen? pen = null,
         BackgroundType backgroundType = BackgroundType.Ellipse,
         float cornerRadius = 0.0F,
         RectangleF? rectangle = null,
@@ -95,6 +96,33 @@ public static class IconGenerator
                     brush: backgroundBrush,
                     rect: rect);
                 break;
+        }
+
+        if (pen != null)
+        {
+            switch (backgroundType)
+            {
+                case BackgroundType.Rectangle:
+                    graphics.DrawRectangle(
+                        pen: pen,
+                        rect: new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height));
+                    break;
+
+                case BackgroundType.RoundedRectangle:
+                    {
+                        using var path = GetRoundedRectGraphicsPath(rect, cornerRadius);
+                        graphics.DrawPath(
+                            pen: pen,
+                            path: path);
+                    }
+                    break;
+
+                case BackgroundType.Ellipse:
+                    graphics.DrawEllipse(
+                        pen: pen,
+                        rect: rect);
+                    break;
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(text) &&

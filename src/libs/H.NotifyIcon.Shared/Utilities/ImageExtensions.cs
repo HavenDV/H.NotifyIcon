@@ -164,7 +164,17 @@ internal static class ImageExtensions
     internal static System.Drawing.FontFamily ToSystemDrawingFontFamily(
         this FontFamily family)
     {
-        return new System.Drawing.FontFamily(family.Source);
+        return new System.Drawing.FontFamily(
+            name: family.Source);
+    }
+
+    internal static System.Drawing.Pen ToSystemDrawingPen(
+        this Brush? brush,
+        float width)
+    {
+        return new System.Drawing.Pen(
+            color: brush.ToSystemDrawingColor(),
+            width: width);
     }
 
 }
