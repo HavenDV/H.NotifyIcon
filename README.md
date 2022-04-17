@@ -55,29 +55,29 @@ Install-Package H.NotifyIcon
 ```
 
 ### Generated icons
-Simple example: <img width="24" alt="image" src="https://user-images.githubusercontent.com/3002068/163700914-ad61c54c-444c-485c-92df-73be5412109d.png">
+Simple example: <img width="15" alt="image" src="https://user-images.githubusercontent.com/3002068/163721411-1388f2b4-a039-4b4a-8114-f74bfc8835ba.png">
 ```xml
 <tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
 ```
-Advanced example: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163702368-da5031c6-efa7-4c83-85b5-a0a3eaf8a0ca.png">
+Advanced example: <img width="14" alt="image" src="https://user-images.githubusercontent.com/3002068/163721399-cbfd0286-d2d4-4b40-b3f3-388c9613f535.png">
 ```xml
 <tb:TaskbarIcon
     IconSource="/Icons/Error.ico"
     GeneratedIconText="5"
     GeneratedIconForeground="Black"
-    GeneratedIconFontSize="9"
+    GeneratedIconFontSize="36"
     GeneratedIconFontWeight="Bold"
     >
 ```
-Advanced example 2: <img width="21" alt="image" src="https://user-images.githubusercontent.com/3002068/163719894-5cbc7750-875c-4781-ad76-da287e07e0d8.png">
+Advanced example 2: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163721367-dc6878df-3ec2-4288-b699-cf664894e1b1.png">
 ```xml
 <tb:TaskbarIcon
     GeneratedIconText="❤️"
     GeneratedIconForeground="Red"
     GeneratedIconFontFamily="Segoe UI Emoji"
-    GeneratedIconFontSize="10"
     GeneratedIconBackground="AliceBlue"
     GeneratedIconFontWeight="Bold"
+    GeneratedIconFontSize="38"
     >
 ```
 
