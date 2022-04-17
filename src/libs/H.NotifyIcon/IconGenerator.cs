@@ -43,8 +43,7 @@ public static class IconGenerator
                 var size = graphics.MeasureString(
                     text: text,
                     font: font,
-                    layoutArea: new SizeF(32, 32),
-                    stringFormat: StringFormat.GenericTypographic);
+                    layoutArea: new SizeF(32, 32));
 
                 graphics.DrawString(
                     s: text,
@@ -54,8 +53,7 @@ public static class IconGenerator
                         32 / 2 - size.Width / 2,
                         32 / 2 - size.Height / 2,
                         size.Width,
-                        size.Height),
-                    format: StringFormat.GenericTypographic);
+                        size.Height));
             }
             else
             {
@@ -63,8 +61,7 @@ public static class IconGenerator
                     s: text,
                     font: font,
                     brush: foregroundBrush,
-                    layoutRectangle: textRectangle.Value,
-                    format: StringFormat.GenericTypographic);
+                    layoutRectangle: textRectangle.Value);
             }
         }
 
