@@ -21,13 +21,20 @@ internal static class ImageExtensions
 #endif
     {
 #if HAS_WPF
+        if (uri.Scheme == Uri.UriSchemeFile)
+        {
+            using var fileStream = File.OpenRead(uri.LocalPath);
+
+            return new Icon(fileStream);
+        }
+
         var streamInfo =
             Application.GetResourceStream(uri) ??
             throw new ArgumentException($"Uri: {uri} is not resolved.");
-        var stream = streamInfo.Stream;
+        using var stream = streamInfo.Stream;
 #else
         var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-        var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
+        using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
 #endif
 
         return new Icon(stream);

@@ -140,7 +140,12 @@ public partial class TaskbarIcon
         }
         if (e.NewValue is not ImageSource source)
         {
-            throw new InvalidOperationException($"Value should be {nameof(ImageSource)}");
+            control.Icon = null;
+            if (!string.IsNullOrWhiteSpace(control.GeneratedIconText))
+            {
+                control.RefreshGeneratedIcon();
+            }
+            return;
         }
 
 #if HAS_WPF
@@ -148,6 +153,11 @@ public partial class TaskbarIcon
 #else
         control.Icon = await source.ToIconAsync().ConfigureAwait(true);
 #endif
+
+        if (!string.IsNullOrWhiteSpace(control.GeneratedIconText))
+        {
+            control.RefreshGeneratedIcon();
+        }
     }
 
     #endregion
