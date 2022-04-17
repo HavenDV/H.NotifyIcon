@@ -3,10 +3,14 @@ using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
 using SystemFonts = System.Windows.SystemFonts;
-#else
+#elif HAS_WINUI
 using Brush = Microsoft.UI.Xaml.Media.Brush;
 using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
 using Colors = Microsoft.UI.Colors;
+#else
+using Brush = Windows.UI.Xaml.Media.Brush;
+using FontFamily = Windows.UI.Xaml.Media.FontFamily;
+using Colors = Windows.UI.Colors;
 #endif
 
 namespace H.NotifyIcon;
