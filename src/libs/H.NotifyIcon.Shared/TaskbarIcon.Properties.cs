@@ -8,10 +8,14 @@ namespace H.NotifyIcon;
 /// </summary>
 public partial class TaskbarIcon
 {
+    #region Constants
+
     /// <summary>
     /// Category name that is set on designer properties.
     /// </summary>
     public const string CategoryName = "NotifyIcon";
+
+    #endregion
 
     #region Id
 
@@ -97,10 +101,7 @@ public partial class TaskbarIcon
         {
             oldIcon.Dispose();
         }
-        if (e.NewValue is not Icon newIcon)
-        {
-            throw new InvalidOperationException($"Value should be {nameof(Icon)}");
-        }
+        var newIcon = (Icon?)e.NewValue;
 
         var icon = newIcon?.Handle ?? IntPtr.Zero;
 

@@ -1,4 +1,13 @@
-﻿using System.IO;
+﻿#if HAS_WPF
+using System.IO;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using FontFamily = System.Windows.Media.FontFamily;
+using SystemFonts = System.Windows.SystemFonts;
+#else
+using Brush = Microsoft.UI.Xaml.Media.Brush;
+using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
+#endif
 
 namespace H.NotifyIcon;
 
@@ -80,4 +89,38 @@ internal static class ImageExtensions
                 throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
         }
     }
+
+    internal static System.Drawing.Color ToSystemDrawingColor(this Brush? brush)
+    {
+        if (brush == null)
+        {
+            return System.Drawing.Color.Transparent;
+        }
+
+        if (brush is not SolidColorBrush solidColorBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        var color = solidColorBrush.Color;
+
+        return System.Drawing.Color.FromArgb(
+            alpha: color.A,
+            red: color.R,
+            green: color.G,
+            blue: color.B);
+    }
+
+    internal static RectangleF ToSystemDrawingRectangleF(
+        this Thickness thickness,
+        double width,
+        double height)
+    {
+        return new RectangleF(
+            x: (float)thickness.Left,
+            y: (float)thickness.Top,
+            width: (float)(width - thickness.Left - thickness.Right),
+            height: (float)(height - thickness.Top - thickness.Bottom));
+    }
+
 }

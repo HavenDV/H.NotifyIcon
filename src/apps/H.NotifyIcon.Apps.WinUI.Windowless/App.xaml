@@ -15,7 +15,8 @@
             <tb:TaskbarIcon
                 x:Key="TaskbarIcon"
                 Visibility="Visible"
-                IconSource="ms-appx:///Assets/Red.ico"
+                GeneratedIconText="❤️"
+                GeneratedIconForeground="Red"
                 ToolTipText="ToolTip"
                 >
                 <tb:TaskbarIcon.ContextFlyout>

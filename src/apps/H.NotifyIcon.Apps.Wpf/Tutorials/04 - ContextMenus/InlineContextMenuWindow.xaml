@@ -11,10 +11,11 @@
 
         <tb:TaskbarIcon
             x:Name="MyNotifyIcon"
-            IconSource="/Icons/Error.ico"
             ToolTipText="hello world"
             TrayContextMenuOpen="MyNotifyIcon_TrayContextMenuOpen"
             PreviewTrayContextMenuOpen="MyNotifyIcon_PreviewTrayContextMenuOpen"
+            GeneratedIconText="❤️"
+            GeneratedIconForeground="Red"
             >
 
             <!--  Set a simple context menu  -->
