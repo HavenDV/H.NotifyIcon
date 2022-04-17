@@ -1,33 +1,11 @@
-﻿#if HAS_WPF
-using System.IO;
-using Brush = System.Windows.Media.Brush;
-using Brushes = System.Windows.Media.Brushes;
-using FontFamily = System.Windows.Media.FontFamily;
-using FontStyle = System.Windows.FontStyle;
-using SystemFonts = System.Windows.SystemFonts;
-#elif HAS_WINUI
-using Microsoft.UI.Text;
-using Windows.UI.Text;
-using Brush = Microsoft.UI.Xaml.Media.Brush;
-using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
-using FontStyle = Windows.UI.Text.FontStyle;
-using FontStyles = Windows.UI.Text.FontStyle;
-#else
-using Windows.UI.Text;
-using Brush = Windows.UI.Xaml.Media.Brush;
-using FontFamily = Windows.UI.Xaml.Media.FontFamily;
-using FontStyle = Windows.UI.Text.FontStyle;
-using FontStyles = Windows.UI.Text.FontStyle;
-#endif
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static class ImageExtensions
 {
 #if HAS_WPF
-    internal static Icon ToIcon(this Uri uri)
+    internal static System.Drawing.Icon ToIcon(this Uri uri)
 #else
-    internal static async Task<Icon> ToIconAsync(this Uri uri)
+    internal static async Task<System.Drawing.Icon> ToIconAsync(this Uri uri)
 #endif
     {
 #if HAS_WPF
@@ -35,7 +13,7 @@ internal static class ImageExtensions
         {
             using var fileStream = File.OpenRead(uri.LocalPath);
 
-            return new Icon(fileStream);
+            return new System.Drawing.Icon(fileStream);
         }
 
         var streamInfo =
@@ -47,12 +25,12 @@ internal static class ImageExtensions
         using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
 #endif
 
-        return new Icon(stream);
+        return new System.Drawing.Icon(stream);
     }
 
 #if HAS_WPF
 
-    public static Icon ToIcon(this BitmapFrame frame)
+    public static System.Drawing.Icon ToIcon(this BitmapFrame frame)
     {
         var encoder = new PngBitmapEncoder();
         encoder.Frames.Add(frame);
@@ -63,10 +41,10 @@ internal static class ImageExtensions
         var iconBytes = stream.ToArray().ConvertPngToIco();
         using var iconStream = new MemoryStream(iconBytes);
         
-        return new Icon(iconStream);
+        return new System.Drawing.Icon(iconStream);
     }
 
-    public static Icon ToIcon(this BitmapSource bitmap)
+    public static System.Drawing.Icon ToIcon(this BitmapSource bitmap)
     {
         return BitmapFrame.Create(bitmap).ToIcon();
     }
@@ -74,9 +52,9 @@ internal static class ImageExtensions
 #endif
 
 #if HAS_WPF
-    public static Icon? ToIcon(this ImageSource imageSource)
+    public static System.Drawing.Icon? ToIcon(this ImageSource imageSource)
 #else
-    public static async Task<Icon?> ToIconAsync(this ImageSource imageSource)
+    public static async Task<System.Drawing.Icon?> ToIconAsync(this ImageSource imageSource)
 #endif
     {
         switch(imageSource)
@@ -108,20 +86,13 @@ internal static class ImageExtensions
         }
     }
 
-    internal static System.Drawing.Color ToSystemDrawingColor(this Brush? brush)
+    internal static System.Drawing.PointF ToSystemDrawingPointF(this Point point)
     {
-        if (brush == null)
-        {
-            return System.Drawing.Color.Transparent;
-        }
+        return new System.Drawing.PointF((float)point.X, (float)point.Y);
+    }
 
-        if (brush is not SolidColorBrush solidColorBrush)
-        {
-            throw new NotImplementedException();
-        }
-
-        var color = solidColorBrush.Color;
-
+    internal static System.Drawing.Color ToSystemDrawingColor(this Color color)
+    {
         return System.Drawing.Color.FromArgb(
             alpha: color.A,
             red: color.R,
@@ -129,12 +100,27 @@ internal static class ImageExtensions
             blue: color.B);
     }
 
-    internal static RectangleF ToSystemDrawingRectangleF(
+    internal static System.Drawing.Brush ToSystemDrawingBrush(this Brush? brush)
+    {
+        return brush switch
+        {
+            null => new System.Drawing.SolidBrush(System.Drawing.Color.Transparent),
+            SolidColorBrush solidColorBrush => new System.Drawing.SolidBrush(solidColorBrush.Color.ToSystemDrawingColor()),
+            LinearGradientBrush linearGradientBrush => new System.Drawing.Drawing2D.LinearGradientBrush(
+                point1: linearGradientBrush.StartPoint.ToSystemDrawingPointF(),
+                point2: linearGradientBrush.EndPoint.ToSystemDrawingPointF(),
+                color1: linearGradientBrush.GradientStops.ElementAt(0).Color.ToSystemDrawingColor(),
+                color2: linearGradientBrush.GradientStops.ElementAt(1).Color.ToSystemDrawingColor()),
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    internal static System.Drawing.RectangleF ToSystemDrawingRectangleF(
         this Thickness thickness,
         double width,
         double height)
     {
-        return new RectangleF(
+        return new System.Drawing.RectangleF(
             x: (float)thickness.Left,
             y: (float)thickness.Top,
             width: (float)(width - thickness.Left - thickness.Right),
@@ -172,8 +158,10 @@ internal static class ImageExtensions
         this Brush? brush,
         float width)
     {
+        using var penBrush = brush.ToSystemDrawingBrush();
+
         return new System.Drawing.Pen(
-            color: brush.ToSystemDrawingColor(),
+            brush: penBrush,
             width: width);
     }
 

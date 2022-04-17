@@ -1,25 +1,4 @@
-﻿#if HAS_WPF
-using Brush = System.Windows.Media.Brush;
-using Brushes = System.Windows.Media.Brushes;
-using FontFamily = System.Windows.Media.FontFamily;
-using FontStyle = System.Windows.FontStyle;
-using SystemFonts = System.Windows.SystemFonts;
-#elif HAS_WINUI
-using Brush = Microsoft.UI.Xaml.Media.Brush;
-using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
-using Colors = Microsoft.UI.Colors;
-using Windows.UI.Text;
-using FontStyle = Windows.UI.Text.FontStyle;
-using Microsoft.UI.Text;
-#else
-using Brush = Windows.UI.Xaml.Media.Brush;
-using FontFamily = Windows.UI.Xaml.Media.FontFamily;
-using Colors = Windows.UI.Colors;
-using Windows.UI.Text;
-using FontStyle = Windows.UI.Text.FontStyle;
-#endif
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <inheritdoc/>
 public partial class TaskbarIcon
@@ -398,7 +377,7 @@ public partial class TaskbarIcon
     /// <summary>Identifies the <see cref="GeneratedIcon"/> dependency property.</summary>
     public static readonly DependencyProperty GeneratedIconProperty =
         DependencyProperty.Register(nameof(GeneratedIcon),
-            typeof(Icon),
+            typeof(System.Drawing.Icon),
             typeof(TaskbarIcon),
             new PropertyMetadata(null, GeneratedIconChanged));
 
@@ -408,9 +387,9 @@ public partial class TaskbarIcon
     /// </summary>
     [Category(GeneratedIconCategoryName)]
     [Description("Defines generated icon.")]
-    public Icon? GeneratedIcon
+    public System.Drawing.Icon? GeneratedIcon
     {
-        get => (Icon?)GetValue(GeneratedIconProperty);
+        get => (System.Drawing.Icon?)GetValue(GeneratedIconProperty);
         set => SetValue(GeneratedIconProperty, value);
     }
 
@@ -420,11 +399,11 @@ public partial class TaskbarIcon
         {
             throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
         }
-        if (e.OldValue is Icon oldIcon)
+        if (e.OldValue is System.Drawing.Icon oldIcon)
         {
             oldIcon.Dispose();
         }
-        var newIcon = (Icon?)e.NewValue;
+        var newIcon = (System.Drawing.Icon?)e.NewValue;
 
         var icon = newIcon?.Handle ?? IntPtr.Zero;
 
@@ -531,16 +510,18 @@ public partial class TaskbarIcon
         using var fontFamily =
             GeneratedIconFontFamily?.ToSystemDrawingFontFamily() ??
             new System.Drawing.FontFamily(string.Empty);
-        using var font = new Font(
+        using var font = new System.Drawing.Font(
             fontFamily,
             (float)GeneratedIconFontSize,
             GeneratedIconFontStyle.ToSystemDrawingFontStyle(GeneratedIconFontWeight));
         using var baseImage = Icon?.ToBitmap();
         using var pen = GeneratedIconBorderBrush.ToSystemDrawingPen(GeneratedIconBorderThickness);
+        using var backgroundBrush = GeneratedIconBackground.ToSystemDrawingBrush();
+        using var foregroundBrush = GeneratedIconForeground.ToSystemDrawingBrush();
 
         GeneratedIcon = IconGenerator.Generate(
-            backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
-            foregroundColor: GeneratedIconForeground.ToSystemDrawingColor(),
+            backgroundBrush: backgroundBrush,
+            foregroundBrush: foregroundBrush,
             pen: GeneratedIconBorderThickness > 0.01F
                 ? pen
                 : null,

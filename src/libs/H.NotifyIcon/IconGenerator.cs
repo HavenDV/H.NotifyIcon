@@ -52,8 +52,8 @@ public static class IconGenerator
     /// </summary>
     /// <returns></returns>
     public static Icon Generate(
-        Color backgroundColor,
-        Color foregroundColor,
+        Brush backgroundBrush,
+        Brush foregroundBrush,
         Pen? pen = null,
         BackgroundType backgroundType = BackgroundType.Ellipse,
         float cornerRadius = 0.0F,
@@ -67,13 +67,14 @@ public static class IconGenerator
         using var bitmap = baseImage == null
             ? new Bitmap(size, size)
             : new Bitmap(baseImage, size, size);
-        using var backgroundBrush = new SolidBrush(backgroundColor);
-        using var foregroundBrush = new SolidBrush(foregroundColor);
         using var graphics = Graphics.FromImage(bitmap);
         graphics.CompositingQuality = CompositingQuality.HighQuality;
         graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-        var rect = rectangle ?? new Rectangle(0, 0, size, size);
+        var borderOffset = pen == null
+            ? 0.0F
+            : pen.Width / 2;
+        var rect = rectangle ?? new RectangleF(borderOffset, borderOffset, size - borderOffset * 2, size - borderOffset * 2);
         switch (backgroundType)
         {
             case BackgroundType.Rectangle:
