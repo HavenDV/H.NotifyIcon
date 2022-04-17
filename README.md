@@ -54,6 +54,23 @@ Install-Package H.NotifyIcon
 </Window>
 ```
 
+### Generated icons
+Simple example: <img width="24" alt="image" src="https://user-images.githubusercontent.com/3002068/163700914-ad61c54c-444c-485c-92df-73be5412109d.png">
+```xml
+<tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
+```
+Advanced example: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163702368-da5031c6-efa7-4c83-85b5-a0a3eaf8a0ca.png">
+```xml
+<tb:TaskbarIcon
+    IconSource="/Icons/Error.ico"
+    GeneratedIconText="5"
+    GeneratedIconForeground="Black"
+    GeneratedIconFontSize="9"
+    GeneratedIconFontWeight="Bold"
+    >
+```
+
+
 ### Design-Time Access
 It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
