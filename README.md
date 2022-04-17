@@ -69,10 +69,21 @@ Advanced example: <img width="19" alt="image" src="https://user-images.githubuse
     GeneratedIconFontWeight="Bold"
     >
 ```
+Advanced example 2: <img width="21" alt="image" src="https://user-images.githubusercontent.com/3002068/163719894-5cbc7750-875c-4781-ad76-da287e07e0d8.png">
+```xml
+<tb:TaskbarIcon
+    GeneratedIconText="❤️"
+    GeneratedIconForeground="Red"
+    GeneratedIconFontFamily="Segoe UI Emoji"
+    GeneratedIconFontSize="10"
+    GeneratedIconBackground="AliceBlue"
+    GeneratedIconFontWeight="Bold"
+    >
+```
 
 
 ### Design-Time Access
-It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:
+It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
 
