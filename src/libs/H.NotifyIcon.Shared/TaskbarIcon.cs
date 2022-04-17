@@ -83,7 +83,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
     #endregion
 
-    #region Construction
+    #region Constructors
 
 #if HAS_WPF
 
@@ -123,11 +123,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
         });
 #endif
-        if (!DesignTimeUtilities.IsDesignMode)
-        {
-            MessageWindow.Create();
-        }
-
+        MessageWindow.Create();
         TrayIcon = new TrayIcon()
         {
             WindowHandle = MessageWindow.Handle,
@@ -136,11 +132,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         TrayIcon.VersionChanged += (_, version) => MessageWindow.Version = version;
         Loaded += (_, _) =>
         {
-            if (DesignTimeUtilities.IsDesignMode)
-            {
-                return;
-            }
-
             try
             {
                 ForceCreate();
@@ -150,6 +141,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
+        Unloaded += (_, _) => Dispose();
         MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
         MessageWindow.TaskbarCreated += OnTaskbarCreated;
 
