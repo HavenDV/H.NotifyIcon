@@ -22,18 +22,50 @@ public static class IconGenerator
         Color foregroundColor,
         string? text = null,
         Font? font = null,
-        RectangleF? textRectangle = null)
+        RectangleF? textRectangle = null,
+        Image? baseImage = null)
     {
-        using var bitmap = new Bitmap(32, 32);
+        using var bitmap = baseImage == null
+            ? new Bitmap(32, 32)
+            : new Bitmap(baseImage, 32, 32);
         using var backgroundBrush = new SolidBrush(backgroundColor);
         using var foregroundBrush = new SolidBrush(foregroundColor);
         using var graphics = Graphics.FromImage(bitmap);
 
-        graphics.FillRectangle(backgroundBrush, new Rectangle(0, 0, 32, 32));
+        graphics.FillRectangle(
+            brush: backgroundBrush,
+            rect: new Rectangle(0, 0, 32, 32));
         if (!string.IsNullOrWhiteSpace(text) && 
             font != null)
         {
-            graphics.DrawString(text, font, foregroundBrush, textRectangle ?? new Rectangle(0, 0, 32, 32));
+            if (textRectangle == null)
+            {
+                var size = graphics.MeasureString(
+                    text: text,
+                    font: font,
+                    layoutArea: new SizeF(32, 32),
+                    stringFormat: StringFormat.GenericTypographic);
+
+                graphics.DrawString(
+                    s: text,
+                    font: font,
+                    brush: foregroundBrush,
+                    layoutRectangle: new RectangleF(
+                        32 / 2 - size.Width / 2,
+                        32 / 2 - size.Height / 2,
+                        size.Width,
+                        size.Height),
+                    format: StringFormat.GenericTypographic);
+            }
+            else
+            {
+                graphics.DrawString(
+                    s: text,
+                    font: font,
+                    brush: foregroundBrush,
+                    layoutRectangle: textRectangle.Value,
+                    format: StringFormat.GenericTypographic);
+            }
         }
 
         return Icon.FromHandle(bitmap.GetHicon());

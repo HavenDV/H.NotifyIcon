@@ -213,6 +213,46 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region Icon
+
+    /// <summary>Identifies the <see cref="GeneratedIcon"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconProperty =
+        DependencyProperty.Register(nameof(GeneratedIcon),
+            typeof(Icon),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(null, GeneratedIconChanged));
+
+    /// <summary>
+    /// Gets or sets the icon to be displayed.
+    /// Use this for dynamically generated System.Drawing.Icons.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon.")]
+    public Icon? GeneratedIcon
+    {
+        get => (Icon?)GetValue(GeneratedIconProperty);
+        set => SetValue(GeneratedIconProperty, value);
+    }
+
+    private static void GeneratedIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not TaskbarIcon control)
+        {
+            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
+        }
+        if (e.OldValue is Icon oldIcon)
+        {
+            oldIcon.Dispose();
+        }
+        var newIcon = (Icon?)e.NewValue;
+
+        var icon = newIcon?.Handle ?? IntPtr.Zero;
+
+        control.TrayIcon.UpdateIcon(icon);
+    }
+
+    #endregion
+
     #endregion
 
     #region Methods
@@ -222,12 +262,16 @@ public partial class TaskbarIcon
         using var font = new Font(
             GeneratedIconFontFamily?.Source ?? string.Empty,
             (int)GeneratedIconFontSize);
-        Icon = IconGenerator.Generate(
+        using var baseImage = Icon?.ToBitmap();
+        GeneratedIcon = IconGenerator.Generate(
             backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
             foregroundColor: GeneratedIconForeground.ToSystemDrawingColor(),
             text: GeneratedIconText,
             font: font,
-            textRectangle: GeneratedIconTextMargin.ToSystemDrawingRectangleF(width: 32, height: 32));
+            textRectangle: GeneratedIconTextMargin == default
+                ? null
+                : GeneratedIconTextMargin.ToSystemDrawingRectangleF(width: 32, height: 32),
+            baseImage: baseImage);
     }
 
     #endregion
