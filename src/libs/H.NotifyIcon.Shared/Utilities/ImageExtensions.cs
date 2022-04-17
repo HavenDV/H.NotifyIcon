@@ -3,11 +3,21 @@ using System.IO;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
+using FontStyle = System.Windows.FontStyle;
 using SystemFonts = System.Windows.SystemFonts;
 #elif HAS_WINUI
+using Microsoft.UI.Text;
+using Windows.UI.Text;
 using Brush = Microsoft.UI.Xaml.Media.Brush;
+using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
+using FontStyle = Windows.UI.Text.FontStyle;
+using FontStyles = Windows.UI.Text.FontStyle;
 #else
+using Windows.UI.Text;
 using Brush = Windows.UI.Xaml.Media.Brush;
+using FontFamily = Windows.UI.Xaml.Media.FontFamily;
+using FontStyle = Windows.UI.Text.FontStyle;
+using FontStyles = Windows.UI.Text.FontStyle;
 #endif
 
 namespace H.NotifyIcon;
@@ -129,6 +139,32 @@ internal static class ImageExtensions
             y: (float)thickness.Top,
             width: (float)(width - thickness.Left - thickness.Right),
             height: (float)(height - thickness.Top - thickness.Bottom));
+    }
+
+    internal static System.Drawing.FontStyle ToSystemDrawingFontStyle(
+        this FontStyle style,
+        FontWeight weight)
+    {
+        var fontStyle = System.Drawing.FontStyle.Regular;
+        if (style == FontStyles.Italic)
+        {
+            fontStyle |= System.Drawing.FontStyle.Italic;
+        }
+        if (style == FontStyles.Oblique)
+        {
+        }
+        if (weight == FontWeights.Bold)
+        {
+            fontStyle |= System.Drawing.FontStyle.Bold;
+        }
+        
+        return fontStyle;
+    }
+
+    internal static System.Drawing.FontFamily ToSystemDrawingFontFamily(
+        this FontFamily family)
+    {
+        return new System.Drawing.FontFamily(family.Source);
     }
 
 }

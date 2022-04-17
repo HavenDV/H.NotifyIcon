@@ -2,15 +2,21 @@
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
+using FontStyle = System.Windows.FontStyle;
 using SystemFonts = System.Windows.SystemFonts;
 #elif HAS_WINUI
 using Brush = Microsoft.UI.Xaml.Media.Brush;
 using FontFamily = Microsoft.UI.Xaml.Media.FontFamily;
 using Colors = Microsoft.UI.Colors;
+using Windows.UI.Text;
+using FontStyle = Windows.UI.Text.FontStyle;
+using Microsoft.UI.Text;
 #else
 using Brush = Windows.UI.Xaml.Media.Brush;
 using FontFamily = Windows.UI.Xaml.Media.FontFamily;
 using Colors = Windows.UI.Colors;
+using Windows.UI.Text;
+using FontStyle = Windows.UI.Text.FontStyle;
 #endif
 
 namespace H.NotifyIcon;
@@ -177,6 +183,102 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region FontStyle
+
+    /// <summary>Identifies the <see cref="GeneratedIconFontStyle"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconFontStyleProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconFontStyle),
+            typeof(FontStyle),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+#if HAS_WPF
+                SystemFonts.IconFontStyle,
+#else
+                FontStyle.Italic,
+#endif
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconFontStyleProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon font style.
+    /// Defaults to SystemFonts.IconFontStyle.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon font style.")]
+    public FontStyle GeneratedIconFontStyle
+    {
+        get { return (FontStyle)GetValue(GeneratedIconFontStyleProperty); }
+        set { SetValue(GeneratedIconFontStyleProperty, value); }
+    }
+
+    #endregion
+
+    #region FontWeight
+
+    /// <summary>Identifies the <see cref="GeneratedIconFontWeight"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconFontWeightProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconFontWeight),
+            typeof(FontWeight),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+#if HAS_WPF
+                SystemFonts.IconFontWeight,
+#else
+                FontWeights.Normal,
+#endif
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconFontWeightProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon font weight.
+    /// Defaults to SystemFonts.IconFontWeight.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon font weight.")]
+    public FontWeight GeneratedIconFontWeight
+    {
+        get { return (FontWeight)GetValue(GeneratedIconFontWeightProperty); }
+        set { SetValue(GeneratedIconFontWeightProperty, value); }
+    }
+
+    #endregion
+
+    #region FontStretch
+
+    /// <summary>Identifies the <see cref="GeneratedIconFontStretch"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconFontStretchProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconFontStretch),
+            typeof(FontStretch),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+#if HAS_WPF
+                FontStretches.Normal,
+#else
+                FontStretch.Normal,
+#endif
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconFontStretchProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon font stretch.
+    /// Defaults to FontStretches.Normal.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon font stretch.")]
+    public FontStretch GeneratedIconFontStretch
+    {
+        get { return (FontStretch)GetValue(GeneratedIconFontStretchProperty); }
+        set { SetValue(GeneratedIconFontStretchProperty, value); }
+    }
+
+    #endregion
+
     #region FontSize
 
     /// <summary>Identifies the <see cref="GeneratedIconFontSize"/> dependency property.</summary>
@@ -259,9 +361,13 @@ public partial class TaskbarIcon
 
     private void RefreshGeneratedIcon()
     {
+        using var fontFamily =
+            GeneratedIconFontFamily?.ToSystemDrawingFontFamily() ??
+            new System.Drawing.FontFamily(string.Empty);
         using var font = new Font(
-            GeneratedIconFontFamily?.Source ?? string.Empty,
-            (int)GeneratedIconFontSize);
+            fontFamily,
+            (float)GeneratedIconFontSize,
+            GeneratedIconFontStyle.ToSystemDrawingFontStyle(GeneratedIconFontWeight));
         using var baseImage = Icon?.ToBitmap();
         GeneratedIcon = IconGenerator.Generate(
             backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
