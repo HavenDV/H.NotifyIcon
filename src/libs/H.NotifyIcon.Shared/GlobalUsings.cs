@@ -1,8 +1,7 @@
-﻿global using System.Drawing;
+﻿global using System.IO;
 global using System.ComponentModel;
-global using System.Diagnostics.Contracts;
-global using H.NotifyIcon.Interop;
-global using Point = System.Drawing.Point;
+global using System.Diagnostics;
+global using H.NotifyIcon.Core;
 #if HAS_AVALONIA
 global using Avalonia;
 global using Avalonia.Data;
@@ -19,6 +18,11 @@ global using System.Windows.Interop;
 global using System.Windows.Resources;
 global using System.Windows.Threading;
 #elif HAS_WINUI
+global using Windows.Foundation;
+global using Windows.UI;
+global using Microsoft.UI;
+global using Windows.UI.Text;
+global using Microsoft.UI.Text;
 global using Microsoft.UI.Xaml;
 global using Microsoft.UI.Xaml.Controls;
 global using Microsoft.UI.Xaml.Controls.Primitives;
@@ -29,9 +33,12 @@ global using Microsoft.UI.Xaml.Interop;
 global using Microsoft.UI.Xaml.Resources;
 global using System.Windows.Input;
 global using Windows.Storage;
+global using FontStyles = Windows.UI.Text.FontStyle;
 #else
 global using Windows.UI.Core;
 global using Windows.System;
+global using Windows.UI;
+global using Windows.UI.Text;
 global using Windows.UI.Xaml;
 global using Windows.UI.Xaml.Controls;
 global using Windows.UI.Xaml.Controls.Primitives;
@@ -40,4 +47,6 @@ global using Windows.UI.Xaml.Media;
 global using Windows.UI.Xaml.Media.Imaging;
 global using System.Windows.Input;
 global using Windows.Storage;
+global using Windows.Foundation;
+global using FontStyles = Windows.UI.Text.FontStyle;
 #endif

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static class PngToIcoConverter
 {

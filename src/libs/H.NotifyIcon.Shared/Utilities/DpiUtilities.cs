@@ -27,9 +27,9 @@ internal static class DpiUtilities
         DpiFactorX = DpiFactorY = 1;
     }
 
-    public static Point ScaleWithDpi(this Point point)
+    public static System.Drawing.Point ScaleWithDpi(this System.Drawing.Point point)
     {
-        return new Point
+        return new System.Drawing.Point
         {
             X = (int)(point.X / DpiFactorX),
             Y = (int)(point.Y / DpiFactorY),

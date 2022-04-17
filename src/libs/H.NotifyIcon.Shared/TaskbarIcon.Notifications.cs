@@ -1,6 +1,4 @@
-﻿using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <inheritdoc/>
 public partial class TaskbarIcon
@@ -151,7 +149,7 @@ public partial class TaskbarIcon
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
-        Icon? customIcon = null,
+        System.Drawing.Icon? customIcon = null,
         bool largeIcon = false,
         bool sound = true,
         bool respectQuietTime = true,

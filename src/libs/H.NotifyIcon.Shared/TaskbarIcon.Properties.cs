@@ -1,6 +1,4 @@
-﻿using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// Contains declarations of WPF dependency properties
@@ -75,7 +73,7 @@ public partial class TaskbarIcon
     /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
     public static readonly DependencyProperty IconProperty =
         DependencyProperty.Register(nameof(Icon),
-            typeof(Icon),
+            typeof(System.Drawing.Icon),
             typeof(TaskbarIcon),
             new PropertyMetadata(null, IconPropertyChanged));
 
@@ -85,9 +83,9 @@ public partial class TaskbarIcon
     /// </summary>
     [Category(CategoryName)]
     [Description("Sets the displayed taskbar icon.")]
-    public Icon? Icon
+    public System.Drawing.Icon? Icon
     {
-        get => (Icon?)GetValue(IconProperty);
+        get => (System.Drawing.Icon?)GetValue(IconProperty);
         set => SetValue(IconProperty, value);
     }
 
@@ -97,11 +95,11 @@ public partial class TaskbarIcon
         {
             throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
         }
-        if (e.OldValue is Icon oldIcon)
+        if (e.OldValue is System.Drawing.Icon oldIcon)
         {
             oldIcon.Dispose();
         }
-        var newIcon = (Icon?)e.NewValue;
+        var newIcon = (System.Drawing.Icon?)e.NewValue;
 
         var icon = newIcon?.Handle ?? IntPtr.Zero;
 

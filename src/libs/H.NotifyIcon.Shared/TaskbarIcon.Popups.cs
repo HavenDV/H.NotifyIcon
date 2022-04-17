@@ -1,13 +1,11 @@
-﻿using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <inheritdoc/>
 public partial class TaskbarIcon
 {
     #region Properties
 
-    #region PopupActivation dependency property
+    #region PopupActivation
 
     /// <summary>Identifies the <see cref="PopupActivation"/> dependency property.</summary>
     public static readonly DependencyProperty PopupActivationProperty =
@@ -58,13 +56,6 @@ public partial class TaskbarIcon
         set { SetValue(TrayPopupProperty, value); }
     }
 
-    /// <summary>
-    /// Handles changes of the <see cref="TrayPopupProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="TrayPopup"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
     private void OnTrayPopupPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
 #if HAS_WPF
@@ -281,7 +272,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// Displays the <see cref="TrayPopup"/> control if it was set.
     /// </summary>
-    private void ShowTrayPopup(Point cursorPosition)
+    private void ShowTrayPopup(System.Drawing.Point cursorPosition)
     {
         if (IsDisposed)
         {

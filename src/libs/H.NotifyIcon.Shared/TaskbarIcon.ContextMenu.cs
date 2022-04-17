@@ -1,11 +1,4 @@
-﻿//using Microsoft.UI;
-//using Microsoft.UI.Windowing;
-//using Windows.Graphics;
-//using WinRT.Interop;
-
-using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <inheritdoc/>
 public partial class TaskbarIcon
@@ -106,7 +99,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
-    private void ShowContextMenu(Point cursorPosition)
+    private void ShowContextMenu(System.Drawing.Point cursorPosition)
     {
         if (IsDisposed)
         {

@@ -1,6 +1,4 @@
 ﻿#if HAS_WPF
-using H.NotifyIcon.Core;
-
 namespace H.NotifyIcon;
 
 /// <inheritdoc/>
@@ -121,7 +119,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// A delegate to handle customer popup positions.
     /// </summary>
-    public delegate Point GetCustomPopupPosition();
+    public delegate System.Drawing.Point GetCustomPopupPosition();
 
     /// <summary>
     /// Specify a custom popup position
@@ -132,7 +130,7 @@ public partial class TaskbarIcon
     /// Returns the location of the system tray
     /// </summary>
     /// <returns>Point</returns>
-    public static Point GetPopupTrayPosition()
+    public static System.Drawing.Point GetPopupTrayPosition()
     {
         return TrayInfo.GetTrayLocation().ScaleWithDpi();
     }

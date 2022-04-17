@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// A proxy to for a taskbar icon (NotifyIcon) that sits in the system's
