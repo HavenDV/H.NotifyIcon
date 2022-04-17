@@ -80,12 +80,11 @@ Example 3: <img width="19" alt="image" src="https://user-images.githubuserconten
     GeneratedIconFontSize="38"
     >
 ```
-Example 4: <img width="17" alt="image" src="https://user-images.githubusercontent.com/3002068/163723467-0e019f54-8e3e-4517-8177-d2800fa91583.png">
+Example 4: <img width="18" alt="image" src="https://user-images.githubusercontent.com/3002068/163723782-8b135584-8b35-401e-926e-0fe0e7aa801e.png">
 ```xml
 <tb:TaskbarIcon
     GeneratedIconText="❤️"
     GeneratedIconBorderThickness="5"
-    GeneratedIconMargin="2"
     GeneratedIconFontSize="46"
     >
     <tb:TaskbarIcon.GeneratedIconForeground>
