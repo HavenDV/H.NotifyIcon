@@ -64,6 +64,58 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region Margin
+
+    /// <summary>Identifies the <see cref="GeneratedIconMargin"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconMarginProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconMargin),
+            typeof(Thickness),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(default(Thickness), (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconMarginProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon margin.
+    /// Defaults to (0,0,0,0).
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon margin.")]
+    public Thickness GeneratedIconMargin
+    {
+        get { return (Thickness)GetValue(GeneratedIconMarginProperty); }
+        set { SetValue(GeneratedIconMarginProperty, value); }
+    }
+
+    #endregion
+
+    #region BackgroundType
+
+    /// <summary>Identifies the <see cref="GeneratedIconBackgroundType"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconBackgroundTypeProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconBackgroundType),
+            typeof(BackgroundType),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(default(BackgroundType), (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconBackgroundTypeProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon background type.
+    /// Defaults to Ellipse.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon background type.")]
+    public BackgroundType GeneratedIconBackgroundType
+    {
+        get { return (BackgroundType)GetValue(GeneratedIconBackgroundTypeProperty); }
+        set { SetValue(GeneratedIconBackgroundTypeProperty, value); }
+    }
+
+    #endregion
+
     #region TextMargin
 
     /// <summary>Identifies the <see cref="GeneratedIconTextMargin"/> dependency property.</summary>
@@ -86,6 +138,32 @@ public partial class TaskbarIcon
     {
         get { return (Thickness)GetValue(GeneratedIconTextMarginProperty); }
         set { SetValue(GeneratedIconTextMarginProperty, value); }
+    }
+
+    #endregion
+
+    #region CornerRadius
+
+    /// <summary>Identifies the <see cref="GeneratedIconCornerRadius"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconCornerRadiusProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconCornerRadius),
+            typeof(CornerRadius),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(default(CornerRadius), (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconCornerRadiusProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon corner radius.
+    /// Defaults to (0,0,0,0).
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon corner radius.")]
+    public CornerRadius GeneratedIconCornerRadius
+    {
+        get { return (CornerRadius)GetValue(GeneratedIconCornerRadiusProperty); }
+        set { SetValue(GeneratedIconCornerRadiusProperty, value); }
     }
 
     #endregion
@@ -372,6 +450,11 @@ public partial class TaskbarIcon
         GeneratedIcon = IconGenerator.Generate(
             backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
             foregroundColor: GeneratedIconForeground.ToSystemDrawingColor(),
+            backgroundType: GeneratedIconBackgroundType,
+            cornerRadius: (float)GeneratedIconCornerRadius.TopLeft,
+            rectangle: GeneratedIconMargin == default
+                ? null
+                : GeneratedIconMargin.ToSystemDrawingRectangleF(width: 32, height: 32),
             text: GeneratedIconText,
             font: font,
             textRectangle: GeneratedIconTextMargin == default
