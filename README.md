@@ -54,6 +54,11 @@ Install-Package H.NotifyIcon
 </Window>
 ```
 
+### Design-Time Access
+It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:
+<img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
+
+
 ### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
 The minimum supported version of the .Net Framework is 4.5.1.  
 So in some cases to build the project you will need to install this -  
