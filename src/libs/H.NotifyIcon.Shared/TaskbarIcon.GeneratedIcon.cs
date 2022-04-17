@@ -252,7 +252,7 @@ public partial class TaskbarIcon
 #if HAS_WPF
                 SystemFonts.IconFontStyle,
 #else
-                FontStyle.Italic,
+                FontStyle.Normal,
 #endif
                 (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
 
