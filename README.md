@@ -59,7 +59,16 @@ Simple example: <img width="24" alt="image" src="https://user-images.githubuserc
 ```xml
 <tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
 ```
-
+Advanced example: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163702368-da5031c6-efa7-4c83-85b5-a0a3eaf8a0ca.png">
+```xml
+<tb:TaskbarIcon
+    IconSource="/Icons/Error.ico"
+    GeneratedIconText="5"
+    GeneratedIconForeground="Black"
+    GeneratedIconFontSize="9"
+    GeneratedIconFontWeight="Bold"
+    >
+```
 
 
 ### Design-Time Access
