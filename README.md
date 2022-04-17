@@ -55,24 +55,55 @@ Install-Package H.NotifyIcon
 ```
 
 ### Generated icons
-Simple example: <img width="24" alt="image" src="https://user-images.githubusercontent.com/3002068/163700914-ad61c54c-444c-485c-92df-73be5412109d.png">
+Example 1: <img width="15" alt="image" src="https://user-images.githubusercontent.com/3002068/163721411-1388f2b4-a039-4b4a-8114-f74bfc8835ba.png">
 ```xml
 <tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
 ```
-Advanced example: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163702368-da5031c6-efa7-4c83-85b5-a0a3eaf8a0ca.png">
+Example 2: <img width="14" alt="image" src="https://user-images.githubusercontent.com/3002068/163721399-cbfd0286-d2d4-4b40-b3f3-388c9613f535.png">
 ```xml
 <tb:TaskbarIcon
     IconSource="/Icons/Error.ico"
     GeneratedIconText="5"
     GeneratedIconForeground="Black"
-    GeneratedIconFontSize="9"
+    GeneratedIconFontSize="36"
     GeneratedIconFontWeight="Bold"
     >
+```
+Example 3: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163721367-dc6878df-3ec2-4288-b699-cf664894e1b1.png">
+```xml
+<tb:TaskbarIcon
+    GeneratedIconText="❤️"
+    GeneratedIconForeground="Red"
+    GeneratedIconFontFamily="Segoe UI Emoji"
+    GeneratedIconBackground="AliceBlue"
+    GeneratedIconFontWeight="Bold"
+    GeneratedIconFontSize="38"
+    >
+```
+Example 4: <img width="18" alt="image" src="https://user-images.githubusercontent.com/3002068/163723782-8b135584-8b35-401e-926e-0fe0e7aa801e.png">
+```xml
+<tb:TaskbarIcon
+    GeneratedIconText="❤️"
+    GeneratedIconBorderThickness="5"
+    GeneratedIconFontSize="46"
+    >
+    <tb:TaskbarIcon.GeneratedIconForeground>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+            <GradientStop Color="White" />
+            <GradientStop Color="Red" />
+        </LinearGradientBrush>
+    </tb:TaskbarIcon.GeneratedIconForeground>
+    <tb:TaskbarIcon.GeneratedIconBorderBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+            <GradientStop Color="White" />
+            <GradientStop Color="Red" />
+        </LinearGradientBrush>
+    </tb:TaskbarIcon.GeneratedIconBorderBrush>
 ```
 
 
 ### Design-Time Access
-It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:
+It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
 
