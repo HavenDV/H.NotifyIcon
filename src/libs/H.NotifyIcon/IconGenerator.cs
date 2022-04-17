@@ -48,7 +48,7 @@ public static class IconGenerator
     }
 
     /// <summary>
-    /// Generates 32x32 standard icon with selected parameters.
+    /// Generates <paramref name="size"/> x <paramref name="size"/> standard icon with selected parameters.
     /// </summary>
     /// <returns></returns>
     public static Icon Generate(
@@ -60,16 +60,19 @@ public static class IconGenerator
         string? text = null,
         Font? font = null,
         RectangleF? textRectangle = null,
-        Image? baseImage = null)
+        Image? baseImage = null,
+        int size = 128)
     {
         using var bitmap = baseImage == null
-            ? new Bitmap(32, 32)
-            : new Bitmap(baseImage, 32, 32);
+            ? new Bitmap(size, size)
+            : new Bitmap(baseImage, size, size);
         using var backgroundBrush = new SolidBrush(backgroundColor);
         using var foregroundBrush = new SolidBrush(foregroundColor);
         using var graphics = Graphics.FromImage(bitmap);
+        graphics.CompositingQuality = CompositingQuality.HighQuality;
+        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-        var rect = rectangle ?? new Rectangle(0, 0, 32, 32);
+        var rect = rectangle ?? new Rectangle(0, 0, size, size);
         switch (backgroundType)
         {
             case BackgroundType.Rectangle:
@@ -99,20 +102,20 @@ public static class IconGenerator
         {
             if (textRectangle == null)
             {
-                var size = graphics.MeasureString(
+                var textSize = graphics.MeasureString(
                     text: text,
                     font: font,
-                    layoutArea: new SizeF(32, 32));
+                    layoutArea: new SizeF(size, size));
 
                 graphics.DrawString(
                     s: text,
                     font: font,
                     brush: foregroundBrush,
                     layoutRectangle: new RectangleF(
-                        32 / 2 - size.Width / 2,
-                        32 / 2 - size.Height / 2,
-                        size.Width,
-                        size.Height));
+                        size / 2 - textSize.Width / 2,
+                        size / 2 - textSize.Height / 2,
+                        textSize.Width,
+                        textSize.Height));
             }
             else
             {

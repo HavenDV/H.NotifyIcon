@@ -367,9 +367,9 @@ public partial class TaskbarIcon
             typeof(TaskbarIcon),
             new PropertyMetadata(
 #if HAS_WPF
-                SystemFonts.IconFontSize,
+                4 * SystemFonts.IconFontSize,
 #else
-                12.0,
+                4 * 12.0,
 #endif
                 (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
 
@@ -433,12 +433,41 @@ public partial class TaskbarIcon
 
     #endregion
 
+    #region Size
+
+    /// <summary>Identifies the <see cref="GeneratedIconSize"/> dependency property.</summary>
+    public static readonly DependencyProperty GeneratedIconSizeProperty =
+        DependencyProperty.Register(
+            nameof(GeneratedIconSize),
+            typeof(int),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(
+                128,
+                (d, _) => ((TaskbarIcon)d).RefreshGeneratedIcon()));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="GeneratedIconSizeProperty"/>
+    /// dependency property:<br/>
+    /// Defines generated icon size.
+    /// Defaults to 128.
+    /// </summary>
+    [Category(GeneratedIconCategoryName)]
+    [Description("Defines generated icon size.")]
+    public int GeneratedIconSize
+    {
+        get { return (int)GetValue(GeneratedIconSizeProperty); }
+        set { SetValue(GeneratedIconSizeProperty, value); }
+    }
+
+    #endregion
+
     #endregion
 
     #region Methods
 
     private void RefreshGeneratedIcon()
     {
+        var size = GeneratedIconSize;
         using var fontFamily =
             GeneratedIconFontFamily?.ToSystemDrawingFontFamily() ??
             new System.Drawing.FontFamily(string.Empty);
@@ -447,6 +476,7 @@ public partial class TaskbarIcon
             (float)GeneratedIconFontSize,
             GeneratedIconFontStyle.ToSystemDrawingFontStyle(GeneratedIconFontWeight));
         using var baseImage = Icon?.ToBitmap();
+
         GeneratedIcon = IconGenerator.Generate(
             backgroundColor: GeneratedIconBackground.ToSystemDrawingColor(),
             foregroundColor: GeneratedIconForeground.ToSystemDrawingColor(),
@@ -454,13 +484,14 @@ public partial class TaskbarIcon
             cornerRadius: (float)GeneratedIconCornerRadius.TopLeft,
             rectangle: GeneratedIconMargin == default
                 ? null
-                : GeneratedIconMargin.ToSystemDrawingRectangleF(width: 32, height: 32),
+                : GeneratedIconMargin.ToSystemDrawingRectangleF(width: size, height: size),
             text: GeneratedIconText,
             font: font,
             textRectangle: GeneratedIconTextMargin == default
                 ? null
-                : GeneratedIconTextMargin.ToSystemDrawingRectangleF(width: 32, height: 32),
-            baseImage: baseImage);
+                : GeneratedIconTextMargin.ToSystemDrawingRectangleF(width: size, height: size),
+            baseImage: baseImage,
+            size: size);
     }
 
     #endregion
