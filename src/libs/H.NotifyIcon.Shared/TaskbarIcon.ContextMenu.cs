@@ -34,6 +34,36 @@ public partial class TaskbarIcon
 
     #endregion
 
+#if !HAS_WPF
+
+    #region ContextMenuMode
+
+    /// <summary>Identifies the <see cref="ContextMenuMode"/> dependency property.</summary>
+    public static readonly DependencyProperty ContextMenuModeProperty =
+        DependencyProperty.Register(
+            nameof(ContextMenuMode),
+            typeof(ContextMenuMode),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(ContextMenuMode.PopupMenu));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="ContextMenuModeProperty"/>
+    /// dependency property:<br/>
+    /// Defines the context menu mode.
+    /// Defaults to <see cref="ContextMenuMode.PopupMenu"/>.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Defines the context menu mode.")]
+    public ContextMenuMode ContextMenuMode
+    {
+        get { return (ContextMenuMode)GetValue(ContextMenuModeProperty); }
+        set { SetValue(ContextMenuModeProperty, value); }
+    }
+
+    #endregion
+
+#endif
+
     #endregion
 
     #region Events
@@ -220,39 +250,49 @@ public partial class TaskbarIcon
         //    ShowMode = FlyoutShowMode.Auto,
         //});
 
-        using var menu = new PopupMenu();
-        foreach(var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
+        switch (ContextMenuMode)
         {
-            switch (flyoutItemBase)
-            {
-                case MenuFlyoutItem flyoutItem:
+            case ContextMenuMode.PopupMenu:
+                {
+                    using var menu = new PopupMenu();
+                    foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
                     {
-                        var item = new PopupMenuItem()
-                        {   
-                            Text = flyoutItem.Text,
-                        };
-                        item.Click += (_, args) =>
+                        switch (flyoutItemBase)
                         {
-                            flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
-                        };
-                        menu.Add(item);
-                        break;
+                            case MenuFlyoutItem flyoutItem:
+                                {
+                                    var item = new PopupMenuItem()
+                                    {
+                                        Text = flyoutItem.Text,
+                                    };
+                                    item.Click += (_, args) =>
+                                    {
+                                        flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
+                                    };
+                                    menu.Add(item);
+                                    break;
+                                }
+                            case MenuFlyoutSeparator separator:
+                                {
+                                    menu.Add(new PopupMenuSeparator());
+                                    break;
+                                }
+                        }
                     }
-                case MenuFlyoutSeparator separator:
-                    {
-                        menu.Add(new PopupMenuSeparator());
-                        break;
-                    }
-            }
+
+                    var handle = MessageWindow.Handle;
+
+                    WindowUtilities.SetForegroundWindow(handle);
+                    menu.Show(
+                        ownerHandle: handle,
+                        x: cursorPosition.X,
+                        y: cursorPosition.Y);
+                }
+                break;
+
+            default:
+                throw new NotImplementedException($"ContextMenuMode: {ContextMenuMode} is not implemented.");
         }
-
-        var handle = MessageWindow.Handle;
-
-        WindowUtilities.SetForegroundWindow(handle);
-        menu.Show(
-            ownerHandle: handle,
-            x: cursorPosition.X,
-            y: cursorPosition.Y);
         
         //ContextFlyout.Hide();
         //ContextFlyout.ShowAt(this, new FlyoutShowOptions
