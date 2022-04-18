@@ -290,17 +290,21 @@ public partial class TaskbarIcon
                 }
                 break;
 
+            case ContextMenuMode.ActiveWindow:
+                {
+                    ContextFlyout.Hide();
+                    ContextFlyout.ShowAt(this, new FlyoutShowOptions
+                    {
+                        Placement = FlyoutPlacementMode.Auto,
+                        Position = new Point(cursorPosition.X, cursorPosition.Y),
+                        ShowMode = FlyoutShowMode.Auto,
+                    });
+                }
+                break;
+
             default:
                 throw new NotImplementedException($"ContextMenuMode: {ContextMenuMode} is not implemented.");
         }
-        
-        //ContextFlyout.Hide();
-        //ContextFlyout.ShowAt(this, new FlyoutShowOptions
-        //{
-        //    Placement = FlyoutPlacementMode.Auto,
-        //    Position = new Windows.Foundation.Point(cursorPosition.X, cursorPosition.Y),
-        //    ShowMode = FlyoutShowMode.Auto,
-        //});
 #endif
     }
 

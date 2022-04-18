@@ -16,5 +16,10 @@ public enum ContextMenuMode
     /// A second window will be created with native implementation.
     /// </summary>
     SecondWindow,
+
+    /// <summary>
+    /// The context menu will be displayed in the corner of the active window.
+    /// </summary>
+    ActiveWindow,
 }
 #endif
