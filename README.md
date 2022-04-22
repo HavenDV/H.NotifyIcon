@@ -15,8 +15,9 @@ It can be used directly in code or embedded in any XAML file.
 - Notifications
 - Context menus
 - ICommand support
-- Design-time access
-- Dynamic icon generation
+- [Design-time access](#design-time-access)
+- [Efficiency Mode](#efficiency-mode-)
+- [Dynamic icon generation](#generated-icons)
 
 ### Nuget
 
