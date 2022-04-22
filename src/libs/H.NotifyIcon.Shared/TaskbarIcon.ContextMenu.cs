@@ -141,6 +141,7 @@ public partial class TaskbarIcon
     #region Methods
 
 #if HAS_WINUI && !HAS_UNO
+    private bool IsContextMenuVisible { get; set; }
     private Window? ContextMenuWindow { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
@@ -321,13 +322,30 @@ public partial class TaskbarIcon
             AreOpenCloseAnimationsEnabled = ContextFlyout.AreOpenCloseAnimationsEnabled,
             Placement = FlyoutPlacementMode.Full,
         };
-        flyout.Closed += (_, _) =>
+        flyout.Closed += async (_, _) =>
         {
-            _ = WindowUtilities.HideWindow(handle);
+            if (!flyout.AreOpenCloseAnimationsEnabled ||
+                !IsContextMenuVisible)
+            {
+                _ = WindowUtilities.HideWindow(handle);
+                return;
+            }
+
+            await Task.Delay(1).ConfigureAwait(true);
+            flyout.ShowAt(window.Content, new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Transient,
+            });
         };
         foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
         {
             flyout.Items.Add(flyoutItemBase);
+            flyoutItemBase.Tapped += (_, _) =>
+            {
+                IsContextMenuVisible = false;
+                flyout.Hide();
+                _ = WindowUtilities.HideWindow(handle);
+            };
         }
 
         frame.Loaded += (_, _) =>
@@ -342,6 +360,8 @@ public partial class TaskbarIcon
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
+                IsContextMenuVisible = false;
+                flyout.Hide();
                 _ = WindowUtilities.HideWindow(handle);
                 return;
             }
@@ -351,6 +371,7 @@ public partial class TaskbarIcon
                 return;
             }
 
+            IsContextMenuVisible = true;
             flyout.ShowAt(window.Content, new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient,
