@@ -13,7 +13,7 @@ It can be used directly in code or embedded in any XAML file.
 ### Features
 
 - Notifications
-- Context menus
+- [Context menus](#native-winui-context-menu)
 - ICommand support
 - [Design-time access](#design-time-access)
 - [Efficiency Mode](#efficiency-mode-)
@@ -113,11 +113,13 @@ Example 4: <img width="18" alt="image" src="https://user-images.githubuserconten
     </tb:TaskbarIcon.GeneratedIconBorderBrush>
 ```
 
-
 ### Design-Time Access
 It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
+### Native WinUI Context menu
+At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"
+![image](https://user-images.githubusercontent.com/3002068/164752266-e7fc3ed1-14e6-45d2-ae23-755d38aa1548.png)
 
 ### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
 The minimum supported version of the .Net Framework is 4.5.1.  
