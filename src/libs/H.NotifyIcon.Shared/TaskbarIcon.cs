@@ -120,6 +120,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         {
             SetParentTaskbarIcon(ContextFlyout, this);
             UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
+#if !HAS_UNO
+            PrepareContextMenuWindow();
+#endif
         });
 #endif
         MessageWindow.Create();

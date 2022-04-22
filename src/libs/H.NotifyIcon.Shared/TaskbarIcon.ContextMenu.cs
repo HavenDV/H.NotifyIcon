@@ -288,6 +288,12 @@ public partial class TaskbarIcon
 
     private void PrepareContextMenuWindow()
     {
+        if (ContextFlyout == null ||
+            ContextMenuMode != ContextMenuMode.SecondWindow)
+        {
+            return;
+        }
+
         var frame = new Frame
         {
             Background = new SolidColorBrush(Colors.Transparent),
@@ -312,7 +318,7 @@ public partial class TaskbarIcon
 
         var flyout = new MenuFlyout
         {
-            AreOpenCloseAnimationsEnabled = false,
+            AreOpenCloseAnimationsEnabled = ContextFlyout.AreOpenCloseAnimationsEnabled,
             Placement = FlyoutPlacementMode.Full,
         };
         flyout.Closed += (_, _) =>
