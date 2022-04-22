@@ -33,6 +33,7 @@
             NoLeftClickDelay="True"
             ContextFlyout="{StaticResource SysTrayMenu}"
             LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
+            ContextMenuMode="SecondWindow"
             />
     </Grid>
 </Page>

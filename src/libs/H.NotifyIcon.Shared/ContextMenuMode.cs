@@ -13,7 +13,9 @@ public enum ContextMenuMode
     PopupMenu,
 
     /// <summary>
-    /// A second window will be created with native implementation.
+    /// A second window will be created with native implementation. <br/>
+    /// This feature is available in preview mode. <br/>
+    /// Need full testing on various systems, including Windows 10. <br/>
     /// </summary>
     SecondWindow,
 

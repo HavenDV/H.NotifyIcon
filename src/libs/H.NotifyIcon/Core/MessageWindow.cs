@@ -345,7 +345,7 @@ public class MessageWindow : IDisposable
         IsDisposed = true;
 
         //always destroy the unmanaged handle (even if called from the GC)
-        PInvoke.DestroyWindow(HWND); // .EnsureNonZero() Dispose should not throw.
+        _ = PInvoke.DestroyWindow(HWND); // .EnsureNonZero() Dispose should not throw.
     }
 
     #endregion

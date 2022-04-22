@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.5.1;netstandard2.0;net5.0;net6.0</TargetFrameworks>
-    <NoWarn>$(NoWarn);CA1031;CA1003</NoWarn>
+    <NoWarn>$(NoWarn);CA1031;CA1003;CA1502</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +15,7 @@
     <Using Include="Windows.Win32.UI.Shell" />
     <Using Include="Windows.Win32.UI.WindowsAndMessaging" />
     <Using Include="Windows.Win32.System.Threading" />
+    <Using Include="Windows.Win32.Graphics.Gdi" />
     <Using Include="Microsoft.Win32.SafeHandles" />
   </ItemGroup>
 

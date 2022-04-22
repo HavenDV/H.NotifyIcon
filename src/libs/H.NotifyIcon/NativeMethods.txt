@@ -7,6 +7,16 @@ RegisterWindowMessage
 DestroyWindow
 SetForegroundWindow
 ShowWindow
+SetWindowLong
+GetWindowLong
+DefSubclassProc
+SetWindowSubclass
+GetClientRect
+FillRect
+CreateSolidBrush
+DeleteObject
+SetLayeredWindowAttributes
+WM_ERASEBKGND
 GetDoubleClickTime
 GetPhysicalCursorPos
 GetCursorPos

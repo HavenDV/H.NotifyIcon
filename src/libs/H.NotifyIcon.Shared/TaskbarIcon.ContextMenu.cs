@@ -44,7 +44,9 @@ public partial class TaskbarIcon
             nameof(ContextMenuMode),
             typeof(ContextMenuMode),
             typeof(TaskbarIcon),
-            new PropertyMetadata(ContextMenuMode.PopupMenu));
+            new PropertyMetadata(
+                ContextMenuMode.PopupMenu,
+                (d, e) => ((TaskbarIcon)d).OnContextMenuModeChanged(d, e)));
 
     /// <summary>
     /// A property wrapper for the <see cref="ContextMenuModeProperty"/>
@@ -58,6 +60,14 @@ public partial class TaskbarIcon
     {
         get { return (ContextMenuMode)GetValue(ContextMenuModeProperty); }
         set { SetValue(ContextMenuModeProperty, value); }
+    }
+
+    private void OnContextMenuModeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    {
+        if (args.NewValue is ContextMenuMode.SecondWindow)
+        {
+            PrepareContextMenuWindow();
+        }
     }
 
     #endregion
@@ -126,6 +136,12 @@ public partial class TaskbarIcon
 
     #region Methods
 
+#if HAS_WINUI && !HAS_UNO
+    private Window? ContextMenuWindow { get; set; }
+    private nint? ContextMenuWindowHandle { get; set; }
+    private AppWindow? ContextMenuAppWindow { get; set; }
+#endif
+
     /// <summary>
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
@@ -186,70 +202,6 @@ public partial class TaskbarIcon
             return;
         }
 
-        // use absolute positioning. We need to set the coordinates, or a delayed opening
-        // (e.g. when left-clicked) opens the context menu at the wrong place if the mouse
-        // is moved!
-        //ContextFlyout.Placement = FlyoutPlacementMode.Auto;
-        //var window = new Window()
-        //{
-        //};
-        //window.Activated += (_, args) =>
-        //{
-        //    if (args.WindowActivationState == WindowActivationState.Deactivated)
-        //    {
-        //        window.Close();
-        //    }
-        //};
-        //var handle = WindowNative.GetWindowHandle(window);
-        //PInvoke.SetLayeredWindowAttributes(new HWND(handle), 0U, 255, LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_ALPHA);
-
-        //var id = Win32Interop.GetWindowIdFromWindow(handle);
-        //var appWindow = AppWindow.GetFromWindowId(id);
-        //appWindow.MoveAndResize(new RectInt32(cursorPosition.X - 100, cursorPosition.Y - 100, 100, 100));
-
-        //var presenter = appWindow.Presenter as OverlappedPresenter;
-        //presenter.IsMaximizable = false;
-        //presenter.IsMinimizable = false;
-        //presenter.IsResizable = false;
-        //presenter.IsAlwaysOnTop = true;
-        //presenter.SetBorderAndTitleBar(false, false);
-
-        //var flyout = new MenuFlyout
-        //{
-        //    Items =
-        //    {
-        //        new MenuFlyoutItem
-        //        {
-        //            Text = "Show/Hide Window",
-        //        },
-        //        new MenuFlyoutSeparator(),
-        //        new MenuFlyoutItem
-        //        {
-        //            Text = "Exit",
-        //        },
-        //    },
-        //};
-        //var grid = new Grid
-        //{
-        //    ContextFlyout = flyout,
-        //};
-        //window.Content = new Frame
-        //{
-        //    Content = new Page
-        //    {
-        //        Content = grid,
-        //    },
-        //};
-        //window.Activate();
-
-        //flyout.Hide();
-        //flyout.ShowAt(grid, new FlyoutShowOptions
-        //{
-        //    Placement = FlyoutPlacementMode.Auto,
-        //    Position = new Windows.Foundation.Point(0, 0),
-        //    ShowMode = FlyoutShowMode.Auto,
-        //});
-
         switch (ContextMenuMode)
         {
             case ContextMenuMode.PopupMenu:
@@ -290,6 +242,26 @@ public partial class TaskbarIcon
                 }
                 break;
 
+#if !HAS_UNO
+            case ContextMenuMode.SecondWindow:
+                {
+                    if (ContextMenuWindowHandle == null)
+                    {
+                        break;
+                    }
+
+                    var size = MeasureFlyout(ContextFlyout, availableSize: new Size(10000.0, 10000.0));
+                    ContextMenuAppWindow?.MoveAndResize(new RectInt32(
+                        _X: cursorPosition.X - (int)size.Width,
+                        _Y: cursorPosition.Y - (int)size.Height,
+                        _Width: (int)size.Width,
+                        _Height: (int)size.Height));
+                    WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
+                    WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
+                }
+                break;
+#endif
+
             case ContextMenuMode.ActiveWindow:
                 {
                     ContextFlyout.Hide();
@@ -307,6 +279,107 @@ public partial class TaskbarIcon
         }
 #endif
     }
+
+#if HAS_WINUI && !HAS_UNO
+
+    private void PrepareContextMenuWindow()
+    {
+        var frame = new Frame
+        {
+            Background = new SolidColorBrush(Colors.Transparent),
+        };
+        var window = new Window()
+        {
+            Content = frame,
+        };
+        var handle = WindowNative.GetWindowHandle(window);
+        WindowUtilities.MakeTransparent(handle);
+
+        var id = Win32Interop.GetWindowIdFromWindow(handle);
+        var appWindow = AppWindow.GetFromWindowId(id);
+        appWindow.IsShownInSwitchers = false;
+
+        var presenter = (OverlappedPresenter)appWindow.Presenter;
+        presenter.IsMaximizable = false;
+        presenter.IsMinimizable = false;
+        presenter.IsResizable = false;
+        presenter.IsAlwaysOnTop = true;
+        presenter.SetBorderAndTitleBar(false, false);
+
+        var flyout = new MenuFlyout
+        {
+            AreOpenCloseAnimationsEnabled = false,
+            Placement = FlyoutPlacementMode.Full,
+        };
+        flyout.Closed += (_, _) =>
+        {
+            _ = WindowUtilities.HideWindow(handle);
+        };
+        foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
+        {
+            flyout.Items.Add(flyoutItemBase);
+        }
+
+        frame.Loaded += (_, _) =>
+        {
+            flyout.ShowAt(window.Content, new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Transient,
+            });
+            flyout.Hide();
+        };
+        window.Activated += (_, args) =>
+        {
+            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                _ = WindowUtilities.HideWindow(handle);
+                return;
+            }
+
+            if (ContextMenuWindow == null)
+            {
+                return;
+            }
+
+            flyout.ShowAt(window.Content, new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Transient,
+            });
+        };
+
+        ContextMenuWindow = window;
+        ContextMenuWindowHandle = handle;
+        ContextMenuAppWindow = appWindow;
+    }
+
+    private static Size MeasureFlyout(FlyoutBase flyout, Size availableSize)
+    {
+        var width = 0.0;
+        var height = 16.0;
+        flyout.Placement = FlyoutPlacementMode.Auto;
+        flyout.ShowMode = FlyoutShowMode.Transient;
+        foreach (var flyoutItemBase in ((MenuFlyout)flyout).Items)
+        {
+            flyoutItemBase.Measure(availableSize);
+
+            width = Math.Max(
+                width,
+                flyoutItemBase.DesiredSize.Width +
+                flyoutItemBase.Padding.Left +
+                flyoutItemBase.Padding.Right +
+                16.0);
+            height +=
+                flyoutItemBase.DesiredSize.Height +
+                flyoutItemBase.Padding.Top +
+                flyoutItemBase.Padding.Bottom;
+        }
+
+        return new Size(
+            width: 2 * Math.Round(width),
+            height: Math.Round(height));
+    }
+
+#endif
 
     #endregion
 

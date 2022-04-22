@@ -36,6 +36,8 @@ global using Windows.Storage;
 global using FontStyles = Windows.UI.Text.FontStyle;
 #if !HAS_UNO
 global using WinRT.Interop;
+global using Microsoft.UI.Windowing;
+global using Windows.Graphics;
 #endif
 #else
 global using Windows.UI.Core;

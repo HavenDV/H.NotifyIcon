@@ -359,6 +359,13 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Dispose();
 #endif
 
+#if !HAS_WPF && !HAS_UNO
+            ContextMenuWindow?.Close();
+            ContextMenuWindow = null;
+            ContextMenuWindowHandle = null;
+            ContextMenuAppWindow = null;
+#endif
+
             MessageWindow.Dispose();
             TrayIcon.Dispose();
             Icon?.Dispose();
