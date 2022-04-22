@@ -210,8 +210,10 @@ public class TrayIcon : IDisposable
         var configuration =
             assembly.GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ??
             string.Empty;
+        var isUnpackaged = assembly.DefinedTypes
+            .Any(static type => type.FullName?.StartsWith("Microsoft.WindowsAppSDK") == true);
 
-        return CreateUniqueGuidFromString($"{name}_{targetFramework}_{configuration}_{postfix}");
+        return CreateUniqueGuidFromString($"{name}_{targetFramework}_{configuration}_{postfix}_{isUnpackaged}_");
     }
 
     #endregion
