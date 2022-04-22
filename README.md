@@ -54,7 +54,7 @@ Install-Package H.NotifyIcon
 </Window>
 ```
 
-### Efficiency Mode
+### Efficiency Mode <img width="18" alt="image" src="https://user-images.githubusercontent.com/3002068/164678095-7bb3563d-5d6b-49e6-815a-f0a34a5b9da5.png">
 Windows 11 introduces a new concept called [Efficiency Mode](https://devblogs.microsoft.com/performance-diagnostics/reduce-process-interference-with-task-manager-efficiency-mode/).  
 Since, basically, this library is intended for applications to exist in the background with the ability to interact through TrayIcon,
 the library implements an API for this mode:
