@@ -62,11 +62,15 @@ public partial class TaskbarIcon
         set { SetValue(ContextMenuModeProperty, value); }
     }
 
+#pragma warning disable CA1822 // Mark members as static
     private void OnContextMenuModeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+#pragma warning restore CA1822 // Mark members as static
     {
         if (args.NewValue is ContextMenuMode.SecondWindow)
         {
+#if !HAS_UNO
             PrepareContextMenuWindow();
+#endif
         }
     }
 
