@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.Windowless;
 
@@ -15,12 +16,12 @@ public class NotifyIconViewModel
     /// </summary>
     public ICommand ShowWindowCommand => new DelegateCommand
     {
-        CanExecuteFunc = () => Application.Current.MainWindow == null,
+        CanExecuteFunc = () => Application.Current.MainWindow?.Visibility is not Visibility.Visible,
         CommandAction = () =>
         {
-            Application.Current.MainWindow = new MainWindow();
-            Application.Current.MainWindow.Show();
-        }
+            Application.Current.MainWindow ??= new MainWindow();
+            Application.Current.MainWindow.Show(disableEfficiencyMode: true);
+        },
     };
 
     /// <summary>
@@ -28,13 +29,13 @@ public class NotifyIconViewModel
     /// </summary>
     public ICommand HideWindowCommand => new DelegateCommand
     {
-        CommandAction = () => Application.Current.MainWindow.Close(),
-        CanExecuteFunc = () => Application.Current.MainWindow != null
+        CommandAction = () => Application.Current.MainWindow.Hide(enableEfficiencyMode: true),
+        CanExecuteFunc = () => Application.Current.MainWindow?.Visibility is Visibility.Visible,
     };
 
 
     /// <summary>
     /// Shuts down the application.
     /// </summary>
-    public ICommand ExitApplicationCommand => new DelegateCommand { CommandAction = () => Application.Current.Shutdown() };
+    public ICommand ExitApplicationCommand => new DelegateCommand { CommandAction = Application.Current.Shutdown };
 }

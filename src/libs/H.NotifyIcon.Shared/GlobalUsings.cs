@@ -34,6 +34,9 @@ global using Microsoft.UI.Xaml.Resources;
 global using System.Windows.Input;
 global using Windows.Storage;
 global using FontStyles = Windows.UI.Text.FontStyle;
+#if !HAS_UNO
+global using WinRT.Interop;
+#endif
 #else
 global using Windows.UI.Core;
 global using Windows.System;

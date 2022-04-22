@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using H.NotifyIcon;
+using H.NotifyIcon.EfficiencyMode;
 
 namespace NotifyIconWpf.Sample.Windowless;
 
@@ -17,6 +18,8 @@ public partial class App : Application
         //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
         notifyIcon = (TaskbarIcon) FindResource("NotifyIcon");
         notifyIcon.ForceCreate();
+
+        EfficiencyModeUtilities.SetEfficiencyMode(true);
     }
 
     protected override void OnExit(ExitEventArgs e)

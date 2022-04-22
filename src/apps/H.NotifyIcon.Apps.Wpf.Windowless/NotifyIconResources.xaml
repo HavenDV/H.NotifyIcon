@@ -34,8 +34,9 @@
     <tb:TaskbarIcon
         x:Key="NotifyIcon"
         IconSource="/Red.ico"
-        ToolTipText="Double-click for window, right-click for menu"
-        DoubleClickCommand="{Binding ShowWindowCommand}"
+        ToolTipText="Left-click to show window, right-click for menu"
+        LeftClickCommand="{Binding ShowWindowCommand}"
+        NoLeftClickDelay="True"
         ContextMenu="{StaticResource SysTrayMenu}"
         >
 

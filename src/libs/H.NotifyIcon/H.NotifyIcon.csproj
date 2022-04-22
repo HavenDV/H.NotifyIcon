@@ -14,6 +14,7 @@
     <Using Include="Windows.Win32.Foundation" />
     <Using Include="Windows.Win32.UI.Shell" />
     <Using Include="Windows.Win32.UI.WindowsAndMessaging" />
+    <Using Include="Windows.Win32.System.Threading" />
     <Using Include="Microsoft.Win32.SafeHandles" />
   </ItemGroup>
 
@@ -25,8 +26,8 @@
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
-    <Description>This package allows to create TrayIcon for any platform.</Description>
-    <PackageTags>tray-icon,notify-icon,interop,console</PackageTags>
+    <Description>This package allows to create TrayIcon for any platform. </Description>
+    <PackageTags>tray-icon;notify-icon;interop;console;ecoqos;eco;qos;quality-of-service;efficiency-mode</PackageTags>
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">

@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Windows.Input;
-using WinUIEx;
 
 namespace H.NotifyIcon.Apps;
 

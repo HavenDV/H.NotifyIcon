@@ -29,5 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DesignTimeUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ICommandExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WindowExtensions.cs" />
   </ItemGroup>
 </Project>

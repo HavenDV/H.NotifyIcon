@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using WinUIEx;
 
 namespace H.NotifyIcon.Apps.ViewModels;
 
