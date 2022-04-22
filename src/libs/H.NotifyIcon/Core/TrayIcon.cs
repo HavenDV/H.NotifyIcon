@@ -210,8 +210,14 @@ public class TrayIcon : IDisposable
         var configuration =
             assembly.GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ??
             string.Empty;
-        var isUnpackaged = assembly.DefinedTypes
-            .Any(static type => type.FullName?.StartsWith("Microsoft.WindowsAppSDK") == true);
+        var isUnpackaged =
+            Environment.OSVersion.Platform == PlatformID.Win32NT &&
+            Environment.OSVersion.Version >= new Version(6, 2)
+#pragma warning disable CA1416 // Validate platform compatibility
+            ? !WindowUtilities.IsPackaged()
+#pragma warning restore CA1416 // Validate platform compatibility
+            : assembly.DefinedTypes
+                .Any(static type => type.FullName?.StartsWith("Microsoft.WindowsAppSDK") == true);
 
         return CreateUniqueGuidFromString($"{name}_{targetFramework}_{configuration}_{postfix}_{isUnpackaged}_");
     }

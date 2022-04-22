@@ -48,6 +48,27 @@ public static class WindowUtilities
         return PInvoke.ShowWindow(new HWND(hWnd), SHOW_WINDOW_CMD.SW_HIDE);
     }
 
+    /// <summary>
+    /// Returns true if app is packaged.
+    /// </summary>
+    /// <returns></returns>
+#if NET5_0_OR_GREATER
+    [System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
+#else
+#error Target Framework is not supported
+#endif
+    public static unsafe bool IsPackaged()
+    {
+        var id = new Windows.Win32.Storage.Packaging.Appx.PACKAGE_ID();
+        var size = 0U;
+        var result = PInvoke.GetCurrentPackageId(
+            bufferLength: &size,
+            buffer: (byte*)&id);
+
+        return result != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
+    }
+
     /// <summary>Sets the specified window's show state.</summary>
     /// <param name="hWnd">
     /// <para>Type: <b>HWND</b> A handle to the window.</para>
