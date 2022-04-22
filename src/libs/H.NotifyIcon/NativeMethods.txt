@@ -6,6 +6,7 @@ DefWindowProc
 RegisterWindowMessage
 DestroyWindow
 SetForegroundWindow
+ShowWindow
 GetDoubleClickTime
 GetPhysicalCursorPos
 GetCursorPos

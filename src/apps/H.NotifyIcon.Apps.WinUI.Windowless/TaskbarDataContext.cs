@@ -17,7 +17,7 @@ public class TaskbarDataContext
                 if (Window == null)
                 {
                     Window = new Window();
-                    Window.Activate();
+                    Window.Show();
                     return;
                 }
 

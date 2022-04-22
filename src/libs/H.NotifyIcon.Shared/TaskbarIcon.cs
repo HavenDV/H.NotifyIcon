@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using H.NotifyIcon.EfficiencyMode;
+
+namespace H.NotifyIcon;
 
 /// <summary>
 /// A proxy to for a taskbar icon (NotifyIcon) that sits in the system's
@@ -131,7 +133,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         {
             try
             {
-                ForceCreate();
+                ForceCreate(enablesEfficiencyMode: false);
             }
             catch (Exception)
             {
@@ -190,11 +192,21 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     #region Methods
 
     /// <summary>
-    /// Use it to force create icon if it placed in resources.
+    /// Use it to force create icon if it placed in resources. <br/>
+    /// This also turns on Efficiency Mode by default, meaning you run the app in a hidden state.
     /// </summary>
-    public void ForceCreate()
+    public void ForceCreate(bool enablesEfficiencyMode = true)
     {
         TrayIcon.Create();
+
+        if (enablesEfficiencyMode &&
+            Environment.OSVersion.Platform == PlatformID.Win32NT &&
+            Environment.OSVersion.Version >= new Version(6, 2))
+        {
+#pragma warning disable CA1416 // Validate platform compatibility
+            EfficiencyModeUtilities.SetEfficiencyMode(true);
+#pragma warning restore CA1416 // Validate platform compatibility
+        }
 
         // Workaround for https://github.com/HavenDV/H.NotifyIcon/issues/14
         // This seems to have been fixed in Windows 22598.1 but I'll leave it here for now

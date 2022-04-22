@@ -23,9 +23,13 @@ public static class WindowExtensions
 #elif !HAS_UNO
         WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window));
 #endif
-        if (enableEfficiencyMode)
+        if (enableEfficiencyMode &&
+            Environment.OSVersion.Platform == PlatformID.Win32NT &&
+            Environment.OSVersion.Version >= new Version(6, 2))
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             EfficiencyModeUtilities.SetEfficiencyMode(true);
+#pragma warning restore CA1416 // Validate platform compatibility
         }
     }
 
@@ -44,9 +48,13 @@ public static class WindowExtensions
 #elif !HAS_UNO
         WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window));
 #endif
-        if (disableEfficiencyMode)
+        if (disableEfficiencyMode &&
+            Environment.OSVersion.Platform == PlatformID.Win32NT &&
+            Environment.OSVersion.Version >= new Version(6, 2))
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             EfficiencyModeUtilities.SetEfficiencyMode(false);
+#pragma warning restore CA1416 // Validate platform compatibility
         }
     }
 }
