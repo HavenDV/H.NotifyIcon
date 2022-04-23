@@ -60,6 +60,24 @@ internal static class InteropUtilities
     }
 
     /// <exception cref="COMException"></exception>
+    public static nuint EnsureNonZero(this nuint value, Exception? exception = null)
+    {
+        if (value == 0)
+        {
+            if (exception == null)
+            {
+                Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+            }
+            else
+            {
+                throw exception;
+            }
+        }
+
+        return value;
+    }
+
+    /// <exception cref="COMException"></exception>
     public static BOOL EnsureNonZero(this BOOL value)
     {
         if (value.Value == 0)

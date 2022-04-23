@@ -30,11 +30,8 @@ public static class TrayInfo
             {
                 cbSize = (uint)sizeof(APPBARDATA64),
             };
-            var result = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data);
-            if (result != 1)
-            {
-                throw new InvalidOperationException("Failed to communicate with the given AppBar.");
-            }
+            _ = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data)
+                .EnsureNonZero(new InvalidOperationException("Failed to communicate with the given AppBar"));
 
             edge = data.uEdge;
             workArea = new Rectangle(
@@ -49,11 +46,8 @@ public static class TrayInfo
             {
                 cbSize = (uint)sizeof(APPBARDATA64),
             };
-            var result = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data);
-            if (result != 1)
-            {
-                throw new InvalidOperationException("Failed to communicate with the given AppBar");
-            }
+            _ = PInvoke.SHAppBarMessage(PInvoke.ABM_GETTASKBARPOS, &data)
+                .EnsureNonZero(new InvalidOperationException("Failed to communicate with the given AppBar"));
 
             edge = data.uEdge;
             workArea = new Rectangle(
