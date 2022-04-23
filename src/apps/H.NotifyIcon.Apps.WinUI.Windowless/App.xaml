@@ -18,6 +18,7 @@
                 GeneratedIconText="❤️"
                 GeneratedIconForeground="Red"
                 ToolTipText="ToolTip"
+                ContextMenuMode="SecondWindow"
                 >
                 <tb:TaskbarIcon.ContextFlyout>
                     <MenuFlyout>
