@@ -64,6 +64,7 @@ the library implements an API for this mode:
 EfficiencyModeUtilities.SetEfficiencyMode(bool value)
 WindowExtensions.Hide(this Window window, enableEfficiencyMode: true) // default value
 WindowExtensions.Show(this Window window, disableEfficiencyMode: true) // default value
+TaskbarIcon.ForceCreate(bool enablesEfficiencyMode = true) // default value
 ```
 
 ### Generated icons
