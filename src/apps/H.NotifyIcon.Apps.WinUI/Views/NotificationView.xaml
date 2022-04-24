@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="H.NotifyIcon.Apps.Views.NotificationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="using:H.NotifyIcon.Apps.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+    <Grid>
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Spacing="20"
+            >
+            <RadioButtons x:Name="Type">
+                <RadioButton
+                    Content="None"
+                    IsChecked="True"
+                    />
+                <RadioButton Content="Information" />
+                <RadioButton Content="Warning" />
+                <RadioButton Content="Error" />
+                <!--<RadioButton Content="Custom" />-->
+            </RadioButtons>
+            <TextBox
+                x:Name="TitleTextBox"
+                Header="Title"
+                Text="Title"
+                />
+            <TextBox
+                x:Name="MessageTextBox"
+                Header="Message"
+                Text="Message"
+                />
+            <!--<CheckBox
+                x:Name="LargeIconCheckBox"
+                Content="Large icon"
+                IsChecked="False"
+                />-->
+            <CheckBox
+                x:Name="SoundCheckBox"
+                Content="Sound"
+                IsChecked="True"
+                />
+            <Button
+                Content="Show notification"
+                Click="ShowBotificationButton_Click"
+                />
+            <Button
+                Content="Clear notifications"
+                Click="ClearNotificationsButton_Click"
+                />
+        </StackPanel>
+    </Grid>
+</Page>

@@ -27,7 +27,20 @@
     </Page.Resources>
 
     <Grid>
+        <NavigationView x:Name="NavigationView">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    Icon="Send"
+                    Content="Notifications"
+                    Tag="Notifications"
+                    SelectsOnInvoked="True"
+                    />
+            </NavigationView.MenuItems>
+            <Frame x:Name="NavigationViewFrame" />
+        </NavigationView>
+
         <tb:TaskbarIcon
+            x:Name="TaskbarIcon"
             IconSource="ms-appx:///Assets/Red.ico"
             ToolTipText="Simple ToolTip"
             NoLeftClickDelay="True"
