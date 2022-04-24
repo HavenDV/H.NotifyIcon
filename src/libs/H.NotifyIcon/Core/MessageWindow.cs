@@ -60,12 +60,12 @@ public class MessageWindow : IDisposable
     /// <summary>
     /// Handle for the message window.
     /// </summary>
-    public bool IsCreated => Handle.ToInt64() != 0L;
+    public bool IsCreated => Handle != 0;
 
     /// <summary>
     /// Handle for the message window.
     /// </summary>
-    public IntPtr Handle => HWND;
+    public nint Handle => HWND;
 
     /// <summary>
     /// The version of the underlying icon. Defines how

@@ -101,7 +101,7 @@ public partial class TaskbarIcon
         }
         var newIcon = (System.Drawing.Icon?)e.NewValue;
 
-        var icon = newIcon?.Handle ?? IntPtr.Zero;
+        var icon = (nint?)newIcon?.Handle ?? 0;
 
         control.TrayIcon.UpdateIcon(icon);
     }

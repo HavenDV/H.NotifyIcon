@@ -179,7 +179,7 @@ public partial class TaskbarIcon
         ContextMenu.VerticalOffset = cursorPosition.Y;
         ContextMenu.IsOpen = true;
 
-        var handle = IntPtr.Zero;
+        var handle = (nint)0;
 
         // try to get a handle on the context itself
         var source = (HwndSource)PresentationSource.FromVisual(ContextMenu);
@@ -189,7 +189,7 @@ public partial class TaskbarIcon
         }
 
         // if we don't have a handle for the popup, fall back to the message sink
-        if (handle == IntPtr.Zero)
+        if (handle == 0)
         {
             handle = TrayIcon.WindowHandle;
         }

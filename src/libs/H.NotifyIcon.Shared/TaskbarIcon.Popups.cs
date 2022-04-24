@@ -309,7 +309,7 @@ public partial class TaskbarIcon
         TrayPopupResolved.IsOpen = true;
 
 #if HAS_WPF
-        var handle = IntPtr.Zero;
+        var handle = (nint)0;
         if (TrayPopupResolved.Child != null)
         {
             // try to get a handle on the popup itself (via its child)
@@ -321,7 +321,7 @@ public partial class TaskbarIcon
         }
 
         // if we don't have a handle for the popup, fall back to the message sink
-        if (handle == IntPtr.Zero)
+        if (handle == 0)
         {
             handle = TrayIcon.WindowHandle;
         }

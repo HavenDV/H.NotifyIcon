@@ -43,7 +43,7 @@ public class TrayIcon : IDisposable
     /// A handle to the icon that should be displayed. Just
     /// <c>Icon.Handle</c>.
     /// </summary>
-    public IntPtr Icon { get; set; }
+    public nint Icon { get; set; }
 
     /// <summary>
     /// 
@@ -335,7 +335,7 @@ public class TrayIcon : IDisposable
     /// <param name="handle">The title to display on the balloon tip.</param>
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="ObjectDisposedException"></exception>
-    public void UpdateIcon(IntPtr handle)
+    public void UpdateIcon(nint handle)
     {
         EnsureNotDisposed();
 
@@ -444,7 +444,7 @@ public class TrayIcon : IDisposable
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
-        IntPtr? customIcon = null,
+        nint? customIcon = null,
         bool largeIcon = false,
         bool sound = true,
         bool respectQuietTime = true,
@@ -492,7 +492,7 @@ public class TrayIcon : IDisposable
             title: title,
             message: message,
             infoFlags: infoFlags,
-            balloonIconHandle: customIcon ?? IntPtr.Zero,
+            balloonIconHandle: customIcon ?? 0,
             timeoutInMilliseconds: (uint)(timeout ?? TimeSpan.Zero).TotalMilliseconds))
         {
             throw new InvalidOperationException("Show notification failed.");

@@ -76,11 +76,11 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryCreate(
         Guid id,
-        IntPtr handle,
+        nint handle,
         NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string toolTip,
         uint uCallbackMessage,
-        IntPtr iconHandle)
+        nint iconHandle)
     {
         if (Environment.Is64BitProcess)
         {
@@ -166,7 +166,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryModifyIcon(
         Guid id,
-        IntPtr iconHandle)
+        nint iconHandle)
     {
         if (Environment.Is64BitProcess)
         {
@@ -267,7 +267,7 @@ internal static class TrayIconMethods
         string title,
         string message,
         uint infoFlags,
-        IntPtr balloonIconHandle,
+        nint balloonIconHandle,
         uint timeoutInMilliseconds)
     {
         if (Environment.Is64BitProcess)
