@@ -1,6 +1,4 @@
-﻿using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon.Apps.Views;
+﻿namespace H.NotifyIcon.Apps.Views;
 
 public sealed partial class NotificationView
 {
