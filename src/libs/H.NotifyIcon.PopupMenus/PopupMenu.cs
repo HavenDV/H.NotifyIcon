@@ -57,25 +57,20 @@ public class PopupMenu : IDisposable, IList<PopupItem>
             item.Id = NextId + 1;
         }
 
-        var result = item switch
+        _ = item switch
         {
             PopupMenuItem menuItem => PInvoke.AppendMenu(
                 hMenu: _hMenu,
                 uFlags: menuItem.NativeFlags,
                 uIDNewItem: (nuint)item.Id,
-                lpNewItem: menuItem.Text),
+                lpNewItem: menuItem.Text).EnsureNonZero(),
             PopupMenuSeparator => PInvoke.AppendMenu(
                 hMenu: _hMenu,
                 uFlags: MENU_ITEM_FLAGS.MF_SEPARATOR,
                 uIDNewItem: (nuint)item.Id,
-                lpNewItem: null),
+                lpNewItem: null).EnsureNonZero(),
             _ => throw new NotImplementedException(),
-        }
-        ;
-        if (!result)
-        {
-            throw new Win32Exception(Marshal.GetLastWin32Error());
-        }
+        };
 
         _items.Add(item);
     }
@@ -132,12 +127,16 @@ public class PopupMenu : IDisposable, IList<PopupItem>
     /// <inheritdoc/>
     public void RemoveAt(int index)
     {
-        PInvoke.DeleteMenu(_hMenu, (uint)index, MENU_ITEM_FLAGS.MF_BYPOSITION);
+        _ = PInvoke.DeleteMenu(
+            hMenu: _hMenu,
+            uPosition: (uint)index,
+            uFlags: MENU_ITEM_FLAGS.MF_BYPOSITION).EnsureNonZero();
+
         _items.RemoveAt(index);
     }
 
     /// <inheritdoc/>
-    public void Show(IntPtr ownerHandle, int x, int y)
+    public void Show(nint ownerHandle, int x, int y)
     {
         var flags =
             TRACK_POPUP_MENU_FLAGS.TPM_RETURNCMD |
