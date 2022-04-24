@@ -9,7 +9,7 @@ public sealed partial class NotificationView
         InitializeComponent();
     }
 
-    private void ShowBotificationButton_Click(object sender, RoutedEventArgs e)
+    private void ShowNotificationButton_Click(object sender, RoutedEventArgs e)
     {
         var selectedIcon = (Type.SelectedItem as RadioButton)?.Content;
 

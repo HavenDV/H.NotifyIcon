@@ -45,7 +45,7 @@
                 />
             <Button
                 Content="Show notification"
-                Click="ShowBotificationButton_Click"
+                Click="ShowNotificationButton_Click"
                 />
             <Button
                 Content="Clear notifications"
