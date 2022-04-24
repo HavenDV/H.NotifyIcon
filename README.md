@@ -118,14 +118,20 @@ Example 4: <img width="18" alt="image" src="https://user-images.githubuserconten
 It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
-### Native WinUI Context menu
-At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"
-![image](https://user-images.githubusercontent.com/3002068/164752266-e7fc3ed1-14e6-45d2-ae23-755d38aa1548.png)
+### WinUI Context menu
+At the moment, three modes are implemented, each with its own pros and cons.
+1. Based on your MenuFlyout, a Win32 PopupMenu will be created that will call the commands attached to your MenuFlyoutItem. This is the default.  <img width="174" alt="image" src="https://user-images.githubusercontent.com/3002068/164977047-e8497047-0c6d-4f99-b160-bc1c1a1a6c3f.png">
+3. The menu will be created in your open window, in the corner of the screen.
+4. A second transparent window will be created and used to render the native menu.. At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"  
+![image](https://user-images.githubusercontent.com/3002068/164977343-fab0ef4d-d1bd-4ff0-a1af-1d87f32c6400.png)
 
-### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
-The minimum supported version of the .Net Framework is 4.5.1.  
-So in some cases to build the project you will need to install this -  
-https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
+Availability of various options(depends on the version of `WindowsAppSDK` you are using):
+Option       | Packaged App                 | Unpackaged App 
+-------------|------------------------------|-----------------------------------
+Transparency | 🟢 from 1.1.0-preview        | 🟢 from 1.1.0-preview
+Borderless   | 🔷                           | 🟢 from 1.1.0-preview
+Animations   | 🟢, but with borders         | 🟢 from 1.1.0-preview
+Submenus     | 🔷                           | 🔷
 
 ### Behavior that needs attention
 1. This implementation currently uses the Guid associated with each TrayIcon. 
@@ -133,6 +139,11 @@ The default is a hash function that creates a unique Guid based on the path to y
 because Windows associates the guid with the current path when TrayIcon is registered. 
 The only way to keep the settings when changing the file path is to use [Authenticode](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537359(v=vs.85)). 
 Read more here: https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#troubleshooting
+
+### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
+The minimum supported version of the .Net Framework is 4.5.1.  
+So in some cases to build the project you will need to install this -  
+https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
 
 ### Contacts
 * [mail](mailto:havendv@gmail.com)
