@@ -25,6 +25,9 @@ public class TrayIcon : IDisposable
     /// It will be used by the system to store your TrayIcon settings, 
     /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
     /// </summary>
+    /// <remarks>
+    /// Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.
+    /// </remarks>
     public Guid Id { get; }
 
     /// <summary>
@@ -155,7 +158,7 @@ public class TrayIcon : IDisposable
     /// Creates <see cref="Id"/> based on the simple name of an Entry assembly. <br/>
     /// Use other overloads to create multiple icons for the same application.
     /// </summary>
-    public TrayIcon() : this(CreateUniqueGuidForEntryAssembly())
+    public TrayIcon() : this(CreateUniqueGuidForEntryAssemblyLocation())
     {
     }
 
@@ -196,30 +199,13 @@ public class TrayIcon : IDisposable
     /// Creates a unique Guid for the entry assembly simple name using hashing.
     /// </summary>
     /// <returns></returns>
-    public static Guid CreateUniqueGuidForEntryAssembly(string? postfix = null)
+    public static Guid CreateUniqueGuidForEntryAssemblyLocation(string? postfix = null)
     {
         var assembly =
             Assembly.GetEntryAssembly() ??
             throw new InvalidOperationException("Entry assembly is not found.");
-        var name =
-            assembly.GetName().Name ??
-            throw new InvalidOperationException("Entry assembly should have simple name.");
-        var targetFramework =
-            assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName ??
-            string.Empty;
-        var configuration =
-            assembly.GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ??
-            string.Empty;
-        var isUnpackaged =
-            Environment.OSVersion.Platform == PlatformID.Win32NT &&
-            Environment.OSVersion.Version >= new Version(6, 2)
-#pragma warning disable CA1416 // Validate platform compatibility
-            ? !WindowUtilities.IsPackaged()
-#pragma warning restore CA1416 // Validate platform compatibility
-            : assembly.DefinedTypes
-                .Any(static type => type.FullName?.StartsWith("Microsoft.WindowsAppSDK") == true);
 
-        return CreateUniqueGuidFromString($"{name}_{targetFramework}_{configuration}_{postfix}_{isUnpackaged}_");
+        return CreateUniqueGuidFromString($"{assembly.Location}_{postfix}");
     }
 
     #endregion
