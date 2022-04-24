@@ -60,6 +60,11 @@ public class MessageWindow : IDisposable
     /// <summary>
     /// Handle for the message window.
     /// </summary>
+    public bool IsCreated => Handle.ToInt64() != 0L;
+
+    /// <summary>
+    /// Handle for the message window.
+    /// </summary>
     public IntPtr Handle => HWND;
 
     /// <summary>

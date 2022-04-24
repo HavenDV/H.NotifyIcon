@@ -53,16 +53,15 @@ public class TrayIcon : IDisposable
 
     /// <summary>
     /// Handle to the window that receives notification messages associated with an icon in the
-    /// taskbar status area. The Shell uses hWnd and uID to identify which icon to operate on
-    /// when Shell_NotifyIcon is invoked.
+    /// taskbar status area.
+    /// By default, if not set, MessageWindow will be created.
     /// </summary>
     public nint WindowHandle { get; set; }
 
     /// <summary>
-    /// The ID of messages that are received from the the
-    /// taskbar icon.
+    /// Receives messages from the taskbar icon.
     /// </summary>
-    public int CallbackMessage { get; set; }
+    public MessageWindow MessageWindow { get; } = new();
 
     /// <summary>
     /// Icon visibility.
@@ -225,6 +224,15 @@ public class TrayIcon : IDisposable
             return;
         }
 
+        if (WindowHandle == 0)
+        {
+            if (!MessageWindow.IsCreated)
+            {
+                MessageWindow.Create();
+            }
+            WindowHandle = MessageWindow.Handle;
+        }
+
         // We are trying to delete in case the last launch of the application did not clear the icon correctly.
         // Otherwise, in this case TryCreate will return false.
         _ = TrayIconMethods.TryDelete(Id);
@@ -240,7 +248,7 @@ public class TrayIcon : IDisposable
             handle: WindowHandle,
             additionalFlags: additionalFlags,
             toolTip: ToolTip,
-            uCallbackMessage: (uint)CallbackMessage,
+            uCallbackMessage: MessageWindow.CallbackMessageId,
             iconHandle: new HICON(Icon)))
         {
             throw new InvalidOperationException($"{nameof(TrayIconMethods.TryCreate)} failed.");
@@ -259,6 +267,7 @@ public class TrayIcon : IDisposable
         }
 
         Version = version;
+        MessageWindow.Version = version;
         OnVersionChanged(version);
 
         IsCreated = true;
@@ -610,6 +619,7 @@ public class TrayIcon : IDisposable
         }
 
         IsDisposed = true;
+        MessageWindow.Dispose();
         _ = TryRemove();
     }
 

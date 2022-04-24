@@ -323,7 +323,7 @@ public partial class TaskbarIcon
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = MessageWindow.Handle;
+            handle = TrayIcon.WindowHandle;
         }
 
         // activate either popup or message sink to track deactivation.

@@ -19,11 +19,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private TrayIcon TrayIcon { get; }
 
     /// <summary>
-    /// Receives messages from the taskbar icon.
-    /// </summary>
-    public MessageWindow MessageWindow { get; } = new();
-
-    /// <summary>
     /// An action that is being invoked if the
     /// <see cref="singleClickTimer"/> fires.
     /// </summary>
@@ -125,13 +120,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
         });
 #endif
-        MessageWindow.Create();
-        TrayIcon = new TrayIcon()
-        {
-            WindowHandle = MessageWindow.Handle,
-            CallbackMessage = MessageWindow.CallbackMessageId,
-        };
-        TrayIcon.VersionChanged += (_, version) => MessageWindow.Version = version;
+        TrayIcon = new TrayIcon();
         Loaded += (_, _) =>
         {
             try
@@ -144,14 +133,14 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             }
         };
         Unloaded += (_, _) => Dispose();
-        MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
-        MessageWindow.TaskbarCreated += OnTaskbarCreated;
+        TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
+        TrayIcon.MessageWindow.TaskbarCreated += OnTaskbarCreated;
 
         // register event listeners
-        MessageWindow.MouseEventReceived += OnMouseEvent;
-        MessageWindow.KeyboardEventReceived += OnKeyboardEvent;
-        MessageWindow.ChangeToolTipStateRequest += OnToolTipChange;
-        MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
+        TrayIcon.MessageWindow.MouseEventReceived += OnMouseEvent;
+        TrayIcon.MessageWindow.KeyboardEventReceived += OnKeyboardEvent;
+        TrayIcon.MessageWindow.ChangeToolTipStateRequest += OnToolTipChange;
+        TrayIcon.MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
         // init single click / balloon timers
         singleClickTimer = new Timer(DoSingleClickAction);
@@ -369,7 +358,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             ContextMenuAppWindow = null;
 #endif
 
-            MessageWindow.Dispose();
             TrayIcon.Dispose();
             Icon?.Dispose();
         }

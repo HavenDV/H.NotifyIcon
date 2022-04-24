@@ -191,7 +191,7 @@ public partial class TaskbarIcon
         // if we don't have a handle for the popup, fall back to the message sink
         if (handle == IntPtr.Zero)
         {
-            handle = MessageWindow.Handle;
+            handle = TrayIcon.WindowHandle;
         }
 
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
@@ -237,7 +237,7 @@ public partial class TaskbarIcon
                         }
                     }
 
-                    var handle = MessageWindow.Handle;
+                    var handle = TrayIcon.WindowHandle;
 
                     WindowUtilities.SetForegroundWindow(handle);
                     menu.Show(
