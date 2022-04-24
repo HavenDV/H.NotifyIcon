@@ -118,9 +118,13 @@ Example 4: <img width="18" alt="image" src="https://user-images.githubuserconten
 It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
-### Native WinUI Context menu
-At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"
-![image](https://user-images.githubusercontent.com/3002068/164752266-e7fc3ed1-14e6-45d2-ae23-755d38aa1548.png)  
+### WinUI Context menu
+At the moment, three modes are implemented, each with its own pros and cons.
+1. Based on your MenuFlyout, a Win32 PopupMenu will be created that will call the commands attached to your MenuFlyoutItem. This is the default.  <img width="174" alt="image" src="https://user-images.githubusercontent.com/3002068/164977047-e8497047-0c6d-4f99-b160-bc1c1a1a6c3f.png">
+3. The menu will be created in your open window, in the corner of the screen.
+4. A second transparent window will be created and used to render the native menu.. At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"  
+![image](https://user-images.githubusercontent.com/3002068/164977343-fab0ef4d-d1bd-4ff0-a1af-1d87f32c6400.png)
+
 Availability of various options(depends on the version of `WindowsAppSDK` you are using):
 Option       | Packaged App                 | Unpackaged App 
 -------------|------------------------------|-----------------------------------
