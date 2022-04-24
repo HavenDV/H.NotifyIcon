@@ -12,4 +12,18 @@ public class TrayInfoTests
 
         Console.WriteLine($"Location: {location}");
     }
+
+    [TestMethod]
+    public void IsShellOpenTest()
+    {
+        var isShellOpen = TrayInfo.IsShellOpen();
+        
+        Console.WriteLine($"IsShellOpen: {isShellOpen}");
+    }
+
+    [TestMethod]
+    public void IsNotifyIconOverflowWindowOpenTest()
+    {
+        Console.WriteLine($"IsNotifyIconOverflowWindowOpen: {TrayInfo.IsNotifyIconOverflowWindowOpen()}");
+    }
 }

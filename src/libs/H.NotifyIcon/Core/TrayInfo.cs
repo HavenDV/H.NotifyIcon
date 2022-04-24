@@ -15,12 +15,33 @@ namespace H.NotifyIcon.Core;
 public static class TrayInfo
 {
     /// <summary>
+    /// Returns <see langword="true"/> if shell is open.
+    /// </summary>
+    /// <returns>Tray coordinates.</returns>
+    public static bool IsShellOpen()
+    {
+        return PInvoke.FindWindow("Shell_TrayWnd", null).Value != 0; 
+    }
+
+    /// <summary>
+    /// Returns <see langword="true"/> if notify icon overflow window is open.
+    /// </summary>
+    /// <returns>Tray coordinates.</returns>
+    public static bool IsNotifyIconOverflowWindowOpen()
+    {
+        return PInvoke.FindWindow("NotifyIconOverflowWindow", null).Value != 0;
+    }
+
+    /// <summary>
     /// Gets the position of the system tray.
     /// </summary>
     /// <returns>Tray coordinates.</returns>
     public static unsafe Point GetTrayLocation(int space = 2)
     {
-        _ = PInvoke.FindWindow("Shell_TrayWnd", null).EnsureNonNull();
+        if (!IsShellOpen())
+        {
+            throw new InvalidOperationException("Shell is closed.");
+        }
 
         uint edge;
         Rectangle workArea;
