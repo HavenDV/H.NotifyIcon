@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 using H.NotifyIcon.Interop;
@@ -475,6 +474,16 @@ public class TrayIcon : IDisposable
         if (largeIcon)
         {
             infoFlags |= PInvoke.NIIF_LARGE_ICON;
+        }
+
+        if (customIcon != null)
+        {
+            var size = IconUtilities.GetSize(customIcon.Value);
+            var requiredSize = IconUtilities.GetRequiredCustomIconSize(largeIcon);
+            if (size != requiredSize)
+            {
+                throw new InvalidOperationException($"Custom icon must be {requiredSize}. Current size: {size}.");
+            }
         }
 
         if (!TrayIconMethods.TryShowNotification(

@@ -42,6 +42,8 @@ NIN_BALLOONTIMEOUT
 NIN_BALLOONUSERCLICK
 NIN_POPUPOPEN
 NIN_POPUPCLOSE
+GetIconInfo
+GetSystemMetrics
 
 // WindowUtilities.IsPackaged
 GetCurrentPackageId
