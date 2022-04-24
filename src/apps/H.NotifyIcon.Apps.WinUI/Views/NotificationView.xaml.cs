@@ -2,7 +2,7 @@
 
 public sealed partial class NotificationView
 {
-    public TaskbarIcon? TaskbarIcon { get; set; }
+    public TaskbarIcon? TrayIcon { get; set; }
 
     public NotificationView()
     {
@@ -13,7 +13,7 @@ public sealed partial class NotificationView
     {
         var selectedIcon = (Type.SelectedItem as RadioButton)?.Content;
 
-        TaskbarIcon?.ShowNotification(
+        TrayIcon?.ShowNotification(
             title: TitleTextBox.Text,
             message: MessageTextBox.Text,
             icon: selectedIcon switch
@@ -26,7 +26,7 @@ public sealed partial class NotificationView
             },
             customIcon: selectedIcon switch
             {
-                "Custom" => TaskbarIcon.Icon,
+                "Custom" => TrayIcon.Icon,
                 _ => null,
             },
             //largeIcon: LargeIconCheckBox.IsChecked ?? false,
@@ -38,6 +38,6 @@ public sealed partial class NotificationView
 
     private void ClearNotificationsButton_Click(object sender, RoutedEventArgs e)
     {
-        TaskbarIcon?.ClearNotifications();
+        TrayIcon?.ClearNotifications();
     }
 }

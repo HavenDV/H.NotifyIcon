@@ -2,30 +2,11 @@
     x:Class="H.NotifyIcon.Apps.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:viewModels="using:H.NotifyIcon.Apps.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tb="using:H.NotifyIcon"
+    xmlns:views="using:H.NotifyIcon.Apps.Views"
     mc:Ignorable="d"
     >
-    <Page.DataContext>
-        <viewModels:MainViewModel x:Name="ViewModel" />
-    </Page.DataContext>
-
-    <Page.Resources>
-        <MenuFlyout x:Key="SysTrayMenu">
-            <MenuFlyoutItem
-                Text="Show/Hide Window"
-                Command="{x:Bind ViewModel.ShowHideWindowCommand}"
-                />
-            <MenuFlyoutSeparator />
-            <MenuFlyoutItem
-                Text="Exit"
-                Command="{x:Bind ViewModel.ExitApplicationCommand}"
-                />
-        </MenuFlyout>
-    </Page.Resources>
-
     <Grid>
         <NavigationView x:Name="NavigationView">
             <NavigationView.MenuItems>
@@ -38,15 +19,6 @@
             </NavigationView.MenuItems>
             <Frame x:Name="NavigationViewFrame" />
         </NavigationView>
-
-        <tb:TaskbarIcon
-            x:Name="TaskbarIcon"
-            IconSource="ms-appx:///Assets/Red.ico"
-            ToolTipText="Simple ToolTip"
-            NoLeftClickDelay="True"
-            ContextFlyout="{StaticResource SysTrayMenu}"
-            LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
-            ContextMenuMode="SecondWindow"
-            />
+        <views:TrayIconView x:Name="TrayIconView" />
     </Grid>
 </Page>

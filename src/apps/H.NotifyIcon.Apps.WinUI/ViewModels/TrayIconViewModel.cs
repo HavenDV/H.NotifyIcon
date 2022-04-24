@@ -1,8 +1,8 @@
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace H.NotifyIcon.Apps.ViewModels;
 
-public class MainViewModel
+public class TrayIconViewModel
 {
     /// <summary>
     /// Shows a window, if none is already open.
@@ -33,7 +33,6 @@ public class MainViewModel
             return command;
         }
     }
-
 
     /// <summary>
     /// Shuts down the application.

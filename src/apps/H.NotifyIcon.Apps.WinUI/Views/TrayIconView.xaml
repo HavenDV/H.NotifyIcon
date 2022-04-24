@@ -1,0 +1,39 @@
+﻿<UserControl
+    x:Class="H.NotifyIcon.Apps.Views.TrayIconView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="using:H.NotifyIcon.Apps.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tb="using:H.NotifyIcon"
+    mc:Ignorable="d"
+    >
+    <UserControl.DataContext>
+        <viewModels:TrayIconViewModel x:Name="ViewModel" />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <MenuFlyout x:Key="TrayContextFlyout">
+            <MenuFlyoutItem
+                Text="Show/Hide Window"
+                Command="{x:Bind ViewModel.ShowHideWindowCommand}"
+                />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem
+                Text="Exit"
+                Command="{x:Bind ViewModel.ExitApplicationCommand}"
+                />
+        </MenuFlyout>
+    </UserControl.Resources>
+
+    <tb:TaskbarIcon
+        x:Name="TrayIcon"
+        x:FieldModifier="public"
+        IconSource="ms-appx:///Assets/Red.ico"
+        ToolTipText="ToolTip"
+        NoLeftClickDelay="True"
+        ContextFlyout="{StaticResource TrayContextFlyout}"
+        LeftClickCommand="{x:Bind ViewModel.ShowHideWindowCommand}"
+        ContextMenuMode="SecondWindow"
+        />
+</UserControl>

@@ -20,7 +20,7 @@ public sealed partial class MainView
         {
             case "Notifications":
                 _ = NavigationViewFrame.NavigateToType(typeof(NotificationView), null, options);
-                ((NotificationView)NavigationViewFrame.Content).TaskbarIcon = TaskbarIcon;
+                ((NotificationView)NavigationViewFrame.Content).TrayIcon = TrayIconView.TrayIcon;
                 break;
         }
     }
