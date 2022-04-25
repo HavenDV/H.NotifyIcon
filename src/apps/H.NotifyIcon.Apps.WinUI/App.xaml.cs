@@ -8,7 +8,7 @@ public sealed partial class App
 {
     #region Properties
 
-    public static Window? MainWindow { get; private set; }
+    public static Window? MainWindow { get; set; }
 
     #endregion
 

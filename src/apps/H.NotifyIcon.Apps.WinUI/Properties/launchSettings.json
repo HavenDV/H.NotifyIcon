@@ -1,12 +1,10 @@
 {
   "profiles": {
-    "Dedoose.Apps.WinUI (Package)": {
-      "commandName": "MsixPackage",
-      "commandLineArgs": "havendv8 1234567"
+    "H.NotifyIcon.Apps.WinUI (Package)": {
+      "commandName": "MsixPackage"
     },
-    "Dedoose.Apps.WinUI (Unpackaged)": {
-      "commandName": "Project",
-      "commandLineArgs": "havendv8 1234567"
+    "H.NotifyIcon.Apps.WinUI (Unpackaged)": {
+      "commandName": "Project"
     }
   }
 }
