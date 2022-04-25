@@ -13,7 +13,7 @@ It can be used directly in code or embedded in any XAML file.
 ### Features
 
 - Notifications
-- [Context menus](#native-winui-context-menu)
+- [Context menus](#winui-context-menu)
 - ICommand support
 - [Design-time access](#design-time-access)
 - [Efficiency Mode](#efficiency-mode-)
