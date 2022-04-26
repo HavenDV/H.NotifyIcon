@@ -2,40 +2,13 @@
     x:Class="H.NotifyIcon.Apps.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:tb="using:H.NotifyIcon"
-    xmlns:local="using:H.NotifyIcon.Apps"
     >
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="TrayIconResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <local:TaskbarDataContext x:Key="TaskbarDataContext" />
-            <tb:TaskbarIcon
-                x:Key="TaskbarIcon"
-                Visibility="Visible"
-                GeneratedIconText="❤️"
-                GeneratedIconForeground="Red"
-                ToolTipText="ToolTip"
-                ContextMenuMode="SecondWindow"
-                >
-                <tb:TaskbarIcon.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem
-                            Text="Show/Hide Window"
-                            DataContext="{StaticResource TaskbarDataContext}"
-                            Command="{Binding ShowHideWindowCommand}"
-                            />
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem
-                            Text="Exit"
-                            DataContext="{StaticResource TaskbarDataContext}"
-                            Command="{Binding ExitApplicationCommand}"
-                            />
-                    </MenuFlyout>
-                </tb:TaskbarIcon.ContextFlyout>
-            </tb:TaskbarIcon>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -40,7 +40,10 @@
                     />
             </XamlUICommand.KeyboardAccelerators>
         </XamlUICommand>
-        <MenuFlyout x:Key="TrayContextFlyout">
+        <MenuFlyout
+            x:Key="TrayContextFlyout"
+            AreOpenCloseAnimationsEnabled="False"
+            >
             <MenuFlyoutItem Command="{StaticResource ShowHideWindowCommand}" />
             <MenuFlyoutSeparator />
             <MenuFlyoutItem Command="{StaticResource ExitApplicationCommand}" />
@@ -52,9 +55,9 @@
         x:FieldModifier="public"
         IconSource="ms-appx:///Assets/Red.ico"
         ToolTipText="ToolTip"
-        NoLeftClickDelay="True"
         ContextFlyout="{StaticResource TrayContextFlyout}"
         LeftClickCommand="{StaticResource ShowHideWindowCommand}"
+        NoLeftClickDelay="True"
         ContextMenuMode="SecondWindow"
         />
 </UserControl>
