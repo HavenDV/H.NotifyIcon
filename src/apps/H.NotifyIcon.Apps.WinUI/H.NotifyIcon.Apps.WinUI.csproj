@@ -9,7 +9,6 @@
     <UseWinUI>true</UseWinUI>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     <DefineConstants>$(DefineConstants);HAS_WINUI</DefineConstants>
-    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <NoWarn>$(NoWarn);CS8785</NoWarn>
     <LangVersion>preview</LangVersion>
