@@ -20,6 +20,8 @@ WM_ERASEBKGND
 GetDoubleClickTime
 GetPhysicalCursorPos
 GetCursorPos
+CalculatePopupWindowPosition
+TRACK_POPUP_MENU_FLAGS
 FindWindow
 WM_CONTEXTMENU
 WM_MOUSEFIRST

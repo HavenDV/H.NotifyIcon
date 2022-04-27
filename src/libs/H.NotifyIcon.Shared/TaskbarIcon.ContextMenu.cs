@@ -256,11 +256,9 @@ public partial class TaskbarIcon
                     }
 
                     var size = MeasureFlyout(ContextFlyout, availableSize: new Size(10000.0, 10000.0));
-                    ContextMenuAppWindow?.MoveAndResize(new RectInt32(
-                        _X: cursorPosition.X - (int)size.Width,
-                        _Y: cursorPosition.Y - (int)size.Height,
-                        _Width: (int)size.Width,
-                        _Height: (int)size.Height));
+                    var rectangle = CursorUtilities.CalculatePopupWindowPosition(cursorPosition, size.ToSystemDrawingSize());
+
+                    ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
                     WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
                     WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
                 }

@@ -140,7 +140,8 @@ public class PopupMenu : IDisposable, IList<PopupItem>
     {
         var flags =
             TRACK_POPUP_MENU_FLAGS.TPM_RETURNCMD |
-            TRACK_POPUP_MENU_FLAGS.TPM_NONOTIFY;
+            TRACK_POPUP_MENU_FLAGS.TPM_NONOTIFY |
+            TRACK_POPUP_MENU_FLAGS.TPM_BOTTOMALIGN;
         
         BOOL id;
 

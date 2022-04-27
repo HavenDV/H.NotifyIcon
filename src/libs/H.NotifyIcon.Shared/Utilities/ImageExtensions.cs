@@ -86,6 +86,25 @@ internal static class ImageExtensions
         }
     }
 
+#if !HAS_WPF
+
+    internal static RectInt32 ToRectInt32(this System.Drawing.Rectangle rectangle)
+    {
+        return new RectInt32(
+            _X: rectangle.X,
+            _Y: rectangle.Y,
+            _Width: rectangle.Width,
+            _Height: rectangle.Height);
+    }
+#endif
+
+    internal static System.Drawing.Size ToSystemDrawingSize(this Size size)
+    {
+        return new System.Drawing.Size(
+            width: (int)size.Width,
+            height: (int)size.Height);
+    }
+
     internal static System.Drawing.PointF ToSystemDrawingPointF(this Point point)
     {
         return new System.Drawing.PointF((float)point.X, (float)point.Y);
