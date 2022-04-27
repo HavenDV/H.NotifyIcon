@@ -2,7 +2,7 @@
 
 internal static class FromSystemDrawingExtensions
 {
-#if !HAS_WPF
+#if HAS_WINUI && !HAS_UNO
 
     internal static RectInt32 ToRectInt32(this System.Drawing.Rectangle rectangle)
     {
