@@ -257,15 +257,15 @@ public partial class TaskbarIcon
     /// both.
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="me">Event flag.</param>
-    private void OnMouseEvent(object? sender, MouseEvent me)
+    /// <param name="args">Mouse event args.</param>
+    private void OnMouseEvent(object? sender, MouseTrayIconEventArgs args)
     {
         if (IsDisposed)
         {
             return;
         }
 
-        switch (me)
+        switch (args.MouseEvent)
         {
             case MouseEvent.MouseMove:
 #if HAS_WPF
@@ -318,24 +318,18 @@ public partial class TaskbarIcon
                 RaiseTrayBalloonTipClickedEvent();
 #endif
                 break;
+
             default:
-                throw new ArgumentOutOfRangeException(nameof(me), "Missing handler for mouse event flag: " + me);
+                throw new ArgumentOutOfRangeException(nameof(args), "Missing handler for mouse event flag: " + args.MouseEvent);
         }
 
-
-        // get mouse coordinates
-        var cursorPosition = TrayIcon.Version == IconVersion.Vista
-            ? CursorUtilities.GetPhysicalCursorPos()
-            : CursorUtilities.GetCursorPos();
-
-        cursorPosition = cursorPosition.ScaleWithDpi();
-
+        var cursorPosition = args.Point.ScaleWithDpi();
         var isLeftClickCommandInvoked = false;
 
         // show popup, if requested
-        if (me.IsMatch(PopupActivation))
+        if (args.MouseEvent.IsMatch(PopupActivation))
         {
-            if (me == MouseEvent.IconLeftMouseUp)
+            if (args.MouseEvent == MouseEvent.IconLeftMouseUp)
             {
                 // show popup once we are sure it's not a double click
                 singleClickTimerAction = () =>
@@ -359,9 +353,9 @@ public partial class TaskbarIcon
 
 
         // show context menu, if requested
-        if (me.IsMatch(MenuActivation))
+        if (args.MouseEvent.IsMatch(MenuActivation))
         {
-            if (me == MouseEvent.IconLeftMouseUp)
+            if (args.MouseEvent == MouseEvent.IconLeftMouseUp)
             {
                 // show context menu once we are sure it's not a double click
                 singleClickTimerAction = () =>
@@ -384,7 +378,7 @@ public partial class TaskbarIcon
         }
 
         // make sure the left click command is invoked on mouse clicks
-        if (me == MouseEvent.IconLeftMouseUp && !isLeftClickCommandInvoked)
+        if (args.MouseEvent == MouseEvent.IconLeftMouseUp && !isLeftClickCommandInvoked)
         {
             // show context menu once we are sure it's not a double click
             singleClickTimerAction =

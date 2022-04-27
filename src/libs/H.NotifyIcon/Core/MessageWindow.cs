@@ -1,4 +1,5 @@
-﻿using H.NotifyIcon.Interop;
+﻿using System.Drawing;
+using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
 
@@ -86,13 +87,13 @@ public class MessageWindow : IDisposable
     /// Fired in case the user clicked or moved within
     /// the taskbar icon area.
     /// </summary>
-    public event EventHandler<MouseEvent>? MouseEventReceived;
+    public event EventHandler<MouseTrayIconEventArgs>? MouseEventReceived;
 
     /// <summary>
     /// Fired in case the user interacted with the taskbar
     /// icon area with keyboard shortcuts.
     /// </summary>
-    public event EventHandler<KeyboardEvent>? KeyboardEventReceived;
+    public event EventHandler<KeyboardTrayIconEventArgs>? KeyboardEventReceived;
 
     /// <summary>
     /// Fired if a balloon ToolTip was either displayed
@@ -171,35 +172,30 @@ public class MessageWindow : IDisposable
 
     private LRESULT OnWindowMessageReceived(
         HWND hWnd,
-        uint messageId,
+        uint msg,
         WPARAM wParam,
         LPARAM lParam)
     {
-        if (messageId == TaskbarRestartMessageId)
+        if (msg == TaskbarRestartMessageId)
         {
             //recreate the icon if the taskbar was restarted (e.g. due to Win Explorer shutdown)
             TaskbarCreated?.Invoke(this, EventArgs.Empty);
         }
 
-        ProcessWindowMessage(messageId, wParam, lParam);
+        ProcessWindowMessage(msg, wParam, lParam);
 
-        return PInvoke.DefWindowProc(hWnd, messageId, wParam, lParam);
+        return PInvoke.DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
-    /// <summary>
-    /// Processes incoming system messages.
-    /// </summary>
-    /// <param name="msg">Callback ID.</param>
-    /// <param name="wParam">If the version is <see cref="IconVersion.Vista"/>
-    /// or higher, this parameter can be used to resolve mouse coordinates.
-    /// Currently not in use.</param>
-    /// <param name="lParam">Provides information about the event.</param>
+    private static Point ToPoint(nuint value)
+    {
+        return new Point((int)value & 0xFFFF, ((int)value >> 16) & 0xFFFF);
+    }
+
     private void ProcessWindowMessage(uint msg, WPARAM wParam, LPARAM lParam)
     {
-        // Check if it was a callback message
         if (msg != CallbackMessageId)
         {
-            // It was not a callback message, but make sure it's not something else we need to process
             switch (msg)
             {
                 case PInvoke.WM_DPICHANGED:
@@ -209,39 +205,46 @@ public class MessageWindow : IDisposable
             return;
         }
 
+        var point = Version switch
+        {
+            IconVersion.Vista => ToPoint(wParam),
+            _ => CursorUtilities.GetCursorPos(),
+        };
+
         switch ((uint)lParam.Value)
         {
+            // Can come from both mouse and keyboard events
             case PInvoke.WM_CONTEXTMENU:
-                KeyboardEventReceived?.Invoke(this, KeyboardEvent.ContextMenu);
+                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.ContextMenu, point));
                 break;
 
             case PInvoke.WM_MOUSEMOVE:
-                MouseEventReceived?.Invoke(this, MouseEvent.MouseMove);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.MouseMove, point));
                 break;
 
             case PInvoke.WM_LBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, MouseEvent.IconLeftMouseDown);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconLeftMouseDown, point));
                 break;
 
             case PInvoke.WM_LBUTTONUP:
                 if (!IsDoubleClick)
                 {
-                    MouseEventReceived?.Invoke(this, MouseEvent.IconLeftMouseUp);
+                    MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconLeftMouseUp, point));
                 }
                 IsDoubleClick = false;
                 break;
 
             case PInvoke.WM_LBUTTONDBLCLK:
                 IsDoubleClick = true;
-                MouseEventReceived?.Invoke(this, MouseEvent.IconDoubleClick);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconDoubleClick, point));
                 break;
 
             case PInvoke.WM_RBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, MouseEvent.IconRightMouseDown);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconRightMouseDown, point));
                 break;
 
             case PInvoke.WM_RBUTTONUP:
-                MouseEventReceived?.Invoke(this, MouseEvent.IconRightMouseUp);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconRightMouseUp, point));
                 break;
 
             case PInvoke.WM_RBUTTONDBLCLK:
@@ -249,11 +252,11 @@ public class MessageWindow : IDisposable
                 break;
 
             case PInvoke.WM_MBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, MouseEvent.IconMiddleMouseDown);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconMiddleMouseDown, point));
                 break;
 
             case PInvoke.WM_MBUTTONUP:
-                MouseEventReceived?.Invoke(this, MouseEvent.IconMiddleMouseUp);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconMiddleMouseUp, point));
                 break;
 
             case PInvoke.WM_MBUTTONDBLCLK:
@@ -270,7 +273,7 @@ public class MessageWindow : IDisposable
                 break;
 
             case PInvoke.NIN_BALLOONUSERCLICK:
-                MouseEventReceived?.Invoke(this, MouseEvent.BalloonToolTipClicked);
+                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.BalloonToolTipClicked, point));
                 break;
 
             case PInvoke.NIN_POPUPOPEN:
@@ -282,11 +285,11 @@ public class MessageWindow : IDisposable
                 break;
 
             case PInvoke.NIN_SELECT:
-                KeyboardEventReceived?.Invoke(this, KeyboardEvent.Select);
+                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.Select, point));
                 break;
 
             case PInvoke.NIN_SELECT | PInvoke.NINF_KEY:
-                KeyboardEventReceived?.Invoke(this, KeyboardEvent.KeySelect);
+                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.KeySelect, point));
                 break;
 
             default:

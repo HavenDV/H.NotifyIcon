@@ -107,35 +107,38 @@ public partial class TaskbarIcon
     /// both.
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="event">Keyboard event</param>
-    private void OnKeyboardEvent(object? sender, KeyboardEvent @event)
+    /// <param name="args">Keyboard event args</param>
+    private void OnKeyboardEvent(object? sender, KeyboardTrayIconEventArgs args)
     {
         if (IsDisposed)
         {
             return;
         }
 
-        switch (@event)
+        switch (args.KeyboardEvent)
         {
             case KeyboardEvent.ContextMenu:
 #if HAS_WPF
                 RaiseTrayKeyboardContextMenuEvent();
 #endif
                 break;
+
             case KeyboardEvent.KeySelect:
 #if HAS_WPF
                 RaiseTrayKeyboardKeySelectEvent();
 #endif
                 break;
+
             case KeyboardEvent.Select:
 #if HAS_WPF
                 RaiseTrayKeyboardSelectEvent();
 #endif
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(
-                    nameof(@event),
-                    $"Missing handler for keyboard event flag: {@event}");
+                    nameof(args),
+                    $"Missing handler for keyboard event flag: {args.KeyboardEvent}");
         }
     }
 

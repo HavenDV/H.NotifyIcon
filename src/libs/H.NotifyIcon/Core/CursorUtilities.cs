@@ -1,4 +1,4 @@
-using System.Drawing;
+﻿using System.Drawing;
 using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
@@ -24,7 +24,7 @@ public static class CursorUtilities
 #else
 #error Target Framework is not supported
 #endif
-    public static unsafe Point GetPhysicalCursorPos()
+    internal static unsafe Point GetPhysicalCursorPos()
     {
         var point = new POINT();
 
@@ -41,7 +41,7 @@ public static class CursorUtilities
     /// 
     /// </summary>
     /// <returns></returns>
-    public static unsafe Point GetCursorPos()
+    internal static unsafe Point GetCursorPos()
     {
         var point = new POINT();
 
