@@ -1,6 +1,5 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
 public partial class TaskbarIcon
 {
     #region Properties
@@ -46,13 +45,13 @@ public partial class TaskbarIcon
             typeof(TaskbarIcon),
             new PropertyMetadata(
                 ContextMenuMode.PopupMenu,
-                (d, e) => ((TaskbarIcon)d).OnContextMenuModeChanged(d, e)));
+                (d, e) => ((TaskbarIcon)d).OnContextMenuModeChanged(e)));
 
     /// <summary>
     /// A property wrapper for the <see cref="ContextMenuModeProperty"/>
     /// dependency property:<br/>
     /// Defines the context menu mode.
-    /// Defaults to <see cref="ContextMenuMode.PopupMenu"/>.
+    /// Defaults to <see cref="H.NotifyIcon.ContextMenuMode.PopupMenu"/>.
     /// </summary>
     [Category(CategoryName)]
     [Description("Defines the context menu mode.")]
@@ -63,7 +62,7 @@ public partial class TaskbarIcon
     }
 
 #pragma warning disable CA1822 // Mark members as static
-    private void OnContextMenuModeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    private void OnContextMenuModeChanged(DependencyPropertyChangedEventArgs args)
 #pragma warning restore CA1822 // Mark members as static
     {
         if (args.NewValue is ContextMenuMode.SecondWindow)
@@ -145,6 +144,7 @@ public partial class TaskbarIcon
     private Window? ContextMenuWindow { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
+    private MenuFlyout? ContextMenuFlyout { get; set; }
 #endif
 
     /// <summary>
@@ -182,8 +182,7 @@ public partial class TaskbarIcon
         var handle = (nint)0;
 
         // try to get a handle on the context itself
-        var source = (HwndSource)PresentationSource.FromVisual(ContextMenu);
-        if (source != null)
+        if (PresentationSource.FromVisual(ContextMenu) is HwndSource source)
         {
             handle = source.Handle;
         }
@@ -222,14 +221,14 @@ public partial class TaskbarIcon
                                     {
                                         Text = flyoutItem.Text,
                                     };
-                                    item.Click += (_, args) =>
+                                    item.Click += (_, _) =>
                                     {
                                         flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
                                     };
                                     menu.Add(item);
                                     break;
                                 }
-                            case MenuFlyoutSeparator separator:
+                            case MenuFlyoutSeparator:
                                 {
                                     menu.Add(new PopupMenuSeparator());
                                     break;
@@ -250,12 +249,13 @@ public partial class TaskbarIcon
 #if !HAS_UNO
             case ContextMenuMode.SecondWindow:
                 {
-                    if (ContextMenuWindowHandle == null)
+                    if (ContextMenuWindowHandle == null ||
+                        ContextMenuFlyout == null)
                     {
                         break;
                     }
 
-                    var size = MeasureFlyout(ContextFlyout, availableSize: new Size(10000.0, 10000.0));
+                    var size = MeasureFlyout(ContextMenuFlyout, availableSize: new Size(10000.0, 10000.0));
                     var rectangle = CursorUtilities.CalculatePopupWindowPosition(cursorPosition, size.ToSystemDrawingSize());
 
                     ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
@@ -354,7 +354,7 @@ public partial class TaskbarIcon
             });
             flyout.Hide();
         };
-        window.Activated += (_, args) =>
+        window.Activated += (sender, args) =>
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
@@ -379,15 +379,16 @@ public partial class TaskbarIcon
         ContextMenuWindow = window;
         ContextMenuWindowHandle = handle;
         ContextMenuAppWindow = appWindow;
+        ContextMenuFlyout = flyout;
     }
 
-    private static Size MeasureFlyout(FlyoutBase flyout, Size availableSize)
+    private static Size MeasureFlyout(MenuFlyout flyout, Size availableSize)
     {
+        const double offset = 16.0;
+
         var width = 0.0;
-        var height = 16.0;
-        flyout.Placement = FlyoutPlacementMode.Auto;
-        flyout.ShowMode = FlyoutShowMode.Transient;
-        foreach (var flyoutItemBase in ((MenuFlyout)flyout).Items)
+        var height = offset;
+        foreach (var flyoutItemBase in flyout.Items)
         {
             flyoutItemBase.Measure(availableSize);
 
@@ -396,7 +397,7 @@ public partial class TaskbarIcon
                 flyoutItemBase.DesiredSize.Width +
                 flyoutItemBase.Padding.Left +
                 flyoutItemBase.Padding.Right +
-                16.0);
+                offset);
             height +=
                 flyoutItemBase.DesiredSize.Height +
                 flyoutItemBase.Padding.Top +
