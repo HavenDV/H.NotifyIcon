@@ -1,7 +1,16 @@
-﻿namespace H.NotifyIcon;
+﻿using H.NotifyIcon.Interop;
+
+namespace H.NotifyIcon;
 
 internal static class ImageExtensions
 {
+    private static System.Drawing.Icon ToSmallIcon(this Stream stream)
+    {
+        var iconSize = IconUtilities.GetRequiredCustomIconSize(largeIcon: false).ScaleWithDpi();
+
+        return new System.Drawing.Icon(stream, iconSize);
+    }
+
 #if HAS_WPF
     internal static System.Drawing.Icon ToIcon(this Uri uri)
 #else
@@ -13,7 +22,7 @@ internal static class ImageExtensions
         {
             using var fileStream = File.OpenRead(uri.LocalPath);
 
-            return new System.Drawing.Icon(fileStream);
+            return fileStream.ToSmallIcon();
         }
 
         var streamInfo =
@@ -25,7 +34,7 @@ internal static class ImageExtensions
         using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
 #endif
 
-        return new System.Drawing.Icon(stream);
+        return stream.ToSmallIcon();
     }
 
 #if HAS_WPF
@@ -41,7 +50,7 @@ internal static class ImageExtensions
         var iconBytes = stream.ToArray().ConvertPngToIco();
         using var iconStream = new MemoryStream(iconBytes);
         
-        return new System.Drawing.Icon(iconStream);
+        return iconStream.ToSmallIcon();
     }
 
     public static System.Drawing.Icon ToIcon(this BitmapSource bitmap)

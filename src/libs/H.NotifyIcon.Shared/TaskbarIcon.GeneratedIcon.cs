@@ -1,6 +1,5 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
 public partial class TaskbarIcon
 {
     #region Constants

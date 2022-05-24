@@ -1,4 +1,4 @@
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static class DpiUtilities
 {
@@ -33,6 +33,15 @@ internal static class DpiUtilities
         {
             X = (int)(point.X / DpiFactorX),
             Y = (int)(point.Y / DpiFactorY),
+        };
+    }
+
+    public static System.Drawing.Size ScaleWithDpi(this System.Drawing.Size size)
+    {
+        return new System.Drawing.Size
+        {
+            Width = (int)(size.Width / DpiFactorX),
+            Height = (int)(size.Height / DpiFactorY),
         };
     }
 }
