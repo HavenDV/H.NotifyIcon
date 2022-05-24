@@ -46,5 +46,10 @@ public enum PopupActivationMode
     /// <summary>
     /// The item is displayed whenever a click occurs.
     /// </summary>
-    All
+    All,
+
+    /// <summary>
+    /// The item is displayed manually from code.
+    /// </summary>
+    None,
 }

@@ -28,7 +28,8 @@ public static class MouseEventExtensions
             PopupActivationMode.LeftOrDoubleClick => @event.OneOf(MouseEvent.IconLeftMouseUp, MouseEvent.IconDoubleClick),
             PopupActivationMode.DoubleClick => @event.OneOf(MouseEvent.IconDoubleClick),
             PopupActivationMode.MiddleClick => @event == MouseEvent.IconMiddleMouseUp,
-            PopupActivationMode.All => @event != MouseEvent.MouseMove,//return true for everything except mouse movements
+            PopupActivationMode.All => @event != MouseEvent.MouseMove,
+            PopupActivationMode.None => false,
             _ => throw new ArgumentOutOfRangeException(nameof(activationMode)),
         };
     }

@@ -211,7 +211,7 @@ public partial class TaskbarIcon
         //TaskbarIcon's parent is hidden, too...
         //popup.PlacementTarget = this;
 
-        popup.Placement = PlacementMode.AbsolutePoint;
+        popup.Placement = PopupPlacement;
         popup.StaysOpen = true;
 
 

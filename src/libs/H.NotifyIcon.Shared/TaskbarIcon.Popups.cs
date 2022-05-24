@@ -1,6 +1,5 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
 public partial class TaskbarIcon
 {
     #region Properties
@@ -107,6 +106,61 @@ public partial class TaskbarIcon
     protected void SetTrayPopupResolved(Popup? value)
     {
         SetValue(TrayPopupResolvedProperty, value);
+    }
+
+    #endregion
+
+    #region PopupPlacement
+
+    /// <summary>Identifies the <see cref="PopupPlacement"/> dependency property.</summary>
+    public static readonly DependencyProperty PopupPlacementProperty =
+        DependencyProperty.Register(
+            nameof(PopupPlacement),
+            typeof(PlacementMode),
+            typeof(TaskbarIcon),
+#if HAS_WPF
+            new PropertyMetadata(PlacementMode.AbsolutePoint));
+#else
+            new PropertyMetadata(PlacementMode.Mouse));
+#endif
+
+    /// <summary>
+    /// A property wrapper for the <see cref="PopupPlacementProperty"/>
+    /// dependency property:<br/>
+    /// Defines popup placement mode <see cref="TrayPopup" />.
+    /// Default is PlacementMode.AbsolutePoint for WPF and PlacementMode.Mouse for other platforms.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Defines popup placement mode of TaskbarIconPopup.")]
+    public PlacementMode PopupPlacement
+    {
+        get { return (PlacementMode)GetValue(PopupPlacementProperty); }
+        set { SetValue(PopupPlacementProperty, value); }
+    }
+
+    #endregion
+
+    #region PopupOffset
+
+    /// <summary>Identifies the <see cref="PopupOffset"/> dependency property.</summary>
+    public static readonly DependencyProperty PopupOffsetProperty =
+        DependencyProperty.Register(
+            nameof(PopupOffset),
+            typeof(Thickness),
+            typeof(TaskbarIcon),
+            new PropertyMetadata(new Thickness(0.0)));
+
+    /// <summary>
+    /// A property wrapper for the <see cref="PopupOffsetProperty"/>
+    /// dependency property:<br/>
+    /// Defines popup offset for <see cref="TrayPopup" />.
+    /// </summary>
+    [Category(CategoryName)]
+    [Description("Defines popup offset of TaskbarIconPopup.")]
+    public Thickness PopupOffset
+    {
+        get { return (Thickness)GetValue(PopupOffsetProperty); }
+        set { SetValue(PopupOffsetProperty, value); }
     }
 
     #endregion
@@ -250,7 +304,7 @@ public partial class TaskbarIcon
                 // the ParentTaskbarIcon attached dependency property:
                 // PlacementTarget = this;
 
-                Placement = PlacementMode.AbsolutePoint,
+                Placement = PopupPlacement,
                 StaysOpen = false,
 #endif
                 Child = TrayPopup,
@@ -268,11 +322,39 @@ public partial class TaskbarIcon
         SetTrayPopupResolved(popup);
     }
 
+    /// <summary>
+    /// Hide the <see cref="TrayPopup"/> control if it was visible.
+    /// </summary>
+    public void CloseTrayPopup()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+#if HAS_WPF
+        var args = RaisePreviewTrayPopupOpenEvent();
+        if (args.Handled)
+        {
+            return;
+        }
+#endif
+
+        if (TrayPopup == null)
+        {
+            return;
+        }
+
+        if (TrayPopupResolved != null)
+        {
+            TrayPopupResolved.IsOpen = false;
+        }
+    }
 
     /// <summary>
     /// Displays the <see cref="TrayPopup"/> control if it was set.
     /// </summary>
-    private void ShowTrayPopup(System.Drawing.Point cursorPosition)
+    public void ShowTrayPopup(System.Drawing.Point cursorPosition)
     {
         if (IsDisposed)
         {
@@ -298,12 +380,7 @@ public partial class TaskbarIcon
             return;
         }
 
-#if HAS_WPF
-        // use absolute position, but place the popup centered above the icon
-        TrayPopupResolved.Placement = PlacementMode.AbsolutePoint;
-#endif
-        TrayPopupResolved.HorizontalOffset = cursorPosition.X;
-        TrayPopupResolved.VerticalOffset = cursorPosition.Y;
+        PlacePopup(cursorPosition);
 
         // open popup
         TrayPopupResolved.IsOpen = true;
@@ -313,8 +390,7 @@ public partial class TaskbarIcon
         if (TrayPopupResolved.Child != null)
         {
             // try to get a handle on the popup itself (via its child)
-            var source = (HwndSource)PresentationSource.FromVisual(TrayPopupResolved.Child);
-            if (source != null)
+            if (PresentationSource.FromVisual(TrayPopupResolved.Child) is HwndSource source)
             {
                 handle = source.Handle;
             }
@@ -337,6 +413,41 @@ public partial class TaskbarIcon
         // bubble routed event
         RaiseTrayPopupOpenEvent();
 #endif
+    }
+
+    private void PlacePopup(System.Drawing.Point cursorPosition)
+    {
+        if (TrayPopupResolved == null)
+        {
+            return;
+        }
+
+#if HAS_WPF
+        TrayPopupResolved.Placement = PopupPlacement;
+#endif
+        if (PopupPlacement == PlacementMode.Bottom)
+        {
+            // place popup above system taskbar
+            var point = TrayInfo.GetTrayLocation(0);
+#if HAS_WPF
+            TrayPopupResolved.Placement = PlacementMode.AbsolutePoint;
+#endif
+            TrayPopupResolved.HorizontalOffset = point.X;
+            TrayPopupResolved.VerticalOffset = point.Y;
+        }
+#if HAS_WPF
+        else if (PopupPlacement == PlacementMode.AbsolutePoint)
+#else
+        else if (PopupPlacement == PlacementMode.Mouse)
+#endif
+        {
+            // place popup near mouse cursor
+            TrayPopupResolved.HorizontalOffset = cursorPosition.X;
+            TrayPopupResolved.VerticalOffset = cursorPosition.Y;
+        }
+
+        TrayPopupResolved.HorizontalOffset += PopupOffset.Left;
+        TrayPopupResolved.VerticalOffset += PopupOffset.Top;
     }
 
     #endregion
