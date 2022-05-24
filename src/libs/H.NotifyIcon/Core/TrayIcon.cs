@@ -294,13 +294,13 @@ public class TrayIcon : IDisposable
         {
             return true;
         }
+        IsCreated = false;
 
         if (!TrayIconMethods.TryDelete(Id))
         {
             return false;
         }
         
-        IsCreated = false;
         OnRemoved();
         return true;
     }
