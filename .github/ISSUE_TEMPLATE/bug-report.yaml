@@ -54,6 +54,17 @@ body:
         - "Visual Studio 2019"
         - "Visual Studio 2017"
         - "Other"
+        
+  - type: dropdown
+    attributes:
+      label: Windows Version
+      description: What version of Windows are you using?
+      multiple: true
+      options:
+        - "Windows 11"
+        - "Windows 10"
+        - "Windows 7"
+        - "Other"
 
   - type: textarea
     attributes:
