@@ -65,6 +65,16 @@ body:
         - "Windows 10"
         - "Windows 7"
         - "Other"
+        
+  - type: dropdown
+    attributes:
+      label: WindowsAppSDK Version
+      description: What version of WindowsAppSDK are you using?
+      multiple: true
+      options:
+        - "1.0"
+        - "1.1"
+        - "Other"
 
   - type: textarea
     attributes:
