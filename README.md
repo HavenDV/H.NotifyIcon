@@ -145,6 +145,6 @@ The minimum supported version of the .Net Framework is 4.5.1.
 So in some cases to build the project you will need to install this -  
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
 
-### Contacts
-* [mail](mailto:havendv@gmail.com)
-* Discord: Haven#5924
+### Support
+You can get answers to your questions in my discord support channel:  
+https://discord.gg/g8u2t9dKgE
