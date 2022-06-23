@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.WinUI" Version="4.1.9" />
+    <PackageReference Include="Uno.WinUI" Version="4.3.8" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
@@ -20,6 +20,14 @@ popups, context menus, and balloon messages. It can be used directly in code or 
     </Description>
     <PackageTags>NotifyIcon, Uno, Tray, Notify, ToolTip, Popup, Balloon, Toast</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.27.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.27.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />

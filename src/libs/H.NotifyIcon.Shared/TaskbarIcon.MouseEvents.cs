@@ -1,253 +1,23 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
+[RoutedEvent("TrayLeftMouseDown", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user presses the left mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayRightMouseDown", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the presses the right mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayMiddleMouseDown", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user presses the middle mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayLeftMouseUp", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user releases the left mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayRightMouseUp", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user releases the right mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayMiddleMouseUp", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user releases the middle mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayMouseDoubleClick", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user double-clicks the taskbar icon.", Category = CategoryName)]
+[RoutedEvent("TrayMouseMove", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user moves the mouse over the taskbar icon.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
-    #region Events
-
-#if HAS_WPF
-
-    #region TrayLeftMouseDown
-
-    /// <summary>Identifies the <see cref="TrayLeftMouseDown"/> routed event.</summary>
-    public static readonly RoutedEvent TrayLeftMouseDownEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayLeftMouseDown),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user presses the left mouse button.
-    /// </summary>
-    [Category(CategoryName)]
-    public event RoutedEventHandler TrayLeftMouseDown
-    {
-        add { AddHandler(TrayLeftMouseDownEvent, value); }
-        remove { RemoveHandler(TrayLeftMouseDownEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayLeftMouseDown event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayLeftMouseDownEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayLeftMouseDownEvent));
-    }
-
-    #endregion
-
-    #region TrayRightMouseDown
-
-    /// <summary>Identifies the <see cref="TrayRightMouseDown"/> routed event.</summary>
-    public static readonly RoutedEvent TrayRightMouseDownEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayRightMouseDown),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the presses the right mouse button.
-    /// </summary>
-    public event RoutedEventHandler TrayRightMouseDown
-    {
-        add { AddHandler(TrayRightMouseDownEvent, value); }
-        remove { RemoveHandler(TrayRightMouseDownEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayRightMouseDown event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayRightMouseDownEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayRightMouseDownEvent));
-    }
-
-    #endregion
-
-    #region TrayMiddleMouseDown
-
-    /// <summary>Identifies the <see cref="TrayMiddleMouseDown"/> routed event.</summary>
-    public static readonly RoutedEvent TrayMiddleMouseDownEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayMiddleMouseDown),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user presses the middle mouse button.
-    /// </summary>
-    public event RoutedEventHandler TrayMiddleMouseDown
-    {
-        add { AddHandler(TrayMiddleMouseDownEvent, value); }
-        remove { RemoveHandler(TrayMiddleMouseDownEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayMiddleMouseDown event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayMiddleMouseDownEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayMiddleMouseDownEvent));
-    }
-
-    #endregion
-
-    #region TrayLeftMouseUp
-
-    /// <summary>Identifies the <see cref="TrayLeftMouseUp"/> routed event.</summary>
-    public static readonly RoutedEvent TrayLeftMouseUpEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayLeftMouseUp),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user releases the left mouse button.
-    /// </summary>
-    public event RoutedEventHandler TrayLeftMouseUp
-    {
-        add { AddHandler(TrayLeftMouseUpEvent, value); }
-        remove { RemoveHandler(TrayLeftMouseUpEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayLeftMouseUp event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayLeftMouseUpEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayLeftMouseUpEvent));
-    }
-
-    #endregion
-
-    #region TrayRightMouseUp
-
-    /// <summary>Identifies the <see cref="TrayRightMouseUp"/> routed event.</summary>
-    public static readonly RoutedEvent TrayRightMouseUpEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayRightMouseUp),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user releases the right mouse button.
-    /// </summary>
-    public event RoutedEventHandler TrayRightMouseUp
-    {
-        add { AddHandler(TrayRightMouseUpEvent, value); }
-        remove { RemoveHandler(TrayRightMouseUpEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayRightMouseUp event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayRightMouseUpEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayRightMouseUpEvent));
-    }
-
-    #endregion
-
-    #region TrayMiddleMouseUp
-
-    /// <summary>Identifies the <see cref="TrayMiddleMouseUp"/> routed event.</summary>
-    public static readonly RoutedEvent TrayMiddleMouseUpEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayMiddleMouseUp),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user releases the middle mouse button.
-    /// </summary>
-    public event RoutedEventHandler TrayMiddleMouseUp
-    {
-        add { AddHandler(TrayMiddleMouseUpEvent, value); }
-        remove { RemoveHandler(TrayMiddleMouseUpEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayMiddleMouseUp event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayMiddleMouseUpEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayMiddleMouseUpEvent));
-    }
-
-    #endregion
-
-    #region TrayMouseDoubleClick
-
-    /// <summary>Identifies the <see cref="TrayMouseDoubleClick"/> routed event.</summary>
-    public static readonly RoutedEvent TrayMouseDoubleClickEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayMouseDoubleClick),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user double-clicks the taskbar icon.
-    /// </summary>
-    public event RoutedEventHandler TrayMouseDoubleClick
-    {
-        add { AddHandler(TrayMouseDoubleClickEvent, value); }
-        remove { RemoveHandler(TrayMouseDoubleClickEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayMouseDoubleClick event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayMouseDoubleClickEvent()
-    {
-        var args = this.RaiseRoutedEvent(new RoutedEventArgs(TrayMouseDoubleClickEvent));
-
-        DoubleClickCommand?.TryExecute(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
-
-        return args;
-    }
-
-    #endregion
-
-    #region TrayMouseMove
-
-    /// <summary>Identifies the <see cref="TrayMouseMove"/> routed event.</summary>
-    public static readonly RoutedEvent TrayMouseMoveEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayMouseMove),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user moves the mouse over the taskbar icon.
-    /// </summary>
-    public event RoutedEventHandler TrayMouseMove
-    {
-        add { AddHandler(TrayMouseMoveEvent, value); }
-        remove { RemoveHandler(TrayMouseMoveEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayMouseMove event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayMouseMoveEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayMouseMoveEvent));
-    }
-
-    #endregion
-
-#endif
-
-    #endregion
-
     #region Event handlers
 
     /// <summary>
@@ -309,6 +79,7 @@ public partial class TaskbarIcon
 #if HAS_WPF
                 // bubble event
                 RaiseTrayMouseDoubleClickEvent();
+                DoubleClickCommand?.TryExecute(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
 #else
                 DoubleClickCommand?.TryExecute(DoubleClickCommandParameter);
 #endif

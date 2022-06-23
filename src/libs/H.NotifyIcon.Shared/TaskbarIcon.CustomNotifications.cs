@@ -1,7 +1,8 @@
 ﻿#if HAS_WPF
 namespace H.NotifyIcon;
 
-/// <inheritdoc/>
+[RoutedEvent("BalloonShowing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
+[RoutedEvent("BalloonClosing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Properties
@@ -36,78 +37,6 @@ public partial class TaskbarIcon
     protected void SetCustomBalloon(Popup? value)
     {
         SetValue(CustomBalloonProperty, value);
-    }
-
-    #endregion
-
-    #endregion
-
-    #region Events
-
-    #region BalloonShowing
-
-    /// <summary>
-    /// BalloonShowing Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent BalloonShowingEvent =
-        EventManager.RegisterRoutedEvent(
-            "BalloonShowing",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the BalloonShowing attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddBalloonShowingHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, BalloonShowingEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the BalloonShowing attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemoveBalloonShowingHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, BalloonShowingEvent, handler);
-    }
-
-    #endregion
-
-    #region BalloonClosing
-
-    /// <summary>
-    /// BalloonClosing Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent BalloonClosingEvent =
-        EventManager.RegisterRoutedEvent(
-            "BalloonClosing",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the BalloonClosing attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddBalloonClosingHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, BalloonClosingEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the BalloonClosing attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemoveBalloonClosingHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, BalloonClosingEvent, handler);
     }
 
     #endregion
@@ -231,7 +160,7 @@ public partial class TaskbarIcon
         SetParentTaskbarIcon(balloon, this);
 
         // fire attached event
-        balloon.RaiseRoutedEvent(new RoutedEventArgs(BalloonShowingEvent, this));
+        balloon.RaiseEvent(new RoutedEventArgs(BalloonShowingEvent, this));
 
         // display item
         popup.IsOpen = true;
@@ -298,7 +227,8 @@ public partial class TaskbarIcon
             var element = popup.Child;
 
             // announce closing
-            var eventArgs = element.RaiseRoutedEvent(new RoutedEventArgs(BalloonClosingEvent, this));
+            var eventArgs = new RoutedEventArgs(BalloonClosingEvent, this);
+            element.RaiseEvent(eventArgs);
             if (!eventArgs.Handled)
             {
                 // if the event was handled, clear the reference to the popup,

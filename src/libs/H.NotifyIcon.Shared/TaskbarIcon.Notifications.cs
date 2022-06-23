@@ -1,103 +1,13 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
+[RoutedEvent("TrayBalloonTipShown", RoutedEventStrategy.Bubble,
+    Description = "Occurs when a balloon ToolTip is displayed.", Category = CategoryName)]
+[RoutedEvent("TrayBalloonTipClosed", RoutedEventStrategy.Bubble,
+    Description = "Occurs when a balloon ToolTip was closed.", Category = CategoryName)]
+[RoutedEvent("TrayBalloonTipClicked", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user clicks on a balloon ToolTip.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
-    #region Events
-
-#if HAS_WPF
-
-    #region TrayBalloonTipShown
-
-    /// <summary>Identifies the <see cref="TrayBalloonTipShown"/> routed event.</summary>
-    public static readonly RoutedEvent TrayBalloonTipShownEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayBalloonTipShown),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when a balloon ToolTip is displayed.
-    /// </summary>
-    public event RoutedEventHandler TrayBalloonTipShown
-    {
-        add { AddHandler(TrayBalloonTipShownEvent, value); }
-        remove { RemoveHandler(TrayBalloonTipShownEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayBalloonTipShown event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayBalloonTipShownEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayBalloonTipShownEvent));
-    }
-
-    #endregion
-
-    #region TrayBalloonTipClosed
-
-    /// <summary>Identifies the <see cref="TrayBalloonTipClosed"/> routed event.</summary>
-    public static readonly RoutedEvent TrayBalloonTipClosedEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayBalloonTipClosed),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when a balloon ToolTip was closed.
-    /// </summary>
-    public event RoutedEventHandler TrayBalloonTipClosed
-    {
-        add { AddHandler(TrayBalloonTipClosedEvent, value); }
-        remove { RemoveHandler(TrayBalloonTipClosedEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayBalloonTipClosed event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayBalloonTipClosedEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayBalloonTipClosedEvent));
-    }
-
-    #endregion
-
-    #region TrayBalloonTipClicked
-
-    /// <summary>Identifies the <see cref="TrayBalloonTipClicked"/> routed event.</summary>
-    public static readonly RoutedEvent TrayBalloonTipClickedEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayBalloonTipClicked),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Occurs when the user clicks on a balloon ToolTip.
-    /// </summary>
-    public event RoutedEventHandler TrayBalloonTipClicked
-    {
-        add { AddHandler(TrayBalloonTipClickedEvent, value); }
-        remove { RemoveHandler(TrayBalloonTipClickedEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayBalloonTipClicked event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayBalloonTipClickedEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayBalloonTipClickedEvent));
-    }
-
-    #endregion
-
-#endif
-
-    #endregion
-
     #region Methods
 
     /// <summary>

@@ -1,35 +1,26 @@
 ﻿namespace H.NotifyIcon;
 
-/// <inheritdoc/>
+[DependencyProperty<string>("ToolTipText", DefaultValue = "",
+    Description = "A tooltip text that is being displayed if no custom ToolTip was set or if custom tooltips are not supported.", Category = CategoryName)]
+[DependencyProperty<UIElement>("TrayToolTip",
+    Description = @"A custom UI element that is displayed as a tooltip if the user hovers over the taskbar icon. Works only with Vista and above. Accordingly, you should make sure that the ToolTipText property is set as well.", Category = CategoryName)]
+[RoutedEvent("TrayToolTipOpen", RoutedEventStrategy.Bubble,
+    Description = "Bubbled event that occurs when the custom ToolTip is being displayed.", Category = CategoryName)]
+[RoutedEvent("PreviewTrayToolTipOpen", RoutedEventStrategy.Tunnel,
+    Description = "Tunneled event that occurs when the custom ToolTip is being displayed.", Category = CategoryName)]
+[RoutedEvent("TrayToolTipClose", RoutedEventStrategy.Bubble,
+    Description = "Bubbled event that occurs when a custom tooltip is being closed.", Category = CategoryName)]
+[RoutedEvent("PreviewTrayToolTipClose", RoutedEventStrategy.Tunnel,
+    Description = "Tunneled event that occurs when a custom tooltip is being closed.", Category = CategoryName)]
+[RoutedEvent("ToolTipOpened", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
+[RoutedEvent("ToolTipClose", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Properties
 
     #region ToolTipText
 
-    /// <summary>Identifies the <see cref="ToolTipText"/> dependency property.</summary>
-    public static readonly DependencyProperty ToolTipTextProperty =
-        DependencyProperty.Register(
-            nameof(ToolTipText),
-            typeof(string),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(string.Empty, (d, e) => ((TaskbarIcon)d).OnToolTipTextPropertyChanged(e)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="ToolTipTextProperty"/>
-    /// dependency property:<br/>
-    /// A tooltip text that is being displayed if no custom <see cref="ToolTip"/>
-    /// was set or if custom tooltips are not supported.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Alternative to a fully blown ToolTip, which is only displayed on Vista and above.")]
-    public string ToolTipText
-    {
-        get { return (string)GetValue(ToolTipTextProperty); }
-        set { SetValue(ToolTipTextProperty, value); }
-    }
-
-    private void OnToolTipTextPropertyChanged(DependencyPropertyChangedEventArgs e)
+    partial void OnToolTipTextChanged(string? oldValue, string? newValue)
     {
         //do not touch tooltips if we have a custom tooltip element
         if (TrayToolTip == null)
@@ -43,7 +34,7 @@ public partial class TaskbarIcon
             else
             {
                 //if we have a wrapper tooltip that shows the old tooltip text, just update content
-                currentToolTip.Content = e.NewValue;
+                currentToolTip.Content = newValue;
             }
         }
 
@@ -54,53 +45,22 @@ public partial class TaskbarIcon
 
     #region TrayToolTip
 
-    /// <summary>Identifies the <see cref="TrayToolTip"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayToolTipProperty =
-        DependencyProperty.Register(
-            nameof(TrayToolTip),
-            typeof(UIElement),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null, (d, e) => ((TaskbarIcon)d).OnTrayToolTipPropertyChanged(e)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="TrayToolTipProperty"/>
-    /// dependency property:<br/>
-    /// A custom UI element that is displayed as a tooltip if the user hovers over the taskbar icon.
-    /// Works only with Vista and above. Accordingly, you should make sure that
-    /// the <see cref="ToolTipText"/> property is set as well.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Custom UI element that is displayed as a tooltip. Only on Vista and above")]
-    public UIElement? TrayToolTip
-    {
-        get { return (UIElement?)GetValue(TrayToolTipProperty); }
-        set { SetValue(TrayToolTipProperty, value); }
-    }
-
-
-    /// <summary>
-    /// Handles changes of the <see cref="TrayToolTipProperty"/> dependency property. As
-    /// WPF internally uses the dependency property system and bypasses the
-    /// <see cref="TrayToolTip"/> property wrapper, updates of the property's value
-    /// should be handled here.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnTrayToolTipPropertyChanged(DependencyPropertyChangedEventArgs e)
+    partial void OnTrayToolTipChanged(UIElement? oldValue, UIElement? newValue)
     {
         //recreate tooltip control
         CreateCustomToolTip();
 
 #if HAS_WPF
-        if (e.OldValue != null)
+        if (oldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
-            SetParentTaskbarIcon((DependencyObject)e.OldValue, null);
+            SetParentTaskbarIcon(oldValue, null);
         }
 
-        if (e.NewValue != null)
+        if (newValue != null)
         {
             //set this taskbar icon as a reference to the new tooltip element
-            SetParentTaskbarIcon((DependencyObject)e.NewValue, this);
+            SetParentTaskbarIcon(newValue, this);
         }
 #endif
 
@@ -144,191 +104,6 @@ public partial class TaskbarIcon
     }
 
     #endregion
-
-    #endregion
-
-    #region Events
-
-#if HAS_WPF
-
-    #region TrayToolTipOpen (and PreviewTrayToolTipOpen)
-
-    /// <summary>Identifies the <see cref="TrayToolTipOpen"/> routed event.</summary>
-    public static readonly RoutedEvent TrayToolTipOpenEvent = EventManager.RegisterRoutedEvent(
-        nameof(TrayToolTipOpen),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Bubbled event that occurs when the custom ToolTip is being displayed.
-    /// </summary>
-    public event RoutedEventHandler TrayToolTipOpen
-    {
-        add { AddHandler(TrayToolTipOpenEvent, value); }
-        remove { RemoveHandler(TrayToolTipOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayToolTipOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayToolTipOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayToolTipOpenEvent));
-    }
-
-    /// <summary>Identifies the <see cref="PreviewTrayToolTipOpen"/> routed event.</summary>
-    public static readonly RoutedEvent PreviewTrayToolTipOpenEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(PreviewTrayToolTipOpen),
-            RoutingStrategy.Tunnel,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Tunneled event that occurs when the custom ToolTip is being displayed.
-    /// </summary>
-    public event RoutedEventHandler PreviewTrayToolTipOpen
-    {
-        add { AddHandler(PreviewTrayToolTipOpenEvent, value); }
-        remove { RemoveHandler(PreviewTrayToolTipOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the PreviewTrayToolTipOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaisePreviewTrayToolTipOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayToolTipOpenEvent));
-    }
-
-    #endregion
-
-    #region TrayToolTipClose (and PreviewTrayToolTipClose)
-
-    /// <summary>Identifies the <see cref="TrayToolTipClose"/> routed event.</summary>
-    public static readonly RoutedEvent TrayToolTipCloseEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayToolTipClose),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Bubbled event that occurs when a custom tooltip is being closed.
-    /// </summary>
-    public event RoutedEventHandler TrayToolTipClose
-    {
-        add { AddHandler(TrayToolTipCloseEvent, value); }
-        remove { RemoveHandler(TrayToolTipCloseEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayToolTipClose event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayToolTipCloseEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayToolTipCloseEvent));
-    }
-
-    /// <summary>Identifies the <see cref="PreviewTrayToolTipClose"/> routed event.</summary>
-    public static readonly RoutedEvent PreviewTrayToolTipCloseEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(PreviewTrayToolTipClose),
-            RoutingStrategy.Tunnel,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Tunneled event that occurs when a custom tooltip is being closed.
-    /// </summary>
-    public event RoutedEventHandler PreviewTrayToolTipClose
-    {
-        add { AddHandler(PreviewTrayToolTipCloseEvent, value); }
-        remove { RemoveHandler(PreviewTrayToolTipCloseEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the PreviewTrayToolTipClose event.
-    /// </summary>
-    protected RoutedEventArgs RaisePreviewTrayToolTipCloseEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayToolTipCloseEvent));
-    }
-
-    #endregion
-
-    //ATTACHED EVENTS
-
-    #region ToolTipOpened
-
-    /// <summary>
-    /// ToolTipOpened Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent ToolTipOpenedEvent =
-        EventManager.RegisterRoutedEvent(
-            "ToolTipOpened",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the ToolTipOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddToolTipOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, ToolTipOpenedEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the ToolTipOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemoveToolTipOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, ToolTipOpenedEvent, handler);
-    }
-
-    #endregion
-
-    #region ToolTipClose
-
-    /// <summary>
-    /// ToolTipClose Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent ToolTipCloseEvent =
-        EventManager.RegisterRoutedEvent(
-            "ToolTipClose",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the ToolTipClose attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddToolTipCloseHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, ToolTipCloseEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the ToolTipClose attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemoveToolTipCloseHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, ToolTipCloseEvent, handler);
-    }
-
-    #endregion
-
-#endif
 
     #endregion
 
@@ -413,7 +188,7 @@ public partial class TaskbarIcon
             }
         }
 
-        TrayIcon.UpdateToolTip(text);
+        TrayIcon.UpdateToolTip(text ?? string.Empty);
     }
 
     #endregion
@@ -456,7 +231,7 @@ public partial class TaskbarIcon
             // raise attached event first
             if (TrayToolTip != null)
             {
-                TrayToolTip.RaiseRoutedEvent(new RoutedEventArgs(ToolTipOpenedEvent));
+                TrayToolTip.RaiseEvent(new RoutedEventArgs(ToolTipOpenedEvent));
             }
 
             // bubble routed event
@@ -475,7 +250,7 @@ public partial class TaskbarIcon
             // raise attached event first
             if (TrayToolTip != null)
             {
-                TrayToolTip.RaiseRoutedEvent(new RoutedEventArgs(ToolTipCloseEvent));
+                TrayToolTip.RaiseEvent(new RoutedEventArgs(ToolTipCloseEvent));
             }
 #endif
 

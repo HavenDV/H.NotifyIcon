@@ -1,9 +1,11 @@
 ﻿namespace H.NotifyIcon;
 
-/// <summary>
-/// Contains declarations of WPF dependency properties
-/// and events.
-/// </summary>
+[DependencyProperty<Guid>("Id",
+    Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
+[DependencyProperty<System.Drawing.Icon>("Icon",
+    Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
+[DependencyProperty<ImageSource>("IconSource",
+    Description = "Resolves an image source and updates the Icon property accordingly.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Constants
@@ -16,53 +18,21 @@ public partial class TaskbarIcon
     #endregion
 
     #region Id
-
-    /// <summary>Identifies the <see cref="Id"/> dependency property.</summary>
-    public static readonly DependencyProperty IdProperty =
-        DependencyProperty.Register(nameof(Id),
-            typeof(Guid),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(Guid.Empty, IdPropertyChanged));
-
-    /// <summary>
-    /// Gets or sets the TrayIcon Id.
-    /// Use this for second TrayIcon in same app.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Sets the TrayIcon Id.")]
-    public Guid Id
+    
+    partial void OnIdChanged(Guid oldValue, Guid newValue)
     {
-        get => (Guid)GetValue(IdProperty);
-        set => SetValue(IdProperty, value);
-    }
-
-    private static void IdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not TaskbarIcon control)
-        {
-            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
-        }
-        if (e.OldValue is not Guid oldId)
-        {
-            throw new InvalidOperationException($"Value should be {nameof(Guid)}");
-        }
-        if (e.NewValue is not Guid newId)
-        {
-            throw new InvalidOperationException($"Value should be {nameof(Guid)}");
-        }
-
-        var wasCreated = control.IsCreated;
-        if (oldId != Guid.Empty &&
+        var wasCreated = IsCreated;
+        if (oldValue != Guid.Empty &&
             wasCreated)
         {
-            _ = control.TrayIcon.TryRemove();
+            _ = TrayIcon.TryRemove();
         }
 
-        control.Id = newId;
+        Id = newValue;
 
         if (wasCreated)
         {
-            control.TrayIcon.Create();
+            TrayIcon.Create();
         }
     }
 
@@ -70,91 +40,37 @@ public partial class TaskbarIcon
 
     #region Icon/IconSource
 
-    /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
-    public static readonly DependencyProperty IconProperty =
-        DependencyProperty.Register(nameof(Icon),
-            typeof(System.Drawing.Icon),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null, IconPropertyChanged));
-
-    /// <summary>
-    /// Gets or sets the icon to be displayed.
-    /// Use this for dynamically generated System.Drawing.Icons.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Sets the displayed taskbar icon.")]
-    public System.Drawing.Icon? Icon
+    partial void OnIconChanged(System.Drawing.Icon? oldValue, System.Drawing.Icon? newValue)
     {
-        get => (System.Drawing.Icon?)GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
-    }
-
-    private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not TaskbarIcon control)
-        {
-            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
-        }
-        if (e.OldValue is System.Drawing.Icon oldIcon)
-        {
-            oldIcon.Dispose();
-        }
-        var newIcon = (System.Drawing.Icon?)e.NewValue;
-
-        var icon = (nint?)newIcon?.Handle ?? 0;
-
-        control.TrayIcon.UpdateIcon(icon);
-    }
-
-    /// <summary>Identifies the <see cref="IconSource"/> dependency property.</summary>
-    public static readonly DependencyProperty IconSourceProperty =
-        DependencyProperty.Register(nameof(IconSource),
-            typeof (ImageSource),
-            typeof (TaskbarIcon),
-            new PropertyMetadata(null, IconSourcePropertyChanged));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="IconSourceProperty"/>
-    /// dependency property:<br/>
-    /// Resolves an image source and updates the <see cref="Icon" /> property accordingly.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Sets the displayed taskbar icon.")]
-    public ImageSource? IconSource
-    {
-        get => (ImageSource?)GetValue(IconSourceProperty);
-        set => SetValue(IconSourceProperty, value);
+        oldValue?.Dispose();
+        TrayIcon.UpdateIcon((nint?)newValue?.Handle ?? 0);
     }
 
 #if HAS_WPF
-    private static void IconSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
 #else
-    private static async void IconSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    async partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
 #endif
     {
-        if (d is not TaskbarIcon control)
+        if (newValue == null)
         {
-            throw new InvalidOperationException($"Parent should be {nameof(TaskbarIcon)}");
-        }
-        if (e.NewValue is not ImageSource source)
-        {
-            control.Icon = null;
-            if (!string.IsNullOrWhiteSpace(control.GeneratedIconText))
+            Icon = null;
+            if (!string.IsNullOrWhiteSpace(GeneratedIconText))
             {
-                control.RefreshGeneratedIcon();
+                RefreshGeneratedIcon();
             }
             return;
         }
 
 #if HAS_WPF
-        control.Icon = source.ToIcon();
+        Icon = newValue.ToIcon();
 #else
-        control.Icon = await source.ToIconAsync().ConfigureAwait(true);
+        Icon = await newValue.ToIconAsync().ConfigureAwait(true);
 #endif
 
-        if (!string.IsNullOrWhiteSpace(control.GeneratedIconText))
+        if (!string.IsNullOrWhiteSpace(GeneratedIconText))
         {
-            control.RefreshGeneratedIcon();
+            RefreshGeneratedIcon();
         }
     }
 

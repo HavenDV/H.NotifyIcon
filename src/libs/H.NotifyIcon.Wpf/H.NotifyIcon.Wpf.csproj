@@ -40,7 +40,12 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WpfAnalyzers" Version="4.0.2">
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.27.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.27.4" />
+    <PackageReference Include="WpfAnalyzers" Version="4.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

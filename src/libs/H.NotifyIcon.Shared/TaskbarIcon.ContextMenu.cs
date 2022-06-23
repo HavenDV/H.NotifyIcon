@@ -1,71 +1,28 @@
 ﻿namespace H.NotifyIcon;
 
+[DependencyProperty<PopupActivationMode>("MenuActivation", DefaultValue = PopupActivationMode.RightClick,
+    Description = "Defines what mouse events display the context menu.", Category = CategoryName, CLSCompliant = false)]
+#if !HAS_WPF
+[DependencyProperty<ContextMenuMode>("ContextMenuMode", DefaultValue = ContextMenuMode.PopupMenu,
+    Description = "Defines the context menu mode.", Category = CategoryName)]
+#endif
+[RoutedEvent("TrayContextMenuOpen", RoutedEventStrategy.Bubble,
+    Description = "Bubbled event that occurs when the context menu of the taskbar icon is being displayed.", Category = CategoryName)]
+[RoutedEvent("PreviewTrayContextMenuOpen", RoutedEventStrategy.Tunnel,
+    Description = "Tunneled event that occurs when the context menu of the taskbar icon is being displayed.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Properties
-
-    #region MenuActivation
-
-    /// <summary>Identifies the <see cref="MenuActivation"/> dependency property.</summary>
-    public static readonly DependencyProperty MenuActivationProperty =
-        DependencyProperty.Register(
-            nameof(MenuActivation),
-            typeof(PopupActivationMode),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(PopupActivationMode.RightClick));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="MenuActivationProperty"/>
-    /// dependency property:<br/>
-    /// Defines what mouse events display the context menu.
-    /// Defaults to <see cref="PopupActivationMode.RightClick"/>.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Defines what mouse events display the context menu.")]
-#if !HAS_WPF
-    [CLSCompliant(false)]
-#endif
-    public PopupActivationMode MenuActivation
-    {
-        get { return (PopupActivationMode)GetValue(MenuActivationProperty); }
-        set { SetValue(MenuActivationProperty, value); }
-    }
-
-    #endregion
 
 #if !HAS_WPF
 
     #region ContextMenuMode
 
-    /// <summary>Identifies the <see cref="ContextMenuMode"/> dependency property.</summary>
-    public static readonly DependencyProperty ContextMenuModeProperty =
-        DependencyProperty.Register(
-            nameof(ContextMenuMode),
-            typeof(ContextMenuMode),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(
-                ContextMenuMode.PopupMenu,
-                (d, e) => ((TaskbarIcon)d).OnContextMenuModeChanged(e)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="ContextMenuModeProperty"/>
-    /// dependency property:<br/>
-    /// Defines the context menu mode.
-    /// Defaults to <see cref="H.NotifyIcon.ContextMenuMode.PopupMenu"/>.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Defines the context menu mode.")]
-    public ContextMenuMode ContextMenuMode
-    {
-        get { return (ContextMenuMode)GetValue(ContextMenuModeProperty); }
-        set { SetValue(ContextMenuModeProperty, value); }
-    }
-
 #pragma warning disable CA1822 // Mark members as static
-    private void OnContextMenuModeChanged(DependencyPropertyChangedEventArgs args)
+    partial void OnContextMenuModeChanged(ContextMenuMode oldValue, ContextMenuMode newValue)
 #pragma warning restore CA1822 // Mark members as static
     {
-        if (args.NewValue is ContextMenuMode.SecondWindow)
+        if (newValue is ContextMenuMode.SecondWindow)
         {
 #if !HAS_UNO
             PrepareContextMenuWindow();
@@ -74,64 +31,6 @@ public partial class TaskbarIcon
     }
 
     #endregion
-
-#endif
-
-    #endregion
-
-    #region Events
-
-#if HAS_WPF
-
-    /// <summary>Identifies the <see cref="TrayContextMenuOpen"/> routed event.</summary>
-    public static readonly RoutedEvent TrayContextMenuOpenEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayContextMenuOpen),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Bubbled event that occurs when the context menu of the taskbar icon is being displayed.
-    /// </summary>
-    public event RoutedEventHandler TrayContextMenuOpen
-    {
-        add { AddHandler(TrayContextMenuOpenEvent, value); }
-        remove { RemoveHandler(TrayContextMenuOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayContextMenuOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayContextMenuOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayContextMenuOpenEvent));
-    }
-
-    /// <summary>Identifies the <see cref="PreviewTrayContextMenuOpen"/> routed event.</summary>
-    public static readonly RoutedEvent PreviewTrayContextMenuOpenEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(PreviewTrayContextMenuOpen),
-            RoutingStrategy.Tunnel,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Tunneled event that occurs when the context menu of the taskbar icon is being displayed.
-    /// </summary>
-    public event RoutedEventHandler PreviewTrayContextMenuOpen
-    {
-        add { AddHandler(PreviewTrayContextMenuOpenEvent, value); }
-        remove { RemoveHandler(PreviewTrayContextMenuOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the PreviewTrayContextMenuOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaisePreviewTrayContextMenuOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayContextMenuOpenEvent));
-    }
 
 #endif
 

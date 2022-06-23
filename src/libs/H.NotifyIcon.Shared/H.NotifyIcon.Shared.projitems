@@ -25,7 +25,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FromSystemDrawingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ToSystemDrawingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PngToIcoConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\RoutedEventHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImageExtensions.cs" />

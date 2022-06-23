@@ -1,74 +1,43 @@
 ﻿namespace H.NotifyIcon;
 
+[DependencyProperty<PopupActivationMode>("PopupActivation", DefaultValue = PopupActivationMode.LeftClick,
+    Description = "Defines what mouse events display the TaskbarIconPopup.", Category = CategoryName, CLSCompliant = false)]
+[DependencyProperty<UIElement>("TrayPopup",
+    Description = "Displayed as a Popup if the user clicks on the taskbar icon.", Category = CategoryName)]
+[DependencyProperty<PlacementMode>("PopupPlacement",
+#if HAS_WPF
+    DefaultValue = PlacementMode.AbsolutePoint,
+#else
+    DefaultValue = PlacementMode.Mouse,
+#endif
+    Description = "Defines popup placement mode of TaskbarIconPopup.", Category = CategoryName)]
+[DependencyProperty<Thickness>("PopupOffset",
+    Description = "Defines popup offset of TaskbarIconPopup.", Category = CategoryName)]
+[RoutedEvent("TrayPopupOpen", RoutedEventStrategy.Bubble,
+    Description = "Bubbled event that occurs when the custom popup is being opened.", Category = CategoryName)]
+[RoutedEvent("PreviewTrayPopupOpen", RoutedEventStrategy.Tunnel,
+    Description = "Tunneled event that occurs when the custom popup is being opened.", Category = CategoryName)]
+[RoutedEvent("PopupOpened", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Properties
 
-    #region PopupActivation
-
-    /// <summary>Identifies the <see cref="PopupActivation"/> dependency property.</summary>
-    public static readonly DependencyProperty PopupActivationProperty =
-        DependencyProperty.Register(
-            nameof(PopupActivation),
-            typeof(PopupActivationMode),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(PopupActivationMode.LeftClick));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="PopupActivationProperty"/>
-    /// dependency property:<br/>
-    /// Defines what mouse events trigger the <see cref="TrayPopup" />.
-    /// Default is <see cref="PopupActivationMode.LeftClick" />.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Defines what mouse events display the TaskbarIconPopup.")]
-#if !HAS_WPF
-    [CLSCompliant(false)]
-#endif
-    public PopupActivationMode PopupActivation
-    {
-        get { return (PopupActivationMode)GetValue(PopupActivationProperty); }
-        set { SetValue(PopupActivationProperty, value); }
-    }
-
-    #endregion
-
     #region TrayPopup
 
-    /// <summary>Identifies the <see cref="TrayPopup"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayPopupProperty =
-        DependencyProperty.Register(nameof(TrayPopup),
-            typeof(UIElement),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null, (d, e) => ((TaskbarIcon)d).OnTrayPopupPropertyChanged(e)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="TrayPopupProperty"/>
-    /// dependency property:<br/>
-    /// A control that is displayed as a popup when the taskbar icon is clicked.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Displayed as a Popup if the user clicks on the taskbar icon.")]
-    public UIElement? TrayPopup
-    {
-        get { return (UIElement?)GetValue(TrayPopupProperty); }
-        set { SetValue(TrayPopupProperty, value); }
-    }
-
-    private void OnTrayPopupPropertyChanged(DependencyPropertyChangedEventArgs e)
+    partial void OnTrayPopupChanged(UIElement? oldValue, UIElement? newValue)
     {
 #if HAS_WPF
-        if (e.OldValue != null)
+        if (oldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
-            SetParentTaskbarIcon((DependencyObject)e.OldValue, null);
+            SetParentTaskbarIcon(oldValue, null);
         }
 
 
-        if (e.NewValue != null)
+        if (newValue != null)
         {
             //set this taskbar icon as a reference to the new tooltip element
-            SetParentTaskbarIcon((DependencyObject)e.NewValue, this);
+            SetParentTaskbarIcon(newValue, this);
         }
 #endif
 
@@ -109,161 +78,6 @@ public partial class TaskbarIcon
     }
 
     #endregion
-
-    #region PopupPlacement
-
-    /// <summary>Identifies the <see cref="PopupPlacement"/> dependency property.</summary>
-    public static readonly DependencyProperty PopupPlacementProperty =
-        DependencyProperty.Register(
-            nameof(PopupPlacement),
-            typeof(PlacementMode),
-            typeof(TaskbarIcon),
-#if HAS_WPF
-            new PropertyMetadata(PlacementMode.AbsolutePoint));
-#else
-            new PropertyMetadata(PlacementMode.Mouse));
-#endif
-
-    /// <summary>
-    /// A property wrapper for the <see cref="PopupPlacementProperty"/>
-    /// dependency property:<br/>
-    /// Defines popup placement mode <see cref="TrayPopup" />.
-    /// Default is PlacementMode.AbsolutePoint for WPF and PlacementMode.Mouse for other platforms.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Defines popup placement mode of TaskbarIconPopup.")]
-    public PlacementMode PopupPlacement
-    {
-        get { return (PlacementMode)GetValue(PopupPlacementProperty); }
-        set { SetValue(PopupPlacementProperty, value); }
-    }
-
-    #endregion
-
-    #region PopupOffset
-
-    /// <summary>Identifies the <see cref="PopupOffset"/> dependency property.</summary>
-    public static readonly DependencyProperty PopupOffsetProperty =
-        DependencyProperty.Register(
-            nameof(PopupOffset),
-            typeof(Thickness),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(new Thickness(0.0)));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="PopupOffsetProperty"/>
-    /// dependency property:<br/>
-    /// Defines popup offset for <see cref="TrayPopup" />.
-    /// </summary>
-    [Category(CategoryName)]
-    [Description("Defines popup offset of TaskbarIconPopup.")]
-    public Thickness PopupOffset
-    {
-        get { return (Thickness)GetValue(PopupOffsetProperty); }
-        set { SetValue(PopupOffsetProperty, value); }
-    }
-
-    #endregion
-
-    #endregion
-
-    #region Events
-
-#if HAS_WPF
-
-    #region TrayPopupOpen
-
-    /// <summary>Identifies the <see cref="TrayPopupOpen"/> routed event.</summary>
-    public static readonly RoutedEvent TrayPopupOpenEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(TrayPopupOpen),
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Bubbled event that occurs when the custom popup is being opened.
-    /// </summary>
-    public event RoutedEventHandler TrayPopupOpen
-    {
-        add { AddHandler(TrayPopupOpenEvent, value); }
-        remove { RemoveHandler(TrayPopupOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the TrayPopupOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaiseTrayPopupOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(TrayPopupOpenEvent));
-    }
-
-    #endregion
-
-    #region PreviewTrayPopupOpen
-
-    /// <summary>Identifies the <see cref="PreviewTrayPopupOpen"/> routed event.</summary>
-    public static readonly RoutedEvent PreviewTrayPopupOpenEvent =
-        EventManager.RegisterRoutedEvent(
-            nameof(PreviewTrayPopupOpen),
-            RoutingStrategy.Tunnel,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Tunneled event that occurs when the custom popup is being opened.
-    /// </summary>
-    public event RoutedEventHandler PreviewTrayPopupOpen
-    {
-        add { AddHandler(PreviewTrayPopupOpenEvent, value); }
-        remove { RemoveHandler(PreviewTrayPopupOpenEvent, value); }
-    }
-
-    /// <summary>
-    /// A helper method to raise the PreviewTrayPopupOpen event.
-    /// </summary>
-    protected RoutedEventArgs RaisePreviewTrayPopupOpenEvent()
-    {
-        return this.RaiseRoutedEvent(new RoutedEventArgs(PreviewTrayPopupOpenEvent));
-    }
-
-    #endregion
-
-    #region PopupOpened
-
-    /// <summary>
-    /// PopupOpened Attached Routed Event
-    /// </summary>
-    public static readonly RoutedEvent PopupOpenedEvent =
-        EventManager.RegisterRoutedEvent(
-            "PopupOpened",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(TaskbarIcon));
-
-    /// <summary>
-    /// Adds a handler for the PopupOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be added</param>
-    public static void AddPopupOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.AddHandler(element, PopupOpenedEvent, handler);
-    }
-
-    /// <summary>
-    /// Removes a handler for the PopupOpened attached event
-    /// </summary>
-    /// <param name="element">UIElement or ContentElement that listens to the event</param>
-    /// <param name="handler">Event handler to be removed</param>
-    public static void RemovePopupOpenedHandler(DependencyObject element, RoutedEventHandler handler)
-    {
-        RoutedEventHelper.RemoveHandler(element, PopupOpenedEvent, handler);
-    }
-
-    #endregion
-
-#endif
 
     #endregion
 
@@ -408,7 +222,7 @@ public partial class TaskbarIcon
 
         // raise attached event - item should never be null unless developers
         // changed the CustomPopup directly...
-        TrayPopup?.RaiseRoutedEvent(new RoutedEventArgs(PopupOpenedEvent));
+        TrayPopup?.RaiseEvent(new RoutedEventArgs(PopupOpenedEvent));
 
         // bubble routed event
         RaiseTrayPopupOpenEvent();
