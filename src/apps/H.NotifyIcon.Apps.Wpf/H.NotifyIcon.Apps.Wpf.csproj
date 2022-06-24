@@ -20,6 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.32.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.32.1" />
     <PackageReference Include="System.Resources.Extensions" Version="6.0.0" PrivateAssets="All" />
   </ItemGroup>
 

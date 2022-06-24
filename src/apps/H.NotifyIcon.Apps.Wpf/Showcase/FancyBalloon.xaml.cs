@@ -3,40 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using DependencyPropertyGenerator;
 using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.ShowCases.Showcase;
 
-/// <summary>
-/// Interaction logic for FancyBalloon.xaml
-/// </summary>
+[DependencyProperty<string>("BalloonText", DefaultValue = "")]
 public partial class FancyBalloon : UserControl
 {
     private bool isClosing = false;
-
-    #region BalloonText dependency property
-
-    /// <summary>
-    /// Description
-    /// </summary>
-    public static readonly DependencyProperty BalloonTextProperty =
-        DependencyProperty.Register(nameof(BalloonText),
-            typeof (string),
-            typeof (FancyBalloon),
-            new FrameworkPropertyMetadata(string.Empty));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="BalloonTextProperty"/>
-    /// dependency property:<br/>
-    /// Description
-    /// </summary>
-    public string BalloonText
-    {
-        get { return (string) GetValue(BalloonTextProperty); }
-        set { SetValue(BalloonTextProperty, value); }
-    }
-
-    #endregion
 
     public FancyBalloon()
     {

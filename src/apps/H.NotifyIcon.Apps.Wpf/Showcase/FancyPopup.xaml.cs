@@ -1,37 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DependencyPropertyGenerator;
 
 namespace NotifyIconWpf.Sample.ShowCases.Showcase;
 
-/// <summary>
-/// Interaction logic for FancyPopup.xaml
-/// </summary>
+[DependencyProperty<int>("ClickCount", Description = "The number of clicks on the popup button.")]
 public partial class FancyPopup : UserControl
 {
-    #region ClickCount dependency property
-
-    /// <summary>
-    /// The number of clicks on the popup button.
-    /// </summary>
-    public static readonly DependencyProperty ClickCountProperty =
-        DependencyProperty.Register(nameof(ClickCount),
-            typeof (int),
-            typeof (FancyPopup),
-            new FrameworkPropertyMetadata(0));
-
-    /// <summary>
-    /// A property wrapper for the <see cref="ClickCountProperty"/>
-    /// dependency property:<br/>
-    /// The number of clicks on the popup button.
-    /// </summary>
-    public int ClickCount
-    {
-        get { return (int) GetValue(ClickCountProperty); }
-        set { SetValue(ClickCountProperty, value); }
-    }
-
-    #endregion
-
     public FancyPopup()
     {
         InitializeComponent();
