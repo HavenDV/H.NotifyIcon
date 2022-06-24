@@ -3,6 +3,8 @@ namespace H.NotifyIcon;
 
 [RoutedEvent("BalloonShowing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
 [RoutedEvent("BalloonClosing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
+[DependencyProperty<Popup>("CustomBalloon", IsReadOnly = true,
+    Description = "Maintains a currently displayed custom balloon.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Properties
@@ -11,35 +13,6 @@ public partial class TaskbarIcon
     /// A timer that is used to close open balloon tooltips.
     /// </summary>
     private readonly Timer balloonCloseTimer;
-
-    #region CustomBalloon
-
-    /// <summary>
-    /// Maintains a currently displayed custom balloon.
-    /// </summary>
-    private static readonly DependencyProperty CustomBalloonProperty =
-        DependencyProperty.Register(
-            nameof(CustomBalloon),
-            typeof(Popup),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// A custom popup that is being displayed in the tray area in order
-    /// to display messages to the user.
-    /// </summary>
-    public Popup? CustomBalloon => (Popup?)GetValue(CustomBalloonProperty);
-
-    /// <summary>
-    /// Provides a secure method for setting the <see cref="CustomBalloon"/> property.  
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
-    protected void SetCustomBalloon(Popup? value)
-    {
-        SetValue(CustomBalloonProperty, value);
-    }
-
-    #endregion
 
     #endregion
 
@@ -153,7 +126,7 @@ public partial class TaskbarIcon
         //store reference
         //lock (lockObject)
         {
-            SetCustomBalloon(popup);
+            CustomBalloon = popup;
         }
 
         // assign this instance as an attached property
@@ -249,7 +222,7 @@ public partial class TaskbarIcon
             }
 
             // remove custom balloon anyway
-            SetCustomBalloon(null);
+            CustomBalloon = null;
         }
     }
 

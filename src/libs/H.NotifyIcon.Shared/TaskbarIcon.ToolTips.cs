@@ -3,7 +3,9 @@
 [DependencyProperty<string>("ToolTipText", DefaultValue = "",
     Description = "A tooltip text that is being displayed if no custom ToolTip was set or if custom tooltips are not supported.", Category = CategoryName)]
 [DependencyProperty<UIElement>("TrayToolTip",
-    Description = @"A custom UI element that is displayed as a tooltip if the user hovers over the taskbar icon. Works only with Vista and above. Accordingly, you should make sure that the ToolTipText property is set as well.", Category = CategoryName)]
+    Description = "A custom UI element that is displayed as a tooltip if the user hovers over the taskbar icon. Works only with Vista and above. Accordingly, you should make sure that the ToolTipText property is set as well.", Category = CategoryName)]
+[DependencyProperty<ToolTip>("TrayToolTipResolved", IsReadOnly = true,
+    Description = "Returns a ToolTip control that was created in order to display either TrayToolTip or ToolTipText", Category = CategoryName)]
 [RoutedEvent("TrayToolTipOpen", RoutedEventStrategy.Bubble,
     Description = "Bubbled event that occurs when the custom ToolTip is being displayed.", Category = CategoryName)]
 [RoutedEvent("PreviewTrayToolTipOpen", RoutedEventStrategy.Tunnel,
@@ -72,39 +74,6 @@ public partial class TaskbarIcon
 
     #endregion
 
-    #region TrayToolTipResolved
-
-    /// <summary>Identifies the <see cref="TrayToolTipResolved"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayToolTipResolvedProperty
-        = DependencyProperty.Register(
-            nameof(TrayToolTipResolved),
-            typeof(ToolTip),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets the TrayToolTipResolved property. Returns 
-    /// a <see cref="ToolTip"/> control that was created
-    /// in order to display either <see cref="TrayToolTip"/>
-    /// or <see cref="ToolTipText"/>.
-    /// </summary>
-    [Category(CategoryName)]
-    [Browsable(true)]
-    [Bindable(true)]
-    public ToolTip? TrayToolTipResolved => (ToolTip?)GetValue(TrayToolTipResolvedProperty);
-
-    /// <summary>
-    /// Provides a secure method for setting the <see cref="TrayToolTipResolved"/>
-    /// property.  
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
-    protected void SetTrayToolTipResolved(ToolTip? value)
-    {
-        SetValue(TrayToolTipResolvedProperty, value);
-    }
-
-    #endregion
-
     #endregion
 
     #region Methods
@@ -166,7 +135,7 @@ public partial class TaskbarIcon
         }
 
         // store a reference to the used tooltip
-        SetTrayToolTipResolved(tt);
+        TrayToolTipResolved = tt;
     }
 
     /// <summary>

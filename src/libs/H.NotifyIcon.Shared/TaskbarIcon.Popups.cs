@@ -4,6 +4,8 @@
     Description = "Defines what mouse events display the TaskbarIconPopup.", Category = CategoryName, CLSCompliant = false)]
 [DependencyProperty<UIElement>("TrayPopup",
     Description = "Displayed as a Popup if the user clicks on the taskbar icon.", Category = CategoryName)]
+[DependencyProperty<Popup>("TrayPopupResolved", IsReadOnly = true,
+    Description = "Returns a Popup which is either the TrayPopup control itself or a Popup control that contains the TrayPopup.", Category = CategoryName)]
 [DependencyProperty<PlacementMode>("PopupPlacement",
 #if HAS_WPF
     DefaultValue = PlacementMode.AbsolutePoint,
@@ -43,38 +45,6 @@ public partial class TaskbarIcon
 
         //create a pop
         CreatePopup();
-    }
-
-    #endregion
-
-    #region TrayPopupResolved
-
-    /// <summary>Identifies the <see cref="TrayPopupResolved"/> dependency property.</summary>
-    public static readonly DependencyProperty TrayPopupResolvedProperty =
-        DependencyProperty.Register(
-            nameof(TrayPopupResolved),
-            typeof(Popup),
-            typeof(TaskbarIcon),
-            new PropertyMetadata(null));
-
-    /// <summary>
-    /// Gets the TrayPopupResolved property. Returns
-    /// a <see cref="Popup"/> which is either the
-    /// <see cref="TrayPopup"/> control itself or a
-    /// <see cref="Popup"/> control that contains the
-    /// <see cref="TrayPopup"/>.
-    /// </summary>
-    [Category(CategoryName)]
-    public Popup? TrayPopupResolved => (Popup?)GetValue(TrayPopupResolvedProperty);
-
-    /// <summary>
-    /// Provides a secure method for setting the TrayPopupResolved property.  
-    /// This dependency property indicates ....
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
-    protected void SetTrayPopupResolved(Popup? value)
-    {
-        SetValue(TrayPopupResolvedProperty, value);
     }
 
     #endregion
@@ -133,7 +103,7 @@ public partial class TaskbarIcon
         }
 
         // store a reference to the used tooltip
-        SetTrayPopupResolved(popup);
+        TrayPopupResolved = popup;
     }
 
     /// <summary>
