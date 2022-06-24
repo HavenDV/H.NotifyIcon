@@ -60,7 +60,7 @@
     Description = "Defines generated icon. Use this for dynamically generated System.Drawing.Icons", Category = GeneratedIconCategory)]
 [DependencyProperty<int>("GeneratedIconSize", DefaultValue = 128,
     Description = "Defines generated icon size.", Category = GeneratedIconCategory)]
-[DependencyProperty<float>("GeneratedIconBorderThickness", DefaultValue = 128,
+[DependencyProperty<float>("GeneratedIconBorderThickness",
     Description = "Defines generated icon border thickness.", Category = GeneratedIconCategory)]
 [DependencyProperty<Brush>("GeneratedIconBorderBrush",
 #if HAS_WPF
