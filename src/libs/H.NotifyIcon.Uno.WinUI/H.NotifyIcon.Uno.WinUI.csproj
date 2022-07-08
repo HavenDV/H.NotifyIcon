@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.WinUI" Version="4.3.8" />
+    <PackageReference Include="Uno.WinUI" Version="4.4.13" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
@@ -22,11 +22,11 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="0.32.1">
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.37.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.32.1" />
+    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.37.0" />
   </ItemGroup>
 
   <ItemGroup>
