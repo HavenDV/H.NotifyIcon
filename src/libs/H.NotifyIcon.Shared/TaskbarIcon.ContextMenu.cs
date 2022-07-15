@@ -44,6 +44,9 @@ public partial class TaskbarIcon
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
+    private bool FirstMeasure { get; set; } = true;
+    private bool PointerActionInContextMenuWindow { get; set; }
+    private bool SecondMeasureAfterPointerAction { get; set; }
 #endif
 
     /// <summary>
@@ -154,7 +157,17 @@ public partial class TaskbarIcon
                         break;
                     }
 
-                    var size = MeasureFlyout(ContextMenuFlyout, availableSize: new Size(10000.0, 10000.0));
+                    var size = MeasureFlyout(
+                        flyout: ContextMenuFlyout,
+                        availableSize: new Size(10000.0, 10000.0),
+                        firstMeasure: FirstMeasure,
+                        pointerActionInContextMenuWindow: PointerActionInContextMenuWindow,
+                        secondMeasureAfterPointerAction: SecondMeasureAfterPointerAction);
+                    FirstMeasure = false;
+                    if (PointerActionInContextMenuWindow)
+                    {
+                        SecondMeasureAfterPointerAction = true;
+                    }
                     var rectangle = CursorUtilities.CalculatePopupWindowPosition(cursorPosition, size.ToSystemDrawingSize());
 
                     ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
@@ -243,8 +256,10 @@ public partial class TaskbarIcon
                 flyout.Hide();
                 _ = WindowUtilities.HideWindow(handle);
             };
+            flyoutItemBase.PointerMoved += (_, _) => PointerActionInContextMenuWindow = true;
+            flyoutItemBase.PointerPressed += (_, _) => PointerActionInContextMenuWindow = true;
         }
-
+        
         frame.Loaded += (_, _) =>
         {
             flyout.ShowAt(window.Content, new FlyoutShowOptions
@@ -281,31 +296,38 @@ public partial class TaskbarIcon
         ContextMenuFlyout = flyout;
     }
 
-    private static Size MeasureFlyout(MenuFlyout flyout, Size availableSize)
+    private static Size MeasureFlyout(
+        MenuFlyout flyout,
+        Size availableSize,
+        bool firstMeasure,
+        bool pointerActionInContextMenuWindow,
+        bool secondMeasureAfterPointerAction)
     {
-        const double offset = 16.0;
-
         var width = 0.0;
-        var height = offset;
-        foreach (var flyoutItemBase in flyout.Items)
-        {
-            flyoutItemBase.Measure(availableSize);
+        var height = 4.0; // top and bottom margin
 
-            width = Math.Max(
-                width,
-                flyoutItemBase.DesiredSize.Width +
-                flyoutItemBase.Padding.Left +
-                flyoutItemBase.Padding.Right +
-                offset);
-            height +=
-                flyoutItemBase.DesiredSize.Height +
-                flyoutItemBase.Padding.Top +
-                flyoutItemBase.Padding.Bottom;
+        foreach (var item in flyout.Items)
+        {
+            item.Measure(availableSize);
+
+            var additionalHeight = item is MenuFlyoutItem && firstMeasure
+                ? 2.0
+                : 0.0;
+            // https://github.com/microsoft/microsoft-ui-xaml/issues/7374
+            additionalHeight += item is MenuFlyoutItem &&
+                (pointerActionInContextMenuWindow && !secondMeasureAfterPointerAction)
+                ? -8.0
+                : 0.0;
+            width = Math.Max(width, item.DesiredSize.Width);
+            height += item.DesiredSize.Height + additionalHeight;
         }
 
+        var scale = flyout.XamlRoot.RasterizationScale;
         return new Size(
-            width: 2 * Math.Round(width),
-            height: Math.Round(height));
+            width: Math.Round(scale * width
+                + (firstMeasure ? 128.0 : 0.0) // ??
+                + 4.0),  // borders
+            height: Math.Round(scale * height + 4.0)); // borders
     }
 
 #endif
