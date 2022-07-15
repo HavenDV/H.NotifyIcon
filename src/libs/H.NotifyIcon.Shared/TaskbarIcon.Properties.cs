@@ -43,7 +43,16 @@ public partial class TaskbarIcon
     partial void OnIconChanged(System.Drawing.Icon? oldValue, System.Drawing.Icon? newValue)
     {
         oldValue?.Dispose();
-        TrayIcon.UpdateIcon((nint?)newValue?.Handle ?? 0);
+        UpdateIcon(newValue);
+    }
+
+    /// <summary>
+    /// Updates TrayIcon.Icon without changing Icon property.
+    /// </summary>
+    /// <param name="value"></param>
+    public void UpdateIcon(System.Drawing.Icon? value)
+    {
+        TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
     }
 
 #if HAS_WPF
@@ -55,10 +64,7 @@ public partial class TaskbarIcon
         if (newValue == null)
         {
             Icon = null;
-            if (!string.IsNullOrWhiteSpace(GeneratedIconText))
-            {
-                RefreshGeneratedIcon();
-            }
+            GeneratedIcon?.Refresh();
             return;
         }
 
@@ -68,10 +74,7 @@ public partial class TaskbarIcon
         Icon = await newValue.ToIconAsync().ConfigureAwait(true);
 #endif
 
-        if (!string.IsNullOrWhiteSpace(GeneratedIconText))
-        {
-            RefreshGeneratedIcon();
-        }
+        GeneratedIcon?.Refresh();
     }
 
     #endregion

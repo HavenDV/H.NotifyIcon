@@ -108,13 +108,17 @@
     <tb:TaskbarIcon
         x:Key="TrayIcon"
         Visibility="Visible"
-        GeneratedIconText="❤️"
-        GeneratedIconForeground="Red"
         ToolTipText="ToolTip"
         ContextMenuMode="SecondWindow"
         LeftClickCommand="{StaticResource ShowHideWindowCommand}"
         NoLeftClickDelay="True"
         >
+        <tb:TaskbarIcon.GeneratedIcon>
+            <tb:GeneratedIcon
+                Text="❤️"
+                Foreground="Red"
+                />
+        </tb:TaskbarIcon.GeneratedIcon>
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Command="{StaticResource Command1}" />

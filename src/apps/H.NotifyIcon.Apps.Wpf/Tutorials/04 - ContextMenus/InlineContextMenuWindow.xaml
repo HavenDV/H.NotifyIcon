@@ -8,28 +8,32 @@
     Width="300"
     >
     <Grid>
-
         <tb:TaskbarIcon
             x:Name="MyNotifyIcon"
             ToolTipText="hello world"
             TrayContextMenuOpen="MyNotifyIcon_TrayContextMenuOpen"
             PreviewTrayContextMenuOpen="MyNotifyIcon_PreviewTrayContextMenuOpen"
-            GeneratedIconText="❤️"
-            GeneratedIconBorderThickness="5"
-            GeneratedIconFontSize="46"
             >
-            <tb:TaskbarIcon.GeneratedIconForeground>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
-                    <GradientStop Color="White" />
-                    <GradientStop Color="Red" />
-                </LinearGradientBrush>
-            </tb:TaskbarIcon.GeneratedIconForeground>
-            <tb:TaskbarIcon.GeneratedIconBorderBrush>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
-                    <GradientStop Color="White" />
-                    <GradientStop Color="Red" />
-                </LinearGradientBrush>
-            </tb:TaskbarIcon.GeneratedIconBorderBrush>
+            <tb:TaskbarIcon.GeneratedIcon>
+                <tb:GeneratedIcon
+                    Text="❤️"
+                    BorderThickness="5"
+                    FontSize="46"
+                    >
+                    <tb:GeneratedIcon.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+                            <GradientStop Color="White" />
+                            <GradientStop Color="Red" />
+                        </LinearGradientBrush>
+                    </tb:GeneratedIcon.Foreground>
+                    <tb:GeneratedIcon.BorderBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+                            <GradientStop Color="White" />
+                            <GradientStop Color="Red" />
+                        </LinearGradientBrush>
+                    </tb:GeneratedIcon.BorderBrush>
+                </tb:GeneratedIcon>
+            </tb:TaskbarIcon.GeneratedIcon>
 
             <!--  Set a simple context menu  -->
             <!--  the data context of the context menu is the NotifyIcon itself (see more about this in DataBinding samples)  -->
