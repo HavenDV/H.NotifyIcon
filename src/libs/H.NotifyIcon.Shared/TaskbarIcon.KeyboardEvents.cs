@@ -28,21 +28,15 @@ public partial class TaskbarIcon
         switch (args.KeyboardEvent)
         {
             case KeyboardEvent.ContextMenu:
-#if HAS_WPF
-                RaiseTrayKeyboardContextMenuEvent();
-#endif
+                OnTrayKeyboardContextMenu();
                 break;
 
             case KeyboardEvent.KeySelect:
-#if HAS_WPF
-                RaiseTrayKeyboardKeySelectEvent();
-#endif
+                OnTrayKeyboardKeySelect();
                 break;
 
             case KeyboardEvent.Select:
-#if HAS_WPF
-                RaiseTrayKeyboardSelectEvent();
-#endif
+                OnTrayKeyboardSelect();
                 break;
 
             default:

@@ -40,11 +40,11 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="0.37.0">
+    <PackageReference Include="DependencyPropertyGenerator" Version="0.42.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.37.0" />
+    <PackageReference Include="DependencyPropertyGenerator.Core" Version="0.42.0" />
     <PackageReference Include="WpfAnalyzers" Version="4.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

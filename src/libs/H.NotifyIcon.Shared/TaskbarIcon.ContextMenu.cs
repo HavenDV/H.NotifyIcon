@@ -59,10 +59,10 @@ public partial class TaskbarIcon
             return;
         }
 
-#if HAS_WPF
         // raise preview event no matter whether context menu is currently set
         // or not (enables client to set it on demand)
-        var args = RaisePreviewTrayContextMenuOpenEvent();
+        var args = OnPreviewTrayContextMenuOpen();
+#if HAS_WPF
         if (args.Handled)
         {
             return;
@@ -99,9 +99,6 @@ public partial class TaskbarIcon
         // does not close if the user clicks somewhere else. With the message window
         // fallback, the context menu can't receive keyboard events - should not happen though
         WindowUtilities.SetForegroundWindow(handle);
-
-        // bubble event
-        RaiseTrayContextMenuOpenEvent();
 #else
         if (ContextFlyout == null)
         {
@@ -193,6 +190,9 @@ public partial class TaskbarIcon
                 throw new NotImplementedException($"ContextMenuMode: {ContextMenuMode} is not implemented.");
         }
 #endif
+
+        // bubble event
+        OnTrayContextMenuOpen();
     }
 
 #if HAS_WINUI && !HAS_UNO

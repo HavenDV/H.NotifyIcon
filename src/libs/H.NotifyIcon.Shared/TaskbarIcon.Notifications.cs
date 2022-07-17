@@ -107,16 +107,14 @@ public partial class TaskbarIcon
     /// <param name="sender"></param>
     private void OnBalloonToolTipChanged(object? sender, bool visible)
     {
-#if HAS_WPF
         if (visible)
         {
-            RaiseTrayBalloonTipShownEvent();
+            OnTrayBalloonTipShown();
         }
         else
         {
-            RaiseTrayBalloonTipClosedEvent();
+            OnTrayBalloonTipClosed();
         }
-#endif
     }
 
     #endregion

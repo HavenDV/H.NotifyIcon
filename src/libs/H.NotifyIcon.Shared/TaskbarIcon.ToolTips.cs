@@ -186,8 +186,8 @@ public partial class TaskbarIcon
                 return;
             }
 
+            var args = OnPreviewTrayToolTipOpen();
 #if HAS_WPF
-            var args = RaisePreviewTrayToolTipOpenEvent();
             if (args.Handled)
             {
                 return;
@@ -202,15 +202,15 @@ public partial class TaskbarIcon
             {
                 TrayToolTip.RaiseEvent(new RoutedEventArgs(ToolTipOpenedEvent));
             }
+#endif
 
             // bubble routed event
-            RaiseTrayToolTipOpenEvent();
-#endif
+            OnTrayToolTipOpen();
         }
         else
         {
+            var args = OnPreviewTrayToolTipClose();
 #if HAS_WPF
-            var args = RaisePreviewTrayToolTipCloseEvent();
             if (args.Handled)
             {
                 return;
@@ -225,10 +225,8 @@ public partial class TaskbarIcon
 
             TrayToolTipResolved.IsOpen = false;
 
-#if HAS_WPF
             // bubble event
-            RaiseTrayToolTipCloseEvent();
-#endif
+            OnTrayToolTipClose();
         }
     }
 

@@ -116,8 +116,8 @@ public partial class TaskbarIcon
             return;
         }
 
+        var args = OnPreviewTrayPopupOpen();
 #if HAS_WPF
-        var args = RaisePreviewTrayPopupOpenEvent();
         if (args.Handled)
         {
             return;
@@ -145,10 +145,10 @@ public partial class TaskbarIcon
             return;
         }
 
-#if HAS_WPF
         // raise preview event no matter whether popup is currently set
         // or not (enables client to set it on demand)
-        var args = RaisePreviewTrayPopupOpenEvent();
+        var args = OnPreviewTrayPopupOpen();
+#if HAS_WPF
         if (args.Handled)
         {
             return;
@@ -193,10 +193,10 @@ public partial class TaskbarIcon
         // raise attached event - item should never be null unless developers
         // changed the CustomPopup directly...
         TrayPopup?.RaiseEvent(new RoutedEventArgs(PopupOpenedEvent));
+#endif
 
         // bubble routed event
-        RaiseTrayPopupOpenEvent();
-#endif
+        OnTrayPopupOpen();
     }
 
     private void PlacePopup(System.Drawing.Point cursorPosition)

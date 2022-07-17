@@ -38,56 +38,40 @@ public partial class TaskbarIcon
         switch (args.MouseEvent)
         {
             case MouseEvent.MouseMove:
-#if HAS_WPF
-                RaiseTrayMouseMoveEvent();
-#endif
+                OnTrayMouseMove();
                 // immediately return - there's nothing left to evaluate
                 return;
             case MouseEvent.IconRightMouseDown:
-#if HAS_WPF
-                RaiseTrayRightMouseDownEvent();
-#endif
+                OnTrayRightMouseDown();
                 break;
             case MouseEvent.IconLeftMouseDown:
-#if HAS_WPF
-                RaiseTrayLeftMouseDownEvent();
-#endif
+                OnTrayLeftMouseDown();
                 break;
             case MouseEvent.IconRightMouseUp:
-#if HAS_WPF
-                RaiseTrayRightMouseUpEvent();
-#endif
+                OnTrayRightMouseUp();
                 break;
             case MouseEvent.IconLeftMouseUp:
-#if HAS_WPF
-                RaiseTrayLeftMouseUpEvent();
-#endif
+                OnTrayLeftMouseUp();
                 break;
             case MouseEvent.IconMiddleMouseDown:
-#if HAS_WPF
-                RaiseTrayMiddleMouseDownEvent();
-#endif
+                OnTrayMiddleMouseDown();
                 break;
             case MouseEvent.IconMiddleMouseUp:
-#if HAS_WPF
-                RaiseTrayMiddleMouseUpEvent();
-#endif
+                OnTrayMiddleMouseUp();
                 break;
             case MouseEvent.IconDoubleClick:
                 // cancel single click timer
                 singleClickTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-#if HAS_WPF
                 // bubble event
-                RaiseTrayMouseDoubleClickEvent();
+                OnTrayMouseDoubleClick();
+#if HAS_WPF
                 DoubleClickCommand?.TryExecute(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
 #else
                 DoubleClickCommand?.TryExecute(DoubleClickCommandParameter);
 #endif
                 break;
             case MouseEvent.BalloonToolTipClicked:
-#if HAS_WPF
-                RaiseTrayBalloonTipClickedEvent();
-#endif
+                OnTrayBalloonTipClicked();
                 break;
 
             default:
