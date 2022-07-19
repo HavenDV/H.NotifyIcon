@@ -66,7 +66,7 @@ public static class WindowUtilities
             bufferLength: &size,
             buffer: (byte*)&id);
 
-        return result != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
+        return (int)result != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
     }
 
     /// <summary>Sets the specified window's show state.</summary>

@@ -160,7 +160,7 @@ public class MessageWindow : IDisposable
             Y: 0,
             nWidth: 0,
             nHeight: 0,
-            hWndParent: new HWND(0),
+            hWndParent: new HWND(IntPtr.Zero),
             hMenu: null,
             hInstance: null,
             lpParam: null).EnsureNonNull();
