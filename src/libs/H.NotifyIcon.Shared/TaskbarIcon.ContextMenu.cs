@@ -289,6 +289,10 @@ public partial class TaskbarIcon
                 ShowMode = FlyoutShowMode.Transient,
             });
         };
+    
+        this.ActualThemeChanged += (_, _) => {
+            ((FrameworkElement)window.Content).RequestedTheme = this.ActualTheme;
+        };
 
         ContextMenuWindow = window;
         ContextMenuWindowHandle = handle;
