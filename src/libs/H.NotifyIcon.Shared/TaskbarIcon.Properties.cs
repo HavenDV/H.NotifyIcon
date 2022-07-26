@@ -2,6 +2,8 @@
 
 [DependencyProperty<Guid>("Id",
     Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
+[DependencyProperty<string>("CustomName",
+    Description = "Gets or sets the TrayIcon Name. Use this for second TrayIcon in same app.", Category = CategoryName)]
 [DependencyProperty<System.Drawing.Icon>("Icon",
     Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
 [DependencyProperty<ImageSource>("IconSource",
@@ -19,21 +21,14 @@ public partial class TaskbarIcon
 
     #region Id
     
-    partial void OnIdChanged(Guid oldValue, Guid newValue)
+    partial void OnIdChanged(Guid newValue)
     {
-        var wasCreated = IsCreated;
-        if (oldValue != Guid.Empty &&
-            wasCreated)
-        {
-            _ = TrayIcon.TryRemove();
-        }
+        TrayIcon.UpdateId(newValue);
+    }
 
-        Id = newValue;
-
-        if (wasCreated)
-        {
-            TrayIcon.Create();
-        }
+    partial void OnCustomNameChanged(string? newValue)
+    {
+        TrayIcon.UpdateName(newValue ?? string.Empty);
     }
 
     #endregion

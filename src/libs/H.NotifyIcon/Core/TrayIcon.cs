@@ -27,7 +27,7 @@ public class TrayIcon : IDisposable
     /// <remarks>
     /// Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.
     /// </remarks>
-    public Guid Id { get; }
+    public Guid Id { get; private set; }
 
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
@@ -303,6 +303,42 @@ public class TrayIcon : IDisposable
         
         OnRemoved();
         return true;
+    }
+
+    /// <summary>
+    /// Update TrayIcon Id. <br/>
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void UpdateId(Guid id)
+    {
+        EnsureNotDisposed();
+
+        var wasCreated = IsCreated;
+        if (wasCreated)
+        {
+            _ = TryRemove();
+        }
+
+        Id = id;
+
+        if (wasCreated)
+        {
+            Create();
+        }
+    }
+
+    /// <summary>
+    /// Update TrayIcon Name. <br/>
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ObjectDisposedException"></exception>
+    public void UpdateName(string name)
+    {
+        EnsureNotDisposed();
+
+        var id = CreateUniqueGuidFromString(name);
+        UpdateId(id);
     }
 
     /// <summary>
