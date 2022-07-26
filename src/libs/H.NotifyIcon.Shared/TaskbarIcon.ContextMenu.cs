@@ -213,6 +213,9 @@ public partial class TaskbarIcon
         {
             Content = frame,
         };
+        
+        ActualThemeChanged += (_, _) => frame.RequestedTheme = ActualTheme;
+        
         var handle = WindowNative.GetWindowHandle(window);
         WindowUtilities.MakeTransparent(handle);
 
