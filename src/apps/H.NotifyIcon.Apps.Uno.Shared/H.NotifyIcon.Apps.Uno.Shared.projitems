@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>418d1399-62c8-481b-a954-517b189eca70</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>H.ReactiveUI.Apps.Uno.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\SplashScreen.scale-200.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\StoreLogo.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Wide310x150Logo.scale-200.png" />
+    <Page Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <!-- Mark the files from this folder as being part of WinUI -->
+    <Page Update="$(MSBuildThisFileDirectory)**/*.xaml" XamlRuntime="WinUI" />
+    <ApplicationDefinition Update="$(MSBuildThisFileDirectory)**/*.xaml" XamlRuntime="WinUI" />
+    <!-- Make sure XAML files force reevaluation of up-to-date checks -->
+    <UpToDateCheckInput Include="$(MSBuildThisFileDirectory)**/*.xaml" />
+  </ItemGroup>
+</Project>

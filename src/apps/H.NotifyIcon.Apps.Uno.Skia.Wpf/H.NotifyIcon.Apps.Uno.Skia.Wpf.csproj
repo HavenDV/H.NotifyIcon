@@ -1,40 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <NoWarn>$(NoWarn);UXAML0002</NoWarn>
+    <OutputType>WinExe</OutputType>
+    <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
+    <TargetFrameworks>net6.0-windows;net4.7.2</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;HAS_UNO_WINUI</DefineConstants>
+    <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);UXAML0002</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="App.xaml" />
-    <None Remove="Assets\Red.ico" />
-    <None Remove="Views\MainView.xaml" />
+  <ItemGroup Label="AssemblyInfo">
+    <AssemblyAttribute Include="System.Windows.ThemeInfo">
+      <_Parameter1>System.Windows.ResourceDictionaryLocation.None</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+      <_Parameter2>System.Windows.ResourceDictionaryLocation.SourceAssembly</_Parameter2>
+      <_Parameter2_IsLiteral>true</_Parameter2_IsLiteral>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />
     <Content Include="Assets\Red.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.UI.Skia.Wpf" Version="4.4.13" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="4.4.13" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.WinUI.Skia.Wpf" Version="4.4.13" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.4.13" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.4.13" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\MainView.xaml" />
+    <ProjectReference Include="..\..\libs\H.NotifyIcon.Uno.WinUI\H.NotifyIcon.Uno.WinUI.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\H.NotifyIcon.Uno\H.NotifyIcon.Uno.csproj" />
-  </ItemGroup>
+  <Import Project="..\H.NotifyIcon.Apps.Uno.Shared\H.NotifyIcon.Apps.Uno.Shared.projitems" Label="Shared" />
 
 </Project>

@@ -1,4 +1,4 @@
-namespace H.OxyPlot.Apps;
+﻿namespace H.NotifyIcon.Apps.Skia;
 
 public partial class MainWindow : System.Windows.Window
 {

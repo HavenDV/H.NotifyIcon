@@ -1,15 +1,6 @@
-﻿<Application
-    x:Class="H.NotifyIcon.Apps.App"
+<Application
+    x:Class="H.NotifyIcon.Apps.Skia.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    >
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-            </ResourceDictionary.MergedDictionaries>
-
-            <!--  Create converters  -->
-        </ResourceDictionary>
-    </Application.Resources>
-</Application>
+    StartupUri="MainWindow.xaml"
+    />

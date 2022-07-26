@@ -1,5 +1,5 @@
-<Window 
-    x:Class="H.OxyPlot.Apps.MainWindow"
+<Window
+    x:Class="H.NotifyIcon.Apps.Skia.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,5 +10,5 @@
     Width="800"
     WindowState="Maximized"
     >
-	  <ContentControl x:Name="Root"/>
+    <ContentControl x:Name="Root" />
 </Window>
