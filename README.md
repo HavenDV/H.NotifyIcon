@@ -4,9 +4,9 @@
 other platforms (WinUI/Uno.Skia.Wpf/Console) - ❤️ https://github.com/hardcodet/wpf-notifyicon ❤️ **
 
 This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon)
-for .Net Core 3.1/.Net 5/.Net 6 WPF/WinUI/Uno.Skia.WPF/Console platforms.
+for .Net 6 WPF/WinUI/Uno.Skia.WPF/Console platforms.
 It does not just rely on the Windows Forms NotifyIcon component, 
-but is a purely independent control which leverages several features of the WPF/WinUI framework 
+but is a purely independent control which leverages several features of the WPF/WinUI frameworks 
 in order to display rich tooltips, popups, context menus, and balloon messages. 
 It can be used directly in code or embedded in any XAML file.
 
@@ -40,7 +40,7 @@ Install-Package H.NotifyIcon
 
 ```xml
 <Window
-    xmlns:tb="http://www.hardcodet.net/taskbar" // WPF
+    xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf" // WPF
     xmlns:tb="using:H.NotifyIcon" // WinUI
     >
     <tb:TaskbarIcon
@@ -48,7 +48,7 @@ Install-Package H.NotifyIcon
         IconSource="/Images/TrayIcons/Logo.ico"
         ContextMenu="{StaticResource TrayMenu}"
         MenuActivation="LeftOrRightClick"
-        TrayPopup="{StaticResoure TrayStatusPopup}"
+        TrayPopup="{StaticResource TrayStatusPopup}"
         PopupActivation="DoubleClick"
         TrayToolTip="{StaticResource TrayToolTip}"
         />
@@ -145,6 +145,8 @@ The minimum supported version of the .Net Framework is 4.5.1.
 So in some cases to build the project you will need to install this -  
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
 
-### Support
-You can get answers to your questions in my discord support channel:  
+## Support
+Priority place for bugs: https://github.com/HavenDV/H.NotifyIcon/issues  
+Priority place for ideas and general questions: https://github.com/HavenDV/H.NotifyIcon/discussions  
+I also have a Discord support channel:  
 https://discord.gg/g8u2t9dKgE
