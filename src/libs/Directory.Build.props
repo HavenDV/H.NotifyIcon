@@ -2,14 +2,6 @@
 
   <Import Project="..\Directory.Build.props" />
 
-  <PropertyGroup Label="Common">
-    <InvariantGlobalization>true</InvariantGlobalization>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-
   <PropertyGroup Label="Signing">
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)src\key.snk</AssemblyOriginatorKeyFile>
@@ -27,12 +19,8 @@
     <PackageReleaseNotes>$(PACKAGE_RELEASE_NOTES)</PackageReleaseNotes>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Copyright>Copyright (c) 2022 havendv and Philipp Sumi</Copyright>
-    <Company>hardcodet.net</Company>
     <Authors>havendv -&gt; Lakritzator and Philipp Sumi</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/HavenDV/H.NotifyIcon</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon</PackageProjectUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -42,15 +30,8 @@
     <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="\" Visible="false"/>
   </ItemGroup>
 
-  <PropertyGroup Label="Source Link">
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedAllSources>true</EmbedAllSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-
   <ItemGroup Label="Source Link">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -60,18 +41,6 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
-    <AnalysisModeDesign>All</AnalysisModeDesign>
-    <AnalysisModeDocumentation>All</AnalysisModeDocumentation>
-    <AnalysisModeGlobalization>All</AnalysisModeGlobalization>
-    <AnalysisModeInteroperability>All</AnalysisModeInteroperability>
-    <AnalysisModeMaintainability>All</AnalysisModeMaintainability>
-    <AnalysisModeNaming>All</AnalysisModeNaming>
-    <AnalysisModePerformance>All</AnalysisModePerformance>
-    <AnalysisModeSingleFile>All</AnalysisModeSingleFile>
-    <AnalysisModeReliability>All</AnalysisModeReliability>
-    <AnalysisModeSecurity>All</AnalysisModeSecurity>
-    <AnalysisModeStyle>All</AnalysisModeStyle>
-    <AnalysisModeUsage>All</AnalysisModeUsage>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CA1502;CA1506</NoWarn>
