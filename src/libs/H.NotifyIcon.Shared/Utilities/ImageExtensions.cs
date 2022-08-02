@@ -1,4 +1,5 @@
-﻿using H.NotifyIcon.Interop;
+﻿using System.Globalization;
+using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon;
 
@@ -84,7 +85,7 @@ internal static class ImageExtensions
 #if HAS_WPF
             case BitmapFrame frame:
                 {
-                    var uri = new Uri(frame.ToString());
+                    var uri = new Uri(frame.ToString(CultureInfo.InvariantCulture));
 
                     return uri.ToIcon();
                 }
