@@ -75,6 +75,20 @@ body:
         - "1.0"
         - "1.1"
         - "Other"
+        
+  - type: dropdown
+    attributes:
+      label: WindowsAppSDK Type
+      description: What type of WindowsAppSDK are you using?
+      options:
+        - "Packaged"
+        - "Unpackaged"
+        - "Other"
+        
+  - type: textarea
+    attributes:
+      label: Manifest
+      description: What manifest are you using?
 
   - type: textarea
     attributes:
