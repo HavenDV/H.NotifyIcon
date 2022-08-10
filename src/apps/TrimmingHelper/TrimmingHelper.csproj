@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <PublishTrimmed>true</PublishTrimmed>
+    <!-- Prevent warnings from unused code in dependencies -->
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
+    <ProjectReference Include="..\..\libs\H.NotifyIcon.PopupMenus\H.NotifyIcon.PopupMenus.csproj" />
+    <ProjectReference Include="..\..\libs\H.NotifyIcon.Uno.WinUI\H.NotifyIcon.Uno.WinUI.csproj" />
+    <TrimmerRootAssembly Include="H.NotifyIcon" />
+    <TrimmerRootAssembly Include="H.NotifyIcon.PopupMenus" />
+    <TrimmerRootAssembly Include="H.NotifyIcon.Uno.WinUI" />
+  </ItemGroup>
+
+</Project>
