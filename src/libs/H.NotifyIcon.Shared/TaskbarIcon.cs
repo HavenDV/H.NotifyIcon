@@ -68,9 +68,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
 #pragma warning disable CA1508 // Avoid dead conditional code
-            return popup != null && popup.IsOpen ||
-                   menu != null && menu.IsOpen ||
-                   balloon != null && balloon.IsOpen;
+            return (popup != null && popup.IsOpen) ||
+                   (menu != null && menu.IsOpen) ||
+                   (balloon != null && balloon.IsOpen);
 #pragma warning restore CA1508 // Avoid dead conditional code
         }
     }
@@ -232,7 +232,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #if HAS_WPF
             // switch to UI thread
             this.GetDispatcher().Invoke(action);
-#elif HAS_UNO && !HAS_WINUI
+#elif HAS_UNO && (!HAS_WINUI && !HAS_UNO_WINUI)
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
 #else
             DispatcherQueue.TryEnqueue(() => action());

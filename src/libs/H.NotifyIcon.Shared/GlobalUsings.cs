@@ -18,7 +18,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Interop;
 global using System.Windows.Resources;
 global using System.Windows.Threading;
-#elif HAS_WINUI
+#elif HAS_WINUI || HAS_UNO_WINUI
 global using Windows.Foundation;
 global using Windows.UI;
 global using Microsoft.UI;
