@@ -12,10 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
-    <ProjectReference Include="..\..\libs\H.NotifyIcon.PopupMenus\H.NotifyIcon.PopupMenus.csproj" />
     <ProjectReference Include="..\..\libs\H.NotifyIcon.Uno.WinUI\H.NotifyIcon.Uno.WinUI.csproj" />
     <TrimmerRootAssembly Include="H.NotifyIcon" />
-    <TrimmerRootAssembly Include="H.NotifyIcon.PopupMenus" />
     <TrimmerRootAssembly Include="H.NotifyIcon.Uno.WinUI" />
   </ItemGroup>
 

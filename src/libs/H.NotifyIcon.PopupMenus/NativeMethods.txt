@@ -1,6 +1,0 @@
-﻿// User32
-AppendMenu
-CreatePopupMenu
-DeleteMenu
-TrackPopupMenuEx
-TRACK_POPUP_MENU_FLAGS

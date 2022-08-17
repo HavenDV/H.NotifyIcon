@@ -14,6 +14,30 @@ namespace H.NotifyIcon.Core;
 public static class WindowUtilities
 {
     /// <summary>
+    /// Starts message processing on the current thread and blocks it until a WM_QUIT message or error is received.
+    /// </summary>
+    public static unsafe void RunMessageLoop()
+    {
+        while (true)
+        {
+            var msg = new MSG();
+            var result = PInvoke.GetMessage(
+                lpMsg: &msg,
+                hWnd: new HWND(),
+                wMsgFilterMin: 0,
+                wMsgFilterMax: 0);
+            if (result == 0 ||
+                result == -1)
+            {
+                break;
+            }
+
+            _ = PInvoke.TranslateMessage(&msg);
+            _ = PInvoke.DispatchMessage(&msg);
+        }
+    }
+
+    /// <summary>
     /// Brings the thread that created the specified window into the foreground and activates the window.
     /// </summary>
     /// <param name="hWnd">

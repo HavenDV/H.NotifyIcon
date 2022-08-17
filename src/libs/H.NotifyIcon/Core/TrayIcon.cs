@@ -213,7 +213,6 @@ public class TrayIcon : IDisposable
     /// <summary>
     /// Creates the taskbar icon. This message is invoked during initialization,
     /// if the taskbar is restarted, and whenever the icon is displayed. <br/>
-    /// Created icon will be hidden. Use Show() to show it.
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public void Create()
