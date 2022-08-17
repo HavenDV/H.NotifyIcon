@@ -11,7 +11,6 @@ jobs:
       project-path: 
         # This is required for correct publishing to NuGet
         /target:libs\H_NotifyIcon
-        /target:libs\H_NotifyIcon_PopupMenus
         /target:libs\H_NotifyIcon_Uno
         /target:libs\H_NotifyIcon_Uno_WinUI
         /target:libs\H_NotifyIcon_WinUI
