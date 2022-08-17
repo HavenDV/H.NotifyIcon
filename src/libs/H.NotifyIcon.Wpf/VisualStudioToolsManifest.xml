@@ -1,0 +1,7 @@
+﻿<FileList>
+  <File Reference="H.NotifyIcon.Wpf.dll">
+    <ToolboxItems UIFramework="WPF" VSCategory="H.NotifyIcon.Wpf" BlendCategory="H.NotifyIcon.Wpf">
+      <Item Type="H.NotifyIcon.TaskbarIcon" />
+    </ToolboxItems>
+  </File>
+</FileList>

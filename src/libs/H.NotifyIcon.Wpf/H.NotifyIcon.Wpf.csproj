@@ -39,6 +39,10 @@ popups, context menus, and balloon messages. It can be used directly in code or 
     <PackageTags>NotifyIcon, WPF, Tray, Notify, ToolTip, Popup, Balloon, Toast</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup Label="Nuget">
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" Visible="true" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="DependencyPropertyGenerator" Version="0.52.2">
       <PrivateAssets>all</PrivateAssets>
