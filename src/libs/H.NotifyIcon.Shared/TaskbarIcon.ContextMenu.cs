@@ -109,7 +109,7 @@ public partial class TaskbarIcon
         {
             case ContextMenuMode.PopupMenu:
                 {
-                    using var menu = new PopupMenu();
+                    var menu = new PopupMenu();
                     foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
                     {
                         switch (flyoutItemBase)
@@ -124,12 +124,12 @@ public partial class TaskbarIcon
                                     {
                                         flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
                                     };
-                                    menu.Add(item);
+                                    menu.Items.Add(item);
                                     break;
                                 }
                             case MenuFlyoutSeparator:
                                 {
-                                    menu.Add(new PopupMenuSeparator());
+                                    menu.Items.Add(new PopupMenuSeparator());
                                     break;
                                 }
                         }
