@@ -19,20 +19,20 @@ It can be used directly in code or embedded in any XAML file.
 - [Efficiency Mode](#efficiency-mode-)
 - [Dynamic icon generation](#generated-icons)
 
-### Nuget
+### NuGet
 
-[![Nuget](https://img.shields.io/nuget/dt/H.NotifyIcon.Wpf.svg?style=flat-square&label=H.NotifyIcon.Wpf)](https://www.nuget.org/packages/H.NotifyIcon.Wpf/)
-[![Nuget](https://img.shields.io/nuget/dt/H.NotifyIcon.WinUI.svg?style=flat-square&label=H.NotifyIcon.WinUI)](https://www.nuget.org/packages/H.NotifyIcon.WinUI/)
-[![Nuget](https://img.shields.io/nuget/dt/H.NotifyIcon.Uno.svg?style=flat-square&label=H.NotifyIcon.Uno)](https://www.nuget.org/packages/H.NotifyIcon.Uno/)
-[![Nuget](https://img.shields.io/nuget/dt/H.NotifyIcon.Uno.WinUI.svg?style=flat-square&label=H.NotifyIcon.Uno.WinUI)](https://www.nuget.org/packages/H.NotifyIcon.Uno.WinUI/)
+[![NuGet](https://img.shields.io/nuget/dt/H.NotifyIcon.Wpf.svg?style=flat-square&label=H.NotifyIcon.Wpf)](https://www.nuget.org/packages/H.NotifyIcon.Wpf/)
+[![NuGet](https://img.shields.io/nuget/dt/H.NotifyIcon.WinUI.svg?style=flat-square&label=H.NotifyIcon.WinUI)](https://www.nuget.org/packages/H.NotifyIcon.WinUI/)
+[![NuGet](https://img.shields.io/nuget/dt/H.NotifyIcon.Uno.svg?style=flat-square&label=H.NotifyIcon.Uno)](https://www.nuget.org/packages/H.NotifyIcon.Uno/)
+[![NuGet](https://img.shields.io/nuget/dt/H.NotifyIcon.Uno.WinUI.svg?style=flat-square&label=H.NotifyIcon.Uno.WinUI)](https://www.nuget.org/packages/H.NotifyIcon.Uno.WinUI/)
 
-```
+```powershell
 Install-Package H.NotifyIcon.Wpf
 Install-Package H.NotifyIcon.WinUI
 Install-Package H.NotifyIcon.Uno
 Install-Package H.NotifyIcon.Uno.WinUI
-// If you need other platforms, you can use this Core library - 
-// it allows you to make NotifyIcon even in a console application.
+# If you need other platforms, you can use this Core library - 
+# it allows you to make NotifyIcon even in a console application.
 Install-Package H.NotifyIcon
 ```
 
@@ -68,6 +68,7 @@ TaskbarIcon.ForceCreate(bool enablesEfficiencyMode = true) // default value
 ```
 
 ### Generated icons
+
 Example 1: <img width="15" alt="image" src="https://user-images.githubusercontent.com/3002068/163721411-1388f2b4-a039-4b4a-8114-f74bfc8835ba.png">
 ```xml
 <tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
@@ -115,10 +116,12 @@ Example 4: <img width="18" alt="image" src="https://user-images.githubuserconten
 ```
 
 ### Design-Time Access
+
 It is recommended to pin the designer icon for easy viewing. To do this, go to Taskbar Settings -> Other system tray icons and enable this icon:  
 <img width="412" alt="image" src="https://user-images.githubusercontent.com/3002068/163700588-eb2ad5f2-45d0-4b6f-ad39-c66f96202cb5.png">
 
 ### WinUI Context menu
+
 At the moment, three modes are implemented, each with its own pros and cons.
 1. Based on your MenuFlyout, a Win32 PopupMenu will be created that will call the commands attached to your MenuFlyoutItem. This is the default.  <img width="174" alt="image" src="https://user-images.githubusercontent.com/3002068/164977047-e8497047-0c6d-4f99-b160-bc1c1a1a6c3f.png">
 3. The menu will be created in your open window, in the corner of the screen.
@@ -134,6 +137,7 @@ Animations   | 🟢, but with borders         | 🟢 from 1.1.0-preview
 Submenus     | 🔷                           | 🔷
 
 ### Behavior that needs attention
+
 1. This implementation currently uses the Guid associated with each TrayIcon. 
 The default is a hash function that creates a unique Guid based on the path to your file, 
 because Windows associates the guid with the current path when TrayIcon is registered. 
@@ -141,11 +145,13 @@ The only way to keep the settings when changing the file path is to use [Authent
 Read more here: https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#troubleshooting
 
 ### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
+
 The minimum supported version of the .Net Framework is 4.5.1.  
 So in some cases to build the project you will need to install this -  
 https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
 
 ## Support
+
 Priority place for bugs: https://github.com/HavenDV/H.NotifyIcon/issues  
 Priority place for ideas and general questions: https://github.com/HavenDV/H.NotifyIcon/discussions  
 I also have a Discord support channel:  
