@@ -84,7 +84,7 @@ public partial class TaskbarIcon
         };
 
         // provide the popup with the taskbar icon's data context
-        UpdateDataContext(popup, null, DataContext);
+        UpdateDataContext(popup, DataContext);
 
         // don't animate by default - developers can use attached events or override
         popup.PopupAnimation = animation;

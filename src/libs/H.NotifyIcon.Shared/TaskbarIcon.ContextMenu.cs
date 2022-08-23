@@ -341,55 +341,41 @@ public partial class TaskbarIcon
 
 #if HAS_WPF
 
-    /// <summary>
-    /// A static callback listener which is being invoked if the
-    /// <see cref="FrameworkElement.ContextMenuProperty"/> dependency property has
-    /// been changed. Invokes the <see cref="OnContextMenuPropertyChanged"/>
-    /// instance method of the changed instance.
-    /// </summary>
-    /// <param name="d">The currently processed owner of the property.</param>
-    /// <param name="e">Provides information about the updated property.</param>
-    private static void ContextMenuPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    partial void OnContextMenuChanged(ContextMenu? oldValue, ContextMenu? newValue)
     {
-        var owner = (TaskbarIcon)d;
-        owner.OnContextMenuPropertyChanged(e);
-    }
-
-
-    /// <summary>
-    /// Releases the old and updates the new <see cref="ContextMenu"/> property
-    /// in order to reflect both the NotifyIcon's <see cref="FrameworkElement.DataContext"/>
-    /// property and have the <see cref="ParentTaskbarIconProperty"/> assigned.
-    /// </summary>
-    /// <param name="e">Provides information about the updated property.</param>
-    private void OnContextMenuPropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        var contextMenu = (ContextMenu)e.NewValue;
-        if (e.OldValue != null)
+        if (oldValue != null)
         {
             //remove the taskbar icon reference from the previously used element
-            SetParentTaskbarIcon((DependencyObject)e.OldValue, null);
+            SetParentTaskbarIcon(oldValue, null);
         }
 
-        if (e.NewValue != null)
+        if (newValue != null)
         {
             //set this taskbar icon as a reference to the new tooltip element
-            SetParentTaskbarIcon((DependencyObject)e.NewValue, this);
+            SetParentTaskbarIcon(newValue, this);
         }
 
-        UpdateDataContext(contextMenu, null, DataContext);
+        UpdateDataContext(newValue, DataContext);
     }
 
 #else
 
+    partial void OnContextFlyoutChanged()
+    {
+        SetParentTaskbarIcon(ContextFlyout, this);
+        UpdateContextFlyoutDataContext(ContextFlyout, DataContext);
+#if !HAS_UNO
+        PrepareContextMenuWindow();
+#endif
+    }
+
     private void UpdateContextFlyoutDataContext(
         FlyoutBase flyout,
-        object? oldValue,
         object? newValue)
     {
         void UpdateMenuFlyoutDataContext(MenuFlyoutItemBase item)
         {
-            UpdateDataContext(item, oldValue, newValue);
+            UpdateDataContext(item, newValue);
 
             if (item is MenuFlyoutSubItem subItem)
             {

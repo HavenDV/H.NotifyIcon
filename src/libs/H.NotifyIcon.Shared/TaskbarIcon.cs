@@ -6,6 +6,13 @@ namespace H.NotifyIcon;
 /// A proxy to for a taskbar icon (NotifyIcon) that sits in the system's
 /// taskbar notification area ("system tray").
 /// </summary>
+[OverrideMetadata<Visibility>("Visibility", DefaultValue = Visibility.Visible)]
+[OverrideMetadata<object>("DataContext")]
+#if HAS_WPF
+[OverrideMetadata<ContextMenu>("ContextMenu")]
+#else
+[OverrideMetadata<FlyoutBase>("ContextFlyout")]
+#endif
 #if HAS_WINUI || HAS_UNO
 [CLSCompliant(false)]
 #endif
@@ -27,23 +34,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
     #region Constructors
 
-#if HAS_WPF
-
-    static TaskbarIcon()
-    {
-        VisibilityProperty.OverrideMetadata(
-            typeof(TaskbarIcon),
-            new PropertyMetadata(Visibility.Visible, VisibilityPropertyChanged));
-        DataContextProperty.OverrideMetadata(
-            typeof(TaskbarIcon),
-            new FrameworkPropertyMetadata(DataContextPropertyChanged));
-        ContextMenuProperty.OverrideMetadata(
-            typeof(TaskbarIcon),
-            new FrameworkPropertyMetadata(ContextMenuPropertyChanged));
-    }
-
-#endif
-    
     /// <summary>
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
@@ -51,23 +41,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     public TaskbarIcon()
     {
 #if !HAS_WPF
-        RegisterPropertyChangedCallback(VisibilityProperty, (_, _) =>
-        {
-            SetTrayIconVisibility(Visibility);
-        });
-        RegisterPropertyChangedCallback(DataContextProperty, (_, _) =>
-        {
-            UpdateDataContext(null, DataContext);
-        });
-        RegisterPropertyChangedCallback(ContextFlyoutProperty, (_, _) =>
-        {
-            SetParentTaskbarIcon(ContextFlyout, this);
-            UpdateContextFlyoutDataContext(ContextFlyout, null, DataContext);
-#if !HAS_UNO
-            PrepareContextMenuWindow();
+        RegisterPropertyChangedCallbacks();
 #endif
-        });
-#endif
+
         TrayIcon = new TrayIcon();
         Loaded += (_, _) =>
         {

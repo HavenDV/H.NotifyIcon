@@ -76,17 +76,9 @@ public partial class TaskbarIcon
 
     #region Visibility
 
-    private static void VisibilityPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    partial void OnVisibilityChanged(Visibility newValue)
     {
-        var owner = (TaskbarIcon) d;
-        var newValue = (Visibility)e.NewValue;
-
-        owner.SetTrayIconVisibility(newValue);
-    }
-
-    private void SetTrayIconVisibility(Visibility value)
-    {
-        var state = value == Visibility.Visible
+        var state = newValue == Visibility.Visible
             ? IconVisibility.Visible
             : IconVisibility.Hidden;
 
@@ -106,21 +98,20 @@ public partial class TaskbarIcon
     /// </summary>
     private void UpdateDataContext(
         FrameworkElement? target,
-        object? oldDataContextValue,
         object? newDataContextValue)
     {
         //if there is no target or it's data context is determined through a binding
         //of its own, keep it
         if (target == null ||
             target.GetBindingExpression(DataContextProperty) != null)
-        { 
+        {
             return;
         }
 
         //if the target's data context is the NotifyIcon's old DataContext or the NotifyIcon itself,
         //update it
-        if (ReferenceEquals(this, target.DataContext) ||
-            Equals(oldDataContextValue, target.DataContext))
+        //if (ReferenceEquals(this, target.DataContext) ||
+        //    Equals(oldDataContextValue, target.DataContext))
         {
             //assign own data context, if available. If there is no data
             //context at all, assign NotifyIcon itself.
@@ -128,20 +119,14 @@ public partial class TaskbarIcon
         }
     }
 
-    private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    partial void OnDataContextChanged(object? newValue)
     {
-        var owner = (TaskbarIcon) d;
-        owner.UpdateDataContext(e.OldValue, e.NewValue);
-    }
-
-    private void UpdateDataContext(object? oldValue, object? newValue)
-    {
-        UpdateDataContext(TrayPopupResolved, oldValue, newValue);
-        UpdateDataContext(TrayToolTipResolved, oldValue, newValue);
+        UpdateDataContext(TrayPopupResolved, newValue);
+        UpdateDataContext(TrayToolTipResolved, newValue);
 #if HAS_WPF
-        UpdateDataContext(ContextMenu, oldValue, newValue);
+        UpdateDataContext(ContextMenu, newValue);
 #else
-        UpdateContextFlyoutDataContext(ContextFlyout, oldValue, newValue);
+        UpdateContextFlyoutDataContext(ContextFlyout, newValue);
 #endif
     }
 

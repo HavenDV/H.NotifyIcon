@@ -99,7 +99,7 @@ public partial class TaskbarIcon
         // If there is no DataContext, the TaskbarIcon assigns itself
         if (popup != null)
         {
-            UpdateDataContext(popup, null, DataContext);
+            UpdateDataContext(popup, DataContext);
         }
 
         // store a reference to the used tooltip
