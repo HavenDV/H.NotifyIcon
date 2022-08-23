@@ -11,7 +11,7 @@ namespace H.NotifyIcon;
 #endif
 public partial class TaskbarIcon : FrameworkElement, IDisposable
 {
-    #region Members
+    #region Properties
 
     /// <summary>
     /// Represents the current icon data.
@@ -19,61 +19,9 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     private TrayIcon TrayIcon { get; }
 
     /// <summary>
-    /// An action that is being invoked if the
-    /// <see cref="singleClickTimer"/> fires.
-    /// </summary>
-    private Action? singleClickTimerAction;
-
-    /// <summary>
-    /// A timer that is used to differentiate between single
-    /// and double clicks.
-    /// </summary>
-    private readonly Timer singleClickTimer;
-
-    /// <summary>
-    /// The time we should wait for a double click.
-    /// </summary>
-    private int DoubleClickWaitTime => NoLeftClickDelay ? 0 : CursorUtilities.GetDoubleClickTime();
-
-    /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
     /// </summary>
     public bool IsCreated => TrayIcon.IsCreated;
-
-    /// <summary>
-    /// Indicates whether custom tooltips are supported, which depends
-    /// on the OS. Windows Vista or higher is required in order to
-    /// support this feature.
-    /// </summary>
-    public bool SupportsCustomToolTips => TrayIcon.SupportsCustomToolTips;
-
-
-    /// <summary>
-    /// Checks whether a non-tooltip popup is currently opened.
-    /// </summary>
-    private bool IsPopupOpen
-    {
-        get
-        {
-            var popup = TrayPopupResolved;
-#if HAS_WPF
-            var menu = ContextMenu;
-#else
-            var menu = ContextFlyout;
-#endif
-#if HAS_WPF
-            var balloon = CustomBalloon;
-#else
-            var balloon = (Popup?)null;
-#endif
-
-#pragma warning disable CA1508 // Avoid dead conditional code
-            return (popup != null && popup.IsOpen) ||
-                   (menu != null && menu.IsOpen) ||
-                   (balloon != null && balloon.IsOpen);
-#pragma warning restore CA1508 // Avoid dead conditional code
-        }
-    }
 
     #endregion
 
@@ -143,7 +91,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         TrayIcon.MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
 
         // init single click / balloon timers
-        singleClickTimer = new Timer(DoSingleClickAction);
+        SingleClickTimer = new Timer(DoSingleClickAction);
 
 #if HAS_WPF
         balloonCloseTimer = new Timer(CloseBalloonCallback);
@@ -204,40 +152,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         // This seems to have been fixed in Windows 22598.1 but I'll leave it here for now
         //using var refreshTrayIcon = new TrayIcon(TrayIcon.CreateUniqueGuidForEntryAssembly("RefreshWorkaround"));
         //refreshTrayIcon.Create();
-    }
-
-    #endregion
-
-    #region Single Click Timer event
-
-    /// <summary>
-    /// Performs a delayed action if the user requested an action
-    /// based on a single click of the left mouse.<br/>
-    /// This method is invoked by the <see cref="singleClickTimer"/>.
-    /// </summary>
-    private void DoSingleClickAction(object? state)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        // run action
-        var action = singleClickTimerAction;
-        if (action != null)
-        {
-            // cleanup action
-            singleClickTimerAction = null;
-
-#if HAS_WPF
-            // switch to UI thread
-            this.GetDispatcher().Invoke(action);
-#elif HAS_UNO && (!HAS_WINUI && !HAS_UNO_WINUI)
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
-#else
-            DispatcherQueue.TryEnqueue(() => action());
-#endif
-        }
     }
 
     #endregion
@@ -327,7 +241,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// the method has already been called.</remarks>
     protected virtual void Dispose(bool disposing)
     {
-        // don't do anything if the component is already disposed
         if (IsDisposed || !disposing)
         {
             return;
@@ -346,7 +259,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 #endif
 
             // stop timers
-            singleClickTimer?.Dispose();
+            SingleClickTimer?.Dispose();
 #if HAS_WPF
             balloonCloseTimer.Dispose();
 #endif

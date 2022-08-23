@@ -109,11 +109,11 @@ public partial class TaskbarIcon
     {
         if (visible)
         {
-            OnTrayBalloonTipShown();
+            _ = OnTrayBalloonTipShown();
         }
         else
         {
-            OnTrayBalloonTipClosed();
+            _ = OnTrayBalloonTipClosed();
         }
     }
 

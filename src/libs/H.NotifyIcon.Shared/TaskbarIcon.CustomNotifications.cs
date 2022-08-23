@@ -53,7 +53,7 @@ public partial class TaskbarIcon
         if (!dispatcher.CheckAccess())
         {
             var action = new Action(() => ShowCustomBalloon(balloon, animation, timeout));
-            dispatcher.Invoke(DispatcherPriority.Normal, action);
+            _ = dispatcher.Invoke(DispatcherPriority.Normal, action);
             return;
         }
 
@@ -141,7 +141,7 @@ public partial class TaskbarIcon
         if (timeout.HasValue)
         {
             // register timer to close the popup
-            balloonCloseTimer.Change(timeout.Value, Timeout.Infinite);
+            _ = balloonCloseTimer.Change(timeout.Value, Timeout.Infinite);
         }
     }
 
@@ -162,7 +162,7 @@ public partial class TaskbarIcon
         //lock (lockObject)
         {
             //reset timer in any case
-            balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _ = balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
     }
 
@@ -181,14 +181,14 @@ public partial class TaskbarIcon
         if (!dispatcher.CheckAccess())
         {
             Action action = CloseBalloon;
-            dispatcher.Invoke(DispatcherPriority.Normal, action);
+            _ = dispatcher.Invoke(DispatcherPriority.Normal, action);
             return;
         }
 
         //lock (lockObject)
         {
             // reset timer in any case
-            balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _ = balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
             // reset old popup, if we still have one
             var popup = CustomBalloon;

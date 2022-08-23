@@ -74,6 +74,40 @@ public partial class TaskbarIcon
 
     #endregion
 
+    /// <summary>
+    /// Indicates whether custom tooltips are supported, which depends
+    /// on the OS. Windows Vista or higher is required in order to
+    /// support this feature.
+    /// </summary>
+    public bool SupportsCustomToolTips => TrayIcon.SupportsCustomToolTips;
+
+    /// <summary>
+    /// Checks whether a non-tooltip popup is currently opened.
+    /// </summary>
+    private bool IsPopupOpen
+    {
+        get
+        {
+            var popup = TrayPopupResolved;
+#if HAS_WPF
+            var menu = ContextMenu;
+#else
+            var menu = ContextFlyout;
+#endif
+#if HAS_WPF
+            var balloon = CustomBalloon;
+#else
+            var balloon = (Popup?)null;
+#endif
+
+#pragma warning disable CA1508 // Avoid dead conditional code
+            return (popup != null && popup.IsOpen) ||
+                   (menu != null && menu.IsOpen) ||
+                   (balloon != null && balloon.IsOpen);
+#pragma warning restore CA1508 // Avoid dead conditional code
+        }
+    }
+
     #endregion
 
     #region Methods

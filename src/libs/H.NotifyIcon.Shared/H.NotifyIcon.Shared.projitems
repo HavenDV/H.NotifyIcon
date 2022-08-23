@@ -14,7 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.GeneratedIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GeneratedIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.KeyboardEvents.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Commands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.CustomNotifications.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Popups.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ToolTips.cs" />
