@@ -80,7 +80,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-        Unloaded += (_, _) => Dispose();
+        // https://github.com/HavenDV/H.NotifyIcon/issues/34
+        //Unloaded += (_, _) => Dispose();
         TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
         TrayIcon.MessageWindow.TaskbarCreated += OnTaskbarCreated;
 
