@@ -71,48 +71,69 @@ TaskbarIcon.ForceCreate(bool enablesEfficiencyMode = true) // default value
 
 Example 1: <img width="15" alt="image" src="https://user-images.githubusercontent.com/3002068/163721411-1388f2b4-a039-4b4a-8114-f74bfc8835ba.png">
 ```xml
-<tb:TaskbarIcon GeneratedIconText="❤️" GeneratedIconForeground="Red">
+<tb:TaskbarIcon>
+    <tb:TaskbarIcon.GeneratedIcon>
+        <tb:GeneratedIcon
+            Text="❤️"
+            Foreground="Red"
+            />
+    </tb:TaskbarIcon.GeneratedIcon>
+</tb:TaskbarIcon>
 ```
 Example 2: <img width="14" alt="image" src="https://user-images.githubusercontent.com/3002068/163721399-cbfd0286-d2d4-4b40-b3f3-388c9613f535.png">
 ```xml
 <tb:TaskbarIcon
     IconSource="/Icons/Error.ico"
-    GeneratedIconText="5"
-    GeneratedIconForeground="Black"
-    GeneratedIconFontSize="36"
-    GeneratedIconFontWeight="Bold"
     >
+    <tb:TaskbarIcon.GeneratedIcon>
+        <tb:GeneratedIcon
+            Text="5"
+            Foreground="Black"
+            FontSize="36"
+            FontWeight="Bold"
+            />
+    </tb:TaskbarIcon.GeneratedIcon>
+</tb:TaskbarIcon>
 ```
 Example 3: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163721367-dc6878df-3ec2-4288-b699-cf664894e1b1.png">
 ```xml
-<tb:TaskbarIcon
-    GeneratedIconText="❤️"
-    GeneratedIconForeground="Red"
-    GeneratedIconFontFamily="Segoe UI Emoji"
-    GeneratedIconBackground="AliceBlue"
-    GeneratedIconFontWeight="Bold"
-    GeneratedIconFontSize="38"
-    >
+<tb:TaskbarIcon>
+    <tb:TaskbarIcon.GeneratedIcon>
+        <tb:GeneratedIcon
+            Text="❤️"
+            Foreground="Red"
+            FontFamily="Segoe UI Emoji"
+            Background="AliceBlue"
+            FontWeight="Bold"
+            FontSize="38"
+            />
+    </tb:TaskbarIcon.GeneratedIcon>
+</tb:TaskbarIcon>
 ```
 Example 4: <img width="18" alt="image" src="https://user-images.githubusercontent.com/3002068/163723782-8b135584-8b35-401e-926e-0fe0e7aa801e.png">
 ```xml
-<tb:TaskbarIcon
-    GeneratedIconText="❤️"
-    GeneratedIconBorderThickness="5"
-    GeneratedIconFontSize="46"
-    >
-    <tb:TaskbarIcon.GeneratedIconForeground>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
-            <GradientStop Color="White" />
-            <GradientStop Color="Red" />
-        </LinearGradientBrush>
-    </tb:TaskbarIcon.GeneratedIconForeground>
-    <tb:TaskbarIcon.GeneratedIconBorderBrush>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
-            <GradientStop Color="White" />
-            <GradientStop Color="Red" />
-        </LinearGradientBrush>
-    </tb:TaskbarIcon.GeneratedIconBorderBrush>
+<tb:TaskbarIcon>
+    <tb:TaskbarIcon.GeneratedIcon>
+        <tb:GeneratedIcon
+            Text="❤️"
+            BorderThickness="5"
+            FontSize="46"
+            >
+            <tb:GeneratedIcon.Foreground>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+                    <GradientStop Color="White" />
+                    <GradientStop Color="Red" />
+                </LinearGradientBrush>
+            </tb:GeneratedIcon.Foreground>
+            <tb:GeneratedIcon.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
+                    <GradientStop Color="White" />
+                    <GradientStop Color="Red" />
+                </LinearGradientBrush>
+            </tb:GeneratedIcon.BorderBrush>
+        </tb:GeneratedIcon>
+    </tb:TaskbarIcon.GeneratedIcon>
+</tb:TaskbarIcon>
 ```
 
 ### Design-Time Access
