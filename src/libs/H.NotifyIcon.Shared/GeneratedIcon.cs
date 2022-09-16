@@ -139,9 +139,7 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
                 : Margin.ToSystemDrawingRectangleF(width: size, height: size),
             text: Text,
             font: font,
-            textRectangle: TextMargin == default
-                ? null
-                : TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
+            textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
             baseImage: baseImage,
             size: size);
     }

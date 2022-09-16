@@ -144,7 +144,8 @@ public static class IconGenerator
                         size / 2 - textSize.Width / 2,
                         size / 2 - textSize.Height / 2,
                         textSize.Width,
-                        textSize.Height));
+                        textSize.Height),
+                    format: StringFormat.GenericTypographic);
             }
             else
             {
@@ -152,7 +153,8 @@ public static class IconGenerator
                     s: text,
                     font: font,
                     brush: foregroundBrush,
-                    layoutRectangle: textRectangle.Value);
+                    layoutRectangle: textRectangle.Value,
+                    format: StringFormat.GenericTypographic);
             }
         }
 
