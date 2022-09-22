@@ -1,4 +1,4 @@
-using H.NotifyIcon.EfficiencyMode;
+﻿using H.NotifyIcon.EfficiencyMode;
 
 namespace H.NotifyIcon;
 
@@ -23,9 +23,13 @@ public static class WindowExtensions
 #elif !HAS_UNO
         WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window));
 #endif
+
+        // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state
+        // that your exe assembly is compatible with Windows 8.1 and Windows 10.0, System.Environment.OSVersion
+        // will return Windows 8 version, which is 6.2, instead of 6.3 and 10.0!
         if (enableEfficiencyMode &&
             Environment.OSVersion.Platform == PlatformID.Win32NT &&
-            Environment.OSVersion.Version >= new Version(6, 2))
+            Environment.OSVersion.Version >= new Version(10, 0, 16299))
         {
 #pragma warning disable CA1416 // Validate platform compatibility
             EfficiencyModeUtilities.SetEfficiencyMode(true);
@@ -48,9 +52,13 @@ public static class WindowExtensions
 #elif !HAS_UNO
         WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window));
 #endif
+
+        // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state
+        // that your exe assembly is compatible with Windows 8.1 and Windows 10.0, System.Environment.OSVersion
+        // will return Windows 8 version, which is 6.2, instead of 6.3 and 10.0!
         if (disableEfficiencyMode &&
             Environment.OSVersion.Platform == PlatformID.Win32NT &&
-            Environment.OSVersion.Version >= new Version(6, 2))
+            Environment.OSVersion.Version >= new Version(10, 0, 16299))
         {
 #pragma warning disable CA1416 // Validate platform compatibility
             EfficiencyModeUtilities.SetEfficiencyMode(false);

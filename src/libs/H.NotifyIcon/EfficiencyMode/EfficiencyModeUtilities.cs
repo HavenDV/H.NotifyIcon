@@ -13,7 +13,7 @@ public static class EfficiencyModeUtilities
     /// Based on <see href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessinformation"/>
     /// </summary>
 #if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows10.0.16299.0")]
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported
@@ -36,7 +36,10 @@ public static class EfficiencyModeUtilities
 
             // Turn EXECUTION_SPEED throttling on. 
             // ControlMask selects the mechanism and StateMask declares which mechanism should be on or off.
-            case QualityOfServiceLevel.Eco:
+#pragma warning disable CA1416 // Validate platform compatibility
+            case QualityOfServiceLevel.Eco when Environment.OSVersion.Version >= new Version(11, 0):
+#pragma warning restore CA1416 // Validate platform compatibility
+            case QualityOfServiceLevel.Low:
                 powerThrottling.ControlMask = PInvoke.PROCESS_POWER_THROTTLING_EXECUTION_SPEED;
                 powerThrottling.StateMask = PInvoke.PROCESS_POWER_THROTTLING_EXECUTION_SPEED;
                 break;
@@ -52,7 +55,7 @@ public static class EfficiencyModeUtilities
                 throw new NotImplementedException();
         }
 
-        PInvoke.SetProcessInformation(
+        _ = PInvoke.SetProcessInformation(
             hProcess: PInvoke.GetCurrentProcess(),
             ProcessInformationClass: PROCESS_INFORMATION_CLASS.ProcessPowerThrottling,
             ProcessInformation: &powerThrottling,
@@ -82,7 +85,7 @@ public static class EfficiencyModeUtilities
             _ => throw new NotImplementedException(),
         };
 
-        PInvoke.SetPriorityClass(
+        _ = PInvoke.SetPriorityClass(
             hProcess: PInvoke.GetCurrentProcess(),
             dwPriorityClass: flags).EnsureNonZero();
     }
@@ -93,14 +96,24 @@ public static class EfficiencyModeUtilities
     /// </summary>
     /// <param name="value"></param>
 #if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows10.0.16299.0")]
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported
 #endif
     public static void SetEfficiencyMode(bool value)
     {
-        SetProcessQualityOfServiceLevel(value ? QualityOfServiceLevel.Eco : QualityOfServiceLevel.Default);
-        SetProcessPriorityClass(value ? ProcessPriorityClass.Idle : ProcessPriorityClass.Default);
+        var ecoLevel = Environment.OSVersion.Version >= new Version(11, 0)
+#pragma warning disable CA1416 // Validate platform compatibility
+            ? QualityOfServiceLevel.Eco
+#pragma warning restore CA1416 // Validate platform compatibility
+            : QualityOfServiceLevel.Low;
+
+        SetProcessQualityOfServiceLevel(value
+            ? ecoLevel
+            : QualityOfServiceLevel.Default);
+        SetProcessPriorityClass(value
+            ? ProcessPriorityClass.Idle
+            : ProcessPriorityClass.Default);
     }
 }

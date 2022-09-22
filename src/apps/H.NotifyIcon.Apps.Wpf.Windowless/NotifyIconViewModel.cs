@@ -1,5 +1,6 @@
 ﻿using System.Windows;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using H.NotifyIcon;
 
 namespace NotifyIconWpf.Sample.Windowless;
@@ -9,33 +10,45 @@ namespace NotifyIconWpf.Sample.Windowless;
 /// view model is assigned to the NotifyIcon in XAML. Alternatively, the startup routing
 /// in App.xaml.cs could have created this view model, and assigned it to the NotifyIcon.
 /// </summary>
-public class NotifyIconViewModel
+public partial class NotifyIconViewModel : ObservableObject
 {
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ShowWindowCommand))]
+    public bool canExecuteShowWindow = true;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(HideWindowCommand))]
+    public bool canExecuteHideWindow;
+
     /// <summary>
     /// Shows a window, if none is already open.
     /// </summary>
-    public ICommand ShowWindowCommand => new DelegateCommand
+    [RelayCommand(CanExecute = nameof(CanExecuteShowWindow))]
+    public void ShowWindow()
     {
-        CanExecuteFunc = () => Application.Current.MainWindow?.Visibility is not Visibility.Visible,
-        CommandAction = () =>
-        {
-            Application.Current.MainWindow ??= new MainWindow();
-            Application.Current.MainWindow.Show(disableEfficiencyMode: true);
-        },
-    };
+        Application.Current.MainWindow ??= new MainWindow();
+        Application.Current.MainWindow.Show(disableEfficiencyMode: true);
+        CanExecuteShowWindow = false;
+        CanExecuteHideWindow = true;
+    }
 
     /// <summary>
     /// Hides the main window. This command is only enabled if a window is open.
     /// </summary>
-    public ICommand HideWindowCommand => new DelegateCommand
+    [RelayCommand(CanExecute = nameof(CanExecuteHideWindow))]
+    public void HideWindow()
     {
-        CommandAction = () => Application.Current.MainWindow.Hide(enableEfficiencyMode: true),
-        CanExecuteFunc = () => Application.Current.MainWindow?.Visibility is Visibility.Visible,
-    };
-
+        Application.Current.MainWindow.Hide(enableEfficiencyMode: true);
+        CanExecuteShowWindow = true;
+        CanExecuteHideWindow = false;
+    }
 
     /// <summary>
     /// Shuts down the application.
     /// </summary>
-    public ICommand ExitApplicationCommand => new DelegateCommand { CommandAction = Application.Current.Shutdown };
+    [RelayCommand]
+    public void ExitApplication()
+    {
+        Application.Current.Shutdown();
+    }
 }
