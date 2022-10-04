@@ -187,8 +187,12 @@ public class TrayIcon : IDisposable
             throw new ArgumentException("Please enter a non-empty string.", nameof(input));
         }
 
+#if NET5_0_OR_GREATER
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(input));
+#else
         using var sha256 = SHA256.Create();
         var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+#endif
 
         return new Guid(hash.Take(16).ToArray());
     }
@@ -206,9 +210,9 @@ public class TrayIcon : IDisposable
         return CreateUniqueGuidFromString($"{assembly.Location}_{postfix}");
     }
 
-    #endregion
+#endregion
 
-    #region Public methods
+#region Public methods
 
     /// <summary>
     /// Creates the taskbar icon. This message is invoked during initialization,
@@ -572,9 +576,9 @@ public class TrayIcon : IDisposable
         }
     }
 
-    #endregion
+#endregion
 
-    #region Dispose
+#region Dispose
 
     /// <summary>
     /// Set to true as soon as <c>Dispose</c> has been invoked.
@@ -667,5 +671,5 @@ public class TrayIcon : IDisposable
         _ = TryRemove();
     }
 
-    #endregion
+#endregion
 }
