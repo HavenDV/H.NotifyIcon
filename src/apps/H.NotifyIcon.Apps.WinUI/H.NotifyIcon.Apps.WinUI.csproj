@@ -14,6 +14,7 @@
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
 
