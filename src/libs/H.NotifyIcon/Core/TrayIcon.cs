@@ -212,7 +212,7 @@ public class TrayIcon : IDisposable
 
 #endregion
 
-#region Public methods
+    #region Public methods
 
     /// <summary>
     /// Creates the taskbar icon. This message is invoked during initialization,
@@ -576,9 +576,9 @@ public class TrayIcon : IDisposable
         }
     }
 
-#endregion
+    #endregion
 
-#region Dispose
+    #region Dispose
 
     /// <summary>
     /// Set to true as soon as <c>Dispose</c> has been invoked.
@@ -671,5 +671,5 @@ public class TrayIcon : IDisposable
         _ = TryRemove();
     }
 
-#endregion
+    #endregion
 }
