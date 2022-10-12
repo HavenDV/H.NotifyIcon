@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using H.NotifyIcon.Core;
-
-namespace H.NotifyIcon.Core;
+﻿namespace H.NotifyIcon.Core;
 
 /// <inheritdoc/>
 public class PopupSubMenu : PopupItem
