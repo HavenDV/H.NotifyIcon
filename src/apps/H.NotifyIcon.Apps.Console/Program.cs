@@ -8,6 +8,14 @@ using var trayIcon = new TrayIconWithContextMenu
     Icon = icon.Handle,
     ToolTip = "ToolTip",
 };
+
+var submenu = new PopupSubMenu("SubMenu");
+submenu.Items.Add(new PopupMenuItem("Item 1", (s, a) => ShowMessage(trayIcon, "Item 1")));
+
+var subsubmenu = new PopupSubMenu("SubMenu 2");
+subsubmenu.Items.Add(new PopupMenuItem("Item 2", (s, a) => ShowMessage(trayIcon, "Item 2")));
+submenu.Items.Add(subsubmenu);
+
 trayIcon.ContextMenu = new PopupMenu
 {
     Items =
@@ -19,6 +27,8 @@ trayIcon.ContextMenu = new PopupMenu
         new PopupMenuItem("Show Warning", (sender, args) => ShowWarning(trayIcon, "warning")),
         new PopupMenuItem("Show Error", (sender, args) => ShowError(trayIcon, "error")),
         new PopupMenuItem("Show Custom", (sender, args) => ShowCustom(trayIcon, "custom", icon)),
+        new PopupMenuSeparator(),
+        submenu,
         new PopupMenuSeparator(),
         new PopupMenuItem("Remove", (sender, args) => Remove(trayIcon)),
         new PopupMenuItem("Hide", (sender, args) => Hide(trayIcon)),
