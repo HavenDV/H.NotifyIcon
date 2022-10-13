@@ -172,6 +172,7 @@ public partial class TaskbarIcon
         OnTrayContextMenuOpen();
     }
 
+#if !HAS_WPF
 
     private static void PopulateMenu(ICollection<PopupItem> menuItems, IList<MenuFlyoutItemBase> flyoutItemBases)
     {
@@ -210,6 +211,9 @@ public partial class TaskbarIcon
             }
         }
     }
+
+#endif
+
 #if HAS_WINUI && !HAS_UNO
 
     private void PrepareContextMenuWindow()
@@ -350,9 +354,9 @@ public partial class TaskbarIcon
 
 #endif
 
-    #endregion
+#endregion
 
-    #region Event Handlers
+#region Event Handlers
 
 #if HAS_WPF
 
@@ -412,5 +416,5 @@ public partial class TaskbarIcon
 
 #endif
 
-    #endregion
+#endregion
 }
