@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EventGenerator.Generator" Version="0.4.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

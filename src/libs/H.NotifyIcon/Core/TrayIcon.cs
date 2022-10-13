@@ -15,7 +15,19 @@ namespace H.NotifyIcon.Core;
 #else
 #error Target Framework is not supported
 #endif
-public class TrayIcon : IDisposable
+[Event("Created", Description = @"TrayIcon was created.
+This can happen in the following cases:
+ - Via direct Create call
+ - Through the ClearNotifications call since its implementation uses TrayIcon re-creation")]
+[Event("Removed", Description = @"TrayIcon was removed.
+This can happen in the following cases:
+- Via direct TryRemove call
+- Through the ClearNotifications call since its implementation uses TrayIcon re-creation")]
+[Event<IconVersion>("VersionChanged", Description = @"Version was changed.
+This can happen in the following cases:
+- Via direct Create call
+- Through the ClearNotifications call since its implementation uses TrayIcon re-creation")]
+public partial class TrayIcon : IDisposable
 {
     #region Properties
 
@@ -63,11 +75,6 @@ public class TrayIcon : IDisposable
     public MessageWindow MessageWindow { get; } = new();
 
     /// <summary>
-    /// Icon visibility.
-    /// </summary>
-    public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
-
-    /// <summary>
     /// Current version. Updates after <see cref="Create"/>.
     /// </summary>
     public IconVersion Version { get; private set; } = IconVersion.Vista;
@@ -89,49 +96,13 @@ public class TrayIcon : IDisposable
     /// </summary>
     public bool UseStandardTooltip { get; set; }
 
-    #endregion
-
-    #region Events
-
     /// <summary>
-    /// TrayIcon was created.<br/>
-    /// This can happen in the following cases:<br/>
-    /// - Via direct <see cref="Create"/> call<br/>
-    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
+    /// Icon visibility.
     /// </summary>
-    public event EventHandler? Created;
+    public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
 
-    /// <summary>
-    /// TrayIcon was removed.<br/>
-    /// This can happen in the following cases:<br/>
-    /// - Via direct <see cref="TryRemove"/> call<br/>
-    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
-    /// </summary>
-    public event EventHandler? Removed;
-
-    /// <summary>
-    /// Version was changed.<br/>
-    /// This can happen in the following cases:<br/>
-    /// - Via direct <see cref="Create"/> call<br/>
-    /// - Through the <see cref="ClearNotifications"/> call since its implementation uses TrayIcon re-creation<br/>
-    /// </summary>
-    public event EventHandler<IconVersion>? VersionChanged;
-
-    private void OnCreated()
-    {
-        Created?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void OnRemoved()
-    {
-        Removed?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void OnVersionChanged(IconVersion value)
-    {
-        VersionChanged?.Invoke(this, value);
-    }
-
+#endif
+    
     #endregion
 
     #region Constructors
