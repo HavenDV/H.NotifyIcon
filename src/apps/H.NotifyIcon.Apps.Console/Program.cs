@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using H.NotifyIcon.Core;
 
+// ReSharper disable AccessToDisposedClosure
+
 using var iconStream = H.Resources.Red_ico.AsStream();
 using var icon = new Icon(iconStream);
 using var trayIcon = new TrayIconWithContextMenu
@@ -8,22 +10,38 @@ using var trayIcon = new TrayIconWithContextMenu
     Icon = icon.Handle,
     ToolTip = "ToolTip",
 };
+
 trayIcon.ContextMenu = new PopupMenu
 {
     Items =
     {
-        new PopupMenuItem("Create Second", (sender, args) => CreateSecond()),
+        new PopupMenuItem("Create Second", (_, _) => CreateSecond()),
         new PopupMenuSeparator(),
-        new PopupMenuItem("Show Message", (sender, args) => ShowMessage(trayIcon, "message")),
-        new PopupMenuItem("Show Info", (sender, args) => ShowInfo(trayIcon, "info")),
-        new PopupMenuItem("Show Warning", (sender, args) => ShowWarning(trayIcon, "warning")),
-        new PopupMenuItem("Show Error", (sender, args) => ShowError(trayIcon, "error")),
-        new PopupMenuItem("Show Custom", (sender, args) => ShowCustom(trayIcon, "custom", icon)),
+        new PopupMenuItem("Show Message", (_, _) => ShowMessage(trayIcon, "message")),
+        new PopupMenuItem("Show Info", (_, _) => ShowInfo(trayIcon, "info")),
+        new PopupMenuItem("Show Warning", (_, _) => ShowWarning(trayIcon, "warning")),
+        new PopupMenuItem("Show Error", (_, _) => ShowError(trayIcon, "error")),
+        new PopupMenuItem("Show Custom", (_, _) => ShowCustom(trayIcon, "custom", icon)),
         new PopupMenuSeparator(),
-        new PopupMenuItem("Remove", (sender, args) => Remove(trayIcon)),
-        new PopupMenuItem("Hide", (sender, args) => Hide(trayIcon)),
+        new PopupSubMenu("SubMenu")
+        {
+            Items =
+            {
+                new PopupMenuItem("Item 1", (_, _) => ShowMessage(trayIcon, "Item 1")),
+                new PopupSubMenu("SubMenu 2")
+                {
+                    Items =
+                    {
+                        new PopupMenuItem("Item 2", (_, _) => ShowMessage(trayIcon, "Item 2")),
+                    }
+                }
+            }
+        },
         new PopupMenuSeparator(),
-        new PopupMenuItem("Exit", (sender, args) =>
+        new PopupMenuItem("Remove", (_, _) => Remove(trayIcon)),
+        new PopupMenuItem("Hide", (_, _) => Hide(trayIcon)),
+        new PopupMenuSeparator(),
+        new PopupMenuItem("Exit", (_, _) =>
         {
             trayIcon.Dispose();
             Environment.Exit(0);
@@ -118,6 +136,7 @@ while (true)
 
 static async void CreateSecond()
 {
+    // ReSharper disable once UseAwaitUsing
     using var iconStream2 = H.Resources.icon_ico.AsStream();
     using var icon2 = new Icon(iconStream2);
     using var trayIcon2 = new TrayIcon("H.NotifyIcon.Apps.Console.SecondTrayIcon")

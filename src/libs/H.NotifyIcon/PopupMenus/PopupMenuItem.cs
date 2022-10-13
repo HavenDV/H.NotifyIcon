@@ -52,11 +52,6 @@ public class PopupMenuItem : PopupItem
                 flags |= MENU_ITEM_FLAGS.MF_CHECKED;
             }
 
-            if (SubMenu != null)
-            {
-                flags |= MENU_ITEM_FLAGS.MF_POPUP;
-            }
-
             switch (Break)
             {
                 case SystemPopupMenuItemBreak.MenuBreak:

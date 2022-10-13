@@ -110,30 +110,7 @@ public partial class TaskbarIcon
             case ContextMenuMode.PopupMenu:
                 {
                     var menu = new PopupMenu();
-                    foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
-                    {
-                        switch (flyoutItemBase)
-                        {
-                            case MenuFlyoutItem flyoutItem:
-                                {
-                                    var item = new PopupMenuItem()
-                                    {
-                                        Text = flyoutItem.Text,
-                                    };
-                                    item.Click += (_, _) =>
-                                    {
-                                        flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
-                                    };
-                                    menu.Items.Add(item);
-                                    break;
-                                }
-                            case MenuFlyoutSeparator:
-                                {
-                                    menu.Items.Add(new PopupMenuSeparator());
-                                    break;
-                                }
-                        }
-                    }
+                    PopulateMenu(menu.Items, ((MenuFlyout)ContextFlyout).Items);
 
                     var handle = TrayIcon.WindowHandle;
 
@@ -195,6 +172,44 @@ public partial class TaskbarIcon
         OnTrayContextMenuOpen();
     }
 
+
+    private static void PopulateMenu(ICollection<PopupItem> menuItems, IList<MenuFlyoutItemBase> flyoutItemBases)
+    {
+        foreach (var flyoutItemBase in flyoutItemBases)
+        {
+            switch (flyoutItemBase)
+            {
+                case MenuFlyoutItem flyoutItem:
+                    {
+                        var item = new PopupMenuItem
+                        {
+                            Text = flyoutItem.Text,
+                        };
+                        item.Click += (_, _) =>
+                        {
+                            flyoutItem.Command?.TryExecute(flyoutItem.CommandParameter);
+                        };
+                        menuItems.Add(item);
+                        break;
+                    }
+                case MenuFlyoutSeparator:
+                    {
+                        menuItems.Add(new PopupMenuSeparator());
+                        break;
+                    }
+                case MenuFlyoutSubItem subItem:
+                    {
+                        var item = new PopupSubMenu
+                        {
+                            Text = subItem.Text,
+                        };
+                        menuItems.Add(item);
+                        PopulateMenu(item.Items, subItem.Items);
+                        break;
+                    }
+            }
+        }
+    }
 #if HAS_WINUI && !HAS_UNO
 
     private void PrepareContextMenuWindow()
