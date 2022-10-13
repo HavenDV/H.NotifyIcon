@@ -186,7 +186,7 @@ public partial class TaskbarIcon
                         {
                             Text = toggleItem.Text,
                             Enabled = toggleItem.IsEnabled,
-                            Checked = toggleItem.IsChecked
+                            Checked = toggleItem.IsChecked,
                         };
                         item.Click += (_, _) =>
                         {
