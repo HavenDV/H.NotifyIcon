@@ -180,11 +180,27 @@ public partial class TaskbarIcon
         {
             switch (flyoutItemBase)
             {
+                case ToggleMenuFlyoutItem toggleItem:
+                    {
+                        var item = new PopupMenuItem
+                        {
+                            Text = toggleItem.Text,
+                            Enabled = toggleItem.IsEnabled,
+                            Checked = toggleItem.IsChecked
+                        };
+                        item.Click += (_, _) =>
+                        {
+                            toggleItem.Command?.TryExecute(toggleItem.CommandParameter);
+                        };
+                        menuItems.Add(item);
+                        break;
+                    }
                 case MenuFlyoutItem flyoutItem:
                     {
                         var item = new PopupMenuItem
                         {
                             Text = flyoutItem.Text,
+                            Enabled = flyoutItem.IsEnabled,
                         };
                         item.Click += (_, _) =>
                         {
@@ -232,9 +248,9 @@ public partial class TaskbarIcon
         {
             Content = frame,
         };
-        
+
         ActualThemeChanged += (_, _) => frame.RequestedTheme = ActualTheme;
-        
+
         var handle = WindowNative.GetWindowHandle(window);
         WindowUtilities.MakeTransparent(handle);
 
@@ -281,7 +297,7 @@ public partial class TaskbarIcon
             flyoutItemBase.PointerMoved += (_, _) => PointerActionInContextMenuWindow = true;
             flyoutItemBase.PointerPressed += (_, _) => PointerActionInContextMenuWindow = true;
         }
-        
+
         frame.Loaded += (_, _) =>
         {
             flyout.ShowAt(window.Content, new FlyoutShowOptions
