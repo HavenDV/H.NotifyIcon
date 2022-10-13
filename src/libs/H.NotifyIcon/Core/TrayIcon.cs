@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using EventGenerator;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using H.NotifyIcon.Interop;
@@ -101,8 +102,6 @@ public partial class TrayIcon : IDisposable
     /// </summary>
     public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
 
-#endif
-    
     #endregion
 
     #region Constructors
