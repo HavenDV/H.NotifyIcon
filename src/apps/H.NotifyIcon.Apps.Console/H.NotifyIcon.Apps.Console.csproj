@@ -18,6 +18,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
+  <!-- Workaround about Mac M1 and Parallels Desktop -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\**\*.*" />
+    <AdditionalFiles Include="Resources\**\*.*" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
