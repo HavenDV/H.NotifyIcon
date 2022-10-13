@@ -173,11 +173,11 @@ public partial class TaskbarIcon
     }
 
 
-    private static void PopulateMenu(ICollection<PopupItem> menuItems, IList<MenuFlyoutItemBase> items)
+    private static void PopulateMenu(ICollection<PopupItem> menuItems, IList<MenuFlyoutItemBase> flyoutItemBases)
     {
-        foreach (var item in items)
+        foreach (var flyoutItemBase in flyoutItemBases)
         {
-            switch (item)
+            switch (flyoutItemBase)
             {
                 case MenuFlyoutItem flyoutItem:
                     {
