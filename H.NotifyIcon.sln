@@ -56,6 +56,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "H.NotifyIcon.Apps.Uno.Share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrimmingHelper", "src\apps\TrimmingHelper\TrimmingHelper.csproj", "{A04E983D-5631-4C68-B34A-796970E060C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.NotifyIcon.Apps.Uno.Mobile", "src\apps\H.NotifyIcon.Apps.Uno.Mobile\H.NotifyIcon.Apps.Uno.Mobile.csproj", "{2BF565A3-5750-4044-B703-B8DE64282311}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -292,6 +294,22 @@ Global
 		{A04E983D-5631-4C68-B34A-796970E060C0}.Release|x64.Build.0 = Release|Any CPU
 		{A04E983D-5631-4C68-B34A-796970E060C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{A04E983D-5631-4C68-B34A-796970E060C0}.Release|x86.Build.0 = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|arm64.Build.0 = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|x64.Build.0 = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Debug|x86.Build.0 = Debug|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|arm64.ActiveCfg = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|arm64.Build.0 = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|x64.ActiveCfg = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|x64.Build.0 = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|x86.ActiveCfg = Release|Any CPU
+		{2BF565A3-5750-4044-B703-B8DE64282311}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -312,6 +330,7 @@ Global
 		{73850D1A-5384-49EC-8115-6FA27E6423D0} = {52FA15AF-CAE7-4822-9975-F5E812EDEF33}
 		{418D1399-62C8-481B-A954-517B189ECA70} = {52FA15AF-CAE7-4822-9975-F5E812EDEF33}
 		{A04E983D-5631-4C68-B34A-796970E060C0} = {52FA15AF-CAE7-4822-9975-F5E812EDEF33}
+		{2BF565A3-5750-4044-B703-B8DE64282311} = {52FA15AF-CAE7-4822-9975-F5E812EDEF33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C139BD97-A4F7-411B-99B1-824CE1ABA403}
