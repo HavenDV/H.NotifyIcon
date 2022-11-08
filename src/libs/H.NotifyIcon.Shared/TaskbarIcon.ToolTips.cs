@@ -206,7 +206,6 @@ public partial class TaskbarIcon
     /// <param name="visible">Whether to show or hide the tooltip.</param>
     private void OnToolTipChange(object? sender, bool visible)
     {
-        // if we don't have a tooltip, there's nothing to do here...
         if (TrayToolTipResolved == null)
         {
             return;
@@ -216,7 +215,6 @@ public partial class TaskbarIcon
         {
             if (IsPopupOpen)
             {
-                // ignore if we are already displaying something down there
                 return;
             }
 
@@ -228,17 +226,20 @@ public partial class TaskbarIcon
             }
 #endif
 
-            TrayToolTipResolved.IsOpen = true;
-
-#if HAS_WPF
-            // raise attached event first
-            if (TrayToolTip != null)
+#if HAS_WINUI
+            // https://github.com/HavenDV/H.NotifyIcon/issues/47
+            if (Environment.OSVersion.Version.Major > 10)
             {
-                TrayToolTip.RaiseEvent(new RoutedEventArgs(ToolTipOpenedEvent));
+                TrayToolTipResolved.IsOpen = true;
             }
+#else
+            TrayToolTipResolved.IsOpen = true;
 #endif
 
-            // bubble routed event
+#if HAS_WPF
+            TrayToolTip?.RaiseEvent(new RoutedEventArgs(ToolTipOpenedEvent));
+#endif
+
             OnTrayToolTipOpen();
         }
         else
@@ -250,19 +251,22 @@ public partial class TaskbarIcon
                 return;
             }
 
-            // raise attached event first
-            if (TrayToolTip != null)
-            {
-                TrayToolTip.RaiseEvent(new RoutedEventArgs(ToolTipCloseEvent));
-            }
+            TrayToolTip?.RaiseEvent(new RoutedEventArgs(ToolTipCloseEvent));
 #endif
 
+#if HAS_WINUI
+            // https://github.com/HavenDV/H.NotifyIcon/issues/47
+            if (Environment.OSVersion.Version.Major > 10)
+            {
+                TrayToolTipResolved.IsOpen = false;
+            }
+#else
             TrayToolTipResolved.IsOpen = false;
+#endif
 
-            // bubble event
             OnTrayToolTipClose();
         }
     }
 
-    #endregion
+#endregion
 }
