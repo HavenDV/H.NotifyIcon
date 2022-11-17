@@ -13,16 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="H.Resources.Generator" Version="1.2.28">
+    <PackageReference Include="H.Resources.Generator" Version="1.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-  
-  <!-- Workaround about Mac M1 and Parallels Desktop -->
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.*" />
-    <AdditionalFiles Include="Resources\**\*.*" />
   </ItemGroup>
 
   <ItemGroup>
