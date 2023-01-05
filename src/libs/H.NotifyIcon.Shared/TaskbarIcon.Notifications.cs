@@ -102,12 +102,12 @@ public partial class TaskbarIcon
     /// Bubbles events if a balloon ToolTip was displayed
     /// or removed.
     /// </summary>
-    /// <param name="visible">Whether the ToolTip was just displayed
+    /// <param name="args">Whether the ToolTip was just displayed
     /// or removed.</param>
     /// <param name="sender"></param>
-    private void OnBalloonToolTipChanged(object? sender, bool visible)
+    private void OnBalloonToolTipChanged(object? sender, MessageWindow.BalloonToolTipChangedEventArgs args)
     {
-        if (visible)
+        if (args.IsVisible)
         {
             _ = OnTrayBalloonTipShown();
         }

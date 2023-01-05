@@ -65,7 +65,7 @@ public partial class TaskbarIcon
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args">Mouse event args.</param>
-    private void OnMouseEvent(object? sender, MouseTrayIconEventArgs args)
+    private void OnMouseEvent(object? sender, MessageWindow.MouseEventReceivedEventArgs args)
     {
         if (IsDisposed)
         {

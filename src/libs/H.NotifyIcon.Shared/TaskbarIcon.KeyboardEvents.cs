@@ -18,7 +18,7 @@ public partial class TaskbarIcon
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args">Keyboard event args</param>
-    private void OnKeyboardEvent(object? sender, KeyboardTrayIconEventArgs args)
+    private void OnKeyboardEvent(object? sender, MessageWindow.KeyboardEventReceivedEventArgs args)
     {
         if (IsDisposed)
         {

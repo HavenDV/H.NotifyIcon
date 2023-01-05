@@ -27,7 +27,7 @@ This can happen in the following cases:
 [Event<IconVersion>("VersionChanged", Description = @"Version was changed.
 This can happen in the following cases:
 - Via direct Create call
-- Through the ClearNotifications call since its implementation uses TrayIcon re-creation")]
+- Through the ClearNotifications call since its implementation uses TrayIcon re-creation", PropertyNames = new[] { "Version" })]
 public partial class TrayIcon : IDisposable
 {
     #region Properties

@@ -203,24 +203,24 @@ public partial class TaskbarIcon
     /// invoked for Windows Vista and above.
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="visible">Whether to show or hide the tooltip.</param>
-    private void OnToolTipChange(object? sender, bool visible)
+    /// <param name="args">Whether to show or hide the tooltip.</param>
+    private void OnToolTipChange(object? sender, MessageWindow.ChangeToolTipStateRequestEventArgs args)
     {
         if (TrayToolTipResolved == null)
         {
             return;
         }
 
-        if (visible)
+        if (args.IsVisible)
         {
             if (IsPopupOpen)
             {
                 return;
             }
 
-            var args = OnPreviewTrayToolTipOpen();
+            var previewArgs = OnPreviewTrayToolTipOpen();
 #if HAS_WPF
-            if (args.Handled)
+            if (previewArgs.Handled)
             {
                 return;
             }
@@ -244,9 +244,9 @@ public partial class TaskbarIcon
         }
         else
         {
-            var args = OnPreviewTrayToolTipClose();
+            var previewArgs = OnPreviewTrayToolTipClose();
 #if HAS_WPF
-            if (args.Handled)
+            if (previewArgs.Handled)
             {
                 return;
             }

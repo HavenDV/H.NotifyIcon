@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using EventGenerator;
 using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
@@ -13,7 +14,23 @@ namespace H.NotifyIcon.Core;
 #else
 #error Target Framework is not supported
 #endif
-public class MessageWindow : IDisposable
+[Event<bool>("ChangeToolTipStateRequest",
+    Description = "The custom tooltip should be closed or hidden.",
+    PropertyNames = new[] { "IsVisible" })]
+[Event<MouseEvent, Point>("MouseEventReceived",
+    Description = "Fired in case the user clicked or moved within the taskbar icon area.",
+    PropertyNames = new[] { "MouseEvent", "Point" })]
+[Event<KeyboardEvent, Point>("KeyboardEventReceived",
+    Description = "Fired in case the user interacted with the taskbar icon area with keyboard shortcuts.",
+    PropertyNames = new[] { "KeyboardEvent", "Point" })]
+[Event<bool>("BalloonToolTipChanged",
+    Description = "Fired if a balloon ToolTip was either displayed or closed (indicated by the boolean flag).",
+    PropertyNames = new[] { "IsVisible" })]
+[Event("TaskbarCreated",
+    Description = "Fired if the taskbar was created or restarted. Requires the taskbar icon to be reset")]
+[Event("DpiChanged",
+    Description = "Fired if dpi change window message received.")]
+public partial class MessageWindow : IDisposable
 {
     #region Constants
 
@@ -73,44 +90,6 @@ public class MessageWindow : IDisposable
     /// incoming messages are interpreted.
     /// </summary>
     public IconVersion Version { get; set; } = IconVersion.Win95;
-
-    #endregion
-
-    #region Events
-
-    /// <summary>
-    /// The custom tooltip should be closed or hidden.
-    /// </summary>
-    public event EventHandler<bool>? ChangeToolTipStateRequest;
-
-    /// <summary>
-    /// Fired in case the user clicked or moved within
-    /// the taskbar icon area.
-    /// </summary>
-    public event EventHandler<MouseTrayIconEventArgs>? MouseEventReceived;
-
-    /// <summary>
-    /// Fired in case the user interacted with the taskbar
-    /// icon area with keyboard shortcuts.
-    /// </summary>
-    public event EventHandler<KeyboardTrayIconEventArgs>? KeyboardEventReceived;
-
-    /// <summary>
-    /// Fired if a balloon ToolTip was either displayed
-    /// or closed (indicated by the boolean flag).
-    /// </summary>
-    public event EventHandler<bool>? BalloonToolTipChanged;
-
-    /// <summary>
-    /// Fired if the taskbar was created or restarted. Requires the taskbar
-    /// icon to be reset.
-    /// </summary>
-    public event EventHandler? TaskbarCreated;
-
-    /// <summary>
-    /// Fired if dpi change window message received.
-    /// </summary>
-    public event EventHandler? DpiChanged;
 
     #endregion
 
@@ -179,7 +158,7 @@ public class MessageWindow : IDisposable
         if (msg == TaskbarRestartMessageId)
         {
             //recreate the icon if the taskbar was restarted (e.g. due to Win Explorer shutdown)
-            TaskbarCreated?.Invoke(this, EventArgs.Empty);
+            _ = OnTaskbarCreated();
         }
 
         ProcessWindowMessage(msg, wParam, lParam);
@@ -199,7 +178,7 @@ public class MessageWindow : IDisposable
             switch (msg)
             {
                 case PInvoke.WM_DPICHANGED:
-                    DpiChanged?.Invoke(this, EventArgs.Empty);
+                    _ = OnDpiChanged();
                     break;
             }
             return;
@@ -215,36 +194,36 @@ public class MessageWindow : IDisposable
         {
             // Can come from both mouse and keyboard events
             case PInvoke.WM_CONTEXTMENU:
-                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.ContextMenu, point));
+                _ = OnKeyboardEventReceived(KeyboardEvent.ContextMenu, point);
                 break;
 
             case PInvoke.WM_MOUSEMOVE:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.MouseMove, point));
+                _ = OnMouseEventReceived(MouseEvent.MouseMove, point);
                 break;
 
             case PInvoke.WM_LBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconLeftMouseDown, point));
+                _ = OnMouseEventReceived(MouseEvent.IconLeftMouseDown, point);
                 break;
 
             case PInvoke.WM_LBUTTONUP:
                 if (!IsDoubleClick)
                 {
-                    MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconLeftMouseUp, point));
+                    _ = OnMouseEventReceived(MouseEvent.IconLeftMouseUp, point);
                 }
                 IsDoubleClick = false;
                 break;
 
             case PInvoke.WM_LBUTTONDBLCLK:
                 IsDoubleClick = true;
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconDoubleClick, point));
+                _ = OnMouseEventReceived(MouseEvent.IconDoubleClick, point);
                 break;
 
             case PInvoke.WM_RBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconRightMouseDown, point));
+                _ = OnMouseEventReceived(MouseEvent.IconRightMouseDown, point);
                 break;
 
             case PInvoke.WM_RBUTTONUP:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconRightMouseUp, point));
+                _ = OnMouseEventReceived(MouseEvent.IconRightMouseUp, point);
                 break;
 
             case PInvoke.WM_RBUTTONDBLCLK:
@@ -252,11 +231,11 @@ public class MessageWindow : IDisposable
                 break;
 
             case PInvoke.WM_MBUTTONDOWN:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconMiddleMouseDown, point));
+                _ = OnMouseEventReceived(MouseEvent.IconMiddleMouseDown, point);
                 break;
 
             case PInvoke.WM_MBUTTONUP:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.IconMiddleMouseUp, point));
+                _ = OnMouseEventReceived(MouseEvent.IconMiddleMouseUp, point);
                 break;
 
             case PInvoke.WM_MBUTTONDBLCLK:
@@ -264,32 +243,32 @@ public class MessageWindow : IDisposable
                 break;
 
             case PInvoke.NIN_BALLOONSHOW:
-                BalloonToolTipChanged?.Invoke(this, true);
+                _ = OnBalloonToolTipChanged(isVisible: true);
                 break;
 
             case PInvoke.NIN_BALLOONHIDE:
             case PInvoke.NIN_BALLOONTIMEOUT:
-                BalloonToolTipChanged?.Invoke(this, false);
+                _ = OnBalloonToolTipChanged(isVisible: false);
                 break;
 
             case PInvoke.NIN_BALLOONUSERCLICK:
-                MouseEventReceived?.Invoke(this, new MouseTrayIconEventArgs(MouseEvent.BalloonToolTipClicked, point));
+                _ = OnMouseEventReceived(MouseEvent.BalloonToolTipClicked, point);
                 break;
 
             case PInvoke.NIN_POPUPOPEN:
-                ChangeToolTipStateRequest?.Invoke(this, true);
+                _ = OnChangeToolTipStateRequest(isVisible: true);
                 break;
 
             case PInvoke.NIN_POPUPCLOSE:
-                ChangeToolTipStateRequest?.Invoke(this, false);
+                _ = OnChangeToolTipStateRequest(isVisible: false);
                 break;
 
             case PInvoke.NIN_SELECT:
-                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.Select, point));
+                _ = OnKeyboardEventReceived(KeyboardEvent.Select, point);
                 break;
 
             case PInvoke.NIN_SELECT | PInvoke.NINF_KEY:
-                KeyboardEventReceived?.Invoke(this, new KeyboardTrayIconEventArgs(KeyboardEvent.KeySelect, point));
+                _ = OnKeyboardEventReceived(KeyboardEvent.KeySelect, point);
                 break;
 
             default:

@@ -85,7 +85,7 @@ public class TrayIconWithContextMenu : TrayIcon
         base.Dispose(disposing);
     }
 
-    private void OnMouseEvent(object? sender, MouseTrayIconEventArgs args)
+    private void OnMouseEvent(object? sender, MessageWindow.MouseEventReceivedEventArgs args)
     {
         if (args.MouseEvent == MouseEvent.MouseMove)
         {
