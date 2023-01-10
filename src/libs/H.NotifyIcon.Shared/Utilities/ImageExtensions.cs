@@ -32,12 +32,14 @@ internal static class ImageExtensions
         using var stream = streamInfo.Stream;
         return stream.ToSmallIcon();
 #else
+#if IS_PACKABLE
         DesktopBridge.Helpers helpers = new DesktopBridge.Helpers();
         if (helpers.IsRunningAsUwp()) {
             var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
             using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
             return stream.ToSmallIcon();
         } else {
+#endif
             string prefix = "";
             if (uri.Scheme == "ms-appx" || uri.Scheme == "ms-appx-web") {
                 prefix = AppContext.BaseDirectory;
@@ -47,7 +49,9 @@ internal static class ImageExtensions
             var absolutePath = $"{prefix}{uri.LocalPath}";
             using var fileStream = File.OpenRead(absolutePath);
             return fileStream.ToSmallIcon();
+#if IS_PACKABLE
         }
+#endif
 #endif
     }
 
