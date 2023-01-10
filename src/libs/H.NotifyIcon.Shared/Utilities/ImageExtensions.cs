@@ -30,12 +30,29 @@ internal static class ImageExtensions
             Application.GetResourceStream(uri) ??
             throw new ArgumentException($"Uri: {uri} is not resolved.");
         using var stream = streamInfo.Stream;
-#else
-        var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-        using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
-#endif
-
         return stream.ToSmallIcon();
+#else
+#if IS_PACKABLE
+        DesktopBridge.Helpers helpers = new DesktopBridge.Helpers();
+        if (helpers.IsRunningAsUwp()) {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+            using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
+            return stream.ToSmallIcon();
+        } else {
+#endif
+            string prefix = "";
+            if (uri.Scheme == "ms-appx" || uri.Scheme == "ms-appx-web") {
+                prefix = AppContext.BaseDirectory;
+            }
+            // additional schemes, like ms-appdata could be added here
+            // see: https://learn.microsoft.com/en-us/windows/uwp/app-resources/uri-schemes
+            var absolutePath = $"{prefix}{uri.LocalPath}";
+            using var fileStream = File.OpenRead(absolutePath);
+            return fileStream.ToSmallIcon();
+#if IS_PACKABLE
+        }
+#endif
+#endif
     }
 
 #if HAS_WPF

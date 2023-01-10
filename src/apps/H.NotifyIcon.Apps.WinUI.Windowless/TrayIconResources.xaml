@@ -112,13 +112,14 @@
         ContextMenuMode="SecondWindow"
         LeftClickCommand="{StaticResource ShowHideWindowCommand}"
         NoLeftClickDelay="True"
+        IconSource="\Assets\Red.ico"
         >
-        <tb:TaskbarIcon.GeneratedIcon>
+        <!--<tb:TaskbarIcon.GeneratedIcon>
             <tb:GeneratedIcon
                 Text="❤️"
                 Foreground="Red"
                 />
-        </tb:TaskbarIcon.GeneratedIcon>
+        </tb:TaskbarIcon.GeneratedIcon>-->
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Command="{StaticResource Command1}" />

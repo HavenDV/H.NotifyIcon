@@ -3,12 +3,13 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
-    <DefineConstants>$(DefineConstants);HAS_UNO</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_UNO;IS_PACKABLE</DefineConstants>
     <NoWarn>$(NoWarn);Uno0001;CA1010;CA1031</NoWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DesktopBridge.Helpers" Version="1.2.2" />
     <PackageReference Include="Uno.UI" Version="4.4.13" />
   </ItemGroup>
   
