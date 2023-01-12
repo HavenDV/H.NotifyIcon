@@ -9,20 +9,20 @@ public enum NotificationIcon
     /// <summary>
     /// The balloon message is displayed without an icon.
     /// </summary>
-    None = (int)PInvoke.NIIF_NONE,
+    None = (int)NOTIFY_ICON_INFOTIP_FLAGS.NIIF_NONE,
 
     /// <summary>
     /// An information is displayed.
     /// </summary>
-    Info = (int)PInvoke.NIIF_INFO,
+    Info = (int)NOTIFY_ICON_INFOTIP_FLAGS.NIIF_INFO,
 
     /// <summary>
     /// A warning is displayed.
     /// </summary>
-    Warning = (int)PInvoke.NIIF_WARNING,
+    Warning = (int)NOTIFY_ICON_INFOTIP_FLAGS.NIIF_WARNING,
 
     /// <summary>
     /// An error is displayed.
     /// </summary>
-    Error = (int)PInvoke.NIIF_ERROR,
+    Error = (int)NOTIFY_ICON_INFOTIP_FLAGS.NIIF_ERROR,
 }

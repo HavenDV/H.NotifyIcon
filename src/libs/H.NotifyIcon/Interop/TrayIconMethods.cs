@@ -98,8 +98,8 @@ internal static class TrayIconMethods
                 guidItem = id,
                 uCallbackMessage = uCallbackMessage,
                 hIcon = new HICON(iconHandle),
-                dwState = PInvoke.NIS_HIDDEN,
-                dwStateMask = PInvoke.NIS_HIDDEN,
+                dwState = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
+                dwStateMask = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
             };
             toolTip.SetTo(&data.szTip._0, data.szTip.Length);
 
@@ -121,8 +121,8 @@ internal static class TrayIconMethods
                 guidItem = id,
                 uCallbackMessage = uCallbackMessage,
                 hIcon = new HICON(iconHandle),
-                dwState = PInvoke.NIS_HIDDEN,
-                dwStateMask = PInvoke.NIS_HIDDEN,
+                dwState = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
+                dwStateMask = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
             };
             toolTip.SetTo(&data.szTip._0, data.szTip.Length);
 
@@ -212,7 +212,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwState = state,
-                dwStateMask = PInvoke.NIS_HIDDEN,
+                dwStateMask = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
             };
 
             return SendModifyMessage(data);
@@ -227,7 +227,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwState = state,
-                dwStateMask = PInvoke.NIS_HIDDEN,
+                dwStateMask = (uint)NOTIFY_ICON_STATE.NIS_HIDDEN,
             };
 
             return SendModifyMessage(data);
@@ -266,7 +266,7 @@ internal static class TrayIconMethods
         NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string title,
         string message,
-        uint infoFlags,
+        NOTIFY_ICON_INFOTIP_FLAGS infoFlags,
         nint balloonIconHandle,
         uint timeoutInMilliseconds)
     {
@@ -279,7 +279,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
-                dwInfoFlags = infoFlags,
+                dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
                 {
@@ -300,7 +300,7 @@ internal static class TrayIconMethods
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
-                dwInfoFlags = infoFlags,
+                dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
                 {

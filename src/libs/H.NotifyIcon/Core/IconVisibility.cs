@@ -13,10 +13,10 @@ public enum IconVisibility
     /// <summary>
     /// The icon is hidden.
     /// </summary>
-    Hidden = (int)PInvoke.NIS_HIDDEN,
+    Hidden = (int)NOTIFY_ICON_STATE.NIS_HIDDEN,
 
     /// <summary>
     /// The icon resource is shared between multiple icons.
     /// </summary>
-    Shared = (int)PInvoke.NIS_SHAREDICON,
+    Shared = (int)NOTIFY_ICON_STATE.NIS_SHAREDICON,
 }

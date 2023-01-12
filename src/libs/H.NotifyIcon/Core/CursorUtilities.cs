@@ -23,27 +23,27 @@ public static class CursorUtilities
 #endif
     internal static unsafe Point GetPhysicalCursorPos()
     {
-        var point = new POINT();
+        var point = new Point();
 
         _ = PInvoke.GetPhysicalCursorPos(&point).EnsureNonZero();
 
         return new Point
         {
-            X = point.x,
-            Y = point.y,
+            X = point.X,
+            Y = point.Y,
         };
     }
 
     internal static unsafe Point GetCursorPos()
     {
-        var point = new POINT();
+        var point = new Point();
 
         _ = PInvoke.GetCursorPos(&point).EnsureNonZero();
 
         return new Point
         {
-            X = point.x,
-            Y = point.y,
+            X = point.X,
+            Y = point.Y,
         };
     }
 
@@ -67,10 +67,10 @@ public static class CursorUtilities
         Size windowSize,
         Rectangle? excludeRect = null)
     {
-        var _anchorPoint = new POINT
+        var _anchorPoint = new Point
         {
-            x = anchorPoint.X,
-            y = anchorPoint.Y,
+            X = anchorPoint.X,
+            Y = anchorPoint.Y,
         };
         var _windowSize = new SIZE
         {

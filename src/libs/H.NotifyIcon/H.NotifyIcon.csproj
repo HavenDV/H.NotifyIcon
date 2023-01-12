@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5.1;netstandard2.0;net6.0</TargetFrameworks>
-    <NoWarn>$(NoWarn);CA1031;CA1003;CA1502;CS3016</NoWarn>
+    <TargetFrameworks>net4.5.1;netstandard2.0;net6.0;net7.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);CA1031;CA1003;CA1502;CS3016;CS8981</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,9 +24,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.10-beta">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.164-beta">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

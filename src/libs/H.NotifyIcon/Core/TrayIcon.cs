@@ -470,19 +470,19 @@ public partial class TrayIcon : IDisposable
         }
 
         var infoFlags = customIcon != null
-            ? PInvoke.NIIF_USER
-            : (uint)icon;
+            ? NOTIFY_ICON_INFOTIP_FLAGS.NIIF_USER
+            : (NOTIFY_ICON_INFOTIP_FLAGS)icon;
         if (!sound)
         {
-            infoFlags |= PInvoke.NIIF_NOSOUND;
+            infoFlags |= NOTIFY_ICON_INFOTIP_FLAGS.NIIF_NOSOUND;
         }
         if (respectQuietTime)
         {
-            infoFlags |= PInvoke.NIIF_RESPECT_QUIET_TIME;
+            infoFlags |= NOTIFY_ICON_INFOTIP_FLAGS.NIIF_RESPECT_QUIET_TIME;
         }
         if (largeIcon)
         {
-            infoFlags |= PInvoke.NIIF_LARGE_ICON;
+            infoFlags |= NOTIFY_ICON_INFOTIP_FLAGS.NIIF_LARGE_ICON;
         }
 
         if (customIcon != null)
