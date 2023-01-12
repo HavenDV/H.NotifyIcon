@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
-    <TargetFrameworks>net6.0-windows;net4.7.2</TargetFrameworks>
+    <TargetFrameworks>net7.0-windows;net4.7.2</TargetFrameworks>
     <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;HAS_UNO_WINUI</DefineConstants>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
@@ -27,10 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.WinUI.Skia.Wpf" Version="4.4.13" />
-    <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.4.13" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.4.13" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="Uno.WinUI.Skia.Wpf" Version="4.6.41" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.6.41" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.6.41" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

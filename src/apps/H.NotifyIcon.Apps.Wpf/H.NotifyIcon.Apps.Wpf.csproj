@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net4.6.1;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.6.2;net7.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <LangVersion>preview</LangVersion>
@@ -21,11 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.0.3">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="All" />
   </ItemGroup>
   
   <Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">

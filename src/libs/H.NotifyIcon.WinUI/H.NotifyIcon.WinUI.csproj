@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows10.0.17763.0</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows10.0.17763.0;net7.0-windows10.0.17763.0</TargetFrameworks>
     <UseWinUI>true</UseWinUI>
     <DefineConstants>$(DefineConstants);HAS_WINUI;IS_PACKABLE</DefineConstants>
-    <NoWarn>$(NoWarn);CS3021;CA1031</NoWarn>
+    <NoWarn>$(NoWarn);CS3021;CA1031;CS8002</NoWarn>
     <Nullable>enable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DesktopBridge.Helpers" Version="1.2.2" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.4" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221209.1" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
@@ -24,7 +24,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.0.3">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
