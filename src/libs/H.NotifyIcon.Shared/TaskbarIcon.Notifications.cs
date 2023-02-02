@@ -1,4 +1,5 @@
-﻿namespace H.NotifyIcon;
+﻿#if !MACOS
+namespace H.NotifyIcon;
 
 [RoutedEvent("TrayBalloonTipShown", RoutedEventStrategy.Bubble,
     Description = "Occurs when a balloon ToolTip is displayed.", Category = CategoryName)]
@@ -119,3 +120,4 @@ public partial class TaskbarIcon
 
     #endregion
 }
+#endif

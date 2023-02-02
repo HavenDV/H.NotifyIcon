@@ -16,6 +16,14 @@ namespace H.NotifyIcon;
 #if HAS_WINUI || HAS_UNO
 [CLSCompliant(false)]
 #endif
+#if NET5_0_OR_GREATER
+#if MACOS || MACCATALYST
+[Advice("Starting with macos10.10 Soft-deprecation, forwards message to button, but will be gone in the future.")]
+[System.Runtime.Versioning.UnsupportedOSPlatform("macos10.10")]
+[System.Runtime.Versioning.UnsupportedOSPlatform("maccatalyst")]
+[System.Runtime.Versioning.SupportedOSPlatform("macos")]
+#endif
+#endif
 public partial class TaskbarIcon : FrameworkElement, IDisposable
 {
     #region Properties
@@ -56,6 +64,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
+#if !MACOS
         // https://github.com/HavenDV/H.NotifyIcon/issues/34
         //Unloaded += (_, _) => Dispose();
         TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
@@ -66,7 +75,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
         TrayIcon.MessageWindow.KeyboardEventReceived += OnKeyboardEvent;
         TrayIcon.MessageWindow.ChangeToolTipStateRequest += OnToolTipChange;
         TrayIcon.MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
-
+#endif
+        
         // init single click / balloon timers
         SingleClickTimer = new Timer(DoSingleClickAction);
 

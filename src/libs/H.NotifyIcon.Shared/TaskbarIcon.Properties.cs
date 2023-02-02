@@ -1,9 +1,11 @@
 ﻿namespace H.NotifyIcon;
 
+#if !MACOS
 [DependencyProperty<Guid>("Id",
     Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
 [DependencyProperty<string>("CustomName",
     Description = "Gets or sets the TrayIcon Name. Use this for second TrayIcon in same app.", Category = CategoryName)]
+#endif
 [DependencyProperty<System.Drawing.Icon>("Icon",
     Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
 [DependencyProperty<ImageSource>("IconSource",
@@ -21,6 +23,7 @@ public partial class TaskbarIcon
 
     #region Id
     
+#if !MACOS
     partial void OnIdChanged(Guid newValue)
     {
         TrayIcon.UpdateId(newValue);
@@ -30,6 +33,7 @@ public partial class TaskbarIcon
     {
         TrayIcon.UpdateName(newValue ?? string.Empty);
     }
+#endif
 
     #endregion
 
@@ -40,16 +44,18 @@ public partial class TaskbarIcon
         oldValue?.Dispose();
         UpdateIcon(newValue);
     }
-
+    
     /// <summary>
     /// Updates TrayIcon.Icon without changing Icon property.
     /// </summary>
     /// <param name="value"></param>
     public void UpdateIcon(System.Drawing.Icon? value)
     {
+#if !MACOS
         TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
+#endif
     }
-
+    
 #if HAS_WPF
     partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
 #else
@@ -64,11 +70,16 @@ public partial class TaskbarIcon
         }
 
 #if HAS_WPF
-        Icon = newValue.ToIcon();
+        using var stream = newValue.ToStream();
 #else
-        Icon = await newValue.ToIconAsync().ConfigureAwait(true);
+        using var stream = await newValue.ToStreamAsync().ConfigureAwait(true);
 #endif
-
+        
+#if MACOS
+        TrayIcon.Icon = NSImage.FromStream(stream);
+#else
+        Icon = stream.ToSmallIcon();
+#endif
         GeneratedIcon?.Refresh();
     }
 

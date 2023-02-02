@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿#if !MACOS
+using System.Drawing;
 using System.Threading;
 using H.NotifyIcon.Interop;
 
@@ -112,3 +113,4 @@ public class TrayIconWithContextMenu : TrayIcon
             y: cursorPosition.Y);
     }
 }
+#endif
