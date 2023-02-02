@@ -1,4 +1,5 @@
-﻿using EventGenerator;
+﻿using System.Diagnostics;
+using EventGenerator;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -126,7 +127,7 @@ public partial class TrayIcon : IDisposable
     /// Creates <see cref="Id"/> based on the simple name of an Entry assembly. <br/>
     /// Use other overloads to create multiple icons for the same application.
     /// </summary>
-    public TrayIcon() : this(CreateUniqueGuidForEntryAssemblyLocation())
+    public TrayIcon() : this(CreateUniqueGuidForProcessPath())
     {
     }
 
@@ -168,16 +169,42 @@ public partial class TrayIcon : IDisposable
     }
 
     /// <summary>
-    /// Creates a unique Guid for the entry assembly simple name using hashing.
+    /// Returns current process path.
     /// </summary>
     /// <returns></returns>
-    public static Guid CreateUniqueGuidForEntryAssemblyLocation(string? postfix = null)
+    public static string GetProcessPath()
     {
+        var path = (string?)null;
+#if NET6_0_OR_GREATER
+        path = Environment.ProcessPath;
+        if (!string.IsNullOrWhiteSpace(path))
+        {
+            return path;
+        }
+#endif
+        using (var process = Process.GetCurrentProcess())
+        {
+            path = process?.MainModule?.FileName;
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return path;
+            }
+        }
+        
         var assembly =
             Assembly.GetEntryAssembly() ??
             throw new InvalidOperationException("Entry assembly is not found.");
 
-        return CreateUniqueGuidFromString($"{assembly.Location}_{postfix}");
+        return assembly.Location;
+    }
+
+    /// <summary>
+    /// Creates a unique Guid for the entry assembly simple name using hashing.
+    /// </summary>
+    /// <returns></returns>
+    public static Guid CreateUniqueGuidForProcessPath(string? postfix = null)
+    {  
+        return CreateUniqueGuidFromString($"{GetProcessPath()}_{postfix}");
     }
 
 #endregion
