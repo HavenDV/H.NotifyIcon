@@ -174,18 +174,19 @@ public partial class TrayIcon : IDisposable
     /// <returns></returns>
     public static string GetProcessPath()
     {
-        var path = (string?)null;
 #if NET6_0_OR_GREATER
-        path = Environment.ProcessPath;
-        if (!string.IsNullOrWhiteSpace(path))
+        var processPath = Environment.ProcessPath;
+        if (processPath != null &&
+            !string.IsNullOrWhiteSpace(processPath))
         {
-            return path;
+            return processPath;
         }
 #endif
         using (var process = Process.GetCurrentProcess())
         {
-            path = process?.MainModule?.FileName;
-            if (!string.IsNullOrWhiteSpace(path))
+            var path = process?.MainModule?.FileName;
+            if (path != null &&
+                !string.IsNullOrWhiteSpace(path))
             {
                 return path;
             }

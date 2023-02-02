@@ -1,7 +1,7 @@
 ﻿namespace H.NotifyIcon;
 
 [DependencyProperty<PopupActivationMode>("MenuActivation", DefaultValue = PopupActivationMode.RightClick,
-    Description = "Defines what mouse events display the context menu.", Category = CategoryName, CLSCompliant = false)]
+    Description = "Defines what mouse events display the context menu.", Category = CategoryName, ClsCompliant = false)]
 #if !HAS_WPF
 [DependencyProperty<ContextMenuMode>("ContextMenuMode", DefaultValue = ContextMenuMode.PopupMenu,
     Description = "Defines the context menu mode.", Category = CategoryName)]
@@ -372,7 +372,7 @@ public partial class TaskbarIcon
 
 #endregion
 
-#region Event Handlers
+    #region Event Handlers
 
 #if HAS_WPF
 
@@ -432,5 +432,5 @@ public partial class TaskbarIcon
 
 #endif
 
-#endregion
+    #endregion
 }
