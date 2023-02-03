@@ -13,6 +13,69 @@
         </XamlUICommand.IconSource>
     </XamlUICommand>
     <XamlUICommand
+        x:Key="Command2"
+        Label="Command2"
+        Description="Command2"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="Admin" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command3"
+        Label="Command3"
+        Description="Command3"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="BrowsePhotos" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command4"
+        Label="Command4"
+        Description="Command4"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="FourBars" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command5"
+        Label="Command5"
+        Description="Command5"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="FourBars" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command6"
+        Label="Command6"
+        Description="Command6"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="FourBars" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command7"
+        Label="Command7"
+        Description="Command7"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="FourBars" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="Command8"
+        Label="Command8"
+        Description="Command8"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="FourBars" />
+        </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
         x:Key="IconHost1"
         Label="IconHost1"
         Description="IconHost1"
@@ -29,6 +92,21 @@
         <XamlUICommand.IconSource>
             <SymbolIconSource Symbol="Admin" />
         </XamlUICommand.IconSource>
+    </XamlUICommand>
+    <XamlUICommand
+        x:Key="ShowHideWindowCommand"
+        Label="Show/Hide Window"
+        Description="Show/Hide Window"
+        >
+        <XamlUICommand.IconSource>
+            <SymbolIconSource Symbol="OpenPane" />
+        </XamlUICommand.IconSource>
+        <XamlUICommand.KeyboardAccelerators>
+            <KeyboardAccelerator
+                Key="S"
+                Modifiers="Control"
+                />
+        </XamlUICommand.KeyboardAccelerators>
     </XamlUICommand>
     <XamlUICommand
         x:Key="ExitApplicationCommand"
@@ -50,6 +128,7 @@
         Visibility="Visible"
         ToolTipText="ToolTip"
         ContextMenuMode="SecondWindow"
+        LeftClickCommand="{StaticResource ShowHideWindowCommand}"
         NoLeftClickDelay="True"
         IconSource="\Assets\Red.ico"
         >
@@ -62,6 +141,18 @@
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout>
                 <MenuFlyoutItem Command="{StaticResource Command1}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{StaticResource Command2}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{StaticResource Command3}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{StaticResource Command4}" />
+                <MenuFlyoutItem Command="{StaticResource Command5}" />
+                <MenuFlyoutItem Command="{StaticResource Command6}" />
+                <MenuFlyoutItem Command="{StaticResource Command7}" />
+                <MenuFlyoutItem Command="{StaticResource Command8}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{StaticResource ShowHideWindowCommand}" />
                 <MenuFlyoutSeparator />
                 <MenuFlyoutItem Command="{StaticResource ExitApplicationCommand}" />
             </MenuFlyout>
