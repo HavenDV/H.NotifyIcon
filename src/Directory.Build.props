@@ -1,5 +1,7 @@
 <Project>
 
+  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
+
   <PropertyGroup Label="Common">
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>

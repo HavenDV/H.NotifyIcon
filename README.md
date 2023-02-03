@@ -165,12 +165,6 @@ because Windows associates the guid with the current path when TrayIcon is regis
 The only way to keep the settings when changing the file path is to use [Authenticode](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537359(v=vs.85)). 
 Read more here: https://docs.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataa#troubleshooting
 
-### [Sample Apps](https://github.com/HavenDV/H.NotifyIcon/tree/master/src/apps)
-
-The minimum supported version of the .Net Framework is 4.5.1.  
-So in some cases to build the project you will need to install this -  
-https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net451-developer-pack-offline-installer
-
 ## Support
 
 Priority place for bugs: https://github.com/HavenDV/H.NotifyIcon/issues  

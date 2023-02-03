@@ -1,7 +1,7 @@
 ﻿namespace H.NotifyIcon;
 
 [DependencyProperty<PopupActivationMode>("PopupActivation", DefaultValue = PopupActivationMode.LeftClick,
-    Description = "Defines what mouse events display the TaskbarIconPopup.", Category = CategoryName, CLSCompliant = false)]
+    Description = "Defines what mouse events display the TaskbarIconPopup.", Category = CategoryName, ClsCompliant = false)]
 [DependencyProperty<UIElement>("TrayPopup",
     Description = "Displayed as a Popup if the user clicks on the taskbar icon.", Category = CategoryName)]
 [DependencyProperty<Popup>("TrayPopupResolved", IsReadOnly = true,
