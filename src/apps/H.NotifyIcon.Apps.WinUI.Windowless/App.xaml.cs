@@ -60,6 +60,12 @@ public sealed partial class App
     {
         TrayIcon?.Dispose();
         Window?.Close();
+
+        // https://github.com/HavenDV/H.NotifyIcon/issues/66
+        if (Window == null)
+        {
+            Environment.Exit(0);
+        }
     }
 
     #endregion
