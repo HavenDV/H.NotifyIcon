@@ -141,11 +141,13 @@ public static class WindowUtilities
 
         _ = PInvoke.SetLayeredWindowAttributes(
             hwnd: hWnd,
-            crKey: new COLORREF((uint)System.Drawing.ColorTranslator.ToWin32(System.Drawing.Color.Black)),
+            crKey: new COLORREF((uint)ToWin32(System.Drawing.Color.Black)),
             bAlpha: 255,
             dwFlags: LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_COLORKEY | LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_ALPHA).EnsureNonZero();
     }
-
+    
+    private static int ToWin32(System.Drawing.Color c) => (int) c.B << 16 | (int) c.G << 8 | (int) c.R;
+    
     private static SUBCLASSPROC? SubClassDelegate;
 
 #if NET5_0_OR_GREATER
@@ -165,7 +167,7 @@ public static class WindowUtilities
                         hWnd: hWnd,
                         lpRect: &rect).EnsureNonZero();
                     var hBrush = PInvoke.CreateSolidBrush(
-                        color: new COLORREF((uint)System.Drawing.ColorTranslator.ToWin32(System.Drawing.Color.Black))).EnsureNonZero();
+                        color: new COLORREF((uint)ToWin32(System.Drawing.Color.Black))).EnsureNonZero();
                     _ = PInvoke.FillRect(
                         hDC: new HDC((nint)wParam.Value),
                         lprc: &rect,
