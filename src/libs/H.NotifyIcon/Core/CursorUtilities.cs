@@ -63,19 +63,21 @@ public static class CursorUtilities
 #error Target Framework is not supported
 #endif
     public static unsafe Rectangle CalculatePopupWindowPosition(
-        Point anchorPoint,
-        Size windowSize,
+        int x,
+        int y,
+        int width,
+        int height,
         Rectangle? excludeRect = null)
     {
         var _anchorPoint = new Point
         {
-            X = anchorPoint.X,
-            Y = anchorPoint.Y,
+            X = x,
+            Y = y,
         };
         var _windowSize = new SIZE
         {
-            cx = windowSize.Width,
-            cy = windowSize.Height,
+            cx = width,
+            cy = height,
         };
         var flags = TRACK_POPUP_MENU_FLAGS.TPM_BOTTOMALIGN;
         var _excludeRect = new RECT
