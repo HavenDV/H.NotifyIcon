@@ -1,6 +1,13 @@
 <Project>
 
   <Import Project="..\Directory.Build.props" />
+  
+  <PropertyGroup Label="GraphicsLibrary">
+    <!-- Supported values: System.Drawing, SkiaSharp -->
+    <GraphicsLibrary>System.Drawing</GraphicsLibrary>
+    <DefineConstants Condition="'$(GraphicsLibrary)' == 'System.Drawing'">$(DefineConstants);HAS_SYSTEM_DRAWING</DefineConstants>
+    <DefineConstants Condition="'$(GraphicsLibrary)' == 'SkiaSharp'">$(DefineConstants);HAS_SKIA_SHARP</DefineConstants>
+  </PropertyGroup>
 
   <PropertyGroup Label="Signing">
     <SignAssembly>true</SignAssembly>

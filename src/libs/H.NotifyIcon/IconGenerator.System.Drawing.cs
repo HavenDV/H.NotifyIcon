@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿#if HAS_SYSTEM_DRAWING
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace H.NotifyIcon;
@@ -141,10 +142,10 @@ public static class IconGenerator
                     font: font,
                     brush: foregroundBrush,
                     layoutRectangle: new RectangleF(
-                        size / 2 - textSize.Width / 2,
-                        size / 2 - textSize.Height / 2,
-                        textSize.Width,
-                        textSize.Height),
+                        x: size / 2.0F - textSize.Width / 2,
+                        y: size / 2.0F - textSize.Height / 2,
+                        width: textSize.Width,
+                        height: textSize.Height),
                     format: StringFormat.GenericTypographic);
             }
             else
@@ -161,3 +162,4 @@ public static class IconGenerator
         return Icon.FromHandle(bitmap.GetHicon());
     }
 }
+#endif

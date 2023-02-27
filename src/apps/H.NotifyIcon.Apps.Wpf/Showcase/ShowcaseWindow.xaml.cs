@@ -42,8 +42,8 @@ public partial class ShowcaseWindow : Window
             icon: rbInfo.IsChecked == true
                 ? NotificationIcon.Info
                 : NotificationIcon.Error,
-            customIcon: rbCustomIcon.IsChecked == true
-                ? tb.Icon
+            customIconHandle: rbCustomIcon.IsChecked == true
+                ? tb.Icon?.Handle
                 : null);
     }
 
