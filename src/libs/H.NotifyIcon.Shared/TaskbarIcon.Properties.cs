@@ -5,8 +5,7 @@
     Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
 [DependencyProperty<string>("CustomName",
     Description = "Gets or sets the TrayIcon Name. Use this for second TrayIcon in same app.", Category = CategoryName)]
-#endif
-[DependencyProperty<System.Drawing.Icon>("Icon",
+[DependencyProperty<Icon>("Icon", ClsCompliant = false,
     Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
 [DependencyProperty<ImageSource>("IconSource",
     Description = "Resolves an image source and updates the Icon property accordingly.", Category = CategoryName)]
@@ -39,7 +38,7 @@ public partial class TaskbarIcon
 
     #region Icon/IconSource
 
-    partial void OnIconChanged(System.Drawing.Icon? oldValue, System.Drawing.Icon? newValue)
+    partial void OnIconChanged(Icon? oldValue, Icon? newValue)
     {
         oldValue?.Dispose();
         UpdateIcon(newValue);
@@ -49,7 +48,8 @@ public partial class TaskbarIcon
     /// Updates TrayIcon.Icon without changing Icon property.
     /// </summary>
     /// <param name="value"></param>
-    public void UpdateIcon(System.Drawing.Icon? value)
+    [CLSCompliant(false)]
+    public void UpdateIcon(Icon? value)
     {
 #if !MACOS
         TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
@@ -69,6 +69,7 @@ public partial class TaskbarIcon
             return;
         }
 
+#if HAS_SYSTEM_DRAWING
 #if HAS_WPF
         using var stream = newValue.ToStream();
 #else
@@ -80,6 +81,8 @@ public partial class TaskbarIcon
 #else
         Icon = stream.ToSmallIcon();
 #endif
+#endif
+
         GeneratedIcon?.Refresh();
     }
 

@@ -4,8 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <PublishTrimmed>true</PublishTrimmed>
-    <!-- Prevent warnings from unused code in dependencies -->
-    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+    <!-- <TrimMode>full</TrimMode> -->
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,8 +12,22 @@
   <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
     <ProjectReference Include="..\..\libs\H.NotifyIcon.Uno.WinUI\H.NotifyIcon.Uno.WinUI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TrimmerRootAssembly Include="H.NotifyIcon" />
     <TrimmerRootAssembly Include="H.NotifyIcon.Uno.WinUI" />
   </ItemGroup>
+
+  <PropertyGroup Label="Publish">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+  </PropertyGroup>
+
+  <Target Name="ProduceTrimmingWarnings" AfterTargets="Build">
+    <CallTarget Targets="Publish"/>
+  </Target>
 
 </Project>

@@ -70,8 +70,8 @@
     DefaultValueExpression = "new SolidColorBrush(Colors.Black)",
 #endif
     Description = "Defines generated icon border brush.", Category = Category)]
-[DependencyProperty<System.Drawing.Icon>("Icon",
-    Description = "Defines generated icon. Use this for dynamically generated System.Drawing.Icons", Category = Category)]
+[DependencyProperty<Icon>("Icon", ClsCompliant = false,
+    Description = "Defines generated icon. Use this for dynamically generated content.", Category = Category)]
 #if HAS_WINUI || HAS_UNO
 [CLSCompliant(false)]
 #endif
@@ -90,7 +90,7 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
 
     internal TaskbarIcon? TaskbarIcon { get; set; }
 
-    partial void OnIconChanged(System.Drawing.Icon? oldValue, System.Drawing.Icon? newValue)
+    partial void OnIconChanged(Icon? oldValue, Icon? newValue)
     {
         oldValue?.Dispose();
 
@@ -113,6 +113,7 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
             return;
         }
 
+#if HAS_SYSTEM_DRAWING
         var size = Size;
         using var fontFamily =
             FontFamily?.ToSystemDrawingFontFamily() ??
@@ -142,6 +143,37 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
             textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
             baseImage: baseImage,
             size: size);
+#elif HAS_SKIA_SHARP
+        var size = Size;
+        // using var fontFamily =
+        //     FontFamily?.ToSystemDrawingFontFamily() ??
+        //     new System.Drawing.FontFamily(string.Empty);
+        // using var font = new SkiaSharp.SKFont(
+        //     fontFamily,
+        //     (float)FontSize,
+        //     FontStyle.ToSkiaSharpFontStyle(FontWeight));
+        //using var baseImage = TaskbarIcon.Icon?.ToBitmap();
+        using var pen = BorderBrush.ToSkiaSharpPaint(BorderThickness);
+        using var backgroundBrush = Background.ToSkiaSharpPaint();
+        using var foregroundBrush = Foreground.ToSkiaSharpPaint();
+
+        Icon = IconGenerator.Generate(
+            backgroundBrush: backgroundBrush,
+            foregroundBrush: foregroundBrush,
+            pen: BorderThickness > 0.01F
+                ? pen
+                : null,
+            backgroundType: BackgroundType,
+            cornerRadius: (float)CornerRadius.TopLeft,
+            rectangle: Margin == default
+                ? null
+                : Margin.ToSkiaSharpRectangle(width: size, height: size),
+            text: Text,
+            //font: font,
+            textRectangle: TextMargin.ToSkiaSharpRectangle(width: size, height: size),
+            //baseImage: baseImage,
+            size: size);
+#endif
     }
 
     /// <summary>

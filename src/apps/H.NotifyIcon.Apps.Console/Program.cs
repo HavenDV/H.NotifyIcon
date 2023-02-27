@@ -195,7 +195,7 @@ static void ShowCustom(TrayIcon trayIcon, string message, Icon icon)
     trayIcon.ShowNotification(
         title: "Custom",
         message: message,
-        customIcon: icon.Handle);
+        customIconHandle: icon.Handle);
     Console.WriteLine(nameof(trayIcon.ShowNotification));
 }
 

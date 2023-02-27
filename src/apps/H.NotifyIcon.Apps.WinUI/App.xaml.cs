@@ -9,6 +9,7 @@ public sealed partial class App
     #region Properties
 
     public static Window? MainWindow { get; set; }
+    public static bool HandleClosedEvents { get; set; } = true;
 
     #endregion
 
@@ -31,6 +32,14 @@ public sealed partial class App
             {
                 Content = new MainView(),
             },
+        };
+        MainWindow.Closed += (sender, args) =>
+        {
+            if (HandleClosedEvents)
+            {
+                args.Handled = true;
+                MainWindow.Hide();
+            }
         };
         MainWindow.Activate();
     }

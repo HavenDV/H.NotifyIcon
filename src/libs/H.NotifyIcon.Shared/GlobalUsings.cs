@@ -56,3 +56,8 @@ global using Windows.Storage;
 global using Windows.Foundation;
 global using FontStyles = Windows.UI.Text.FontStyle;
 #endif
+#if HAS_SYSTEM_DRAWING
+global using Icon = System.Drawing.Icon;
+#elif HAS_SKIA_SHARP
+global using Icon = SkiaSharp.SKBitmap;
+#endif

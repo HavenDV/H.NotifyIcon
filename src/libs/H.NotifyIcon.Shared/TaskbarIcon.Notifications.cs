@@ -18,7 +18,7 @@ public partial class TaskbarIcon
     /// <param name="title">The title to display on the balloon tip.</param>
     /// <param name="message">The text to display on the balloon tip.</param>
     /// <param name="icon">A symbol that indicates the severity.</param>
-    /// <param name="customIcon">A custom icon.</param>
+    /// <param name="customIconHandle">A custom icon.</param>
     /// <param name="largeIcon">True to allow large icons (Windows Vista and later).</param>
     /// <param name="sound">If false do not play the associated sound.</param>
     /// <param name="respectQuietTime">
@@ -60,7 +60,7 @@ public partial class TaskbarIcon
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
-        System.Drawing.Icon? customIcon = null,
+        nint? customIconHandle = null,
         bool largeIcon = false,
         bool sound = true,
         bool respectQuietTime = true,
@@ -73,7 +73,7 @@ public partial class TaskbarIcon
             title: title,
             message: message,
             icon: icon,
-            customIcon: customIcon?.Handle,
+            customIconHandle: customIconHandle,
             largeIcon: largeIcon,
             sound: sound,
             respectQuietTime: respectQuietTime,

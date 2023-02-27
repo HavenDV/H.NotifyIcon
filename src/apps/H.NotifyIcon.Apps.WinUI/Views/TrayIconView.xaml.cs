@@ -27,6 +27,7 @@ public sealed partial class TrayIconView
 
     public void ExitApplicationCommand_ExecuteRequested(object? _, ExecuteRequestedEventArgs args)
     {
+        App.HandleClosedEvents = false;
         TrayIcon.Dispose();
         App.MainWindow?.Close();
     }

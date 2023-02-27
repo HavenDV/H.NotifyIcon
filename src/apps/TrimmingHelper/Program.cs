@@ -1,1 +1,1 @@
-﻿Console.WriteLine("Hello, World!");
+﻿Console.WriteLine("Build or publish this app to see trimming warnings.");

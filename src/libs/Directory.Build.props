@@ -1,6 +1,13 @@
 <Project>
 
   <Import Project="..\Directory.Build.props" />
+  
+  <PropertyGroup Label="GraphicsLibrary">
+    <!-- Supported values: System.Drawing, SkiaSharp -->
+    <GraphicsLibrary>System.Drawing</GraphicsLibrary>
+    <DefineConstants Condition="'$(GraphicsLibrary)' == 'System.Drawing'">$(DefineConstants);HAS_SYSTEM_DRAWING</DefineConstants>
+    <DefineConstants Condition="'$(GraphicsLibrary)' == 'SkiaSharp'">$(DefineConstants);HAS_SKIA_SHARP</DefineConstants>
+  </PropertyGroup>
 
   <PropertyGroup Label="Signing">
     <SignAssembly>true</SignAssembly>
@@ -23,6 +30,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>nuget_icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/HavenDV/H.NotifyIcon</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup Label="Nuget">
@@ -46,7 +54,7 @@
     <NoWarn>$(NoWarn);CA1502;CA1506</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+  <PropertyGroup Label="Trimmable">
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>

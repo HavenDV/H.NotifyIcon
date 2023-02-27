@@ -4,8 +4,9 @@ public sealed partial class App
 {
     #region Properties
 
-    public static TaskbarIcon? TrayIcon { get; private set; }
-    public static Window? Window { get; set; }
+    public TaskbarIcon? TrayIcon { get; private set; }
+    public Window? Window { get; set; }
+    public bool HandleClosedEvents { get; set; } = true;
 
     #endregion
 
@@ -42,6 +43,14 @@ public sealed partial class App
         if (Window == null)
         {
             Window = new Window();
+            Window.Closed += (sender, args) =>
+            {
+                if (HandleClosedEvents)
+                {
+                    args.Handled = true;
+                    Window.Hide();
+                }
+            };
             Window.Show();
             return;
         }
@@ -58,8 +67,15 @@ public sealed partial class App
 
     private void ExitApplicationCommand_ExecuteRequested(object? _, ExecuteRequestedEventArgs args)
     {
+        HandleClosedEvents = false;
         TrayIcon?.Dispose();
         Window?.Close();
+
+        // https://github.com/HavenDV/H.NotifyIcon/issues/66
+        if (Window == null)
+        {
+            Environment.Exit(0);
+        }
     }
 
     #endregion

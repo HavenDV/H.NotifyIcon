@@ -531,7 +531,7 @@ public partial class TrayIcon : IDisposable
     /// <param name="title">The title to display on the balloon tip.</param>
     /// <param name="message">The text to display on the balloon tip.</param>
     /// <param name="icon">A symbol that indicates the severity.</param>
-    /// <param name="customIcon">A custom icon.</param>
+    /// <param name="customIconHandle">A custom icon.</param>
     /// <param name="largeIcon">True to allow large icons (Windows Vista and later).</param>
     /// <param name="sound">If false do not play the associated sound.</param>
     /// <param name="respectQuietTime">
@@ -572,7 +572,7 @@ public partial class TrayIcon : IDisposable
         string title,
         string message,
         NotificationIcon icon = NotificationIcon.None,
-        nint? customIcon = null,
+        nint? customIconHandle = null,
         bool largeIcon = false,
         bool sound = true,
         bool respectQuietTime = true,
@@ -588,7 +588,7 @@ public partial class TrayIcon : IDisposable
             additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
         }
 
-        var infoFlags = customIcon != null
+        var infoFlags = customIconHandle != null
             ? NOTIFY_ICON_INFOTIP_FLAGS.NIIF_USER
             : (NOTIFY_ICON_INFOTIP_FLAGS)icon;
         if (!sound)
@@ -604,9 +604,9 @@ public partial class TrayIcon : IDisposable
             infoFlags |= NOTIFY_ICON_INFOTIP_FLAGS.NIIF_LARGE_ICON;
         }
 
-        if (customIcon != null)
+        if (customIconHandle != null)
         {
-            var size = IconUtilities.GetSize(customIcon.Value);
+            var size = IconUtilities.GetSize(customIconHandle.Value);
             var requiredSize = IconUtilities.GetRequiredCustomIconSize(largeIcon);
             if (size != requiredSize)
             {
@@ -620,7 +620,7 @@ public partial class TrayIcon : IDisposable
             title: title,
             message: message,
             infoFlags: infoFlags,
-            balloonIconHandle: customIcon ?? 0,
+            balloonIconHandle: customIconHandle ?? 0,
             timeoutInMilliseconds: (uint)(timeout ?? TimeSpan.Zero).TotalMilliseconds))
         {
             throw new InvalidOperationException("Show notification failed.");

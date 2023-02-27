@@ -144,7 +144,11 @@ public partial class TaskbarIcon
                     {
                         SecondMeasureAfterPointerAction = true;
                     }
-                    var rectangle = CursorUtilities.CalculatePopupWindowPosition(cursorPosition, size.ToSystemDrawingSize());
+                    var rectangle = CursorUtilities.CalculatePopupWindowPosition(
+                        cursorPosition.X,
+                        cursorPosition.Y,
+                        (int)size.Width,
+                        (int)size.Height);
 
                     ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
                     WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
