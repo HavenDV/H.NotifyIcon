@@ -1,5 +1,4 @@
 ﻿#if HAS_SKIA_SHARP
-using System.Drawing;
 using SkiaSharp;
 
 namespace H.NotifyIcon;
@@ -7,12 +6,6 @@ namespace H.NotifyIcon;
 /// <summary>
 /// 
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
 [CLSCompliant(false)]
 public static class IconGenerator
 {
@@ -53,7 +46,7 @@ public static class IconGenerator
     /// Generates <paramref name="size"/> x <paramref name="size"/> standard icon with selected parameters.
     /// </summary>
     /// <returns></returns>
-    public static nint Generate(
+    public static SKBitmap Generate(
         SKPaint backgroundBrush,
         SKPaint foregroundBrush,
         SKPaint? pen = null,
@@ -62,13 +55,13 @@ public static class IconGenerator
         SKRect? rectangle = null,
         string? text = null,
         SKFont? font = null,
-        RectangleF? textRectangle = null,
+        SKRect? textRectangle = null,
         SKImage? baseImage = null,
         int size = 128)
     {
         backgroundBrush = backgroundBrush ?? throw new ArgumentNullException(nameof(backgroundBrush));
         
-        using var bitmap = baseImage == null
+        var bitmap = baseImage == null
             ? new SKBitmap(size, size)
             : SKBitmap.FromImage(baseImage);
         using var graphics = new SKCanvas(bitmap);
@@ -87,7 +80,7 @@ public static class IconGenerator
                     rect: rect,
                     paint: backgroundBrush);
                 break;
-
+        
             case BackgroundType.RoundedRectangle:
                 {
                     using var path = GetRoundedRectGraphicsPath(rect, cornerRadius);
@@ -96,14 +89,14 @@ public static class IconGenerator
                         paint: backgroundBrush);
                 }
                 break;
-
+        
             case BackgroundType.Ellipse:
                 graphics.DrawOval(
                     rect: rect,
                     paint: backgroundBrush);
                 break;
         }
-
+        
         if (pen != null)
         {
             switch (backgroundType)
@@ -113,7 +106,7 @@ public static class IconGenerator
                         rect: SKRect.Create((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height),
                         paint: pen);
                     break;
-
+        
                 case BackgroundType.RoundedRectangle:
                     {
                         using var path = GetRoundedRectGraphicsPath(rect, cornerRadius);
@@ -122,7 +115,7 @@ public static class IconGenerator
                             paint: pen);
                     }
                     break;
-
+        
                 case BackgroundType.Ellipse:
                     graphics.DrawOval(
                         rect: rect,
@@ -163,7 +156,7 @@ public static class IconGenerator
         //     }
         // }
 
-        return bitmap.Handle;
+        return bitmap;
     }
 }
 #endif

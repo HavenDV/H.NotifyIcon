@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿#if HAS_SYSTEM_DRAWING
+using System.Globalization;
 using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon;
@@ -113,3 +114,4 @@ internal static class ImageExtensions
         }
     }
 }
+#endif
