@@ -27,14 +27,23 @@ public partial class MainPage
         backgroundBrush.StrokeCap = SKStrokeCap.Round;
             
         using var foregroundBrush = new SKPaint();
-        backgroundBrush.Style = SKPaintStyle.Stroke;
-        backgroundBrush.Color = SKColors.White;
-        backgroundBrush.StrokeWidth = 24;
-        backgroundBrush.StrokeCap = SKStrokeCap.Round;
+        foregroundBrush.Style = SKPaintStyle.Stroke;
+        foregroundBrush.Color = SKColors.White;
+        foregroundBrush.StrokeWidth = 1;
+        foregroundBrush.StrokeCap = SKStrokeCap.Round;
+        foregroundBrush.TextSize = 48;
         
         canvas.DrawBitmap(IconGenerator.Generate(
             backgroundBrush: backgroundBrush,
-            foregroundBrush: foregroundBrush), info.Rect);
+            foregroundBrush: foregroundBrush,
+            text: "H",
+            font: new SKFont(SKTypeface.Default, size: 48F),
+            pen: new SKPaint
+            {
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 5,
+                Color = SKColors.Aqua,
+            }), info.Rect);
     }
 }
 

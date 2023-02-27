@@ -48,7 +48,7 @@ public static class IconGenerator
     /// <returns></returns>
     public static SKBitmap Generate(
         SKPaint backgroundBrush,
-        SKPaint foregroundBrush,
+        SKPaint? foregroundBrush = null,
         SKPaint? pen = null,
         BackgroundType backgroundType = BackgroundType.Ellipse,
         float cornerRadius = 0.0F,
@@ -124,37 +124,32 @@ public static class IconGenerator
             }
         }
 
-        // if (!string.IsNullOrWhiteSpace(text) &&
-        //     font != null)
-        // {
-        //     if (textRectangle == null)
-        //     {
-        //         var textSize = graphics.MeasureString(
-        //             text: text,
-        //             font: font,
-        //             layoutArea: new SizeF(size, size));
-        //
-        //         graphics.DrawText(
-        //             text: text,
-        //             font: font,
-        //             paint: foregroundBrush,
-        //             layoutRectangle: new RectangleF(
-        //                 size / 2 - textSize.Width / 2,
-        //                 size / 2 - textSize.Height / 2,
-        //                 textSize.Width,
-        //                 textSize.Height),
-        //             format: StringFormat.GenericTypographic);
-        //     }
-        //     else
-        //     {
-        //         graphics.DrawText(
-        //             text: text,
-        //             font: font,
-        //             paint: foregroundBrush,
-        //             layoutRectangle: textRectangle.Value,
-        //             format: StringFormat.GenericTypographic);
-        //     }
-        // }
+        if (!string.IsNullOrWhiteSpace(text) &&
+            font != null &&
+            foregroundBrush != null)
+        {
+            if (textRectangle == null)
+            {
+                var bounds = new SKRect();
+                _ = foregroundBrush.MeasureText(text, ref bounds);
+                
+                graphics.DrawText(
+                    text: text,
+                    font: font,
+                    paint: foregroundBrush,
+                    x: size / 2.0F - bounds.Left - bounds.Width / 2,
+                    y: size / 2.0F - bounds.Top - bounds.Height / 2);
+            }
+            else
+            {
+                graphics.DrawText(
+                    text: text,
+                    font: font,
+                    paint: foregroundBrush,
+                    x: textRectangle.Value.Left,
+                    y: textRectangle.Value.Top);
+            }
+        }
 
         return bitmap;
     }
