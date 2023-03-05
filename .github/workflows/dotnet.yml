@@ -8,7 +8,7 @@ jobs:
     with:
       os: windows-2022
       use-msbuild: true
-      workloads: macos
+      workloads: maui
       project-path: 
         # This is required for correct publishing to NuGet
         /target:libs\H_NotifyIcon
