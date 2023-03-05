@@ -77,7 +77,9 @@ public partial class TaskbarIcon
         {
             return;
         }
-
+        
+#if !MACOS
+        
         switch (args.MouseEvent)
         {
             case MouseEvent.MouseMove:
@@ -125,7 +127,8 @@ public partial class TaskbarIcon
             default:
                 throw new ArgumentOutOfRangeException(nameof(args), "Missing handler for mouse event flag: " + args.MouseEvent);
         }
-
+#endif
+        
         var cursorPosition = args.Point.ScaleWithDpi();
         var isLeftClickCommandInvoked = false;
 

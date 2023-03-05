@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.1.4">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

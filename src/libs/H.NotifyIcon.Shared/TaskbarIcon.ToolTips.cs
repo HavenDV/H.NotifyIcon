@@ -74,6 +74,8 @@ public partial class TaskbarIcon
 
     #endregion
 
+#if !MACOS
+    
     /// <summary>
     /// Indicates whether custom tooltips are supported, which depends
     /// on the OS. Windows Vista or higher is required in order to
@@ -81,6 +83,8 @@ public partial class TaskbarIcon
     /// </summary>
     public bool SupportsCustomToolTips => TrayIcon.SupportsCustomToolTips;
 
+#endif
+    
     /// <summary>
     /// Checks whether a non-tooltip popup is currently opened.
     /// </summary>
@@ -127,6 +131,7 @@ public partial class TaskbarIcon
     /// property which prevents this issue.</remarks>
     private void CreateCustomToolTip()
     {
+#if !MACOS
         // check if the item itself is a tooltip
         var tt = TrayToolTip as ToolTip;
 
@@ -170,6 +175,7 @@ public partial class TaskbarIcon
 
         // store a reference to the used tooltip
         TrayToolTipResolved = tt;
+#endif
     }
 
     /// <summary>
@@ -179,6 +185,7 @@ public partial class TaskbarIcon
     private void WriteToolTipSettings()
     {
         var text = ToolTipText;
+#if !MACOS
         if (TrayIcon.Version == IconVersion.Vista)
         {
             // we need to set a tooltip text to get tooltip events from the
@@ -190,6 +197,7 @@ public partial class TaskbarIcon
                 text = "ToolTip";
             }
         }
+#endif
 
         TrayIcon.UpdateToolTip(text ?? string.Empty);
     }

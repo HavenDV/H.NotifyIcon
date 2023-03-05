@@ -111,7 +111,8 @@ public partial class TaskbarIcon
                 {
                     var menu = new PopupMenu();
                     PopulateMenu(menu.Items, ((MenuFlyout)ContextFlyout).Items);
-
+                    
+#if !MACOS
                     var handle = TrayIcon.WindowHandle;
 
                     WindowUtilities.SetForegroundWindow(handle);
@@ -119,6 +120,7 @@ public partial class TaskbarIcon
                         ownerHandle: handle,
                         x: cursorPosition.X,
                         y: cursorPosition.Y);
+#endif
                 }
                 break;
 

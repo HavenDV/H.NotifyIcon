@@ -1,18 +1,36 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using EventGenerator;
+#if MACOS
+using CoreFoundation;
+using ObjCRuntime;
+#else
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using H.NotifyIcon.Interop;
+#endif
 
 namespace H.NotifyIcon.Core;
 
+#if MACOS
+/// <summary>
+/// Based on https://github.com/nwjs/nw.js/blob/3e895da916088e9858484b4690ce982dc3aeba32/src/api/tray/tray_mac.mm
+/// </summary>
+#else
 /// <summary>
 /// A Interop proxy to for a taskbar icon (NotifyIcon) that sits in the system's
 /// taskbar notification area ("system tray").
 /// </summary>
+#endif
 #if NET5_0_OR_GREATER
+#if MACOS || MACCATALYST
+[Advice("Starting with macos10.10 Soft-deprecation, forwards message to button, but will be gone in the future.")]
+[System.Runtime.Versioning.UnsupportedOSPlatform("macos10.10")]
+[System.Runtime.Versioning.UnsupportedOSPlatform("maccatalyst")]
+[System.Runtime.Versioning.SupportedOSPlatform("macos")]
+#else
 [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
+#endif
 #elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
 #else
 #error Target Framework is not supported
@@ -34,6 +52,43 @@ public partial class TrayIcon : IDisposable
     #region Properties
 
     /// <summary>
+    /// Indicates whether the taskbar icon has been created or not.
+    /// </summary>
+    public bool IsCreated { get; private set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string ToolTip { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Icon visibility.
+    /// </summary>
+    public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
+    
+#if MACOS
+    
+    /// <summary>
+    /// Internal macOS implementation.
+    /// </summary>
+    [CLSCompliant(false)]
+    public NSStatusBar? StatusBar { get; set; }
+    
+    /// <summary>
+    /// Internal macOS implementation.
+    /// </summary>
+    [CLSCompliant(false)]
+    public NSStatusItem? StatusItem { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [CLSCompliant(false)]
+    public NSImage? Icon { get; set; }
+    
+#else
+    
+    /// <summary>
     /// Unique ID. <br/>
     /// It will be used by the system to store your TrayIcon settings, 
     /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
@@ -42,11 +97,6 @@ public partial class TrayIcon : IDisposable
     /// Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.
     /// </remarks>
     public Guid Id { get; private set; }
-
-    /// <summary>
-    /// Indicates whether the taskbar icon has been created or not.
-    /// </summary>
-    public bool IsCreated { get; private set; }
 
     /// <summary>
     /// IsEnabled?
@@ -58,11 +108,6 @@ public partial class TrayIcon : IDisposable
     /// <c>Icon.Handle</c>.
     /// </summary>
     public nint Icon { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public string ToolTip { get; set; } = string.Empty;
 
     /// <summary>
     /// Handle to the window that receives notification messages associated with an icon in the
@@ -98,14 +143,13 @@ public partial class TrayIcon : IDisposable
     /// </summary>
     public bool UseStandardTooltip { get; set; }
 
-    /// <summary>
-    /// Icon visibility.
-    /// </summary>
-    public IconVisibility Visibility { get; set; } = IconVisibility.Visible;
-
+#endif
+    
     #endregion
 
     #region Constructors
+
+#if !MACOS
 
     /// <summary>
     /// Initializes the taskbar icon and registers a message listener
@@ -140,10 +184,14 @@ public partial class TrayIcon : IDisposable
     public TrayIcon(string name) : this(CreateUniqueGuidFromString(name))
     {
     }
-
+    
+#endif
+    
     #endregion
 
     #region Static methods
+
+#if !MACOS
 
     /// <summary>
     /// Creates a unique Guid for the given string using hashing.
@@ -208,7 +256,9 @@ public partial class TrayIcon : IDisposable
         return CreateUniqueGuidFromString($"{GetProcessPath()}_{postfix}");
     }
 
-#endregion
+#endif
+    
+    #endregion
 
     #region Public methods
 
@@ -224,6 +274,31 @@ public partial class TrayIcon : IDisposable
             return;
         }
 
+#if MACOS
+        DispatchQueue.MainQueue.DispatchAsync(() =>
+        {
+            StatusBar = new NSStatusBar();
+            StatusItem = StatusBar.CreateStatusItem(NSStatusItemLength.Variable);
+            StatusItem.Title = "Test";
+            StatusItem.;
+            StatusItem.HighlightMode = true;
+            // StatusItem.Target = new NSObject();
+            // StatusItem.Action = new Selector("onClick:");
+            if (Icon != null)
+            {
+                //StatusItem.Image = Icon;
+                //StatusItem.AlternateImage = Icon;
+            }
+        });
+        // NSStatusBar *status_bar = [NSStatusBar systemStatusBar];
+        // MacTrayObserver* observer = [[MacTrayObserver alloc] init];
+        // [observer setBacking:this];
+        // status_item_ = [status_bar statusItemWithLength:NSVariableStatusItemLength];
+        // [status_item_ setHighlightMode:YES];
+        // [status_item_ retain];
+        // [status_item_ setTarget:observer];
+        // [status_item_ setAction:@selector(onClick:)];
+#else
         if (WindowHandle == 0)
         {
             if (!MessageWindow.IsCreated)
@@ -269,6 +344,7 @@ public partial class TrayIcon : IDisposable
         Version = version;
         MessageWindow.Version = version;
         OnVersionChanged(version);
+#endif
 
         IsCreated = true;
         OnCreated();
@@ -297,14 +373,18 @@ public partial class TrayIcon : IDisposable
         }
         IsCreated = false;
 
+#if !MACOS
         if (!TrayIconMethods.TryDelete(Id))
         {
             return false;
         }
+#endif
         
         OnRemoved();
         return true;
     }
+
+#if !MACOS
 
     /// <summary>
     /// Update TrayIcon Id. <br/>
@@ -322,7 +402,7 @@ public partial class TrayIcon : IDisposable
         }
 
         Id = id;
-
+        
         if (wasCreated)
         {
             Create();
@@ -342,6 +422,8 @@ public partial class TrayIcon : IDisposable
         UpdateId(id);
     }
 
+#endif
+    
     /// <summary>
     /// Sets tooltip message. <br/>
     /// If <see cref="IsCreated"/> is <see langword="false"/>, then it simply sets the corresponding property.
@@ -358,13 +440,17 @@ public partial class TrayIcon : IDisposable
             return;
         }
 
+#if !MACOS
         if (!TrayIconMethods.TryModifyToolTip(Id, text))
         {
             throw new InvalidOperationException("UpdateToolTip failed.");
         }
+#endif
+        
         ToolTip = text;
     }
 
+#if !MACOS
     /// <summary>
     /// Set new icon data. <br/>
     /// If <see cref="IsCreated"/> is <see langword="false"/>, then it simply sets the corresponding property.
@@ -388,6 +474,7 @@ public partial class TrayIcon : IDisposable
         }
         Icon = handle;
     }
+#endif
 
     /// <summary>
     /// Set new icon state. <br/>
@@ -406,10 +493,12 @@ public partial class TrayIcon : IDisposable
             return;
         }
 
+#if !MACOS
         if (!TrayIconMethods.TryModifyState(Id, (uint)visibility))
         {
             throw new InvalidOperationException("UpdateState failed.");
         }
+#endif
         Visibility = visibility;
     }
 
@@ -432,6 +521,8 @@ public partial class TrayIcon : IDisposable
     {
         UpdateVisibility(IconVisibility.Hidden);
     }
+
+#if !MACOS
 
     /// <summary>
     /// Displays a balloon notification with the specified title,
@@ -574,6 +665,8 @@ public partial class TrayIcon : IDisposable
         }
     }
 
+#endif
+    
     #endregion
 
     #region Dispose
@@ -665,8 +758,14 @@ public partial class TrayIcon : IDisposable
         }
 
         IsDisposed = true;
+#if MACOS
+        Icon?.Dispose();
+        StatusItem?.Dispose();
+        StatusBar?.Dispose();
+#else
         MessageWindow.Dispose();
         _ = TryRemove();
+#endif        
     }
 
     #endregion

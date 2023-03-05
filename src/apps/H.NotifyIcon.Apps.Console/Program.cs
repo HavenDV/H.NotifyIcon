@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿#if !MACOS
+using System.Drawing;
 using H.NotifyIcon.Core;
 
 // ReSharper disable AccessToDisposedClosure
@@ -233,3 +234,4 @@ static void Hide(TrayIcon trayIcon)
     trayIcon.Hide();
     Console.WriteLine(nameof(trayIcon.Hide));
 }
+#endif
