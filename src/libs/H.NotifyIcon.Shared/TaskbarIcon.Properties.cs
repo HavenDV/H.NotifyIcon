@@ -5,6 +5,7 @@
     Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
 [DependencyProperty<string>("CustomName",
     Description = "Gets or sets the TrayIcon Name. Use this for second TrayIcon in same app.", Category = CategoryName)]
+#endif
 [DependencyProperty<Icon>("Icon", ClsCompliant = false,
     Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
 [DependencyProperty<ImageSource>("IconSource",

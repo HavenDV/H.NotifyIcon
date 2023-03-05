@@ -1,44 +1,31 @@
-﻿#if HAS_SYSTEM_DRAWING
-using System.Globalization;
-using H.NotifyIcon.Interop;
+﻿using System.Globalization;
 
 namespace H.NotifyIcon;
 
-internal static class ImageExtensions
+internal static partial class ImageExtensions
 {
-    private static System.Drawing.Icon ToSmallIcon(this Stream stream)
-    {
-        var iconSize = IconUtilities.GetRequiredCustomIconSize(largeIcon: false).ScaleWithDpi();
-
-        return new System.Drawing.Icon(stream, iconSize);
-    }
-
 #if HAS_WPF
-    internal static System.Drawing.Icon ToIcon(this Uri uri)
+    internal static Stream ToStream(this Uri uri)
 #else
-    internal static async Task<System.Drawing.Icon> ToIconAsync(this Uri uri)
+    internal static async Task<Stream> ToStreamAsync(this Uri uri)
 #endif
     {
 #if HAS_WPF
         if (uri.Scheme == Uri.UriSchemeFile)
         {
-            using var fileStream = File.OpenRead(uri.LocalPath);
-
-            return fileStream.ToSmallIcon();
+            return File.OpenRead(uri.LocalPath);
         }
 
         var streamInfo =
             Application.GetResourceStream(uri) ??
             throw new ArgumentException($"Uri: {uri} is not resolved.");
-        using var stream = streamInfo.Stream;
-        return stream.ToSmallIcon();
+        return streamInfo.Stream;
 #else
 #if IS_PACKABLE
         DesktopBridge.Helpers helpers = new DesktopBridge.Helpers();
         if (helpers.IsRunningAsUwp()) {
             var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-            using var stream = await file.OpenStreamForReadAsync().ConfigureAwait(true);
-            return stream.ToSmallIcon();
+            return await file.OpenStreamForReadAsync().ConfigureAwait(true);
         } else {
 #endif
             string prefix = "";
@@ -48,8 +35,7 @@ internal static class ImageExtensions
             // additional schemes, like ms-appdata could be added here
             // see: https://learn.microsoft.com/en-us/windows/uwp/app-resources/uri-schemes
             var absolutePath = $"{prefix}{uri.LocalPath}";
-            using var fileStream = File.OpenRead(absolutePath);
-            return fileStream.ToSmallIcon();
+            return File.OpenRead(absolutePath);
 #if IS_PACKABLE
         }
 #endif
@@ -57,8 +43,40 @@ internal static class ImageExtensions
     }
 
 #if HAS_WPF
+    public static Stream ToStream(this ImageSource imageSource)
+#else
+    public static async Task<Stream> ToStreamAsync(this ImageSource imageSource)
+#endif
+    {
+        switch(imageSource)
+        {
+            case BitmapImage bitmapImage:
+                {
+                    var uri = bitmapImage.UriSource;
+                    
+#if HAS_WPF
+                    return uri.ToStream();
+#else
+                    return await uri.ToStreamAsync().ConfigureAwait(true);
+#endif
+                }
+#if HAS_WPF
+            case BitmapFrame frame:
+                {
+                    var uri = new Uri(frame.ToString(CultureInfo.InvariantCulture));
 
-    public static System.Drawing.Icon ToIcon(this BitmapFrame frame)
+                    return uri.ToStream();
+                }
+#endif
+
+            default:
+                throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
+        }
+    }
+    
+#if HAS_WPF
+
+    public static Stream ToStream(this BitmapFrame frame)
     {
         var encoder = new PngBitmapEncoder();
         encoder.Frames.Add(frame);
@@ -67,51 +85,14 @@ internal static class ImageExtensions
         encoder.Save(stream);
 
         var iconBytes = stream.ToArray().ConvertPngToIco();
-        using var iconStream = new MemoryStream(iconBytes);
         
-        return iconStream.ToSmallIcon();
+        return new MemoryStream(iconBytes);
     }
 
-    public static System.Drawing.Icon ToIcon(this BitmapSource bitmap)
+    public static Stream ToStream(this BitmapSource bitmap)
     {
-        return BitmapFrame.Create(bitmap).ToIcon();
+        return BitmapFrame.Create(bitmap).ToStream();
     }
 
 #endif
-
-#if HAS_WPF
-    public static System.Drawing.Icon? ToIcon(this ImageSource imageSource)
-#else
-    public static async Task<System.Drawing.Icon?> ToIconAsync(this ImageSource imageSource)
-#endif
-    {
-        switch(imageSource)
-        {
-            case null:
-                return null;
-
-            case BitmapImage bitmapImage:
-                {
-                    var uri = bitmapImage.UriSource;
-                    
-#if HAS_WPF
-                    return uri.ToIcon();
-#else
-                    return await uri.ToIconAsync().ConfigureAwait(true);
-#endif
-                }
-#if HAS_WPF
-            case BitmapFrame frame:
-                {
-                    var uri = new Uri(frame.ToString(CultureInfo.InvariantCulture));
-
-                    return uri.ToIcon();
-                }
-#endif
-
-            default:
-                throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
-        }
-    }
 }
-#endif
