@@ -8,6 +8,10 @@
     Description = "A command that is being executed if the tray icon is being left-clicked.", Category = CategoryName)]
 [DependencyProperty<object>("LeftClickCommandParameter",
     Description = "The target of the command that is fired if the notify icon is clicked with the left mouse button.", Category = CategoryName)]
+[DependencyProperty<ICommand>("RightClickCommand",
+    Description = "A command that is being executed if the tray icon is being right-clicked.", Category = CategoryName)]
+[DependencyProperty<object>("RightClickCommandParameter",
+    Description = "The target of the command that is fired if the notify icon is clicked with the right mouse button.", Category = CategoryName)]
 [DependencyProperty<bool>("NoLeftClickDelay",
     Description = "Set to true to make left clicks work without delay.", Category = CategoryName)]
 #if HAS_WPF
@@ -15,6 +19,8 @@
     Description = "The target of the command that is fired if the notify icon is double clicked.", Category = CategoryName)]
 [DependencyProperty<IInputElement>("LeftClickCommandTarget",
     Description = "The target of the command that is fired if the notify icon is clicked with the left mouse button.", Category = CategoryName)]
+[DependencyProperty<IInputElement>("RightClickCommandTarget",
+    Description = "The target of the command that is fired if the notify icon is clicked with the right mouse button.", Category = CategoryName)]
 #endif
 [RoutedEvent("TrayLeftMouseDown", RoutedEventStrategy.Bubble,
     Description = "Occurs when the user presses the left mouse button.", Category = CategoryName)]
@@ -86,6 +92,11 @@ public partial class TaskbarIcon
                 break;
             case MouseEvent.IconRightMouseUp:
                 _ = OnTrayRightMouseUp();
+#if HAS_WPF
+                RightClickCommand?.TryExecute(RightClickCommandParameter, RightClickCommandTarget ?? this);
+#else
+                RightClickCommand?.TryExecute(RightClickCommandParameter);
+#endif
                 break;
             case MouseEvent.IconLeftMouseUp:
                 _ = OnTrayLeftMouseUp();
