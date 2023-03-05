@@ -2,7 +2,7 @@
 
 namespace H.NotifyIcon;
 
-internal static partial class ImageExtensions
+internal static class ImageExtensions
 {
 #if HAS_WPF
     internal static Stream ToStream(this Uri uri)

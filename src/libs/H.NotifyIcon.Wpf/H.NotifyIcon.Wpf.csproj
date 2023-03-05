@@ -53,6 +53,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)' == 'net4.6'" />
   </ItemGroup>
 
   <ItemGroup>

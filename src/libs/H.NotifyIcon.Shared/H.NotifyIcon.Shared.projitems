@@ -22,11 +22,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.AttachedProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.MouseEvents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DpiUtilities.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\FromSystemDrawingExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImageExtensions.SystemDrawing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ToSkiaSharpExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ToSystemDrawingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PngToIcoConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\SkiaSharp\StreamExtensions.SkiaSharp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\SkiaSharp\ToSkiaSharpExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\System.Drawing\FromSystemDrawingExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\System.Drawing\StreamExtensions.SystemDrawing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\System.Drawing\ToSystemDrawingExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImageExtensions.cs" />

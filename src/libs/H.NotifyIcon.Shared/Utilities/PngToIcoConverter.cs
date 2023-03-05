@@ -1,12 +1,11 @@
-﻿#if HAS_SYSTEM_DRAWING
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static class PngToIcoConverter
 {
     public static byte[] ConvertPngToIco(this byte[] data)
     {
         using var inStream = new MemoryStream(data);
-        using var source = System.Drawing.Image.FromStream(inStream);
+        var metadata = inStream.GetMetadata();
         using var outStream = new MemoryStream();
         
         // Header
@@ -25,9 +24,9 @@ internal static class PngToIcoConverter
         // Image entry
         {
             // Width
-            outStream.WriteByte((byte)source.Width);
+            outStream.WriteByte((byte)metadata.Width);
             // Height
-            outStream.WriteByte((byte)source.Height);
+            outStream.WriteByte((byte)metadata.Height);
             // Number of colors (0 = No palette)
             outStream.WriteByte(0);
             // Reserved
@@ -36,7 +35,7 @@ internal static class PngToIcoConverter
             outStream.WriteByte(1);
             outStream.WriteByte(0);
             // Bits per pixel
-            var bppAsLittle = IntToLittle2(System.Drawing.Image.GetPixelFormatSize(source.PixelFormat));
+            var bppAsLittle = IntToLittle2(metadata.BitsPerPixel);
             outStream.Write(bppAsLittle, 0, 2);
             // Size of data in bytes
             var byteCountAsLittle = IntToLittle4(data.Length);
@@ -69,4 +68,3 @@ internal static class PngToIcoConverter
         return b;
     }
 }
-#endif
