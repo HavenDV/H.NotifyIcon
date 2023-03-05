@@ -109,7 +109,7 @@ public partial class TaskbarIcon
                 break;
             case MouseEvent.IconDoubleClick:
                 // cancel single click timer
-                SingleClickTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                SingleClickTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 // bubble event
                 _ = OnTrayMouseDoubleClick();
 #if HAS_WPF
@@ -144,7 +144,7 @@ public partial class TaskbarIcon
 #endif
                     ShowTrayPopup(cursorPosition);
                 };
-                SingleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
+                SingleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
                 isLeftClickCommandInvoked = true;
             }
             else
@@ -170,7 +170,7 @@ public partial class TaskbarIcon
 #endif
                     ShowContextMenu(cursorPosition);
                 };
-                SingleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
+                SingleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
                 isLeftClickCommandInvoked = true;
             }
             else
@@ -192,7 +192,7 @@ public partial class TaskbarIcon
                 LeftClickCommand?.TryExecute(LeftClickCommandParameter);
 #endif
             };
-            SingleClickTimer?.Change(DoubleClickWaitTime, Timeout.Infinite);
+            SingleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
         }
     }
 
