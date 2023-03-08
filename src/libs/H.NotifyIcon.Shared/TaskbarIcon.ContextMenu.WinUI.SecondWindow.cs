@@ -54,8 +54,8 @@ public partial class TaskbarIcon
             (int)size.Height);
 
         ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
-        WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
-        WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
+        _ = WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
+        _ = WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
     }
 
     private void PrepareContextMenuWindow()

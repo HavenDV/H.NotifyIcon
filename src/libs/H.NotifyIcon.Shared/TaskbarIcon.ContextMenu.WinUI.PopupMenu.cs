@@ -16,7 +16,7 @@ public partial class TaskbarIcon
 #if !MACOS
         var handle = TrayIcon.WindowHandle;
 
-        WindowUtilities.SetForegroundWindow(handle);
+        _ = WindowUtilities.SetForegroundWindow(handle);
         menu.Show(
             ownerHandle: handle,
             x: cursorPosition.X,
@@ -79,6 +79,5 @@ public partial class TaskbarIcon
     }
 
     #endregion
-
 }
 #endif

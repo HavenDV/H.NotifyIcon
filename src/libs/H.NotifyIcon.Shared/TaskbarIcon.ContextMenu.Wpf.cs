@@ -53,10 +53,10 @@ public partial class TaskbarIcon
         // activate the context menu or the message window to track deactivation - otherwise, the context menu
         // does not close if the user clicks somewhere else. With the message window
         // fallback, the context menu can't receive keyboard events - should not happen though
-        WindowUtilities.SetForegroundWindow(handle);
+        _ = WindowUtilities.SetForegroundWindow(handle);
 
         // bubble event
-        OnTrayContextMenuOpen();
+        _ = OnTrayContextMenuOpen();
     }
 
     #endregion

@@ -54,7 +54,7 @@ public partial class TaskbarIcon
         }
 
         // bubble event
-        OnTrayContextMenuOpen();
+        _ = OnTrayContextMenuOpen();
     }
     
     #endregion
