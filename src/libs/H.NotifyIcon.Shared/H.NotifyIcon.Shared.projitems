@@ -11,6 +11,10 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContextMenuMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ContextMenu.WinUI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ContextMenu.WinUI.PopupMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ContextMenu.WinUI.SecondWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.ContextMenu.Wpf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.GeneratedIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GeneratedIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaskbarIcon.KeyboardEvents.cs" />
