@@ -13,7 +13,7 @@ public static class DesktopBridgeHelpers
     /// <returns></returns>
     public static unsafe bool IsRunningAsUwp()
     {
-        if (IsWindows7OrLower)
+        if (Environment.OSVersion.Version <= new Version(major: 6, minor: 1))
         {
             return false;
         }
@@ -23,19 +23,8 @@ public static class DesktopBridgeHelpers
         _ = PInvoke.GetCurrentPackageFullName(&length, empty);
 
         var text = stackalloc char[(int)length];
-        var result = PInvoke.GetCurrentPackageFullName(&length, text);
+        var error = PInvoke.GetCurrentPackageFullName(&length, text);
 
-        return (long)result != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
-    }
-
-    private static bool IsWindows7OrLower
-    {
-        get
-        {
-            int versionMajor = Environment.OSVersion.Version.Major;
-            int versionMinor = Environment.OSVersion.Version.Minor;
-            double version = versionMajor + (double)versionMinor / 10;
-            return version <= 6.1;
-        }
+        return (long)error != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
     }
 }
