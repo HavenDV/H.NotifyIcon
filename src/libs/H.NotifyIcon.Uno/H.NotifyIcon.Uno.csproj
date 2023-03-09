@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DesktopBridge.Helpers" Version="1.2.2" />
     <PackageReference Include="Uno.UI" Version="4.7.44" />
   </ItemGroup>
   

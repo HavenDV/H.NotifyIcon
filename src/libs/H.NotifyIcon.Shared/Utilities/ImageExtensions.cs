@@ -22,8 +22,7 @@ internal static class ImageExtensions
         return streamInfo.Stream;
 #else
 #if IS_PACKABLE
-        DesktopBridge.Helpers helpers = new DesktopBridge.Helpers();
-        if (helpers.IsRunningAsUwp()) {
+        if (Interop.DesktopBridgeHelpers.IsRunningAsUwp()) {
             var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
             return await file.OpenStreamForReadAsync().ConfigureAwait(true);
         } else {
