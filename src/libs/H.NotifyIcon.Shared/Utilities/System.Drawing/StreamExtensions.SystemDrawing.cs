@@ -12,6 +12,11 @@ internal static class StreamExtensions
         return new Icon(stream, iconSize);
     }
     
+    internal static System.Drawing.Bitmap ToBitmap(this Stream stream)
+    {
+        return new System.Drawing.Bitmap(stream);
+    }
+    
     internal static (int Width, int Height, int BitsPerPixel) GetMetadata(this Stream stream)
     {
         using var image = System.Drawing.Image.FromStream(stream);

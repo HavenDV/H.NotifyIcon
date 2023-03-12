@@ -52,7 +52,7 @@ public static class IconGenerator
     /// Generates <paramref name="size"/> x <paramref name="size"/> standard icon with selected parameters.
     /// </summary>
     /// <returns></returns>
-    public static Icon Generate(
+    public static Bitmap Generate(
         Brush backgroundBrush,
         Brush foregroundBrush,
         Pen? pen = null,
@@ -65,7 +65,7 @@ public static class IconGenerator
         Image? baseImage = null,
         int size = 128)
     {
-        using var bitmap = baseImage == null
+        var bitmap = baseImage == null
             ? new Bitmap(size, size)
             : new Bitmap(baseImage, size, size);
         using var graphics = Graphics.FromImage(bitmap);
@@ -159,7 +159,7 @@ public static class IconGenerator
             }
         }
 
-        return Icon.FromHandle(bitmap.GetHicon());
+        return bitmap;
     }
 }
 #endif

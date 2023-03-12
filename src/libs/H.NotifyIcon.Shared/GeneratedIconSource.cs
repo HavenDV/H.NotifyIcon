@@ -70,12 +70,10 @@
     DefaultValueExpression = "new SolidColorBrush(Colors.Black)",
 #endif
     Description = "Defines generated icon border brush.", Category = Category)]
-[DependencyProperty<Icon>("Icon", ClsCompliant = false,
-    Description = "Defines generated icon. Use this for dynamically generated content.", Category = Category)]
 #if HAS_WINUI || HAS_UNO
 [CLSCompliant(false)]
 #endif
-public sealed partial class GeneratedIcon : DependencyObject, IDisposable
+public sealed partial class GeneratedIconSource : BitmapSource
 {
     #region Constants
 
@@ -86,33 +84,10 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
 
     #endregion
 
-    #region Properties
-
-    internal TaskbarIcon? TaskbarIcon { get; set; }
-
-    partial void OnIconChanged(Icon? oldValue, Icon? newValue)
-    {
-        oldValue?.Dispose();
-
-        if (TaskbarIcon == null)
-        {
-            return;
-        }
-
-        TaskbarIcon.UpdateIcon(newValue);
-    }
-
-    #endregion
-
     #region Methods
 
-    internal void Refresh()
+    internal System.Drawing.Bitmap Refresh()
     {
-        if (TaskbarIcon == null)
-        {
-            return;
-        }
-
 #if HAS_SYSTEM_DRAWING
         var size = Size;
         using var fontFamily =
@@ -122,12 +97,13 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
             fontFamily,
             (float)FontSize,
             FontStyle.ToSystemDrawingFontStyle(FontWeight));
-        using var baseImage = TaskbarIcon.Icon?.ToBitmap();
+        //using var baseImageStream = Background?.ToStream();
+        //using var baseImage = baseImageStream?.ToBitmap();
         using var pen = BorderBrush.ToSystemDrawingPen(BorderThickness);
         using var backgroundBrush = Background.ToSystemDrawingBrush();
         using var foregroundBrush = Foreground.ToSystemDrawingBrush();
 
-        using var bitmap = IconGenerator.Generate(
+        return IconGenerator.Generate(
             backgroundBrush: backgroundBrush,
             foregroundBrush: foregroundBrush,
             pen: BorderThickness > 0.01F
@@ -141,10 +117,8 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
             text: Text,
             font: font,
             textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
-            baseImage: baseImage,
+            baseImage: null,
             size: size);
-        
-        Icon = Icon.FromHandle(bitmap.GetHicon());
 #elif HAS_SKIA_SHARP
         var size = Size;
         // using var fontFamily =
@@ -178,13 +152,37 @@ public sealed partial class GeneratedIcon : DependencyObject, IDisposable
 #endif
     }
 
+    #endregion
+
+#if HAS_WPF
+
     /// <summary>
     /// 
     /// </summary>
-    public void Dispose()
+    /// <returns></returns>
+    protected override Freezable CreateInstanceCore()
     {
-        Icon?.Dispose();
+        using var bitmap = Refresh();
+        var bits = bitmap.LockBits(
+            rect: new System.Drawing.Rectangle(
+                x: 0,
+                y: 0,
+                width: bitmap.Width,
+                height: bitmap.Height), 
+            flags: System.Drawing.Imaging.ImageLockMode.ReadOnly,
+            bitmap.PixelFormat);
+        
+        return Create(
+            pixelWidth: bitmap.Width,
+            pixelHeight: bitmap.Height,
+            dpiX: 96,
+            dpiY: 96,
+            pixelFormat: PixelFormats.Rgb24,
+            palette: null,
+            buffer: bits.Scan0,
+            bufferSize: bits.Width * bits.Height,
+            stride: bits.Stride);
     }
 
-    #endregion
+#endif
 }
