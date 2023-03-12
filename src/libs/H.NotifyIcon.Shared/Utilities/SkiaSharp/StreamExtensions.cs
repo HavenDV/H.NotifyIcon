@@ -11,7 +11,12 @@ internal static class StreamExtensions
 
         return Icon.Decode(stream, new SKImageInfo(width: iconSize.Width, height: iconSize.Height));
     }
-    
+
+    internal static Bitmap ToBitmap(this Stream stream)
+    {
+        return Bitmap.Decode(stream);
+    }
+
     internal static (int Width, int Height, int BitsPerPixel) GetMetadata(this Stream stream)
     {
         using var image = SKBitmap.Decode(stream);

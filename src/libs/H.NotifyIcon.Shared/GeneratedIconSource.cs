@@ -72,9 +72,7 @@
     Description = "Defines generated icon border brush.", Category = Category)]
 [DependencyProperty<ImageSource>("BackgroundSource",
     Description = "Resolves an image source and uses this as background.", Category = Category)]
-#if HAS_WINUI || HAS_UNO
 [CLSCompliant(false)]
-#endif
 public sealed partial class GeneratedIconSource : BitmapSource
 {
     #region Constants
@@ -101,31 +99,9 @@ public sealed partial class GeneratedIconSource : BitmapSource
     /// 
     /// </summary>
     /// <returns></returns>
-    public Icon ToIcon()
-    {
-        using var bitmap = Generate();
-
-        return Icon.FromHandle(bitmap.GetHicon());
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     public async Task<Bitmap> ToBitmapAsync(CancellationToken cancellationToken = default)
     {
         return await GenerateAsync(cancellationToken).ConfigureAwait(true);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public async Task<Icon> ToIconAsync(CancellationToken cancellationToken = default)
-    {
-        using var bitmap = await GenerateAsync(cancellationToken).ConfigureAwait(true);
-
-        return Icon.FromHandle(bitmap.GetHicon());
     }
 
     internal void Refresh()

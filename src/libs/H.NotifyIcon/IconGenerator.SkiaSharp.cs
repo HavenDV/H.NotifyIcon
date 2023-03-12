@@ -55,14 +55,14 @@ public static class IconGenerator
         string? text = null,
         SKFont? font = null,
         SKRect? textRectangle = null,
-        SKImage? baseImage = null,
+        SKBitmap? baseImage = null,
         int size = 128)
     {
         backgroundBrush = backgroundBrush ?? throw new ArgumentNullException(nameof(backgroundBrush));
         
         var bitmap = baseImage == null
             ? new SKBitmap(size, size)
-            : SKBitmap.FromImage(baseImage);
+            : baseImage;
         using var graphics = new SKCanvas(bitmap);
         //graphics.CompositingQuality = CompositingQuality.HighQuality;
         //graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;

@@ -2,6 +2,28 @@
 
 public sealed partial class GeneratedIconSource : BitmapSource
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Icon ToIcon()
+    {
+        using var bitmap = Generate();
+
+        return Icon.FromHandle(bitmap.GetHicon());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public async Task<Icon> ToIconAsync(CancellationToken cancellationToken = default)
+    {
+        using var bitmap = await GenerateAsync(cancellationToken).ConfigureAwait(true);
+
+        return Icon.FromHandle(bitmap.GetHicon());
+    }
+
     internal Bitmap Generate(Bitmap? backgroundBitmap = null)
     {
         var size = Size;
