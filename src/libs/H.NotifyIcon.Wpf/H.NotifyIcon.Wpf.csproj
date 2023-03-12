@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.6;net6.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.6.2;net6.0-windows;net7.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <DefineConstants>$(DefineConstants);HAS_WPF</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
@@ -53,7 +53,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)' == 'net4.6'" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)' == 'net4.6.2'" />
   </ItemGroup>
 
   <ItemGroup>
