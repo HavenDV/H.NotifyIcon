@@ -14,26 +14,26 @@
             TrayContextMenuOpen="MyNotifyIcon_TrayContextMenuOpen"
             PreviewTrayContextMenuOpen="MyNotifyIcon_PreviewTrayContextMenuOpen"
             >
-            <tb:TaskbarIcon.GeneratedIcon>
-                <tb:GeneratedIcon
+            <tb:TaskbarIcon.IconSource>
+                <tb:GeneratedIconSource
                     Text="❤️"
                     BorderThickness="5"
                     FontSize="46"
                     >
-                    <tb:GeneratedIcon.Foreground>
+                    <tb:GeneratedIconSource.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
                             <GradientStop Color="White" />
                             <GradientStop Color="Red" />
                         </LinearGradientBrush>
-                    </tb:GeneratedIcon.Foreground>
-                    <tb:GeneratedIcon.BorderBrush>
+                    </tb:GeneratedIconSource.Foreground>
+                    <tb:GeneratedIconSource.BorderBrush>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
                             <GradientStop Color="White" />
                             <GradientStop Color="Red" />
                         </LinearGradientBrush>
-                    </tb:GeneratedIcon.BorderBrush>
-                </tb:GeneratedIcon>
-            </tb:TaskbarIcon.GeneratedIcon>
+                    </tb:GeneratedIconSource.BorderBrush>
+                </tb:GeneratedIconSource>
+            </tb:TaskbarIcon.IconSource>
 
             <!--  Set a simple context menu  -->
             <!--  the data context of the context menu is the NotifyIcon itself (see more about this in DataBinding samples)  -->
