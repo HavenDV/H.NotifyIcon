@@ -24,9 +24,9 @@ public sealed partial class NotificationView
                 "Error" => NotificationIcon.Error,
                 _ => NotificationIcon.None,
             },
-            customIcon: selectedIcon switch
+            customIconHandle: selectedIcon switch
             {
-                "Custom" => TrayIcon.Icon,
+                "Custom" => TrayIcon.Icon?.Handle,
                 _ => null,
             },
             //largeIcon: LargeIconCheckBox.IsChecked ?? false,

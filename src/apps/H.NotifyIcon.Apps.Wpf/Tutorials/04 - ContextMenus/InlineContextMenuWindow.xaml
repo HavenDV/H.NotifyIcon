@@ -18,7 +18,7 @@
                 <tb:GeneratedIconSource
                     Text="❤️"
                     BorderThickness="5"
-                    FontSize="46"
+                    FontSize="36"
                     >
                     <tb:GeneratedIconSource.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">

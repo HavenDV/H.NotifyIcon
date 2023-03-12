@@ -1,97 +1,52 @@
-﻿using System.Globalization;
+﻿namespace H.NotifyIcon;
 
-namespace H.NotifyIcon;
-
-internal static class ImageExtensions
+internal static partial class ImageExtensions
 {
-#if HAS_WPF
-    internal static Stream ToStream(this Uri uri)
-#else
-    internal static async Task<Stream> ToStreamAsync(this Uri uri)
-#endif
+    public static Bitmap ToBitmap(this ImageSource imageSource)
     {
-#if HAS_WPF
-        if (uri.Scheme == Uri.UriSchemeFile)
+        if (imageSource is GeneratedIconSource generatedIconSource)
         {
-            return File.OpenRead(uri.LocalPath);
+            return generatedIconSource.ToBitmap();
         }
 
-        var streamInfo =
-            Application.GetResourceStream(uri) ??
-            throw new ArgumentException($"Uri: {uri} is not resolved.");
-        return streamInfo.Stream;
-#else
-#if IS_PACKABLE
-        if (Interop.DesktopBridgeHelpers.IsRunningAsUwp()) {
-            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-            return await file.OpenStreamForReadAsync().ConfigureAwait(true);
-        } else {
-#endif
-            string prefix = "";
-            if (uri.Scheme == "ms-appx" || uri.Scheme == "ms-appx-web") {
-                prefix = AppContext.BaseDirectory;
-            }
-            // additional schemes, like ms-appdata could be added here
-            // see: https://learn.microsoft.com/en-us/windows/uwp/app-resources/uri-schemes
-            var absolutePath = $"{prefix}{uri.LocalPath}";
-            return File.OpenRead(absolutePath);
-#if IS_PACKABLE
-        }
-#endif
-#endif
+        using var stream = imageSource.ToStream();
+
+        return stream.ToBitmap();
     }
 
-#if HAS_WPF
-    public static Stream ToStream(this ImageSource imageSource)
-#else
-    public static async Task<Stream> ToStreamAsync(this ImageSource imageSource)
-#endif
+    public static Icon ToIcon(this ImageSource imageSource)
     {
-        switch(imageSource)
+        if (imageSource is GeneratedIconSource generatedIconSource)
         {
-            case BitmapImage bitmapImage:
-                {
-                    var uri = bitmapImage.UriSource;
-                    
-#if HAS_WPF
-                    return uri.ToStream();
-#else
-                    return await uri.ToStreamAsync().ConfigureAwait(true);
-#endif
-                }
-#if HAS_WPF
-            case BitmapFrame frame:
-                {
-                    var uri = new Uri(frame.ToString(CultureInfo.InvariantCulture));
-
-                    return uri.ToStream();
-                }
-#endif
-
-            default:
-                throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
+            return generatedIconSource.ToIcon();
         }
-    }
-    
-#if HAS_WPF
 
-    public static Stream ToStream(this BitmapFrame frame)
+        using var stream = imageSource.ToStream();
+
+        return stream.ToSmallIcon();
+    }
+
+    public static async Task<Bitmap> ToBitmapAsync(this ImageSource imageSource, CancellationToken cancellationToken = default)
     {
-        var encoder = new PngBitmapEncoder();
-        encoder.Frames.Add(frame);
+        if (imageSource is GeneratedIconSource generatedIconSource)
+        {
+            return await generatedIconSource.ToBitmapAsync(cancellationToken).ConfigureAwait(true);
+        }
 
-        using var stream = new MemoryStream();
-        encoder.Save(stream);
+        using var stream = await imageSource.ToStreamAsync(cancellationToken).ConfigureAwait(true);
 
-        var iconBytes = stream.ToArray().ConvertPngToIco();
-        
-        return new MemoryStream(iconBytes);
+        return stream.ToBitmap();
     }
 
-    public static Stream ToStream(this BitmapSource bitmap)
+    public static async Task<Icon> ToIconAsync(this ImageSource imageSource, CancellationToken cancellationToken = default)
     {
-        return BitmapFrame.Create(bitmap).ToStream();
-    }
+        if (imageSource is GeneratedIconSource generatedIconSource)
+        {
+            return await generatedIconSource.ToIconAsync(cancellationToken).ConfigureAwait(true);
+        }
 
-#endif
+        using var stream = await imageSource.ToStreamAsync(cancellationToken).ConfigureAwait(true);
+
+        return stream.ToSmallIcon();
+    }
 }

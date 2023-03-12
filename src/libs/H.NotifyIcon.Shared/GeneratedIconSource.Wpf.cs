@@ -1,5 +1,4 @@
-﻿#if HAS_WPF
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// 
@@ -34,4 +33,3 @@ public sealed partial class GeneratedIconSource
             stride: bits.Stride);
     }
 }
-#endif

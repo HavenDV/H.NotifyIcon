@@ -8,8 +8,6 @@
 #endif
 [DependencyProperty<Icon>("Icon", ClsCompliant = false,
     Description = "Gets or sets the icon to be displayed. Use this for dynamically generated System.Drawing.Icons.", Category = CategoryName)]
-[DependencyProperty<ImageSource>("IconSource",
-    Description = "Resolves an image source and updates the Icon property accordingly.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
     #region Constants
@@ -55,36 +53,6 @@ public partial class TaskbarIcon
 #if !MACOS
         TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
 #endif
-    }
-    
-#if HAS_WPF
-    partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
-#else
-    async partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
-#endif
-    {
-        if (newValue == null)
-        {
-            Icon = null;
-            GeneratedIcon?.Refresh();
-            return;
-        }
-
-#if HAS_SYSTEM_DRAWING
-#if HAS_WPF
-        using var stream = newValue.ToStream();
-#else
-        using var stream = await newValue.ToStreamAsync().ConfigureAwait(true);
-#endif
-        
-#if MACOS
-        TrayIcon.Icon = NSImage.FromStream(stream);
-#else
-        Icon = stream.ToSmallIcon();
-#endif
-#endif
-
-        GeneratedIcon?.Refresh();
     }
 
     #endregion

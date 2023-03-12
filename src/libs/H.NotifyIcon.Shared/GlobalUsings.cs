@@ -59,6 +59,8 @@ global using FontStyles = Windows.UI.Text.FontStyle;
 #endif
 #if HAS_SYSTEM_DRAWING
 global using Icon = System.Drawing.Icon;
+global using Bitmap = System.Drawing.Bitmap;
 #elif HAS_SKIA_SHARP
 global using Icon = SkiaSharp.SKBitmap;
+global using Bitmap = SkiaSharp.SKBitmap;
 #endif

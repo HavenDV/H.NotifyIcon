@@ -72,12 +72,12 @@ TaskbarIcon.ForceCreate(bool enablesEfficiencyMode = true) // default value
 Example 1: <img width="15" alt="image" src="https://user-images.githubusercontent.com/3002068/163721411-1388f2b4-a039-4b4a-8114-f74bfc8835ba.png">
 ```xml
 <tb:TaskbarIcon>
-    <tb:TaskbarIcon.GeneratedIcon>
-        <tb:GeneratedIcon
+    <tb:TaskbarIcon.IconSource>
+        <tb:GeneratedIconSource
             Text="❤️"
             Foreground="Red"
             />
-    </tb:TaskbarIcon.GeneratedIcon>
+    </tb:TaskbarIcon.IconSource>
 </tb:TaskbarIcon>
 ```
 Example 2: <img width="14" alt="image" src="https://user-images.githubusercontent.com/3002068/163721399-cbfd0286-d2d4-4b40-b3f3-388c9613f535.png">
@@ -85,21 +85,21 @@ Example 2: <img width="14" alt="image" src="https://user-images.githubuserconten
 <tb:TaskbarIcon
     IconSource="/Icons/Error.ico"
     >
-    <tb:TaskbarIcon.GeneratedIcon>
-        <tb:GeneratedIcon
+    <tb:TaskbarIcon.IconSource>
+        <tb:GeneratedIconSource
             Text="5"
             Foreground="Black"
             FontSize="36"
             FontWeight="Bold"
             />
-    </tb:TaskbarIcon.GeneratedIcon>
+    </tb:TaskbarIcon.IconSource>
 </tb:TaskbarIcon>
 ```
 Example 3: <img width="19" alt="image" src="https://user-images.githubusercontent.com/3002068/163721367-dc6878df-3ec2-4288-b699-cf664894e1b1.png">
 ```xml
 <tb:TaskbarIcon>
-    <tb:TaskbarIcon.GeneratedIcon>
-        <tb:GeneratedIcon
+    <tb:TaskbarIcon.IconSource>
+        <tb:GeneratedIconSource
             Text="❤️"
             Foreground="Red"
             FontFamily="Segoe UI Emoji"
@@ -107,32 +107,32 @@ Example 3: <img width="19" alt="image" src="https://user-images.githubuserconten
             FontWeight="Bold"
             FontSize="38"
             />
-    </tb:TaskbarIcon.GeneratedIcon>
+    </tb:TaskbarIcon.IconSource>
 </tb:TaskbarIcon>
 ```
 Example 4: <img width="18" alt="image" src="https://user-images.githubusercontent.com/3002068/163723782-8b135584-8b35-401e-926e-0fe0e7aa801e.png">
 ```xml
 <tb:TaskbarIcon>
-    <tb:TaskbarIcon.GeneratedIcon>
-        <tb:GeneratedIcon
+    <tb:TaskbarIcon.IconSource>
+        <tb:GeneratedIconSource
             Text="❤️"
             BorderThickness="5"
             FontSize="46"
             >
-            <tb:GeneratedIcon.Foreground>
+            <tb:GeneratedIconSource.Foreground>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
                     <GradientStop Color="White" />
                     <GradientStop Color="Red" />
                 </LinearGradientBrush>
-            </tb:GeneratedIcon.Foreground>
-            <tb:GeneratedIcon.BorderBrush>
+            </tb:GeneratedIconSource.Foreground>
+            <tb:GeneratedIconSource.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="128,128">
                     <GradientStop Color="White" />
                     <GradientStop Color="Red" />
                 </LinearGradientBrush>
-            </tb:GeneratedIcon.BorderBrush>
-        </tb:GeneratedIcon>
-    </tb:TaskbarIcon.GeneratedIcon>
+            </tb:GeneratedIconSource.BorderBrush>
+        </tb:GeneratedIconSource>
+    </tb:TaskbarIcon.IconSource>
 </tb:TaskbarIcon>
 ```
 

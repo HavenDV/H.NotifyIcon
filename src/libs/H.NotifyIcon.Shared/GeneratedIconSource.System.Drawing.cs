@@ -2,7 +2,7 @@
 
 public sealed partial class GeneratedIconSource : BitmapSource
 {
-    internal System.Drawing.Bitmap Generate()
+    internal Bitmap Generate(Bitmap? backgroundBitmap = null)
     {
         var size = Size;
         using var fontFamily =
@@ -12,8 +12,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
             fontFamily,
             (float)FontSize,
             FontStyle.ToSystemDrawingFontStyle(FontWeight));
-        //using var baseImageStream = Background?.ToStream();
-        //using var baseImage = baseImageStream?.ToBitmap();
+        using var baseImage = backgroundBitmap ?? BackgroundSource?.ToBitmap();
         using var pen = BorderBrush.ToSystemDrawingPen(BorderThickness);
         using var backgroundBrush = Background.ToSystemDrawingBrush();
         using var foregroundBrush = Foreground.ToSystemDrawingBrush();
@@ -32,7 +31,16 @@ public sealed partial class GeneratedIconSource : BitmapSource
             text: Text,
             font: font,
             textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
-            baseImage: null,
+            baseImage: baseImage,
             size: size);
+    }
+
+    internal async Task<Bitmap> GenerateAsync(CancellationToken cancellationToken = default)
+    {
+        using var baseImage = BackgroundSource == null
+            ? null
+            : await BackgroundSource.ToBitmapAsync(cancellationToken).ConfigureAwait(true);
+
+        return Generate(baseImage);
     }
 }

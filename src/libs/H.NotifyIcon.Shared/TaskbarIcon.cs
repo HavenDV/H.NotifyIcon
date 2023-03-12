@@ -260,7 +260,6 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
             TrayIcon.Dispose();
             Icon?.Dispose();
-            GeneratedIcon?.Dispose();
         }
     }
 
