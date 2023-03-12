@@ -1,5 +1,4 @@
-﻿#if HAS_SYSTEM_DRAWING
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace H.NotifyIcon;
@@ -162,4 +161,3 @@ public static class IconGenerator
         return bitmap;
     }
 }
-#endif

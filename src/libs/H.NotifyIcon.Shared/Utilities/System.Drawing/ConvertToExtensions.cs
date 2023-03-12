@@ -1,5 +1,4 @@
-﻿#if HAS_SYSTEM_DRAWING
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static class ToSystemDrawingExtensions
 {
@@ -90,4 +89,3 @@ internal static class ToSystemDrawingExtensions
     }
 
 }
-#endif

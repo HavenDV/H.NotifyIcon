@@ -1,5 +1,4 @@
-﻿#if HAS_SKIA_SHARP
-using H.NotifyIcon.Interop;
+﻿using H.NotifyIcon.Interop;
 using SkiaSharp;
 
 namespace H.NotifyIcon;
@@ -20,4 +19,3 @@ internal static class StreamExtensions
         return (image.Width, image.Height, image.BytesPerPixel * 8);
     }
 }
-#endif

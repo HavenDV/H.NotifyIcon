@@ -32,6 +32,4 @@ popups, context menus, and balloon messages. It can be used directly in code or 
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
   </ItemGroup>
 
-  <Import Project="..\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems" Label="Shared" />
-
 </Project>

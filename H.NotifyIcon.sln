@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{FCF55611-6E25-4F1E-8E88-705896171E71}"
 	ProjectSection(SolutionItems) = preProject
 		src\libs\Directory.Build.props = src\libs\Directory.Build.props
+		src\libs\Directory.Build.targets = src\libs\Directory.Build.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90AF73FD-213A-4054-B99B-58E1864D7142}"
@@ -22,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon", "src\libs\H.NotifyIcon\H.NotifyIcon.csproj", "{0485EE3E-3745-4E79-A396-19AE493FA9D3}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "H.NotifyIcon.Shared", "src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.shproj", "{D97885EC-80E4-4343-8E68-3A2699B77633}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.WinUI", "src\libs\H.NotifyIcon.WinUI\H.NotifyIcon.WinUI.csproj", "{2C93516E-87C6-4212-8A85-95D85AB23098}"
 EndProject
@@ -56,7 +55,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "H.NotifyIcon.Apps.Uno.Share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrimmingHelper", "src\apps\TrimmingHelper\TrimmingHelper.csproj", "{A04E983D-5631-4C68-B34A-796970E060C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.NotifyIcon.Apps.Maui", "src\apps\H.NotifyIcon.Apps.Maui\H.NotifyIcon.Apps.Maui.csproj", "{9101D0AE-1E5D-4834-B7AF-81D8FFD80083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.Apps.Maui", "src\apps\H.NotifyIcon.Apps.Maui\H.NotifyIcon.Apps.Maui.csproj", "{9101D0AE-1E5D-4834-B7AF-81D8FFD80083}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -317,7 +316,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7AC63864-7638-41C4-969C-D3197EF2BED9} = {FCF55611-6E25-4F1E-8E88-705896171E71}
 		{0485EE3E-3745-4E79-A396-19AE493FA9D3} = {FCF55611-6E25-4F1E-8E88-705896171E71}
-		{D97885EC-80E4-4343-8E68-3A2699B77633} = {FCF55611-6E25-4F1E-8E88-705896171E71}
 		{2C93516E-87C6-4212-8A85-95D85AB23098} = {FCF55611-6E25-4F1E-8E88-705896171E71}
 		{665598EE-10CA-4842-B169-F5A6EF483C7F} = {52FA15AF-CAE7-4822-9975-F5E812EDEF33}
 		{85B419CD-F64D-459E-A287-2C4775E75FD6} = {FCF55611-6E25-4F1E-8E88-705896171E71}
@@ -336,12 +334,7 @@ Global
 		SolutionGuid = {C139BD97-A4F7-411B-99B1-824CE1ABA403}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{2c93516e-87c6-4212-8a85-95d85ab23098}*SharedItemsImports = 5
 		src\apps\H.NotifyIcon.Apps.Uno.Shared\H.NotifyIcon.Apps.Uno.Shared.projitems*{418d1399-62c8-481b-a954-517b189eca70}*SharedItemsImports = 13
-		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{7ac63864-7638-41c4-969c-d3197ef2bed9}*SharedItemsImports = 5
-		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{81360aa9-0dd6-4a49-8d6e-05ad3160391e}*SharedItemsImports = 5
-		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{85b419cd-f64d-459e-a287-2c4775e75fd6}*SharedItemsImports = 5
 		src\apps\H.NotifyIcon.Apps.Uno.Shared\H.NotifyIcon.Apps.Uno.Shared.projitems*{abd64093-cfbc-4561-83fc-595dd16ef742}*SharedItemsImports = 5
-		src\libs\H.NotifyIcon.Shared\H.NotifyIcon.Shared.projitems*{d97885ec-80e4-4343-8e68-3a2699b77633}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

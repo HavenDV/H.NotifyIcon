@@ -1,5 +1,4 @@
-﻿#if HAS_SKIA_SHARP
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace H.NotifyIcon;
 
@@ -154,4 +153,3 @@ public static class IconGenerator
         return bitmap;
     }
 }
-#endif

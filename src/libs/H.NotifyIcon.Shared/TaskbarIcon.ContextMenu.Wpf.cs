@@ -1,5 +1,4 @@
-﻿#if HAS_WPF
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 public partial class TaskbarIcon
 {
@@ -83,4 +82,3 @@ public partial class TaskbarIcon
 
     #endregion
 }
-#endif

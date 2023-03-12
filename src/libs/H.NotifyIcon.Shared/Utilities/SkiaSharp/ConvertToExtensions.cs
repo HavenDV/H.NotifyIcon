@@ -1,5 +1,4 @@
-﻿#if HAS_SKIA_SHARP
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace H.NotifyIcon;
 
@@ -110,4 +109,3 @@ internal static class ToSkiaSharpExtensions
     }
 
 }
-#endif

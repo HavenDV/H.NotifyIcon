@@ -1,5 +1,4 @@
-﻿#if HAS_SYSTEM_DRAWING
-using H.NotifyIcon.Interop;
+﻿using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon;
 
@@ -24,4 +23,3 @@ internal static class StreamExtensions
         return (image.Width, image.Height, System.Drawing.Image.GetPixelFormatSize(image.PixelFormat));
     }
 }
-#endif

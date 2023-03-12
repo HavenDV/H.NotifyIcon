@@ -1,5 +1,4 @@
-﻿#if !HAS_WPF
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 [DependencyProperty<ContextMenuMode>("ContextMenuMode", DefaultValue = ContextMenuMode.PopupMenu,
     Description = "Defines the context menu mode.", Category = CategoryName)]
@@ -98,4 +97,3 @@ public partial class TaskbarIcon
     
     #endregion
 }
-#endif

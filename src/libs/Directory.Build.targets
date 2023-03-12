@@ -1,0 +1,38 @@
+<Project>
+
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_CORE_CODE'))">
+    <Compile Include="$(MSBuildThisFileDirectory)H.NotifyIcon.Shared\**\*.cs" />
+    <None Include="$(MSBuildThisFileDirectory)H.NotifyIcon.Shared\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('HAS_CORE_CODE'))">
+    <None Include="$(MSBuildThisFileDirectory)H.NotifyIcon\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(GraphicsLibrary)' != 'System.Drawing'">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.System.Drawing.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\System.Drawing\*.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(GraphicsLibrary)' != 'SkiaSharp'">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.SkiaSharp.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\SkiaSharp\*.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_WPF'))">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.Wpf.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\Wpf\*.*" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_WINUI'))">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.WinUI.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\WinUI\*.*" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_UNO'))">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.Uno.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\Uno\*.*" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_UNO')) AND !$(DefineConstants.Contains('HAS_WINUI'))">
+    <Compile Remove="$(MSBuildThisFileDirectory)**\*.WinRT.*" />
+    <Compile Remove="$(MSBuildThisFileDirectory)**\WinRT\*.*" />
+  </ItemGroup>
+  
+</Project>

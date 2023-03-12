@@ -51,12 +51,12 @@
     <AnalysisMode>All</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CA1502;CA1506;CA1010</NoWarn>
+    <NoWarn>$(NoWarn);CA1502;CA1506;CA1010;CA1822</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Label="Trimmable">
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
-
+  
 </Project>

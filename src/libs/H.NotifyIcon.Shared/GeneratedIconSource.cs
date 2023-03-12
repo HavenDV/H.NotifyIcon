@@ -86,103 +86,12 @@ public sealed partial class GeneratedIconSource : BitmapSource
 
     #region Methods
 
-    internal System.Drawing.Bitmap Refresh()
+    internal void Refresh()
     {
-#if HAS_SYSTEM_DRAWING
-        var size = Size;
-        using var fontFamily =
-            FontFamily?.ToSystemDrawingFontFamily() ??
-            new System.Drawing.FontFamily(string.Empty);
-        using var font = new System.Drawing.Font(
-            fontFamily,
-            (float)FontSize,
-            FontStyle.ToSystemDrawingFontStyle(FontWeight));
-        //using var baseImageStream = Background?.ToStream();
-        //using var baseImage = baseImageStream?.ToBitmap();
-        using var pen = BorderBrush.ToSystemDrawingPen(BorderThickness);
-        using var backgroundBrush = Background.ToSystemDrawingBrush();
-        using var foregroundBrush = Foreground.ToSystemDrawingBrush();
-
-        return IconGenerator.Generate(
-            backgroundBrush: backgroundBrush,
-            foregroundBrush: foregroundBrush,
-            pen: BorderThickness > 0.01F
-                ? pen
-                : null,
-            backgroundType: BackgroundType,
-            cornerRadius: (float)CornerRadius.TopLeft,
-            rectangle: Margin == default
-                ? null
-                : Margin.ToSystemDrawingRectangleF(width: size, height: size),
-            text: Text,
-            font: font,
-            textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
-            baseImage: null,
-            size: size);
-#elif HAS_SKIA_SHARP
-        var size = Size;
-        // using var fontFamily =
-        //     FontFamily?.ToSystemDrawingFontFamily() ??
-        //     new System.Drawing.FontFamily(string.Empty);
-        // using var font = new SkiaSharp.SKFont(
-        //     fontFamily,
-        //     (float)FontSize,
-        //     FontStyle.ToSkiaSharpFontStyle(FontWeight));
-        //using var baseImage = TaskbarIcon.Icon?.ToBitmap();
-        using var pen = BorderBrush.ToSkiaSharpPaint(BorderThickness);
-        using var backgroundBrush = Background.ToSkiaSharpPaint();
-        using var foregroundBrush = Foreground.ToSkiaSharpPaint();
-
-        Icon = IconGenerator.Generate(
-            backgroundBrush: backgroundBrush,
-            foregroundBrush: foregroundBrush,
-            pen: BorderThickness > 0.01F
-                ? pen
-                : null,
-            backgroundType: BackgroundType,
-            cornerRadius: (float)CornerRadius.TopLeft,
-            rectangle: Margin == default
-                ? null
-                : Margin.ToSkiaSharpRectangle(width: size, height: size),
-            text: Text,
-            //font: font,
-            textRectangle: TextMargin.ToSkiaSharpRectangle(width: size, height: size),
-            //baseImage: baseImage,
-            size: size);
+#if HAS_WPF
+        OnChanged();
 #endif
     }
 
     #endregion
-
-#if HAS_WPF
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    protected override Freezable CreateInstanceCore()
-    {
-        using var bitmap = Refresh();
-        var bits = bitmap.LockBits(
-            rect: new System.Drawing.Rectangle(
-                x: 0,
-                y: 0,
-                width: bitmap.Width,
-                height: bitmap.Height), 
-            flags: System.Drawing.Imaging.ImageLockMode.ReadOnly,
-            bitmap.PixelFormat);
-        
-        return Create(
-            pixelWidth: bitmap.Width,
-            pixelHeight: bitmap.Height,
-            dpiX: 96,
-            dpiY: 96,
-            pixelFormat: PixelFormats.Rgb24,
-            palette: null,
-            buffer: bits.Scan0,
-            bufferSize: bits.Width * bits.Height,
-            stride: bits.Stride);
-    }
-
-#endif
 }

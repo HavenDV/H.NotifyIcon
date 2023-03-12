@@ -1,5 +1,4 @@
-﻿#if HAS_WINUI && !HAS_UNO
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 public partial class TaskbarIcon
 {
@@ -80,6 +79,7 @@ public partial class TaskbarIcon
         var handle = WindowNative.GetWindowHandle(window);
         WindowUtilities.MakeTransparent(handle);
 
+#if !HAS_UNO
         var id = Win32Interop.GetWindowIdFromWindow(handle);
         var appWindow = AppWindow.GetFromWindowId(id);
         appWindow.IsShownInSwitchers = false;
@@ -90,6 +90,7 @@ public partial class TaskbarIcon
         presenter.IsResizable = false;
         presenter.IsAlwaysOnTop = true;
         presenter.SetBorderAndTitleBar(false, false);
+#endif
 
         var flyout = new MenuFlyout
         {
@@ -156,7 +157,9 @@ public partial class TaskbarIcon
 
         ContextMenuWindow = window;
         ContextMenuWindowHandle = handle;
+#if !HAS_UNO
         ContextMenuAppWindow = appWindow;
+#endif
         ContextMenuFlyout = flyout;
     }
 
@@ -186,7 +189,8 @@ public partial class TaskbarIcon
             height += item.DesiredSize.Height + additionalHeight;
         }
 
-        var scale = flyout.XamlRoot.RasterizationScale;
+        var scale = flyout.XamlRoot?.RasterizationScale ?? 1.0;
+
         return new Size(
             width: Math.Round(scale * width
                 + (firstMeasure ? 128.0 : 0.0) // ??
@@ -194,6 +198,5 @@ public partial class TaskbarIcon
             height: Math.Round(scale * height + 4.0)); // borders
     }
 
-    #endregion
+#endregion
 }
-#endif
