@@ -35,6 +35,10 @@
             LeftClickCommandTarget="{Binding ElementName=txtInput}"
             DoubleClickCommand="ApplicationCommands.Paste"
             DoubleClickCommandTarget="{Binding ElementName=txtInput}"
+            MiddleClickCommand="ApplicationCommands.Paste"
+            MiddleClickCommandTarget="{Binding ElementName=txtInput}"
+            RightClickCommand="ApplicationCommands.Paste"
+            RightClickCommandTarget="{Binding ElementName=txtInput}"
             />
 
 
