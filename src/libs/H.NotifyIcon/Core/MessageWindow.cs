@@ -222,6 +222,7 @@ public partial class MessageWindow : IDisposable
             case PInvoke.WM_LBUTTONDBLCLK:
                 IsDoubleClick = true;
                 _ = OnMouseEventReceived(MouseEvent.IconDoubleClick, point);
+                _ = OnMouseEventReceived(MouseEvent.IconLeftDoubleClick, point);
                 break;
 
             case PInvoke.WM_RBUTTONDOWN:
@@ -233,7 +234,7 @@ public partial class MessageWindow : IDisposable
                 break;
 
             case PInvoke.WM_RBUTTONDBLCLK:
-                //double click with right mouse button - do not trigger event
+                _ = OnMouseEventReceived(MouseEvent.IconRightDoubleClick, point);
                 break;
 
             case PInvoke.WM_MBUTTONDOWN:
@@ -245,7 +246,7 @@ public partial class MessageWindow : IDisposable
                 break;
 
             case PInvoke.WM_MBUTTONDBLCLK:
-                //double click with middle mouse button - do not trigger event
+                _ = OnMouseEventReceived(MouseEvent.IconMiddleDoubleClick, point);
                 break;
 
             case PInvoke.NIN_BALLOONSHOW:

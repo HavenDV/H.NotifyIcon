@@ -12,24 +12,34 @@ public enum MouseEvent
     MouseMove,
 
     /// <summary>
-    /// The right mouse button was clicked.
-    /// </summary>
-    IconRightMouseDown,
-
-    /// <summary>
     /// The left mouse button was clicked.
     /// </summary>
     IconLeftMouseDown,
 
+    /// <summary>
+    /// The left mouse button was released.
+    /// </summary>
+    IconLeftMouseUp,
+
+    /// <summary>
+    /// The left mouse button was double clicked.
+    /// </summary>
+    IconLeftDoubleClick,
+
+    /// <summary>
+    /// The right mouse button was clicked.
+    /// </summary>
+    IconRightMouseDown,
+    
     /// <summary>
     /// The right mouse button was released.
     /// </summary>
     IconRightMouseUp,
 
     /// <summary>
-    /// The left mouse button was released.
+    /// The right mouse button was double clicked.
     /// </summary>
-    IconLeftMouseUp,
+    IconRightDoubleClick,
 
     /// <summary>
     /// The middle mouse button was clicked.
@@ -40,6 +50,11 @@ public enum MouseEvent
     /// The middle mouse button was released.
     /// </summary>
     IconMiddleMouseUp,
+
+    /// <summary>
+    /// The middle mouse button was double clicked.
+    /// </summary>
+    IconMiddleDoubleClick,
 
     /// <summary>
     /// The taskbar icon was double clicked.

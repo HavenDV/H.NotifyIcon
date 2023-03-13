@@ -12,6 +12,12 @@
     Description = "Occurs when the user releases the right mouse button.", Category = CategoryName)]
 [RoutedEvent("TrayMiddleMouseUp", RoutedEventStrategy.Bubble,
     Description = "Occurs when the user releases the middle mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayLeftMouseDoubleClick", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the left mouse button was double clicked.", Category = CategoryName)]
+[RoutedEvent("TrayRightMouseDoubleClick", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the right mouse button was double clicked.", Category = CategoryName)]
+[RoutedEvent("TrayMiddleMouseDoubleClick", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the middle mouse button was double clicked.", Category = CategoryName)]
 [RoutedEvent("TrayMouseDoubleClick", RoutedEventStrategy.Bubble,
     Description = "Occurs when the user double-clicks the taskbar icon.", Category = CategoryName)]
 [RoutedEvent("TrayMouseMove", RoutedEventStrategy.Bubble,
@@ -92,6 +98,17 @@ public partial class TaskbarIcon
                 MiddleClickCommand?.TryExecute(MiddleClickCommandParameter);
 #endif
                 break;
+            
+            case MouseEvent.IconLeftDoubleClick:
+                _ = OnTrayLeftMouseDoubleClick();
+                break;
+            case MouseEvent.IconRightDoubleClick:
+                _ = OnTrayRightMouseDoubleClick();
+                break;
+            case MouseEvent.IconMiddleDoubleClick:
+                _ = OnTrayMiddleMouseDoubleClick();
+                break;
+            
             case MouseEvent.IconDoubleClick:
                 // cancel single click timer
                 SingleClickTimer.Change(Timeout.Infinite, Timeout.Infinite);
