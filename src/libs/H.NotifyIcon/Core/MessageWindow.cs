@@ -171,6 +171,12 @@ public partial class MessageWindow : IDisposable
         return new Point((int)value & 0xFFFF, ((int)value >> 16) & 0xFFFF);
     }
 
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/win32/inputdev/mouse-input-notifications
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="wParam"></param>
+    /// <param name="lParam"></param>
     private void ProcessWindowMessage(uint msg, WPARAM wParam, LPARAM lParam)
     {
         if (msg != CallbackMessageId)
