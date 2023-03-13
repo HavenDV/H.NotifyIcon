@@ -237,12 +237,10 @@ public partial class MessageWindow : IDisposable
                 break;
 
             case PInvoke.WM_MBUTTONDOWN:
-            case PInvoke.WM_NCMBUTTONDOWN:
                 _ = OnMouseEventReceived(MouseEvent.IconMiddleMouseDown, point);
                 break;
 
             case PInvoke.WM_MBUTTONUP:
-            case PInvoke.WM_NCMBUTTONUP:
                 _ = OnMouseEventReceived(MouseEvent.IconMiddleMouseUp, point);
                 break;
 
