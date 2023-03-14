@@ -55,6 +55,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
+    <ProjectReference Include="..\..\libs\H.GeneratedIcons.SkiaSharp\H.GeneratedIcons.SkiaSharp.csproj" />
 	</ItemGroup>
 
 </Project>

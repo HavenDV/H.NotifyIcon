@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
-    <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;IS_PACKABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;IS_PACKABLE;HAS_PLATFORM_CODE</DefineConstants>
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);Uno0001;CA1010;CA1031;CS8002</NoWarn>
   </PropertyGroup>

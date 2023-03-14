@@ -39,7 +39,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
         using var backgroundBrush = Background.ToSystemDrawingBrush();
         using var foregroundBrush = Foreground.ToSystemDrawingBrush();
 
-        return IconGenerator.Generate(
+        return SystemDrawingIconGenerator.Generate(
             backgroundBrush: backgroundBrush,
             foregroundBrush: foregroundBrush,
             pen: BorderThickness > 0.01F

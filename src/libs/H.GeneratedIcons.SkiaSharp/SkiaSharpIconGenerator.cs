@@ -6,7 +6,7 @@ namespace H.NotifyIcon;
 /// 
 /// </summary>
 [CLSCompliant(false)]
-public static class IconGenerator
+public static class SkiaSharpIconGenerator
 {
     private static SKPath GetRoundedRectGraphicsPath(SKRect bounds, float radius)
     {

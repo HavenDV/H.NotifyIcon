@@ -2,8 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.6.2;netstandard2.0;net6.0;net7.0</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);HAS_CORE_CODE</DefineConstants>
     <NoWarn>$(NoWarn);CA1031;CA1003;CA1502;CS3016;CS8981</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet">
+    <Description>This package allows to create TrayIcon for any platform. </Description>
+    <PackageTags>tray-icon;notify-icon;interop;console;ecoqos;eco;qos;quality-of-service;efficiency-mode</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,24 +32,10 @@
     <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.188-beta">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="2.88.3" Condition="'$(GraphicsLibrary)' == 'SkiaSharp'" />
   </ItemGroup>
 
-  <PropertyGroup Label="NuGet">
-    <Description>This package allows to create TrayIcon for any platform. </Description>
-    <PackageTags>tray-icon;notify-icon;interop;console;ecoqos;eco;qos;quality-of-service;efficiency-mode</PackageTags>
-  </PropertyGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' AND '$(GraphicsLibrary)' == 'System.Drawing'">
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' AND '$(GraphicsLibrary)' == 'System.Drawing'">
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0' AND '$(GraphicsLibrary)' == 'System.Drawing'">
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  <ItemGroup>
+    <ProjectReference Include="..\H.GeneratedIcons.System.Drawing\H.GeneratedIcons.System.Drawing.csproj" />
   </ItemGroup>
 
 </Project>

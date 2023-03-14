@@ -12,7 +12,7 @@ namespace H.NotifyIcon;
 #else
 #error Target Framework is not supported
 #endif
-public static class IconGenerator
+public static class SystemDrawingIconGenerator
 {
     private static GraphicsPath GetRoundedRectGraphicsPath(RectangleF bounds, float radius)
     {

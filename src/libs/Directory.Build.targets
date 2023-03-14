@@ -1,19 +1,15 @@
 <Project>
 
-  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_CORE_CODE'))">
+  <ItemGroup Condition="$(DefineConstants.Contains('HAS_PLATFORM_CODE'))">
     <Compile Include="$(MSBuildThisFileDirectory)H.NotifyIcon.Shared\**\*.cs" />
     <None Include="$(MSBuildThisFileDirectory)H.NotifyIcon.Shared\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(DefineConstants.Contains('HAS_CORE_CODE'))">
-    <None Include="$(MSBuildThisFileDirectory)H.NotifyIcon\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(GraphicsLibrary)' != 'System.Drawing'">
+  <ItemGroup Condition="$(DefineConstants.Contains('HAS_PLATFORM_CODE')) AND '$(GraphicsLibrary)' != 'System.Drawing'">
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.System.Drawing.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\System.Drawing\*.*" />
   </ItemGroup>
-  <ItemGroup Condition="'$(GraphicsLibrary)' != 'SkiaSharp'">
+  <ItemGroup Condition="$(DefineConstants.Contains('HAS_PLATFORM_CODE')) AND '$(GraphicsLibrary)' != 'SkiaSharp'">
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.SkiaSharp.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\SkiaSharp\*.*" />
   </ItemGroup>

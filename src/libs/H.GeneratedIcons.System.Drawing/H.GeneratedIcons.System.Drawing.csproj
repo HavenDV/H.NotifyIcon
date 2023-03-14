@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net4.6.2;netstandard2.0;net6.0;net7.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net4.6.2'">
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup Label="NuGet">
+    <Description>This package allows to generate icons.</Description>
+    <PackageTags>tray-icon;notify-icon;interop;console;generator;icon;system;drawing</PackageTags>
+  </PropertyGroup>
+
+</Project>

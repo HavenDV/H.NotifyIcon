@@ -33,7 +33,7 @@ public partial class MainPage
         foregroundBrush.StrokeCap = SKStrokeCap.Round;
         foregroundBrush.TextSize = 48;
         
-        canvas.DrawBitmap(IconGenerator.Generate(
+        canvas.DrawBitmap(SkiaSharpIconGenerator.Generate(
             backgroundBrush: backgroundBrush,
             foregroundBrush: foregroundBrush,
             text: "H",

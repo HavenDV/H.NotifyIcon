@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0-windows10.0.17763.0;net7.0-windows10.0.17763.0</TargetFrameworks>
     <UseWinUI>true</UseWinUI>
-    <DefineConstants>$(DefineConstants);HAS_WINUI;IS_PACKABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_WINUI;IS_PACKABLE;HAS_PLATFORM_CODE</DefineConstants>
     <NoWarn>$(NoWarn);CS3021;CA1031;CS8002</NoWarn>
     <Nullable>enable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>

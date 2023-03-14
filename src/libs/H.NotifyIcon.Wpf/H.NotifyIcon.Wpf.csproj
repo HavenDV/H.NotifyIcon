@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net4.6.2;net6.0-windows;net7.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <DefineConstants>$(DefineConstants);HAS_WPF</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_WPF;HAS_PLATFORM_CODE</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
     <NoWarn>$(NoWarn);WPF0005;WPF0041;CA1030;CA1031</NoWarn>
     <Nullable>enable</Nullable>
