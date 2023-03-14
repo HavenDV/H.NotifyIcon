@@ -1,5 +1,4 @@
-﻿#if !HAS_WPF
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 /// <summary>
 /// Defines context menu modes.
@@ -24,4 +23,3 @@ public enum ContextMenuMode
     /// </summary>
     ActiveWindow,
 }
-#endif

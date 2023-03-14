@@ -1,5 +1,4 @@
-﻿#if HAS_WPF
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 [RoutedEvent("BalloonShowing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
 [RoutedEvent("BalloonClosing", RoutedEventStrategy.Bubble, IsAttached = true, Category = CategoryName)]
@@ -245,5 +244,3 @@ public partial class TaskbarIcon
 
     #endregion
 }
-
-#endif
