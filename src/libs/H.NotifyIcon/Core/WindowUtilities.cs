@@ -5,12 +5,7 @@ namespace H.NotifyIcon.Core;
 /// <summary>
 /// Win32 API imports.
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+[SupportedOSPlatform("windows5.0")]
 public static class WindowUtilities
 {
     /// <summary>
@@ -76,12 +71,7 @@ public static class WindowUtilities
     /// Returns true if app is packaged.
     /// </summary>
     /// <returns></returns>
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows8.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows8.0")]
     public static unsafe bool IsPackaged()
     {
         var id = new Windows.Win32.Storage.Packaging.Appx.PACKAGE_ID();
@@ -113,12 +103,7 @@ public static class WindowUtilities
     /// 
     /// </summary>
     /// <returns></returns>
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows5.1.2600")]
     public static unsafe void MakeTransparent(nint hWndHandle)
     {
         var hWnd = new HWND(hWndHandle);
@@ -150,12 +135,7 @@ public static class WindowUtilities
     
     private static SUBCLASSPROC? SubClassDelegate;
 
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows5.1.2600")]
     private static unsafe LRESULT WindowSubClass(HWND hWnd, uint uMsg, WPARAM wParam, LPARAM lParam, nuint uIdSubclass, nuint dwRefData)
     {
         switch (uMsg)

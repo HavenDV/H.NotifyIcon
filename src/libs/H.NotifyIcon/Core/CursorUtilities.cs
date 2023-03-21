@@ -7,20 +7,10 @@ namespace H.NotifyIcon.Core;
 /// <summary>
 /// Win32 API imports.
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+[SupportedOSPlatform("windows5.0")]
 public static class CursorUtilities
 {
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows6.0.6000")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows6.0.6000")]
     internal static unsafe Point GetPhysicalCursorPos()
     {
         var point = new Point();
@@ -56,12 +46,7 @@ public static class CursorUtilities
     /// <returns>A structure that specifies the pop-up window position.</returns>
     /// <exception cref="COMException"></exception>
     /// 
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows6.1")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows6.1")]
     public static unsafe Rectangle CalculatePopupWindowPosition(
         int x,
         int y,

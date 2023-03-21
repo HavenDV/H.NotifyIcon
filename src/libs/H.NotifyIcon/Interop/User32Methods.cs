@@ -3,12 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+[SupportedOSPlatform("windows5.0")]
 internal static class User32Methods
 {
     internal static nint SetWindowLong(HWND hWnd, WINDOW_LONG_PTR_INDEX nIndex, nint dwNewLong)

@@ -8,12 +8,6 @@ namespace H.NotifyIcon.Core;
 /// Receives messages from the taskbar icon through
 /// window messages of an underlying helper window.
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
 [Event<bool>("ChangeToolTipStateRequest",
     Description = "The custom tooltip should be closed or hidden.",
     PropertyNames = new[] { "IsVisible" })]
@@ -30,6 +24,7 @@ namespace H.NotifyIcon.Core;
     Description = "Fired if the taskbar was created or restarted. Requires the taskbar icon to be reset")]
 [Event("DpiChanged",
     Description = "Fired if dpi change window message received.")]
+[SupportedOSPlatform("windows5.0")]
 public partial class MessageWindow : IDisposable
 {
     #region Constants

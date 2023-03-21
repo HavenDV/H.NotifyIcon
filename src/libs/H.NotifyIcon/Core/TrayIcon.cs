@@ -22,18 +22,13 @@ namespace H.NotifyIcon.Core;
 /// taskbar notification area ("system tray").
 /// </summary>
 #endif
-#if NET5_0_OR_GREATER
 #if MACOS || MACCATALYST
 [Advice("Starting with macos10.10 Soft-deprecation, forwards message to button, but will be gone in the future.")]
-[System.Runtime.Versioning.UnsupportedOSPlatform("macos10.10")]
-[System.Runtime.Versioning.UnsupportedOSPlatform("maccatalyst")]
-[System.Runtime.Versioning.SupportedOSPlatform("macos")]
+[UnsupportedOSPlatform("macos10.10")]
+[UnsupportedOSPlatform("maccatalyst")]
+[SupportedOSPlatform("macos")]
 #else
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
-#endif
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
+[SupportedOSPlatform("windows5.1.2600")]
 #endif
 [Event("Created", Description = @"TrayIcon was created.
 This can happen in the following cases:

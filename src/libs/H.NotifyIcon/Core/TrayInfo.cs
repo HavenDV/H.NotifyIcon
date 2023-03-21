@@ -6,12 +6,7 @@ namespace H.NotifyIcon.Core;
 /// <summary>
 /// Resolves the current tray position.
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+[SupportedOSPlatform("windows5.1.2600")]
 public static class TrayInfo
 {
     /// <summary>

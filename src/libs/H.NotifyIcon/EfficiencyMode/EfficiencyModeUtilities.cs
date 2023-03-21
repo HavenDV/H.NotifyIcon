@@ -12,12 +12,7 @@ public static class EfficiencyModeUtilities
     /// <summary>
     /// Based on <see href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessinformation"/>
     /// </summary>
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows10.0.16299.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows10.0.16299.0")]
     public static unsafe void SetProcessQualityOfServiceLevel(QualityOfServiceLevel level)
     {
         var powerThrottling = new PROCESS_POWER_THROTTLING_STATE
@@ -65,12 +60,7 @@ public static class EfficiencyModeUtilities
     /// <summary>
     /// Based on <see href="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setpriorityclass"/>
     /// </summary>
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows5.1.2600")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows5.1.2600")]
     public static unsafe void SetProcessPriorityClass(ProcessPriorityClass priorityClass)
     {
         var flags = priorityClass switch
@@ -95,12 +85,7 @@ public static class EfficiencyModeUtilities
     /// Based on: <see href="https://devblogs.microsoft.com/performance-diagnostics/reduce-process-interference-with-task-manager-efficiency-mode/"/> 
     /// </summary>
     /// <param name="value"></param>
-#if NET5_0_OR_GREATER
-    [System.Runtime.Versioning.SupportedOSPlatform("windows10.0.16299.0")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+    [SupportedOSPlatform("windows10.0.16299.0")]
     public static void SetEfficiencyMode(bool value)
     {
         var ecoLevel = Environment.OSVersion.Version >= new Version(11, 0)

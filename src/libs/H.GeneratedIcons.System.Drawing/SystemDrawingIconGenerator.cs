@@ -6,12 +6,7 @@ namespace H.NotifyIcon;
 /// <summary>
 /// 
 /// </summary>
-#if NET5_0_OR_GREATER
-[System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#elif NETSTANDARD2_0_OR_GREATER || NET451_OR_GREATER
-#else
-#error Target Framework is not supported
-#endif
+[SupportedOSPlatform("windows")]
 public static class SystemDrawingIconGenerator
 {
     private static GraphicsPath GetRoundedRectGraphicsPath(RectangleF bounds, float radius)
