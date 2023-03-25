@@ -21,23 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.3">
+    <PackageReference Include="DependencyPropertyGenerator">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="All" />
+    <PackageReference Include="System.Drawing.Common" />
+    <PackageReference Include="System.Resources.Extensions" PrivateAssets="All" />
   </ItemGroup>
-  
-  <Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
-    <!-- Work around https://github.com/dotnet/wpf/issues/6792 -->
-
-    <ItemGroup>
-      <FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
-      <Analyzer Remove="@(Analyzer)" />
-      <Analyzer Include="@(FilteredAnalyzer)" />
-    </ItemGroup>
-  </Target>
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.csproj" />

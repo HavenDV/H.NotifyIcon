@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.UI" Version="4.7.44" />
+    <PackageReference Include="Uno.UI" />
   </ItemGroup>
   
   <PropertyGroup Label="NuGet">
@@ -22,7 +22,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.3">
+    <PackageReference Include="DependencyPropertyGenerator">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

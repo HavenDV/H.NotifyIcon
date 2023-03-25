@@ -45,15 +45,15 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.3">
+    <PackageReference Include="DependencyPropertyGenerator">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="WpfAnalyzers" Version="4.1.1">
+    <PackageReference Include="WpfAnalyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)' == 'net4.6.2'" />
+    <PackageReference Include="System.ValueTuple" Condition="'$(TargetFramework)' == 'net4.6.2'" />
   </ItemGroup>
 
   <ItemGroup>
