@@ -4,7 +4,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
-  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
+<!--  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />-->
 
   <PropertyGroup Label="Common">
     <LangVersion>preview</LangVersion>
