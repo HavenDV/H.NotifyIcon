@@ -14,6 +14,8 @@ jobs:
       workloads: maui
       project-path: 
         # This is required for correct publishing to NuGet
+        /target:libs\H_GeneratedIcons_SkiaSharp
+        /target:libs\H_GeneratedIcons_System_Drawing
         /target:libs\H_NotifyIcon
         /target:libs\H_NotifyIcon_Uno
         /target:libs\H_NotifyIcon_Uno_WinUI
