@@ -72,6 +72,8 @@
     Description = "Defines generated icon border brush.", Category = Category)]
 [DependencyProperty<ImageSource>("BackgroundSource",
     Description = "Resolves an image source and uses this as background.", Category = Category)]
+[Event("DependencyPropertyChanged",
+    Description = "Occured when any dependency property was changed")]
 [CLSCompliant(false)]
 public sealed partial class GeneratedIconSource : BitmapSource
 {
@@ -109,6 +111,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
 #if HAS_WPF
         OnChanged();
 #endif
+        _ = OnDependencyPropertyChanged();
     }
 
     #endregion

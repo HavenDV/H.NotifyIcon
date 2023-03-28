@@ -17,5 +17,20 @@ public partial class TaskbarIcon
 #else
         Icon = await newValue.ToIconAsync().ConfigureAwait(true);
 #endif
+        
+        // If the source is a GeneratedIconSource, we need to update the icon when the source changes.
+        if (oldValue is GeneratedIconSource oldGeneratedIconSource)
+        {
+            oldGeneratedIconSource.DependencyPropertyChanged -= OnGeneratedIconSourceOnDependencyPropertyChanged;
+        }
+        if (newValue is GeneratedIconSource generatedIconSource)
+        {
+            generatedIconSource.DependencyPropertyChanged += OnGeneratedIconSourceOnDependencyPropertyChanged;
+        }
+        
+        async void OnGeneratedIconSourceOnDependencyPropertyChanged(object? sender, EventArgs args)
+        {
+            Icon = await newValue.ToIconAsync().ConfigureAwait(true);
+        }
     }
 }
