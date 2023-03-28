@@ -32,4 +32,11 @@
     <PackageVersion Include="H.Resources.Generator" Version="1.5.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Tests">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageVersion Include="FluentAssertions" Version="6.10.0" />
+  </ItemGroup>
+
 </Project>
