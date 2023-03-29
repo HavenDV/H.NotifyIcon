@@ -94,3 +94,7 @@ TRACK_POPUP_MENU_FLAGS
 // DesktopBridgeHelpers
 GetCurrentPackageFullName
 APPMODEL_ERROR_NO_PACKAGE
+
+// DesktopWindowsManagerMethods.SetRoundedCorners
+DwmSetWindowAttribute
+DWM_WINDOW_CORNER_PREFERENCE

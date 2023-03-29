@@ -23,6 +23,7 @@
     <Using Include="Windows.Win32.UI.WindowsAndMessaging" />
     <Using Include="Windows.Win32.System.Threading" />
     <Using Include="Windows.Win32.Graphics.Gdi" />
+    <Using Include="Windows.Win32.Graphics.Dwm" />
     <Using Include="Microsoft.Win32.SafeHandles" />
   </ItemGroup>
 
