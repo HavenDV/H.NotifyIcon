@@ -58,8 +58,10 @@ public partial class TaskbarIcon
                         menuItems.Add(item);
                         break;
                     }
-                case MenuFlyoutSeparator:
+                case MenuFlyoutSeparator  separator:
                     {
+                        // The following line of code ensure that this code block is not trimed when PublishTrimmed is true.
+                        var a = separator;
                         menuItems.Add(new PopupMenuSeparator());
                         break;
                     }
