@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using H.NotifyIcon.Interop;
+
+namespace H.NotifyIcon;
 
 public partial class TaskbarIcon
 {

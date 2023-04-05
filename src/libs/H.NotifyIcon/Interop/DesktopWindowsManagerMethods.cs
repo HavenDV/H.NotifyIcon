@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-internal static class DesktopWindowsManagerMethods
+public static class DesktopWindowsManagerMethods
 {
     /// <summary>
     /// 
