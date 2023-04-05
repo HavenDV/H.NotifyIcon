@@ -100,16 +100,6 @@ public static class WindowUtilities
     }
 
     /// <summary>
-    /// Apply rounded corners in desktop apps for Windows 11.
-    /// </summary>
-    /// <param name="hWndHandle"></param>
-    [SupportedOSPlatform("windows6.0.6000")]
-    public static void SetRoundedCorners(nint hWndHandle)
-    {
-        DesktopWindowsManagerMethods.SetRoundedCorners(hWndHandle);
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
