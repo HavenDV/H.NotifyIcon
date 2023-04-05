@@ -120,11 +120,26 @@ public partial class TaskbarIcon
 
         frame.Loaded += (_, _) =>
         {
+            bool flyoutLoaded = false;
+            flyout.Items.Last().Loaded += (_, _) => flyoutLoaded = true;
+
             flyout.ShowAt(window.Content, new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient,
             });
-            flyout.Hide();
+
+            _ = Task.Run(async () =>
+            {
+                while (!flyoutLoaded)
+                {
+                    await Task.Delay(1).ConfigureAwait(false);
+                }
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    flyout.Items.Last().Loaded -= (_, _) => flyoutLoaded = true;
+                    flyout.Hide();
+                });
+            });
         };
         window.Activated += (sender, args) =>
         {
