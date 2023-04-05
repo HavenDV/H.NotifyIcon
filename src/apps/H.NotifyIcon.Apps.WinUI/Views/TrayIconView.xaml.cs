@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon.Apps.Views;
+﻿using CommunityToolkit.Mvvm.Input;
+
+namespace H.NotifyIcon.Apps.Views;
 
 public sealed partial class TrayIconView
 {
@@ -7,7 +9,8 @@ public sealed partial class TrayIconView
         InitializeComponent();
     }
 
-    public void ShowHideWindowCommand_ExecuteRequested(object? _, ExecuteRequestedEventArgs args)
+    [RelayCommand]
+    public void ShowHideWindow()
     {
         var window = App.MainWindow;
         if (window == null)
@@ -25,7 +28,8 @@ public sealed partial class TrayIconView
         }
     }
 
-    public void ExitApplicationCommand_ExecuteRequested(object? _, ExecuteRequestedEventArgs args)
+    [RelayCommand]
+    public void ExitApplication()
     {
         App.HandleClosedEvents = false;
         TrayIcon.Dispose();

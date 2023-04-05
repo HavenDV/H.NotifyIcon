@@ -7,57 +7,21 @@
     xmlns:tb="using:H.NotifyIcon"
     mc:Ignorable="d"
     >
-    <UserControl.Resources>
-        <XamlUICommand
-            x:Key="ShowHideWindowCommand"
-            ExecuteRequested="ShowHideWindowCommand_ExecuteRequested"
-            Label="Show/Hide Window"
-            Description="Show/Hide Window"
-            >
-            <XamlUICommand.IconSource>
-                <SymbolIconSource Symbol="OpenPane" />
-            </XamlUICommand.IconSource>
-            <XamlUICommand.KeyboardAccelerators>
-                <KeyboardAccelerator
-                    Key="S"
-                    Modifiers="Control"
-                    />
-            </XamlUICommand.KeyboardAccelerators>
-        </XamlUICommand>
-        <XamlUICommand
-            x:Key="ExitApplicationCommand"
-            ExecuteRequested="ExitApplicationCommand_ExecuteRequested"
-            Label="Exit"
-            Description="Exit"
-            >
-            <XamlUICommand.IconSource>
-                <SymbolIconSource Symbol="ClosePane" />
-            </XamlUICommand.IconSource>
-            <XamlUICommand.KeyboardAccelerators>
-                <KeyboardAccelerator
-                    Key="E"
-                    Modifiers="Control"
-                    />
-            </XamlUICommand.KeyboardAccelerators>
-        </XamlUICommand>
-        <MenuFlyout
-            x:Key="TrayContextFlyout"
-            AreOpenCloseAnimationsEnabled="False"
-            >
-            <MenuFlyoutItem Command="{StaticResource ShowHideWindowCommand}" />
-            <MenuFlyoutSeparator />
-            <MenuFlyoutItem Command="{StaticResource ExitApplicationCommand}" />
-        </MenuFlyout>
-    </UserControl.Resources>
-
     <tb:TaskbarIcon
         x:Name="TrayIcon"
         x:FieldModifier="public"
         IconSource="ms-appx:///Assets/Red.ico"
         ToolTipText="ToolTip"
-        ContextFlyout="{StaticResource TrayContextFlyout}"
-        LeftClickCommand="{StaticResource ShowHideWindowCommand}"
+        LeftClickCommand="{x:Bind ShowHideWindowCommand}"
         NoLeftClickDelay="True"
         ContextMenuMode="SecondWindow"
-        />
+        >
+        <tb:TaskbarIcon.ContextFlyout>
+            <MenuFlyout AreOpenCloseAnimationsEnabled="False">
+                <MenuFlyoutItem Command="{x:Bind ShowHideWindowCommand}" Text="Show/Hide Window" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{x:Bind ExitApplicationCommand}" Text="Exit" />
+            </MenuFlyout>
+        </tb:TaskbarIcon.ContextFlyout>
+    </tb:TaskbarIcon>
 </UserControl>
