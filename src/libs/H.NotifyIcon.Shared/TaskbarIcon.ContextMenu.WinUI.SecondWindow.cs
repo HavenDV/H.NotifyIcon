@@ -64,7 +64,7 @@ public partial class TaskbarIcon
         ActualThemeChanged += (_, _) => frame.RequestedTheme = ActualTheme;
 
         var handle = WindowNative.GetWindowHandle(window);
-        WindowUtilities.SetRoundedCorners(handle);
+        DesktopWindowsManagerMethods.SetRoundedCorners(handle);
         WindowUtilities.MakeTransparent(handle);
 
 #if !HAS_UNO
