@@ -1,0 +1,24 @@
+name: Build and test PR
+on:
+  pull_request:
+    types: [opened, reopened, edited]
+
+jobs:
+  build-and-test:
+    name: Build and test PR
+    uses: HavenDV/workflows/.github/workflows/dotnet_build-test-publish.yml@main
+    with:
+      os: windows-2022
+      use-msbuild: true
+      workloads: maui
+      create-release: false
+      generate-build-number: false
+      project-path: 
+        # This is required for correct publishing to NuGet
+        /target:libs\H_GeneratedIcons_SkiaSharp
+        /target:libs\H_GeneratedIcons_System_Drawing
+        /target:libs\H_NotifyIcon
+        /target:libs\H_NotifyIcon_Uno
+        /target:libs\H_NotifyIcon_Uno_WinUI
+        /target:libs\H_NotifyIcon_WinUI
+        /target:libs\H_NotifyIcon_Wpf
