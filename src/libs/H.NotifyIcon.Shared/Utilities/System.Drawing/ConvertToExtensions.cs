@@ -17,12 +17,20 @@ internal static class ToSystemDrawingExtensions
     internal static System.Drawing.Color ToSystemDrawingColor(this Color color)
     {
         return System.Drawing.Color.FromArgb(
+#if HAS_MAUI
+            alpha: (int)color.Alpha,
+            red: (int)color.Red,
+            green: (int)color.Green,
+            blue: (int)color.Blue);
+#else
             alpha: color.A,
             red: color.R,
             green: color.G,
             blue: color.B);
+#endif
     }
 
+    [SupportedOSPlatform("windows")]
     internal static System.Drawing.Brush ToSystemDrawingBrush(this Brush? brush)
     {
         return brush switch
@@ -50,6 +58,7 @@ internal static class ToSystemDrawingExtensions
             height: (float)(height - thickness.Top - thickness.Bottom));
     }
 
+    [SupportedOSPlatform("windows")]
     internal static System.Drawing.FontStyle ToSystemDrawingFontStyle(
         this FontStyle style,
         FontWeight weight)
@@ -59,9 +68,11 @@ internal static class ToSystemDrawingExtensions
         {
             fontStyle |= System.Drawing.FontStyle.Italic;
         }
+#if !HAS_MAUI       
         if (style == FontStyles.Oblique)
         {
         }
+#endif
         if (weight == FontWeights.Bold)
         {
             fontStyle |= System.Drawing.FontStyle.Bold;
@@ -70,13 +81,19 @@ internal static class ToSystemDrawingExtensions
         return fontStyle;
     }
 
+    [SupportedOSPlatform("windows")]
     internal static System.Drawing.FontFamily ToSystemDrawingFontFamily(
         this FontFamily family)
     {
         return new System.Drawing.FontFamily(
+#if HAS_MAUI
+            name: family);
+#else
             name: family.Source);
+#endif
     }
 
+    [SupportedOSPlatform("windows")]
     internal static System.Drawing.Pen ToSystemDrawingPen(
         this Brush? brush,
         float width)

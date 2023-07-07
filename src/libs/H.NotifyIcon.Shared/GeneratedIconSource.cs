@@ -32,6 +32,8 @@
 [DependencyProperty<FontStyle>("FontStyle", OnChanged = nameof(Refresh),
 #if HAS_WPF
     DefaultValueExpression = "SystemFonts.IconFontStyle",
+#elif HAS_MAUI
+    DefaultValue = FontStyle.None,
 #else
     DefaultValue = FontStyle.Normal,
 #endif
@@ -39,10 +41,13 @@
 [DependencyProperty<FontWeight>("FontWeight", OnChanged = nameof(Refresh),
 #if HAS_WPF
     DefaultValueExpression = "SystemFonts.IconFontWeight",
+#elif HAS_MAUI
+    DefaultValue = FontWeights.Regular,
 #else
     DefaultValueExpression = "FontWeights.Normal",
 #endif
     Description = "Defines generated icon font weight.", Category = Category)]
+#if !HAS_MAUI
 [DependencyProperty<FontStretch>("FontStretch", OnChanged = nameof(Refresh),
 #if HAS_WPF
     DefaultValueExpression = "FontStretches.Normal",
@@ -50,6 +55,7 @@
     DefaultValue = FontStretch.Normal,
 #endif
     Description = "Defines generated icon font stretch.", Category = Category)]
+#endif
 [DependencyProperty<double>("FontSize", OnChanged = nameof(Refresh),
 #if HAS_WPF
     DefaultValueExpression = "4 * SystemFonts.IconFontSize",
@@ -75,7 +81,12 @@
 [Event("DependencyPropertyChanged",
     Description = "Occured when any dependency property was changed")]
 [CLSCompliant(false)]
-public sealed partial class GeneratedIconSource : BitmapSource
+public sealed partial class GeneratedIconSource
+#if HAS_MAUI
+    : ImageSource
+#else
+    : BitmapSource
+#endif
 {
     #region Constants
 
@@ -92,6 +103,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
     /// 
     /// </summary>
     /// <returns></returns>
+    [SupportedOSPlatform("windows")]
     public Bitmap ToBitmap()
     {
         return Generate();
@@ -101,6 +113,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
     /// 
     /// </summary>
     /// <returns></returns>
+    [SupportedOSPlatform("windows")]
     public async Task<Bitmap> ToBitmapAsync(CancellationToken cancellationToken = default)
     {
         return await GenerateAsync(cancellationToken).ConfigureAwait(true);

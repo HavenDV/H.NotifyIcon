@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.6.2;netstandard2.0;net6.0;net7.0</TargetFrameworks>
-    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     <NoWarn>$(NoWarn);CA1031;CA1003;CA1502;CS3016;CS8981</NoWarn>
   </PropertyGroup>
 
@@ -16,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="System.Runtime.Versioning" />
     <Using Include="Windows.Win32" />
     <Using Include="Windows.Win32.Foundation" />
     <Using Include="Windows.Win32.UI.Shell" />
@@ -34,10 +32,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.CsWin32">
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="PolySharp">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

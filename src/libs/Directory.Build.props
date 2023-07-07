@@ -45,6 +45,18 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup Label="PolySharp">
+    <PackageReference Include="PolySharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <Using Include="System.Runtime.Versioning" />
+  </ItemGroup>
+
+  <PropertyGroup Label="PolySharp">
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+  </PropertyGroup>
+
   <PropertyGroup Label="Analyzers">
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>

@@ -1,11 +1,12 @@
 ﻿namespace H.NotifyIcon;
 
-public sealed partial class GeneratedIconSource : BitmapSource
+public sealed partial class GeneratedIconSource
 {
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
+    [SupportedOSPlatform("windows")]
     public Icon ToIcon()
     {
         using var bitmap = Generate();
@@ -17,6 +18,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
     /// 
     /// </summary>
     /// <returns></returns>
+    [SupportedOSPlatform("windows")]
     public async Task<Icon> ToIconAsync(CancellationToken cancellationToken = default)
     {
         using var bitmap = await GenerateAsync(cancellationToken).ConfigureAwait(true);
@@ -24,6 +26,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
         return Icon.FromHandle(bitmap.GetHicon());
     }
 
+    [SupportedOSPlatform("windows")]
     internal Bitmap Generate(Bitmap? backgroundBitmap = null)
     {
         var size = Size;
@@ -57,6 +60,7 @@ public sealed partial class GeneratedIconSource : BitmapSource
             size: size);
     }
 
+    [SupportedOSPlatform("windows")]
     internal async Task<Bitmap> GenerateAsync(CancellationToken cancellationToken = default)
     {
         using var baseImage = BackgroundSource == null

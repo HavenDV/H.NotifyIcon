@@ -2,6 +2,7 @@
 
 internal static class PngToIcoConverter
 {
+    [SupportedOSPlatform("windows")]
     public static byte[] ConvertPngToIco(this byte[] data)
     {
         using var inStream = new MemoryStream(data);
