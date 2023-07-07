@@ -1,5 +1,6 @@
 ﻿namespace H.NotifyIcon;
 
+#if !HAS_MAUI
 [DependencyProperty<string>("ToolTipText", DefaultValue = "",
     Description = "A tooltip text that is being displayed if no custom ToolTip was set or if custom tooltips are not supported.", Category = CategoryName)]
 [DependencyProperty<UIElement>("TrayToolTip",
@@ -278,3 +279,4 @@ public partial class TaskbarIcon
 
 #endregion
 }
+#endif

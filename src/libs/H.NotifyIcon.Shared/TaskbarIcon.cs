@@ -13,16 +13,14 @@ namespace H.NotifyIcon;
 #else
 [OverrideMetadata<FlyoutBase>("ContextFlyout")]
 #endif
-#if HAS_WINUI || HAS_UNO
+#if HAS_WINUI || HAS_UNO || HAS_MAUI
 [CLSCompliant(false)]
 #endif
-#if NET5_0_OR_GREATER
 #if MACOS || MACCATALYST
 [Advice("Starting with macos10.10 Soft-deprecation, forwards message to button, but will be gone in the future.")]
-[System.Runtime.Versioning.UnsupportedOSPlatform("macos10.10")]
-[System.Runtime.Versioning.UnsupportedOSPlatform("maccatalyst")]
-[System.Runtime.Versioning.SupportedOSPlatform("macos")]
-#endif
+[UnsupportedOSPlatform("macos10.10")]
+[UnsupportedOSPlatform("maccatalyst")]
+[SupportedOSPlatform("macos")]
 #endif
 public partial class TaskbarIcon : FrameworkElement, IDisposable
 {
@@ -36,6 +34,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     public bool IsCreated => TrayIcon.IsCreated;
 
     #endregion
@@ -46,9 +45,10 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Initializes the taskbar icon and registers a message listener
     /// in order to receive events from the taskbar area.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     public TaskbarIcon()
     {
-#if !HAS_WPF
+#if !HAS_WPF && !HAS_MAUI
         RegisterPropertyChangedCallbacks();
 #endif
 
@@ -64,7 +64,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-#if !MACOS
+#if !MACOS && !HAS_MAUI
         // https://github.com/HavenDV/H.NotifyIcon/issues/34
         //Unloaded += (_, _) => Dispose();
         TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
@@ -101,6 +101,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Recreates the taskbar icon if the whole taskbar was
     /// recreated (e.g. because Explorer was shut down).
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void OnTaskbarCreated(object? sender, EventArgs args)
     {
         try
@@ -122,6 +123,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Use it to force create icon if it placed in resources. <br/>
     /// This also turns on Efficiency Mode by default, meaning you run the app in a hidden state.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     public void ForceCreate(bool enablesEfficiencyMode = true)
     {
         TrayIcon.Create();
@@ -160,7 +162,11 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     {
         if (IsDisposed)
         {
-            throw new ObjectDisposedException(Name ?? GetType().FullName);
+#if HAS_MAUI            
+            throw new ObjectDisposedException(GetType().FullName);
+#else
+            throw new ObjectDisposedException(Name ?? nameof(TaskbarIcon));
+#endif
         }
     }
 
@@ -168,6 +174,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <summary>
     /// Disposes the class if the application exits.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void OnExit(object sender, EventArgs e)
     {
         Dispose();
@@ -182,6 +189,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// Important: Do not provide destructor in types derived from this class.
     /// </para>
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     ~TaskbarIcon()
     {
         Dispose(false);
@@ -194,6 +202,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// <remarks>This method is not virtual by design. Derived classes
     /// should override <see cref="Dispose(bool)"/>.
     /// </remarks>
+    [SupportedOSPlatform("windows5.1.2600")]
 #if HAS_UNO
     public new void Dispose()
 #else
@@ -226,6 +235,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
     /// be disposed.</param>
     /// <remarks>Check the <see cref="IsDisposed"/> property to determine whether
     /// the method has already been called.</remarks>
+    [SupportedOSPlatform("windows5.1.2600")]
     protected virtual void Dispose(bool disposing)
     {
         if (IsDisposed || !disposing)
@@ -251,7 +261,7 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
             balloonCloseTimer.Dispose();
 #endif
 
-#if !HAS_WPF && !HAS_UNO
+#if !HAS_WPF && !HAS_UNO && !HAS_MAUI
             ContextMenuWindow?.Close();
             ContextMenuWindow = null;
             ContextMenuWindowHandle = null;

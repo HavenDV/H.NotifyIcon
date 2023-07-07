@@ -4,6 +4,7 @@ global using System.Diagnostics;
 global using DependencyPropertyGenerator;
 global using EventGenerator;
 global using H.NotifyIcon.Core;
+global using System.Runtime.Versioning;
 #if HAS_AVALONIA
 global using Avalonia;
 global using Avalonia.Data;
@@ -42,7 +43,7 @@ global using Windows.Graphics;
 #if HAS_UNO
 global using WindowActivationState = Windows.UI.Core.CoreWindowActivationState;
 #endif
-#else
+#elif HAS_UNO
 global using Windows.UI.Core;
 global using Windows.System;
 global using Windows.UI;
@@ -57,6 +58,18 @@ global using System.Windows.Input;
 global using Windows.Storage;
 global using Windows.Foundation;
 global using FontStyles = Windows.UI.Text.FontStyle;
+#else
+global using System.Windows.Input;
+global using Microsoft.Maui;
+global using Microsoft.Maui.Controls;
+global using Microsoft.Maui.Media;
+global using Microsoft.Maui.Graphics;
+global using Microsoft.Maui.Primitives;
+global using FontStyle = Microsoft.Maui.Controls.FontAttributes;
+global using FontStyles = Microsoft.Maui.Controls.FontAttributes;
+global using FontWeights = Microsoft.Maui.FontWeight;
+global using FontFamily = System.String;
+global using FrameworkElement = Microsoft.Maui.Controls.TemplatedView;
 #endif
 #if HAS_SYSTEM_DRAWING
 global using Icon = System.Drawing.Icon;

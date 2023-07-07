@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;net7.0-windows10.0.19041.0</TargetFrameworks>
+    <UseMaui>true</UseMaui>
+    <DefineConstants>$(DefineConstants);HAS_PLATFORM_CODE;HAS_MAUI</DefineConstants>
+    <NoWarn>$(NoWarn);CA1031;CS8002;CS0108;CA1501</NoWarn>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet">
+    <Description>This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon) for the MAUI platform.
+It does not just rely on the Windows Forms NotifyIcon component,
+but is a purely independent control which leverages several features of the WinUI framework in order to display rich tooltips,
+popups, context menus, and balloon messages. It can be used directly in code or embedded in any XAML file.
+    </Description>
+    <PackageTags>notifyicon;maui;tray</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Label="AssemblyInfo">
+    <AssemblyAttribute Include="Microsoft.Maui.Controls.XmlnsPrefix">
+      <_Parameter1>https://notifyicon.com/</_Parameter1>
+      <_Parameter2>tb</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="Microsoft.Maui.Controls.XmlnsDefinition">
+      <_Parameter1>https://notifyicon.com/</_Parameter1>
+      <_Parameter2>H.NotifyIcon</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DependencyPropertyGenerator">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="EventGenerator.Generator">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageVersion Remove="Microsoft.WindowsAppSDK" />
+    <PackageVersion Remove="Microsoft.Windows.SDK.BuildTools" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
+  </ItemGroup>
+
+</Project>

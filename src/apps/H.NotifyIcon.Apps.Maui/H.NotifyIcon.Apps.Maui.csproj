@@ -10,6 +10,7 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);MT0182</NoWarn>
 
 		<!-- Display name -->
 		<ApplicationTitle>H.NotifyIcon.Apps.Maui</ApplicationTitle>
@@ -29,6 +30,13 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
+
+  <!-- https://github.com/xamarin/xamarin-macios/issues/15897 -->
+  <Target Name="_SetPublishFolderTypeNoneOnDocFileItems" BeforeTargets="_ComputePublishLocation">
+    <ItemGroup>
+      <ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.xml' And '%(ResolvedFileToPublish.PublishFolderType)' == ''" PublishFolderType="None" />
+    </ItemGroup>
+  </Target>
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -54,6 +62,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\libs\H.NotifyIcon.Maui\H.NotifyIcon.Maui.csproj" />
 	  <ProjectReference Include="..\..\libs\H.NotifyIcon\H.NotifyIcon.csproj" />
     <ProjectReference Include="..\..\libs\H.GeneratedIcons.SkiaSharp\H.GeneratedIcons.SkiaSharp.csproj" />
 	</ItemGroup>

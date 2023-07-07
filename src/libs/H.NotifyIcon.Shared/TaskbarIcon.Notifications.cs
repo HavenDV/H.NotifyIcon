@@ -56,6 +56,7 @@ public partial class TaskbarIcon
 #if !HAS_WPF
     [CLSCompliant(false)]
 #endif
+    [SupportedOSPlatform("windows5.1.2600")]
     public void ShowNotification(
         string title,
         string message,
@@ -88,6 +89,7 @@ public partial class TaskbarIcon
     /// but I haven't been able to get it to work.
     /// </summary>
     /// <returns></returns>
+    [SupportedOSPlatform("windows5.1.2600")]
     public void ClearNotifications()
     {
         EnsureNotDisposed();
@@ -99,6 +101,7 @@ public partial class TaskbarIcon
 
     #region Event handlers
 
+#if !HAS_MAUI
     /// <summary>
     /// Bubbles events if a balloon ToolTip was displayed
     /// or removed.
@@ -117,6 +120,7 @@ public partial class TaskbarIcon
             _ = OnTrayBalloonTipClosed();
         }
     }
+#endif
 
     #endregion
 }

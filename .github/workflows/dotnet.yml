@@ -21,5 +21,6 @@ jobs:
         /target:libs\H_NotifyIcon_Uno_WinUI
         /target:libs\H_NotifyIcon_WinUI
         /target:libs\H_NotifyIcon_Wpf
+        /target:libs\H_NotifyIcon_Maui
     secrets:
       nuget-key: ${{ secrets.NUGET_KEY }}

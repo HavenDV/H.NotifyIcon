@@ -20,7 +20,7 @@ public static class WindowExtensions
 
 #if HAS_WPF
         window.Hide();
-#elif !HAS_UNO
+#elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window));
 #endif
 
@@ -49,7 +49,7 @@ public static class WindowExtensions
 
 #if HAS_WPF
         window.Show();
-#elif !HAS_UNO
+#elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window));
 #endif
 

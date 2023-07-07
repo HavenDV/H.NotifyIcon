@@ -10,6 +10,7 @@ public partial class TaskbarIcon
 {
     #region Event handlers
 
+#if !HAS_MAUI
     /// <summary>
     /// Processes keyboard events, which are bubbled
     /// through the class' routed events, trigger
@@ -45,6 +46,7 @@ public partial class TaskbarIcon
                     $"Missing handler for keyboard event flag: {args.KeyboardEvent}");
         }
     }
-
+#endif
+    
     #endregion
 }

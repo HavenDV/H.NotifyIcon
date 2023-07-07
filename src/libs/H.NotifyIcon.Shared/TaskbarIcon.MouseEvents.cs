@@ -41,12 +41,14 @@ public partial class TaskbarIcon
     /// <summary>
     /// The time we should wait for a double click.
     /// </summary>
+    [SupportedOSPlatform("windows5.0")]
     private int DoubleClickWaitTime => NoLeftClickDelay ? 0 : CursorUtilities.GetDoubleClickTime();
 
     #endregion
 
     #region Event handlers
 
+#if !HAS_MAUI
     /// <summary>
     /// Processes mouse events, which are bubbled
     /// through the class' routed events, trigger
@@ -198,7 +200,8 @@ public partial class TaskbarIcon
             SingleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
         }
     }
-
+#endif
+    
     /// <summary>
     /// Performs a delayed action if the user requested an action
     /// based on a single click of the left mouse.<br/>
@@ -223,6 +226,8 @@ public partial class TaskbarIcon
             this.GetDispatcher().Invoke(action);
 #elif HAS_UNO && (!HAS_WINUI && !HAS_UNO_WINUI)
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
+#elif HAS_MAUI
+            MainThread.BeginInvokeOnMainThread(action);
 #else
             DispatcherQueue.TryEnqueue(() => action());
 #endif

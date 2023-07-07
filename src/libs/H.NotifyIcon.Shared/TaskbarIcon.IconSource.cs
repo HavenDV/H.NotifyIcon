@@ -4,6 +4,7 @@
     Description = "Resolves an image source and updates the Icon property accordingly.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
+    [SupportedOSPlatform("windows5.0")]
     async partial void OnIconSourceChanged(ImageSource? oldValue, ImageSource? newValue)
     {
         if (newValue == null)

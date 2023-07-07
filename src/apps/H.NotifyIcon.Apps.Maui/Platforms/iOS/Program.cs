@@ -1,15 +1,11 @@
-﻿using ObjCRuntime;
+﻿using H.NotifyIcon.Apps.Maui;
 using UIKit;
 
-namespace H.NotifyIcon.Apps.Maui;
-
-public class Program
+#if DEBUG
+if (System.Diagnostics.Debugger.IsAttached)
 {
-	// This is the main entry point of the application.
-	static void Main(string[] args)
-	{
-		// if you want to use a different Application Delegate class from "AppDelegate"
-		// you can specify it here.
-		UIApplication.Main(args, null, typeof(AppDelegate));
-	}
+    Thread.Sleep(TimeSpan.FromSeconds(5));
 }
+#endif
+
+UIApplication.Main(args, null, typeof(AppDelegate));

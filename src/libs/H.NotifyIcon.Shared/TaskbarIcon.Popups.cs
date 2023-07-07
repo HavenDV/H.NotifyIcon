@@ -1,5 +1,6 @@
 ﻿namespace H.NotifyIcon;
 
+#if !HAS_MAUI
 [DependencyProperty<PopupActivationMode>("PopupActivation", DefaultValue = PopupActivationMode.LeftClick,
     Description = "Defines what mouse events display the TaskbarIconPopup.", Category = CategoryName, ClsCompliant = false)]
 [DependencyProperty<UIElement>("TrayPopup",
@@ -236,3 +237,4 @@ public partial class TaskbarIcon
 
     #endregion
 }
+#endif

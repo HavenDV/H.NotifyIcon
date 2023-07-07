@@ -4,7 +4,7 @@ namespace H.NotifyIcon;
 
 internal static class StreamExtensions
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows5.0")]
     internal static Icon ToSmallIcon(this Stream stream)
     {
         var iconSize = IconUtilities.GetRequiredCustomIconSize(largeIcon: false).ScaleWithDpi();
