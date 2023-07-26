@@ -8,4 +8,13 @@
     Description = "Tunneled event that occurs when the context menu of the taskbar icon is being displayed.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
+#if HAS_MAUI
+
+    private FlyoutBase ContextFlyout
+    {
+        get => FlyoutBase.GetContextFlyout(this);
+        set => FlyoutBase.SetContextFlyout(this, value);
+    }
+
+#endif
 }

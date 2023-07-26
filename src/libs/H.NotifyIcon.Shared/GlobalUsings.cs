@@ -70,6 +70,18 @@ global using FontStyles = Microsoft.Maui.Controls.FontAttributes;
 global using FontWeights = Microsoft.Maui.FontWeight;
 global using FontFamily = System.String;
 global using FrameworkElement = Microsoft.Maui.Controls.TemplatedView;
+global using MenuFlyoutItemBase = Microsoft.Maui.IMenuElement;
+#endif
+#if HAS_MAUI_WINUI
+global using Windows.Graphics;
+global using WinRT.Interop;
+global using Microsoft.UI.Windowing;
+global using Microsoft.UI.Xaml.Controls;
+global using Microsoft.UI.Xaml.Media.Imaging;
+global using MenuFlyout = Microsoft.Maui.Controls.MenuFlyout;
+global using MenuFlyoutItem = Microsoft.Maui.Controls.MenuFlyoutItem;
+global using MenuFlyoutSeparator = Microsoft.Maui.Controls.MenuFlyoutSeparator;
+global using MenuFlyoutSubItem = Microsoft.Maui.Controls.MenuFlyoutSubItem;
 #endif
 #if HAS_SYSTEM_DRAWING
 global using Icon = System.Drawing.Icon;

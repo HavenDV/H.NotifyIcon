@@ -2,6 +2,7 @@
 
 internal static partial class ImageExtensions
 {
+#if !HAS_MAUI
     internal static Stream ToStream(this Uri uri)
     {
         var prefix = uri.Scheme switch
@@ -61,4 +62,5 @@ internal static partial class ImageExtensions
                 throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
         }
     }
+#endif
 }

@@ -1,13 +1,45 @@
-﻿namespace H.NotifyIcon.Apps.Maui;
+﻿using CommunityToolkit.Mvvm.Input;
+
+namespace H.NotifyIcon.Apps.Maui;
 
 public partial class MainPage
 {
+    private bool IsWindowVisible { get; set; } = true;
+
 	public MainPage()
 	{
 		InitializeComponent();
-        
+
+        BindingContext = this;
         //CanvasView.PaintSurface += CanvasViewOnPaintSurface;
-	}
+    }
+
+    [RelayCommand]
+    public void ShowHideWindow()
+    {
+        var window = Application.Current?.MainPage?.Window;
+        if (window == null)
+        {
+            return;
+        }
+
+        if (IsWindowVisible)
+        {
+            window.Hide();
+        }
+        else
+        {
+            window.Show();
+        }
+        IsWindowVisible = !IsWindowVisible;
+    }
+
+    [RelayCommand]
+    public void ExitApplication()
+    {
+        Application.Current?.Quit();
+    }
+
     //
     // private static void CanvasViewOnPaintSurface(object? sender, SKPaintSurfaceEventArgs args)
     // {

@@ -77,6 +77,34 @@ public partial class TaskbarIcon
 
     #endregion
 
+#endif
+
+#if HAS_MAUI
+
+    #region BindingContext
+    
+    private void UpdateBindingContext(
+        BindableObject? target,
+        object? newDataContextValue)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        target.BindingContext = newDataContextValue ?? this;
+    }
+
+    private void OnBindingContextChanged(object? sender, EventArgs args)
+    {
+        //UpdateBindingContext(TrayPopupResolved, BindingContext);
+        //UpdateBindingContext(TrayToolTipResolved, BindingContext);
+    }
+
+    #endregion
+
+#else
+
     #region DataContext
 
     /// <summary>

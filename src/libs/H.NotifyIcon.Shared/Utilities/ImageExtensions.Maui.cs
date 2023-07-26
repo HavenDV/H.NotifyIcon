@@ -16,17 +16,15 @@ internal static partial class ImageExtensions
         }
     }
 
-    public static Task<Stream> ToStreamAsync(this ImageSource imageSource, CancellationToken cancellationToken = default)
+    public static async Task<Stream> ToStreamAsync(this ImageSource imageSource, CancellationToken cancellationToken = default)
     {
         switch(imageSource)
         {
             case FileImageSource bitmapImage:
-                {
-                    return Task.FromResult<Stream>(File.OpenRead(bitmapImage.File));
-                }
+                return await FileSystem.Current.OpenAppPackageFileAsync(bitmapImage.File).ConfigureAwait(true);
 
             default:
-                return Task.FromException<Stream>(new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported"));
+                throw new NotImplementedException($"ImageSource type: {imageSource.GetType()} is not supported");
         }
     }
 }

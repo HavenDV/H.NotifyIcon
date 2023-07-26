@@ -41,14 +41,13 @@ public partial class TaskbarIcon
     /// <summary>
     /// The time we should wait for a double click.
     /// </summary>
-    [SupportedOSPlatform("windows5.0")]
+    [SupportedOSPlatform("windows5.1.2600")]
     private int DoubleClickWaitTime => NoLeftClickDelay ? 0 : CursorUtilities.GetDoubleClickTime();
 
     #endregion
 
     #region Event handlers
 
-#if !HAS_MAUI
     /// <summary>
     /// Processes mouse events, which are bubbled
     /// through the class' routed events, trigger
@@ -57,13 +56,15 @@ public partial class TaskbarIcon
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args">Mouse event args.</param>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void OnMouseEvent(object? sender, MessageWindow.MouseEventReceivedEventArgs args)
     {
         if (IsDisposed)
         {
             return;
         }
-        
+
+#if !HAS_MAUI
 #if !MACOS
         
         switch (args.MouseEvent)
@@ -130,10 +131,12 @@ public partial class TaskbarIcon
                 throw new ArgumentOutOfRangeException(nameof(args), "Missing handler for mouse event flag: " + args.MouseEvent);
         }
 #endif
-        
+#endif
+
         var cursorPosition = args.Point.ScaleWithDpi();
         var isLeftClickCommandInvoked = false;
 
+#if !HAS_MAUI
         // show popup, if requested
         if (args.MouseEvent.IsMatch(PopupActivation))
         {
@@ -158,7 +161,7 @@ public partial class TaskbarIcon
                 ShowTrayPopup(cursorPosition);
             }
         }
-
+#endif
 
         // show context menu, if requested
         if (args.MouseEvent.IsMatch(MenuActivation))
@@ -200,7 +203,6 @@ public partial class TaskbarIcon
             SingleClickTimer.Change(DoubleClickWaitTime, Timeout.Infinite);
         }
     }
-#endif
     
     /// <summary>
     /// Performs a delayed action if the user requested an action

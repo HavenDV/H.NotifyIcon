@@ -7,11 +7,16 @@ public partial class TaskbarIcon
     /// <summary>
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void ShowContextMenuInPopupMenuMode(System.Drawing.Point cursorPosition)
     {
         var menu = new PopupMenu();
+#if HAS_MAUI
+        PopulateMenu(menu.Items, (MenuFlyout)ContextFlyout);
+#else
         PopulateMenu(menu.Items, ((MenuFlyout)ContextFlyout).Items);
-        
+#endif
+
 #if !MACOS
         var handle = TrayIcon.WindowHandle;
 
@@ -29,6 +34,7 @@ public partial class TaskbarIcon
         {
             switch (flyoutItemBase)
             {
+#if !HAS_MAUI
                 case ToggleMenuFlyoutItem toggleItem:
                     {
                         var item = new PopupMenuItem
@@ -42,6 +48,28 @@ public partial class TaskbarIcon
                             toggleItem.Command?.TryExecute(toggleItem.CommandParameter);
                         };
                         menuItems.Add(item);
+                        break;
+                    }
+#endif
+                case MenuFlyoutSeparator separator:
+                    {
+                        // The following line of code ensure that this code block is not trimed when PublishTrimmed is true.
+                        var a = separator;
+                        menuItems.Add(new PopupMenuSeparator());
+                        break;
+                    }
+                case MenuFlyoutSubItem subItem:
+                    {
+                        var item = new PopupSubMenu
+                        {
+                            Text = subItem.Text,
+                        };
+                        menuItems.Add(item);
+#if HAS_MAUI
+                        PopulateMenu(item.Items, subItem);
+#else
+                        PopulateMenu(item.Items, subItem.Items);
+#endif
                         break;
                     }
                 case MenuFlyoutItem flyoutItem:
@@ -58,26 +86,9 @@ public partial class TaskbarIcon
                         menuItems.Add(item);
                         break;
                     }
-                case MenuFlyoutSeparator  separator:
-                    {
-                        // The following line of code ensure that this code block is not trimed when PublishTrimmed is true.
-                        var a = separator;
-                        menuItems.Add(new PopupMenuSeparator());
-                        break;
-                    }
-                case MenuFlyoutSubItem subItem:
-                    {
-                        var item = new PopupSubMenu
-                        {
-                            Text = subItem.Text,
-                        };
-                        menuItems.Add(item);
-                        PopulateMenu(item.Items, subItem.Items);
-                        break;
-                    }
             }
         }
     }
 
-    #endregion
+#endregion
 }

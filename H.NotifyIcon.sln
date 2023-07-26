@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32120.378
@@ -17,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\ISSUE_TEMPLATE\bug-report.yaml = .github\ISSUE_TEMPLATE\bug-report.yaml
 		src\Directory.Build.props = src\Directory.Build.props
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		.github\workflows\pr.yml = .github\workflows\pr.yml
 		.github\FUNDING.yml = .github\FUNDING.yml
 		LICENSE.md = LICENSE.md
+		.github\workflows\pr.yml = .github\workflows\pr.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -56,13 +55,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "H.NotifyIcon.Apps.Uno.Share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrimmingHelper", "src\apps\TrimmingHelper\TrimmingHelper.csproj", "{A04E983D-5631-4C68-B34A-796970E060C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.GeneratedIcons.System.Drawing", "src\libs\H.GeneratedIcons.System.Drawing\H.GeneratedIcons.System.Drawing.csproj", "{A4A97F4E-71C1-42FA-84DC-7D4A41079A13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.GeneratedIcons.System.Drawing", "src\libs\H.GeneratedIcons.System.Drawing\H.GeneratedIcons.System.Drawing.csproj", "{A4A97F4E-71C1-42FA-84DC-7D4A41079A13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.GeneratedIcons.SkiaSharp", "src\libs\H.GeneratedIcons.SkiaSharp\H.GeneratedIcons.SkiaSharp.csproj", "{EECF393D-0F55-4BFE-AEA8-7FD90383C05D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.GeneratedIcons.SkiaSharp", "src\libs\H.GeneratedIcons.SkiaSharp\H.GeneratedIcons.SkiaSharp.csproj", "{EECF393D-0F55-4BFE-AEA8-7FD90383C05D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.NotifyIcon.Maui", "src\libs\H.NotifyIcon.Maui\H.NotifyIcon.Maui.csproj", "{84E993AA-5343-4502-9612-B9A416AF243F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.Maui", "src\libs\H.NotifyIcon.Maui\H.NotifyIcon.Maui.csproj", "{84E993AA-5343-4502-9612-B9A416AF243F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H.NotifyIcon.Apps.Maui", "src\apps\H.NotifyIcon.Apps.Maui\H.NotifyIcon.Apps.Maui.csproj", "{6C5EA367-5663-420E-B10C-8E5543EBF8DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon.Apps.Maui", "src\apps\H.NotifyIcon.Apps.Maui\H.NotifyIcon.Apps.Maui.csproj", "{6C5EA367-5663-420E-B10C-8E5543EBF8DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -350,6 +349,7 @@ Global
 		{84E993AA-5343-4502-9612-B9A416AF243F}.Release|x86.Build.0 = Release|Any CPU
 		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|arm64.ActiveCfg = Debug|Any CPU
 		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|arm64.Build.0 = Debug|Any CPU
 		{6C5EA367-5663-420E-B10C-8E5543EBF8DD}.Debug|x64.ActiveCfg = Debug|Any CPU

@@ -4,6 +4,8 @@ namespace H.NotifyIcon;
 
 public partial class TaskbarIcon
 {
+#if !HAS_MAUI
+
     #region Properties
 
     private bool IsContextMenuVisible { get; set; }
@@ -183,4 +185,6 @@ public partial class TaskbarIcon
     }
 
     #endregion
+
+#endif
 }

@@ -22,6 +22,8 @@ public static class WindowExtensions
         window.Hide();
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window));
+#elif HAS_MAUI_WINUI
+        WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window.Handler.PlatformView));
 #endif
 
         // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state
@@ -51,6 +53,8 @@ public static class WindowExtensions
         window.Show();
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window));
+#elif HAS_MAUI_WINUI
+        WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window.Handler.PlatformView));
 #endif
 
         // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state

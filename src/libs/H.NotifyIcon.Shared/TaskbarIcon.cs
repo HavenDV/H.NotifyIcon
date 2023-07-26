@@ -64,7 +64,8 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
                 Debugger.Break();
             }
         };
-#if !MACOS && !HAS_MAUI
+        
+#if !MACOS
         // https://github.com/HavenDV/H.NotifyIcon/issues/34
         //Unloaded += (_, _) => Dispose();
         TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
@@ -72,11 +73,15 @@ public partial class TaskbarIcon : FrameworkElement, IDisposable
 
         // register event listeners
         TrayIcon.MessageWindow.MouseEventReceived += OnMouseEvent;
+#if HAS_MAUI
+        BindingContextChanged += OnBindingContextChanged;
+#else
         TrayIcon.MessageWindow.KeyboardEventReceived += OnKeyboardEvent;
         TrayIcon.MessageWindow.ChangeToolTipStateRequest += OnToolTipChange;
         TrayIcon.MessageWindow.BalloonToolTipChanged += OnBalloonToolTipChanged;
 #endif
-        
+#endif
+
         // init single click / balloon timers
         SingleClickTimer = new Timer(DoSingleClickAction);
 

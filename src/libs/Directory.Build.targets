@@ -18,7 +18,7 @@
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.Wpf.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\Wpf\*.*" />
   </ItemGroup>
-  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_WINUI'))">
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_WINUI')) AND !$(DefineConstants.Contains('HAS_MAUI_WINUI'))">
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.WinUI.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\WinUI\*.*" />
   </ItemGroup>
@@ -26,7 +26,7 @@
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.Uno.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\Uno\*.*" />
   </ItemGroup>
-  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_UNO')) AND !$(DefineConstants.Contains('HAS_WINUI'))">
+  <ItemGroup Condition="!$(DefineConstants.Contains('HAS_UNO')) AND !$(DefineConstants.Contains('HAS_WINUI')) AND !$(DefineConstants.Contains('HAS_MAUI'))">
     <Compile Remove="$(MSBuildThisFileDirectory)**\*.WinRT.*" />
     <Compile Remove="$(MSBuildThisFileDirectory)**\WinRT\*.*" />
   </ItemGroup>

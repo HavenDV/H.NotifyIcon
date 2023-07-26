@@ -9,6 +9,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void ShowContextMenu(System.Drawing.Point cursorPosition)
     {
         if (IsDisposed)
@@ -18,7 +19,9 @@ public partial class TaskbarIcon
 
         // raise preview event no matter whether context menu is currently set
         // or not (enables client to set it on demand)
+#if !HAS_MAUI
         var args = OnPreviewTrayContextMenuOpen();
+#endif
         if (ContextFlyout == null)
         {
             return;
@@ -30,6 +33,7 @@ public partial class TaskbarIcon
                 ShowContextMenuInPopupMenuMode(cursorPosition);
                 break;
 
+#if !HAS_MAUI
 #if !HAS_UNO
             case ContextMenuMode.SecondWindow:
                 ShowContextMenuInSecondWindowMode(cursorPosition);
@@ -47,19 +51,22 @@ public partial class TaskbarIcon
                     });
                 }
                 break;
+#endif
 
             default:
                 throw new NotImplementedException($"ContextMenuMode: {ContextMenuMode} is not implemented.");
         }
 
-        // bubble event
+#if !HAS_MAUI
         _ = OnTrayContextMenuOpen();
+#endif
     }
-    
+
     #endregion
 
     #region Event Handlers
 
+#if !HAS_MAUI
     partial void OnContextFlyoutChanged()
     {
         SetParentTaskbarIcon(ContextFlyout, this);
@@ -94,6 +101,8 @@ public partial class TaskbarIcon
             }
         }
     }
+   
+#endif
     
     #endregion
 }
