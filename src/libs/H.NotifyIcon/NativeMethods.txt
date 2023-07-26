@@ -51,8 +51,6 @@ GetSystemMetrics
 
 // WindowUtilities.IsPackaged
 GetCurrentPackageId
-PACKAGE_ID
-APPMODEL_ERROR_NO_PACKAGE
 
 // Shell32
 ABM_GETTASKBARPOS
@@ -93,7 +91,6 @@ TRACK_POPUP_MENU_FLAGS
 
 // DesktopBridgeHelpers
 GetCurrentPackageFullName
-APPMODEL_ERROR_NO_PACKAGE
 
 // DesktopWindowsManagerMethods.SetRoundedCorners
 DwmSetWindowAttribute

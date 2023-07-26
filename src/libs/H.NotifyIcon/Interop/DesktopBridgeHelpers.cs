@@ -25,6 +25,6 @@ public static class DesktopBridgeHelpers
         var text = stackalloc char[(int)length];
         var error = PInvoke.GetCurrentPackageFullName(&length, text);
 
-        return (long)error != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
+        return error != WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE;
     }
 }

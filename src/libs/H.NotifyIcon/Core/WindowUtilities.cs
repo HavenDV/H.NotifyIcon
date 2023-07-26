@@ -74,13 +74,12 @@ public static class WindowUtilities
     [SupportedOSPlatform("windows8.0")]
     public static unsafe bool IsPackaged()
     {
-        var id = new Windows.Win32.Storage.Packaging.Appx.PACKAGE_ID();
         var size = 0U;
         var result = PInvoke.GetCurrentPackageId(
             bufferLength: &size,
-            buffer: (byte*)&id);
+            buffer: default);
 
-        return (int)result != PInvoke.APPMODEL_ERROR_NO_PACKAGE;
+        return result != WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE;
     }
 
     /// <summary>Sets the specified window's show state.</summary>
