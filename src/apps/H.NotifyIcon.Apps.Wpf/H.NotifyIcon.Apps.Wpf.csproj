@@ -21,12 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" />
-    <PackageReference Include="System.Resources.Extensions" PrivateAssets="All" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

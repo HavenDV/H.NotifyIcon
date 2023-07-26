@@ -29,16 +29,14 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EventGenerator.Generator">
+    <PackageReference Include="EventGenerator.Generator" Version="0.13.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageVersion Remove="Microsoft.WindowsAppSDK" />
-    <PackageVersion Remove="Microsoft.Windows.SDK.BuildTools" />
   </ItemGroup>
 
   <ItemGroup>

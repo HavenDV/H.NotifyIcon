@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net4.6.2'">
-    <PackageReference Include="System.Drawing.Common" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">

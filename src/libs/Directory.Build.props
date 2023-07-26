@@ -39,14 +39,14 @@
   </ItemGroup>
 
   <ItemGroup Label="Source Link">
-    <PackageReference Include="DotNet.ReproducibleBuilds">
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup Label="PolySharp">
-    <PackageReference Include="PolySharp">
+    <PackageReference Include="PolySharp" Version="1.13.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

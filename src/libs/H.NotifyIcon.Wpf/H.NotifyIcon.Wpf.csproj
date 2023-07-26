@@ -45,19 +45,19 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EventGenerator.Generator">
+    <PackageReference Include="EventGenerator.Generator" Version="0.11.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="WpfAnalyzers">
+    <PackageReference Include="WpfAnalyzers" Version="4.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ValueTuple" Condition="'$(TargetFramework)' == 'net4.6.2'" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFramework)' == 'net4.6.2'" />
   </ItemGroup>
 
   <ItemGroup>

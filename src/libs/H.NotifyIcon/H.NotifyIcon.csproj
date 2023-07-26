@@ -26,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventGenerator.Generator">
+    <PackageReference Include="EventGenerator.Generator" Version="0.13.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.CsWin32">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.188-beta">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
