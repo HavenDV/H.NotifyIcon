@@ -1,11 +1,10 @@
 ﻿namespace H.NotifyIcon;
 
-#if !HAS_MAUI
 [DependencyProperty<string>("ToolTipText", DefaultValue = "",
     Description = "A tooltip text that is being displayed if no custom ToolTip was set or if custom tooltips are not supported.", Category = CategoryName)]
 [DependencyProperty<UIElement>("TrayToolTip",
     Description = "A custom UI element that is displayed as a tooltip if the user hovers over the taskbar icon. Works only with Vista and above. Accordingly, you should make sure that the ToolTipText property is set as well.", Category = CategoryName)]
-[DependencyProperty<ToolTip>("TrayToolTipResolved", IsReadOnly = true,
+[DependencyProperty<ToolTip2>("TrayToolTipResolved", IsReadOnly = true,
     Description = "Returns a ToolTip control that was created in order to display either TrayToolTip or ToolTipText", Category = CategoryName)]
 [RoutedEvent("TrayToolTipOpen", RoutedEventStrategy.Bubble,
     Description = "Bubbled event that occurs when the custom ToolTip is being displayed.", Category = CategoryName)]
@@ -23,24 +22,9 @@ public partial class TaskbarIcon
 
     #region ToolTipText
 
-    partial void OnToolTipTextChanged(string? oldValue, string? newValue)
+    [SupportedOSPlatform("windows5.1.2600")]
+    partial void OnToolTipTextChanged()
     {
-        //do not touch tooltips if we have a custom tooltip element
-        if (TrayToolTip == null)
-        {
-            var currentToolTip = TrayToolTipResolved;
-            if (currentToolTip == null)
-            {
-                //if we don't have a wrapper tooltip for the tooltip text, create it now
-                CreateCustomToolTip();
-            }
-            else
-            {
-                //if we have a wrapper tooltip that shows the old tooltip text, just update content
-                currentToolTip.Content = newValue;
-            }
-        }
-
         WriteToolTipSettings();
     }
 
@@ -48,28 +32,22 @@ public partial class TaskbarIcon
 
     #region TrayToolTip
 
+    [SupportedOSPlatform("windows5.1.2600")]
     partial void OnTrayToolTipChanged(UIElement? oldValue, UIElement? newValue)
     {
-        //recreate tooltip control
         CreateCustomToolTip();
 
 #if HAS_WPF
         if (oldValue != null)
         {
-            //remove the taskbar icon reference from the previously used element
             SetParentTaskbarIcon(oldValue, null);
         }
-
         if (newValue != null)
         {
-            //set this taskbar icon as a reference to the new tooltip element
             SetParentTaskbarIcon(newValue, this);
         }
 #endif
 
-        //update tooltip settings - needed to make sure a string is set, even
-        //if the ToolTipText property is not set. Otherwise, the event that
-        //triggers tooltip display is never fired.
         WriteToolTipSettings();
     }
 
@@ -82,6 +60,7 @@ public partial class TaskbarIcon
     /// on the OS. Windows Vista or higher is required in order to
     /// support this feature.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     public bool SupportsCustomToolTips => TrayIcon.SupportsCustomToolTips;
 
 #endif
@@ -93,6 +72,9 @@ public partial class TaskbarIcon
     {
         get
         {
+#if HAS_MAUI
+            return false;
+#else
             var popup = TrayPopupResolved;
 #if HAS_WPF
             var menu = ContextMenu;
@@ -105,11 +87,10 @@ public partial class TaskbarIcon
             var balloon = (Popup?)null;
 #endif
 
-#pragma warning disable CA1508 // Avoid dead conditional code
-            return (popup != null && popup.IsOpen) ||
-                   (menu != null && menu.IsOpen) ||
-                   (balloon != null && balloon.IsOpen);
-#pragma warning restore CA1508 // Avoid dead conditional code
+            return popup is { IsOpen: true } ||
+                   menu is { IsOpen: true } ||
+                   balloon is { IsOpen: true };
+#endif
         }
     }
 
@@ -117,72 +98,29 @@ public partial class TaskbarIcon
 
     #region Methods
 
-    /// <summary>
-    /// Creates a <see cref="ToolTip"/> control that either
-    /// wraps the currently set <see cref="TrayToolTip"/>
-    /// control or the <see cref="ToolTipText"/> string.<br/>
-    /// If <see cref="TrayToolTip"/> itself is already
-    /// a <see cref="ToolTip"/> instance, it will be used directly.
-    /// </summary>
-    /// <remarks>We use a <see cref="ToolTip"/> rather than
-    /// <see cref="Popup"/> because there was no way to prevent a
+    /// <remarks>We use a ToolTip rather than
+    /// Popup because there was no way to prevent a
     /// popup from causing cyclic open/close commands if it was
     /// placed under the mouse. ToolTip internally uses a Popup of
-    /// its own, but takes advance of Popup's internal <see cref="UIElement.IsHitTestVisible"/>
+    /// its own, but takes advance of Popup's internal IsHitTestVisible
     /// property which prevents this issue.</remarks>
     private void CreateCustomToolTip()
     {
-#if !MACOS
-        // check if the item itself is a tooltip
-        var tt = TrayToolTip as ToolTip;
-
-        if (tt == null && TrayToolTip != null)
+#if !MACOS && !HAS_MAUI
+        var toolTip = TrayToolTip as ToolTip2 ?? new ToolTip2();
+        if (TrayToolTip != null &&
+            TrayToolTip is not ToolTip2)
         {
-            // create an invisible wrapper tooltip that hosts the UIElement
-            tt = new ToolTip
-            {
-                Placement = PlacementMode.Mouse,
-                // do *not* set the placement target, as it causes the popup to become hidden if the
-                // TaskbarIcon's parent is hidden, too. At runtime, the parent can be resolved through
-                // the ParentTaskbarIcon attached dependency property:
-                // PlacementTarget = this;
-
-                // make sure the tooltip is invisible
-#if HAS_WPF
-                HasDropShadow = false,
-                Background = System.Windows.Media.Brushes.Transparent,
-                // setting the
-                StaysOpen = true,
-#endif
-                BorderThickness = new Thickness(0),
-                Content = TrayToolTip,
-            };
-        }
-        else if (tt == null && !string.IsNullOrEmpty(ToolTipText))
-        {
-            // create a simple tooltip for the ToolTipText string
-            tt = new ToolTip
-            {
-                Content = ToolTipText
-            };
+            toolTip.Content = TrayToolTip;
         }
 
-        // the tooltip explicitly gets the DataContext of this instance.
-        // If there is no DataContext, the TaskbarIcon assigns itself
-        if (tt != null)
-        {
-            UpdateDataContext(tt, DataContext);
-        }
+        UpdateDataContext(toolTip, DataContext);
 
-        // store a reference to the used tooltip
-        TrayToolTipResolved = tt;
+        TrayToolTipResolved = toolTip;
 #endif
     }
 
-    /// <summary>
-    /// Sets tooltip settings for the class depending on defined
-    /// dependency properties and OS support.
-    /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void WriteToolTipSettings()
     {
         var text = ToolTipText;
@@ -215,6 +153,7 @@ public partial class TaskbarIcon
     /// <param name="args">Whether to show or hide the tooltip.</param>
     private void OnToolTipChange(object? sender, MessageWindow.ChangeToolTipStateRequestEventArgs args)
     {
+#if !HAS_MAUI        
         if (TrayToolTipResolved == null)
         {
             return;
@@ -275,8 +214,8 @@ public partial class TaskbarIcon
 
             OnTrayToolTipClose();
         }
+#endif
     }
 
-#endregion
+    #endregion
 }
-#endif

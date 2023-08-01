@@ -136,7 +136,7 @@ public partial class TrayIcon : IDisposable
     /// pop-up UI. If the application wants to show the standard tooltip with NOTIFYICON_VERSION_4, 
     /// it can specify NIF_SHOWTIP to indicate the standard tooltip should still be shown.
     /// </summary>
-    public bool UseStandardTooltip { get; set; }
+    public bool UseStandardTooltip { get; set; } = true;
 
 #endif
     
@@ -436,7 +436,13 @@ public partial class TrayIcon : IDisposable
         }
 
 #if !MACOS
-        if (!TrayIconMethods.TryModifyToolTip(Id, text))
+        var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
+        if (UseStandardTooltip)
+        {
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
+
+        if (!TrayIconMethods.TryModifyToolTip(Id, additionalFlags, text))
         {
             throw new InvalidOperationException("UpdateToolTip failed.");
         }

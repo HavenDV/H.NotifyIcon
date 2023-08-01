@@ -127,6 +127,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryModifyToolTip(
         Guid id,
+        NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string toolTip)
     {
         if (Environment.Is64BitProcess)
@@ -135,6 +136,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
@@ -149,6 +151,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,

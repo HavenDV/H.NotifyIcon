@@ -20,6 +20,7 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Interop;
 global using System.Windows.Resources;
 global using System.Windows.Threading;
+global using ToolTip2 = System.Windows.Controls.ToolTip;
 #elif HAS_WINUI || HAS_UNO_WINUI
 global using Windows.Foundation;
 global using Windows.UI;
@@ -40,6 +41,7 @@ global using FontStyles = Windows.UI.Text.FontStyle;
 global using WinRT.Interop;
 global using Microsoft.UI.Windowing;
 global using Windows.Graphics;
+global using ToolTip2 = Microsoft.UI.Xaml.Controls.ToolTip;
 #if HAS_UNO
 global using WindowActivationState = Windows.UI.Core.CoreWindowActivationState;
 #endif
@@ -58,6 +60,7 @@ global using System.Windows.Input;
 global using Windows.Storage;
 global using Windows.Foundation;
 global using FontStyles = Windows.UI.Text.FontStyle;
+global using ToolTip2 = Windows.UI.Xaml.Controls.ToolTip;
 #else
 global using System.Windows.Input;
 global using Microsoft.Maui;
@@ -70,6 +73,8 @@ global using FontStyles = Microsoft.Maui.Controls.FontAttributes;
 global using FontWeights = Microsoft.Maui.FontWeight;
 global using FontFamily = System.String;
 global using FrameworkElement = Microsoft.Maui.Controls.TemplatedView;
+global using UIElement = Microsoft.Maui.ToolTip;
+global using ToolTip2 = Microsoft.Maui.ToolTip;
 global using MenuFlyoutItemBase = Microsoft.Maui.IMenuElement;
 #endif
 #if HAS_MAUI_WINUI
