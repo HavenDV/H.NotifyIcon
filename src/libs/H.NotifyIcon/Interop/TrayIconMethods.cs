@@ -164,6 +164,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryModifyIcon(
         Guid id,
+        NOTIFY_ICON_DATA_FLAGS additionalFlags,
         nint iconHandle)
     {
         if (Environment.Is64BitProcess)
@@ -172,6 +173,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
@@ -186,6 +188,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_ICON |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
@@ -198,6 +201,7 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryModifyState(
         Guid id,
+        NOTIFY_ICON_DATA_FLAGS additionalFlags,
         uint state)
     {
         if (Environment.Is64BitProcess)
@@ -206,6 +210,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
@@ -221,6 +226,7 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags =
+                    additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_STATE |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,

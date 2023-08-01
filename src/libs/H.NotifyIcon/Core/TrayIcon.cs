@@ -331,7 +331,7 @@ public partial class TrayIcon : IDisposable
             throw new InvalidOperationException($"{nameof(TrayIconMethods.TrySetMostRecentVersion)} failed.");
         }
         if (Visibility == IconVisibility.Visible &&
-            !TrayIconMethods.TryModifyState(Id, (uint)Visibility))
+            !TrayIconMethods.TryModifyState(Id, additionalFlags, (uint)Visibility))
         {
             throw new InvalidOperationException($"{nameof(TrayIconMethods.TryModifyState)} failed.");
         }
@@ -469,7 +469,13 @@ public partial class TrayIcon : IDisposable
             return;
         }
 
-        if (!TrayIconMethods.TryModifyIcon(Id, handle))
+        var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
+        if (UseStandardTooltip)
+        {
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
+
+        if (!TrayIconMethods.TryModifyIcon(Id, additionalFlags, handle))
         {
             throw new InvalidOperationException("UpdateIcon failed.");
         }
@@ -495,7 +501,13 @@ public partial class TrayIcon : IDisposable
         }
 
 #if !MACOS
-        if (!TrayIconMethods.TryModifyState(Id, (uint)visibility))
+        var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
+        if (UseStandardTooltip)
+        {
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
+
+        if (!TrayIconMethods.TryModifyState(Id, additionalFlags, (uint)visibility))
         {
             throw new InvalidOperationException("UpdateState failed.");
         }
