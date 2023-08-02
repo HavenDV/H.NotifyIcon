@@ -97,7 +97,37 @@ public static class WindowUtilities
     {
         return PInvoke.ShowWindow(new HWND(hWnd), SHOW_WINDOW_CMD.SW_SHOW);
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hWnd"></param>
+    /// <returns></returns>
+    public static void ShowWindowInTaskbar(nint hWnd)
+    {
+        var window = new HWND(hWnd);
+        var style = (WINDOW_EX_STYLE)User32Methods.GetWindowLong(window, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE);
+        style |= WINDOW_EX_STYLE.WS_EX_APPWINDOW;
+        style &= ~(WINDOW_EX_STYLE.WS_EX_TOOLWINDOW);
 
+        _ = User32Methods.SetWindowLong(window, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, (nint)style);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hWnd"></param>
+    /// <returns></returns>
+    public static void HideWindowInTaskbar(nint hWnd)
+    {
+        var window = new HWND(hWnd);
+        var style = (WINDOW_EX_STYLE)User32Methods.GetWindowLong(window, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE);
+        style |= WINDOW_EX_STYLE.WS_EX_TOOLWINDOW;
+        style &= ~(WINDOW_EX_STYLE.WS_EX_APPWINDOW);
+
+        _ = User32Methods.SetWindowLong(window, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, (nint)style);
+    }
+    
     /// <summary>
     /// 
     /// </summary>

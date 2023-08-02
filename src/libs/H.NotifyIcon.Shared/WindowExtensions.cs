@@ -69,4 +69,40 @@ public static class WindowExtensions
 #pragma warning restore CA1416 // Validate platform compatibility
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static void ShowInTaskbar(
+        this Window window)
+    {
+        window = window ?? throw new ArgumentNullException(nameof(window));
+
+#if HAS_WPF
+        window.ShowInTaskbar = true;
+#elif !HAS_UNO && !HAS_MAUI
+        WindowUtilities.ShowWindowInTaskbar(WindowNative.GetWindowHandle(window));
+#elif HAS_MAUI_WINUI
+        WindowUtilities.ShowWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+#endif
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static void HideInTaskbar(
+        this Window window)
+    {
+        window = window ?? throw new ArgumentNullException(nameof(window));
+
+#if HAS_WPF
+        window.ShowInTaskbar = false;
+#elif !HAS_UNO && !HAS_MAUI
+        WindowUtilities.HideWindowInTaskbar(WindowNative.GetWindowHandle(window));
+#elif HAS_MAUI_WINUI
+        WindowUtilities.HideWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+#endif
+    }
 }
