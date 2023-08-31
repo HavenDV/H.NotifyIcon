@@ -16,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\ISSUE_TEMPLATE\bug-report.yaml = .github\ISSUE_TEMPLATE\bug-report.yaml
 		src\Directory.Build.props = src\Directory.Build.props
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		.github\FUNDING.yml = .github\FUNDING.yml
 		LICENSE.md = LICENSE.md
 		.github\workflows\pr.yml = .github\workflows\pr.yml
 		README.md = README.md

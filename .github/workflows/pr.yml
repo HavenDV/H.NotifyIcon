@@ -1,14 +1,15 @@
 name: Build and test PR
 on:
   pull_request:
-    types: [opened, reopened, edited]
+    branches:
+      - master
 
 jobs:
   build-and-test:
     name: Build and test PR
     uses: HavenDV/workflows/.github/workflows/dotnet_build-test-publish.yml@main
     with:
-      os: windows-2022
+      os: windows-latest
       use-msbuild: true
       workloads: maui
       create-release: false
