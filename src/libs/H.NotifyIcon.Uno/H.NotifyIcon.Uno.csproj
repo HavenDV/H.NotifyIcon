@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.UI" Version="4.9.42" />
+    <PackageReference Include="Uno.UI" Version="4.9.45" />
   </ItemGroup>
   
   <PropertyGroup Label="NuGet">
@@ -22,7 +22,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.5">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.2.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
