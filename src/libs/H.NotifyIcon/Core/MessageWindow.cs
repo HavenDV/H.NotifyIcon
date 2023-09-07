@@ -24,6 +24,10 @@ namespace H.NotifyIcon.Core;
     Description = "Fired if the taskbar was created or restarted. Requires the taskbar icon to be reset")]
 [Event("DpiChanged",
     Description = "Fired if dpi change window message received.")]
+[Event("InitMenuPopup",
+    Description = "Sent when a drop-down menu or submenu is about to become active. " +
+                  "This allows an application to modify the menu before it is displayed, " +
+                  "without changing the entire menu.")]
 [SupportedOSPlatform("windows5.0")]
 public partial class MessageWindow : IDisposable
 {
@@ -178,6 +182,10 @@ public partial class MessageWindow : IDisposable
         {
             switch (msg)
             {
+                case PInvoke.WM_INITMENUPOPUP:
+                    _ = OnInitMenuPopup();
+                    break;
+                
                 case PInvoke.WM_DPICHANGED:
                     _ = OnDpiChanged();
                     break;
