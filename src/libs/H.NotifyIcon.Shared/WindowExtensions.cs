@@ -23,7 +23,7 @@ public static class WindowExtensions
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window));
 #elif HAS_MAUI_WINUI
-        WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+        WindowUtilities.HideWindow(WindowNative.GetWindowHandle(window.Handler!.PlatformView));
 #endif
 
         // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state
@@ -38,7 +38,22 @@ public static class WindowExtensions
 #pragma warning restore CA1416 // Validate platform compatibility
         }
     }
+    
+#if HAS_MAUI    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static void Activate(this Window window)
+    {
+        window = window ?? throw new ArgumentNullException(nameof(window));
 
+#if HAS_MAUI_WINUI
+        WindowUtilities.SetForegroundWindow(WindowNative.GetWindowHandle(window.Handler!.PlatformView));
+#endif
+    }
+#endif
+    
     /// <summary>
     /// Shows the window and optionally disables the Efficiency Mode for the current process.
     /// </summary>
@@ -54,7 +69,7 @@ public static class WindowExtensions
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window));
 #elif HAS_MAUI_WINUI
-        WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+        WindowUtilities.ShowWindow(WindowNative.GetWindowHandle(window.Handler!.PlatformView));
 #endif
 
         // Important note: in .Net Framework if your executable assembly manifest doesn't explicitly state
@@ -84,7 +99,7 @@ public static class WindowExtensions
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.ShowWindowInTaskbar(WindowNative.GetWindowHandle(window));
 #elif HAS_MAUI_WINUI
-        WindowUtilities.ShowWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+        WindowUtilities.ShowWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler!.PlatformView));
 #endif
     }
 
@@ -102,7 +117,7 @@ public static class WindowExtensions
 #elif !HAS_UNO && !HAS_MAUI
         WindowUtilities.HideWindowInTaskbar(WindowNative.GetWindowHandle(window));
 #elif HAS_MAUI_WINUI
-        WindowUtilities.HideWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler.PlatformView));
+        WindowUtilities.HideWindowInTaskbar(WindowNative.GetWindowHandle(window.Handler!.PlatformView));
 #endif
     }
 }
