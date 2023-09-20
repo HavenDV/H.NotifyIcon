@@ -95,7 +95,7 @@ public static class WindowUtilities
     /// </remarks>
     public static bool ShowWindow(nint hWnd)
     {
-        return PInvoke.ShowWindow(new HWND(hWnd), SHOW_WINDOW_CMD.SW_SHOW);
+        return PInvoke.ShowWindow(new HWND(hWnd), SHOW_WINDOW_CMD.SW_SHOWNORMAL);
     }
     
     /// <summary>
