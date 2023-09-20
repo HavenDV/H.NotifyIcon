@@ -3,7 +3,7 @@
 public partial class TaskbarIcon : IDisposable
 {
     /// <summary>
-    /// Set to true as soon as <c>Dispose</c> has been invoked.
+    /// Set to true as soon as <c>Dispose</c> has been invoked. 
     /// </summary>
     public bool IsDisposed { get; private set; }
     
