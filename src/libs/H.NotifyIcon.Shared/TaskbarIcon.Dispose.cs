@@ -16,6 +16,8 @@ public partial class TaskbarIcon : IDisposable
         {
             Application.Current.Exit += OnExit;
         }
+#elif HAS_MAUI
+        MauiAppBuilderExtensions.WindowClosed += OnExit;
 #endif
     }
 
@@ -31,11 +33,13 @@ public partial class TaskbarIcon : IDisposable
         }
     }
 
+#if HAS_WPF || HAS_MAUI
     [SupportedOSPlatform("windows5.1.2600")]
-    private void OnExit(object sender, EventArgs e)
+    private void OnExit(object? sender, EventArgs e)
     {
         Dispose();
     }
+#endif
 
     /// <summary>
     /// This destructor will run only if the <see cref="Dispose()"/>
@@ -107,6 +111,8 @@ public partial class TaskbarIcon : IDisposable
             {
                 Application.Current.Exit -= OnExit;
             }
+#elif HAS_MAUI
+            MauiAppBuilderExtensions.WindowClosed -= OnExit;
 #endif
 
             // stop timers

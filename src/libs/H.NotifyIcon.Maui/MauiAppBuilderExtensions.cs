@@ -1,10 +1,13 @@
+using Microsoft.Maui.LifecycleEvents;
+
 namespace H.NotifyIcon;
 
 /// <summary>
 /// 
 /// </summary>
 [CLSCompliant(false)]
-public static class MauiAppBuilderExtensions
+[WeakEvent("WindowClosed")]
+public static partial class MauiAppBuilderExtensions
 {
     /// <summary>
     /// 
@@ -13,6 +16,13 @@ public static class MauiAppBuilderExtensions
     /// <returns></returns>
     public static MauiAppBuilder UseNotifyIcon(this MauiAppBuilder builder)
     {
-        return builder;
+        return builder
+            .ConfigureLifecycleEvents(events =>
+            {
+#if WINDOWS
+                    events.AddWindows(windows => windows
+                           .OnClosed((window, _) => RaiseWindowClosedEvent(window)));
+#endif
+            });
     }
 }
