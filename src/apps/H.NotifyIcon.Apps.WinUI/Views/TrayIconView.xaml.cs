@@ -1,9 +1,14 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace H.NotifyIcon.Apps.Views;
 
-public sealed partial class TrayIconView
+[ObservableObject]
+public sealed partial class TrayIconView : UserControl
 {
+    [ObservableProperty]
+    private bool _isWindowVisible;
+    
     public TrayIconView()
     {
         InitializeComponent();
@@ -26,6 +31,7 @@ public sealed partial class TrayIconView
         {
             window.Show();
         }
+        IsWindowVisible = window.Visible;
     }
 
     [RelayCommand]
