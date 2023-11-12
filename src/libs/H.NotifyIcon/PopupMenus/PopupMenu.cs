@@ -99,7 +99,7 @@ public class PopupMenu
                     exceptions.Add(e);
                 }
             }
-            if (exceptions.Any()) throw new AggregateException(exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions);
         }
 
         // If the user cancels the menu without making a selection,
