@@ -11,6 +11,7 @@ jobs:
     with:
       os: windows-2022
       use-msbuild: true
+      install-latest-msbuild: true
       workloads: maui
       project-path: 
         # This is required for correct publishing to NuGet
