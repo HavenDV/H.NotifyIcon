@@ -7,6 +7,7 @@
     <NoWarn>$(NoWarn);CS3021;CA1031;CS8002</NoWarn>
     <Nullable>enable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <UseRidGraph>true</UseRidGraph>
   </PropertyGroup>
 
   <ItemGroup>
