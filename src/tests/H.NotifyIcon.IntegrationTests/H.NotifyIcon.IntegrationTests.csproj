@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.8;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.8;net8.0-windows</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

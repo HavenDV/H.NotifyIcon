@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net4.6.2;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.6.2;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <LangVersion>preview</LangVersion>

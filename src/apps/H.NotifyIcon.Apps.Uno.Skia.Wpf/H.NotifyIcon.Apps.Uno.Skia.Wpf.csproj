@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
-    <TargetFrameworks>net7.0-windows;net4.7.2</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net4.7.2</TargetFrameworks>
     <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;HAS_UNO_WINUI</DefineConstants>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
