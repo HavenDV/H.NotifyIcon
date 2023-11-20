@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.WinUI" Version="5.0.41" />
+    <PackageReference Include="Uno.WinUI" Version="5.0.48" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
