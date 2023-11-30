@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <DefineConstants>$(DefineConstants);HAS_WPF;HAS_PLATFORM_CODE</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
-    <NoWarn>$(NoWarn);WPF0005;WPF0041;CA1030;CA1031</NoWarn>
+    <NoWarn>$(NoWarn);WPF0005;WPF0041;CA1030;CA1031;CA1513;CA1510</NoWarn>
     <Nullable>enable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>

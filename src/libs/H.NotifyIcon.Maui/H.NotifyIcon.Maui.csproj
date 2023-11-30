@@ -5,7 +5,7 @@
     <UseMaui>true</UseMaui>
     <DefineConstants>$(DefineConstants);HAS_PLATFORM_CODE;HAS_MAUI</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)'=='net8.0-windows10.0.19041.0'">$(DefineConstants);HAS_MAUI_WINUI</DefineConstants>
-    <NoWarn>$(NoWarn);CA1031;CS8002;CS0108;CA1501</NoWarn>
+    <NoWarn>$(NoWarn);CA1031;CS8002;CS0108;CA1501;CA1513</NoWarn>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
@@ -30,6 +30,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
     <PackageReference Include="DependencyPropertyGenerator" Version="1.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

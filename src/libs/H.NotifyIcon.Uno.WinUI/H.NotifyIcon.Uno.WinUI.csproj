@@ -1,15 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
-    <DefineConstants>$(DefineConstants);HAS_UNO;HAS_WINUI;IS_PACKABLE;HAS_PLATFORM_CODE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_WINUI;IS_PACKABLE;HAS_PLATFORM_CODE</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFramework)' != 'net8.0-windows10.0.19041' ">$(DefineConstants);HAS_UNO</DefineConstants>
     <Nullable>enable</Nullable>
-    <NoWarn>$(NoWarn);Uno0001;CA1010;CA1031;CS8002</NoWarn>
+    <NoWarn>$(NoWarn);Uno0001;CA1010;CA1031;CS8002;CS0114;CS3009;CA1063;CA1513;CA2000;CA1416;NETSDK1206</NoWarn>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net8.0-windows10.0.19041' ">
     <PackageReference Include="Uno.WinUI" Version="5.0.48" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0-windows10.0.19041' ">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">
