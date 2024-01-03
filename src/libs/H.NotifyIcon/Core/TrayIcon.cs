@@ -459,14 +459,14 @@ public partial class TrayIcon : IDisposable
     /// <param name="handle">The title to display on the balloon tip.</param>
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="ObjectDisposedException"></exception>
-    public void UpdateIcon(nint handle)
+    public bool UpdateIcon(nint handle)
     {
         EnsureNotDisposed();
 
         if (!IsCreated)
         {
             Icon = handle;
-            return;
+            return true;
         }
 
         var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
@@ -477,9 +477,11 @@ public partial class TrayIcon : IDisposable
 
         if (!TrayIconMethods.TryModifyIcon(Id, additionalFlags, handle))
         {
-            throw new InvalidOperationException("UpdateIcon failed.");
+            return false;
         }
+        
         Icon = handle;
+        return true;
     }
 #endif
 

@@ -43,7 +43,7 @@ public partial class TaskbarIcon
     partial void OnIconChanged(Icon? oldValue, Icon? newValue)
     {
         oldValue?.Dispose();
-        UpdateIcon(newValue);
+        _ = UpdateIcon(newValue);
     }
     
     /// <summary>
@@ -52,10 +52,12 @@ public partial class TaskbarIcon
     /// <param name="value"></param>
     [CLSCompliant(false)]
     [SupportedOSPlatform("windows5.1.2600")]
-    public void UpdateIcon(Icon? value)
+    public bool UpdateIcon(Icon? value)
     {
 #if !MACOS
-        TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
+        return TrayIcon.UpdateIcon((nint?)value?.Handle ?? 0);
+#else
+        return true;
 #endif
     }
 
