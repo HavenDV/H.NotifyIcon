@@ -17,7 +17,6 @@ namespace H.NotifyIcon;
 [CLSCompliant(false)]
 #endif
 #if MACOS || MACCATALYST
-[Advice("Starting with macos10.10 Soft-deprecation, forwards message to button, but will be gone in the future.")]
 [UnsupportedOSPlatform("macos10.10")]
 [UnsupportedOSPlatform("maccatalyst")]
 [SupportedOSPlatform("macos")]
