@@ -13,6 +13,7 @@ jobs:
       use-msbuild: true
       workloads: maui
       create-release: false
+      install-tizen: true
       generate-build-number: false
       project-path: 
         # This is required for correct publishing to NuGet
