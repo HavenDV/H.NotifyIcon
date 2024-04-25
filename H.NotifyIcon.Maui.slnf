@@ -1,0 +1,12 @@
+﻿{
+  "solution": {
+    "path": "H.NotifyIcon.sln",
+    "projects": [
+      "src\\apps\\H.NotifyIcon.Apps.Maui\\H.NotifyIcon.Apps.Maui.csproj",
+      "src\\libs\\H.GeneratedIcons.SkiaSharp\\H.GeneratedIcons.SkiaSharp.csproj",
+      "src\\libs\\H.GeneratedIcons.System.Drawing\\H.GeneratedIcons.System.Drawing.csproj",
+      "src\\libs\\H.NotifyIcon.Maui\\H.NotifyIcon.Maui.csproj",
+      "src\\libs\\H.NotifyIcon\\H.NotifyIcon.csproj"
+    ]
+  }
+}
