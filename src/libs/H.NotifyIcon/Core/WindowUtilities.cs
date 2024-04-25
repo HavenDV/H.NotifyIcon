@@ -156,7 +156,7 @@ public static class WindowUtilities
         _ = PInvoke.SetLayeredWindowAttributes(
             hwnd: hWnd,
             crKey: new COLORREF((uint)ToWin32(System.Drawing.Color.Black)),
-            bAlpha: 255,
+            bAlpha: 0,
             dwFlags: LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_COLORKEY | LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_ALPHA).EnsureNonZero();
     }
     
