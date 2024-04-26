@@ -19,6 +19,11 @@ public class PopupMenu
     /// <summary>
     /// 
     /// </summary>
+    public bool RightToLeft { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="ownerHandle"></param>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -29,6 +34,11 @@ public class PopupMenu
            TRACK_POPUP_MENU_FLAGS.TPM_RETURNCMD |
            TRACK_POPUP_MENU_FLAGS.TPM_NONOTIFY |
            TRACK_POPUP_MENU_FLAGS.TPM_BOTTOMALIGN;
+
+        if (RightToLeft)
+        {
+            flags |= TRACK_POPUP_MENU_FLAGS.TPM_LAYOUTRTL;
+        }
 
         BOOL id;
 
