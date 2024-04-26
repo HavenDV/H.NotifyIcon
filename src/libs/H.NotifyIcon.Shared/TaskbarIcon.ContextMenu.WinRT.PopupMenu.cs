@@ -10,7 +10,10 @@ public partial class TaskbarIcon
     [SupportedOSPlatform("windows5.1.2600")]
     private void ShowContextMenuInPopupMenuMode(System.Drawing.Point cursorPosition)
     {
-        var menu = new H.NotifyIcon.Core.PopupMenu();
+        var menu = new H.NotifyIcon.Core.PopupMenu
+        {
+            RightToLeft = FlowDirection == FlowDirection.RightToLeft
+        };
 #if HAS_MAUI
         PopulateMenu(menu.Items, (MenuFlyout)ContextFlyout);
 #else

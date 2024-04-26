@@ -1,4 +1,5 @@
 ﻿using H.NotifyIcon.Interop;
+using Microsoft.UI.Xaml.Data;
 
 namespace H.NotifyIcon;
 
@@ -60,6 +61,15 @@ public partial class TaskbarIcon
         {
             Background = new SolidColorBrush(Colors.Transparent),
         };
+
+        var flowDirectionBinding = new Binding
+        {
+            Source = this,
+            Path = new PropertyPath(nameof(FlowDirection)),
+            Mode = BindingMode.OneWay,
+        };
+        BindingOperations.SetBinding(frame, FlowDirectionProperty, flowDirectionBinding);
+
         var window = new Window()
         {
             Content = frame,
