@@ -7,7 +7,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
-    private void ShowContextMenu(System.Drawing.Point cursorPosition)
+    public void ShowContextMenu(System.Drawing.Point cursorPosition)
     {
         if (IsDisposed)
         {
