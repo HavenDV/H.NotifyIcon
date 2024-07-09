@@ -45,7 +45,7 @@ public partial class TaskbarIcon : FrameworkElement
     /// Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.
     /// </remarks>
     [SupportedOSPlatform("windows5.1.2600")]
-    public Guid? IsCreated => IsCreated ? TrayIcon.Id : null;
+    public Guid? Id => IsCreated ? TrayIcon.Id : null;
 
     #endregion
 
