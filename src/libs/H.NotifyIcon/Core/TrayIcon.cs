@@ -239,7 +239,15 @@ public partial class TrayIcon : IDisposable
             Assembly.GetEntryAssembly() ??
             throw new InvalidOperationException("Entry assembly is not found.");
 
-        return assembly.Location;
+#pragma warning disable IL3000
+        var location = assembly.Location;
+#pragma warning restore IL3000
+        if (string.IsNullOrWhiteSpace(location))
+        {
+            location = AppContext.BaseDirectory;
+        }
+        
+        return location;
     }
 
     /// <summary>
