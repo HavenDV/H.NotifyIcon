@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-    <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks>
+    <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
     <UseMaui>true</UseMaui>
     <DefineConstants>$(DefineConstants);HAS_PLATFORM_CODE;HAS_MAUI</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)'=='net8.0-windows10.0.19041.0'">$(DefineConstants);HAS_MAUI_WINUI</DefineConstants>
@@ -44,7 +44,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.3.3">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

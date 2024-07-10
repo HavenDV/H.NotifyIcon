@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon.Apps.Skia;
+﻿using Uno.UI.Runtime.Skia.Wpf;
+
+namespace H.NotifyIcon.Apps.Skia;
 
 public partial class MainWindow : System.Windows.Window
 {
@@ -6,6 +8,6 @@ public partial class MainWindow : System.Windows.Window
     {
         InitializeComponent();
 
-        Root.Content = new global::Uno.UI.Skia.Platform.WpfHost(Dispatcher, () => new global::H.NotifyIcon.Apps.App());
+        Root.Content = new WpfHost(Dispatcher, () => new global::H.NotifyIcon.Apps.App());
     }
 }

@@ -2,7 +2,12 @@
 
 #if !MACOS
 [DependencyProperty<Guid>("Id",
-    Description = "Gets or sets the TrayIcon Id. Use this for second TrayIcon in same app.", Category = CategoryName)]
+    Description = "Unique ID." +
+                  "Gets or sets the TrayIcon Id." +
+                  "Use this for second TrayIcon in same app." +
+                  "It will be used by the system to store your TrayIcon settings," +
+                  "so it is recommended to make it fixed and unique for each application TrayIcon, not random." +
+                  "Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.", Category = CategoryName)]
 [DependencyProperty<string>("CustomName",
     Description = "Gets or sets the TrayIcon Name. Use this for second TrayIcon in same app.", Category = CategoryName)]
 #endif
@@ -32,6 +37,7 @@ public partial class TaskbarIcon
     partial void OnCustomNameChanged(string? newValue)
     {
         TrayIcon.UpdateName(newValue ?? string.Empty);
+        Id = TrayIcon.Id;
     }
 #endif
 

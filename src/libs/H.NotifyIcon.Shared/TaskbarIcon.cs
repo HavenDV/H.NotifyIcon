@@ -36,17 +36,6 @@ public partial class TaskbarIcon : FrameworkElement
     [SupportedOSPlatform("windows5.1.2600")]
     public bool IsCreated => TrayIcon.IsCreated;
 
-    /// <summary>
-    /// Unique ID. <br/>
-    /// It will be used by the system to store your TrayIcon settings, 
-    /// so it is recommended to make it fixed and unique for each application TrayIcon, not random.
-    /// </summary>
-    /// <remarks>
-    /// Note: Windows associates a Guid with the path of the binary, so you must use the new Guid when you change the path.
-    /// </remarks>
-    [SupportedOSPlatform("windows5.1.2600")]
-    public Guid? Id => IsCreated ? TrayIcon.Id : null;
-
     #endregion
 
     #region Constructors
@@ -63,6 +52,7 @@ public partial class TaskbarIcon : FrameworkElement
 #endif
 
         TrayIcon = new TrayIcon();
+        Id = TrayIcon.Id;
         Loaded += (_, _) =>
         {
             try
