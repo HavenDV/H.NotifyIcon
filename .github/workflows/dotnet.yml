@@ -6,23 +6,33 @@ on:
 
 jobs:
   build-test-publish:
-    name: Build, test and publish
-    uses: HavenDV/workflows/.github/workflows/dotnet_build-test-publish.yml@main
-    with:
-      os: windows-2022
-      use-msbuild: true
-      #install-latest-msbuild: true
-      install-tizen: true
-      workloads: maui
-      project-path: 
-        # This is required for correct publishing to NuGet
-        /target:libs\H_GeneratedIcons_SkiaSharp
-        /target:libs\H_GeneratedIcons_System_Drawing
-        /target:libs\H_NotifyIcon
-        /target:libs\H_NotifyIcon_Uno
-        /target:libs\H_NotifyIcon_Uno_WinUI
-        /target:libs\H_NotifyIcon_WinUI
-        /target:libs\H_NotifyIcon_Wpf
-        /target:libs\H_NotifyIcon_Maui
-    secrets:
-      nuget-key: ${{ secrets.NUGET_KEY }}
+    name: Build, test and publish library
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install workloads
+        run: dotnet workload install maui
+
+      - name: Install Tizen workload on macOS / Linux
+        if: runner.os != 'Windows'
+        run: curl -sSL https://raw.githubusercontent.com/Samsung/Tizen.NET/main/workload/scripts/workload-install.sh | sudo bash
+
+      - name: Install Tizen workload on Windows
+        if: runner.os == 'Windows'
+        run: |
+          Invoke-WebRequest 'https://raw.githubusercontent.com/Samsung/Tizen.NET/main/workload/scripts/workload-install.ps1' -OutFile 'workload-install.ps1'
+          ./workload-install.ps1
+
+      - name: Build all projects in src/libs
+        run: |
+          Get-ChildItem -Path src/libs -Recurse -Filter *.csproj | ForEach-Object { dotnet build $_.FullName --configuration Release }
+        shell: pwsh
+
+      - name: Publish
+        run: dotnet nuget push
+          **.nupkg
+          --skip-duplicate
+          --source https://api.nuget.org/v3/index.json
+          --api-key ${{ secrets.NUGET_KEY }}
