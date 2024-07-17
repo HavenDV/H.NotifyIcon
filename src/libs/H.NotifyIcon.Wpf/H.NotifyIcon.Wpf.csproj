@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.6.2;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.6.2;net6.0-windows;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <DefineConstants>$(DefineConstants);HAS_WPF;HAS_PLATFORM_CODE</DefineConstants>
     <RootNamespace>Hardcodet.Wpf.TaskbarNotification</RootNamespace>
