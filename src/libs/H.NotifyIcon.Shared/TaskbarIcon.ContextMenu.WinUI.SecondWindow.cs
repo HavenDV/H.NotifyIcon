@@ -122,12 +122,17 @@ public partial class TaskbarIcon
                 flyoutItemBase.Padding = new Thickness(11, 0, 11, 0);
             }
             flyout.Items.Add(flyoutItemBase);
-            flyoutItemBase.Tapped += (_, _) =>
+
+            // MenuFlyoutSubItem should not be clickable and should not close the context menu
+            if (flyoutItemBase is not MenuFlyoutSubItem)
             {
-                IsContextMenuVisible = false;
-                flyout.Hide();
-                _ = WindowUtilities.HideWindow(handle);
-            };
+                flyoutItemBase.Tapped += (_, _) =>
+                {
+                    IsContextMenuVisible = false;
+                    flyout.Hide();
+                    _ = WindowUtilities.HideWindow(handle);
+                };
+            }
         }
 
         frame.Loaded += (_, _) =>
