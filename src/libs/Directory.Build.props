@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <PropertyGroup Label="Nuget">
-    <Version>2.1.0</Version>
     <PackageReleaseNotes>$(PACKAGE_RELEASE_NOTES)</PackageReleaseNotes>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -35,6 +34,18 @@
   <ItemGroup Label="Nuget">
     <None Include="$(MSBuildThisFileDirectory)../../assets/nuget_icon.png" Pack="true" PackagePath="\" Visible="false" />
     <None Include="$(MSBuildThisFileDirectory)../../README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <PropertyGroup Label="Versioning">
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerDefaultPreReleaseIdentifiers>dev</MinVerDefaultPreReleaseIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup Label="Versioning">
+    <PackageReference Include="MinVer" Version="5.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Label="Source Link">
