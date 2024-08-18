@@ -28,7 +28,7 @@ public partial class TaskbarIcon : FrameworkElement
     /// <summary>
     /// Represents the current icon data.
     /// </summary>
-    private TrayIcon TrayIcon { get; }
+    public TrayIcon TrayIcon { get; }
 
     /// <summary>
     /// Indicates whether the taskbar icon has been created or not.
