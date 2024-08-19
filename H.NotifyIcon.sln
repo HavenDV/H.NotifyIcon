@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.md = LICENSE.md
 		.github\workflows\pr.yml = .github\workflows\pr.yml
 		README.md = README.md
+		.github\workflows\auto-merge.yml = .github\workflows\auto-merge.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NotifyIcon", "src\libs\H.NotifyIcon\H.NotifyIcon.csproj", "{0485EE3E-3745-4E79-A396-19AE493FA9D3}"
