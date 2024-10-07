@@ -137,6 +137,8 @@ public partial class TaskbarIcon
 
         frame.Loaded += (_, _) =>
         {
+            // Set the window style to PopupWindow to make the title bar invisible
+            HwndUtilities.SetWindowStyle((nint)ContextMenuWindowHandle!, HwndUtilities.WindowStyle.PopupWindow);
             flyout.ShowAt(window.Content, new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient,

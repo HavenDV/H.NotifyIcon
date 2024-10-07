@@ -9,6 +9,7 @@ SetForegroundWindow
 ShowWindow
 SetWindowLong
 GetWindowLong
+SetWindowPos
 DefSubclassProc
 SetWindowSubclass
 GetClientRect
