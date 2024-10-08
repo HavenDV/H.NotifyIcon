@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'net8.0-windows10.0.19041' ">
-    <PackageReference Include="Uno.WinUI" Version="5.2.175" />
+    <PackageReference Include="Uno.WinUI" Version="5.4.38" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0-windows10.0.19041' ">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
   </ItemGroup>
 
@@ -33,7 +33,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EventGenerator.Generator" Version="0.13.0">
+    <PackageReference Include="EventGenerator.Generator" Version="0.13.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

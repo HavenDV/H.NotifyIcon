@@ -48,7 +48,7 @@ popups, context menus, and balloon messages. It can be used directly in code or 
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EventGenerator.Generator" Version="0.13.0">
+    <PackageReference Include="EventGenerator.Generator" Version="0.13.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
