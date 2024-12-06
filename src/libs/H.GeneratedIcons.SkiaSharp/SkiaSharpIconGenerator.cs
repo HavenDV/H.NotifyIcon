@@ -129,8 +129,7 @@ public static class SkiaSharpIconGenerator
         {
             if (textRectangle == null)
             {
-                var bounds = new SKRect();
-                _ = foregroundBrush.MeasureText(text, ref bounds);
+                _ = font.MeasureText(text, out var bounds, foregroundBrush);
                 
                 graphics.DrawText(
                     text: text,

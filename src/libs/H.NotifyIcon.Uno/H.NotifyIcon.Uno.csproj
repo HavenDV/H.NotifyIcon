@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.UI" Version="5.4.38" />
+    <PackageReference Include="Uno.UI" Version="5.5.87" />
   </ItemGroup>
   
   <PropertyGroup Label="NuGet">

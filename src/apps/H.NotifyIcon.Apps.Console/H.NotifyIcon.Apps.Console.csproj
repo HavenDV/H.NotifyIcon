@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.8;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.8;net9.0-windows</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>

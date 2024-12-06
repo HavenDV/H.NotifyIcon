@@ -17,7 +17,7 @@ public partial class MainPage
     [RelayCommand]
     public void ShowHideWindow()
     {
-        var window = Application.Current?.MainPage?.Window;
+        var window = Application.Current?.Windows[0];
         if (window == null)
         {
             return;
