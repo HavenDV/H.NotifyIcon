@@ -14,6 +14,7 @@ This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon)
 * [Design-time access](broken-reference)
 * [Efficiency Mode](broken-reference)
 * [Dynamic icon generation](broken-reference)
+* Trimming/NativeAOT support
 
 #### NuGet
 
