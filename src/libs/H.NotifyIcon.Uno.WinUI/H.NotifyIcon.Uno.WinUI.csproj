@@ -52,9 +52,9 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041'">
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="9.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
+    <PackageReference Include="System.Reflection.Metadata" Version="9.0.1" />
   </ItemGroup>
 
 </Project>
