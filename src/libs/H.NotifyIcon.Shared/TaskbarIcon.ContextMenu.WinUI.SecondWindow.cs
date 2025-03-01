@@ -99,7 +99,7 @@ public partial class TaskbarIcon
             AreOpenCloseAnimationsEnabled = ContextFlyout.AreOpenCloseAnimationsEnabled,
             Placement = FlyoutPlacementMode.Full,
         };
-        flyout.Closed += async (_, _) =>
+        flyout.Closed += (_, _) =>
         {
             if (!flyout.AreOpenCloseAnimationsEnabled ||
                 !IsContextMenuVisible)
@@ -108,7 +108,6 @@ public partial class TaskbarIcon
                 return;
             }
 
-            await Task.Delay(1).ConfigureAwait(true);
             flyout.ShowAt(window.Content, new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient,
