@@ -45,7 +45,7 @@ public class PopupMenu
         var lastId = 1;
         List<DestroyMenuSafeHandle> safeHandles = new();
 
-        void AppendToMenu(HMENU menu, ICollection<PopupItem> items)
+        unsafe void AppendToMenu(HMENU menu, ICollection<PopupItem> items)
         {
             var handle = new DestroyMenuSafeHandle(menu, true);
             safeHandles.Add(handle);
@@ -57,7 +57,7 @@ public class PopupMenu
                 return PInvoke.AppendMenu(
                     hMenu: handle,
                     uFlags: MENU_ITEM_FLAGS.MF_POPUP,
-                    uIDNewItem: (nuint)subMenuHandle.Value.ToInt64(),
+                    uIDNewItem: (nuint)subMenuHandle.Value,
                     lpNewItem: subMenu.Text).EnsureNonZero();
             }
 

@@ -7,7 +7,7 @@ internal static class InteropUtilities
     /// <exception cref="COMException"></exception>
     public static HWND EnsureNonNull(this HWND value)
     {
-        if (value.Value == IntPtr.Zero)
+        if (value.IsNull)
         {
             Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
         }

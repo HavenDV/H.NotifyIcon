@@ -15,7 +15,7 @@ public static class TrayInfo
     /// <returns>Tray coordinates.</returns>
     public static bool IsShellOpen()
     {
-        return PInvoke.FindWindow("Shell_TrayWnd", null).Value != IntPtr.Zero; 
+        return !PInvoke.FindWindow("Shell_TrayWnd", null).IsNull; 
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public static class TrayInfo
     /// <returns>Tray coordinates.</returns>
     public static bool IsNotifyIconOverflowWindowOpen()
     {
-        return PInvoke.FindWindow("NotifyIconOverflowWindow", null).Value != IntPtr.Zero;
+        return !PInvoke.FindWindow("NotifyIconOverflowWindow", null).IsNull;
     }
 
     /// <summary>

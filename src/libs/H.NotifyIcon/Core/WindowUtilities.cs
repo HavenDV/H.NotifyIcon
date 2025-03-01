@@ -182,7 +182,7 @@ public static class WindowUtilities
                         lprc: &rect,
                         hbr: hBrush).EnsureNonZero();
                     _ = PInvoke.DeleteObject(
-                        ho: new HGDIOBJ(hBrush)).EnsureNonZero();
+                        ho: hBrush).EnsureNonZero();
 
                     return new LRESULT(1);
                 }
