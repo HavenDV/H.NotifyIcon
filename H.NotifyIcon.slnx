@@ -1,0 +1,160 @@
+﻿<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="arm64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/apps/">
+    <Project Path="src\apps\H.NotifyIcon.Apps.Console\H.NotifyIcon.Apps.Console.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\apps\H.NotifyIcon.Apps.Maui\H.NotifyIcon.Apps.Maui.csproj">
+      <Configuration Solution="Debug|Any CPU" Project="Debug|Any CPU|Deploy" />
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\apps\H.NotifyIcon.Apps.WinUI.Windowless\H.NotifyIcon.Apps.WinUI.Windowless.csproj">
+      <Configuration Solution="Debug|Any CPU" Project="Debug|x64|Deploy" />
+      <Configuration Solution="Debug|arm64" Project="Debug|arm64|Deploy" />
+      <Configuration Solution="Debug|x64" Project="Debug|x64|Deploy" />
+      <Configuration Solution="Debug|x86" Project="Debug|x86|Deploy" />
+      <Configuration Solution="Release|Any CPU" Project="Release|x64|Deploy" />
+      <Configuration Solution="Release|arm64" Project="Release|arm64|Deploy" />
+      <Configuration Solution="Release|x64" Project="Release|x64|Deploy" />
+      <Configuration Solution="Release|x86" Project="Release|x86|Deploy" />
+    </Project>
+    <Project Path="src\apps\H.NotifyIcon.Apps.WinUI\H.NotifyIcon.Apps.WinUI.csproj">
+      <Configuration Solution="Debug|Any CPU" Project="Debug|x64|Deploy" />
+      <Configuration Solution="Debug|arm64" Project="Debug|arm64|Deploy" />
+      <Configuration Solution="Debug|x64" Project="Debug|x64|Deploy" />
+      <Configuration Solution="Debug|x86" Project="Debug|x86|Deploy" />
+      <Configuration Solution="Release|Any CPU" Project="Release|x64|Deploy" />
+      <Configuration Solution="Release|arm64" Project="Release|arm64|Deploy" />
+      <Configuration Solution="Release|x64" Project="Release|x64|Deploy" />
+      <Configuration Solution="Release|x86" Project="Release|x86|Deploy" />
+    </Project>
+    <Project Path="src\apps\H.NotifyIcon.Apps.Wpf.Windowless\H.NotifyIcon.Apps.Wpf.Windowless.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\apps\H.NotifyIcon.Apps.Wpf\H.NotifyIcon.Apps.Wpf.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\apps\TrimmingHelper\TrimmingHelper.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <File Path="src\apps\Directory.Build.props" />
+  </Folder>
+  <Folder Name="/libs/">
+    <Project Path="src\libs\H.GeneratedIcons.SkiaSharp\H.GeneratedIcons.SkiaSharp.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.GeneratedIcons.System.Drawing\H.GeneratedIcons.System.Drawing.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon.Maui\H.NotifyIcon.Maui.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon.Uno.WinUI\H.NotifyIcon.Uno.WinUI.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon.Uno\H.NotifyIcon.Uno.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon.WinUI\H.NotifyIcon.WinUI.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <Project Path="src\libs\H.NotifyIcon\H.NotifyIcon.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <File Path="src\libs\Directory.Build.props" />
+    <File Path="src\libs\Directory.Build.targets" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path=".github\ISSUE_TEMPLATE\bug-report.yaml" />
+    <File Path="src\Directory.Build.props" />
+    <File Path=".github\workflows\dotnet.yml" />
+    <File Path="LICENSE.md" />
+    <File Path=".github\workflows\pr.yml" />
+    <File Path="README.md" />
+    <File Path=".github\workflows\auto-merge.yml" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="src\tests\H.NotifyIcon.IntegrationTests\H.NotifyIcon.IntegrationTests.csproj">
+      <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|arm64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+  </Folder>
+</Solution>

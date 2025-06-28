@@ -1,12 +1,25 @@
 ﻿namespace H.NotifyIcon;
 
-internal static class PngToIcoConverter
+/// <summary>
+/// Provides functionality to convert PNG image data to ICO format.
+/// </summary>
+public static class PngToIcoConverter
 {
+    /// <summary>
+    /// Converts a PNG image byte array to an ICO image byte array.
+    /// </summary>
+    /// <param name="data">The byte array containing PNG image data.</param>
+    /// <returns>A byte array containing the ICO image data.</returns>
     [SupportedOSPlatform("windows")]
     public static byte[] ConvertPngToIco(this byte[] data)
     {
+        if (data == null || data.Length == 0)
+        {
+            throw new ArgumentException("Data cannot be null or empty.");
+        }
+        
         using var inStream = new MemoryStream(data);
-        var metadata = inStream.GetMetadata();
+        var metadata = inStream.GetMetadata(); // Custom metadata retrieval
         using var outStream = new MemoryStream();
         
         // Header
@@ -49,9 +62,15 @@ internal static class PngToIcoConverter
             // Data
             outStream.Write(data, 0, data.Length);
         }
+        
         return outStream.ToArray();
     }
 
+    /// <summary>
+    /// Converts an integer to a 2-byte little-endian byte array.
+    /// </summary>
+    /// <param name="input">The integer to convert.</param>
+    /// <returns>A 2-byte little-endian byte array.</returns>
     private static byte[] IntToLittle2(int input)
     {
         byte[] b = new byte[2];
@@ -59,6 +78,12 @@ internal static class PngToIcoConverter
         b[1] = (byte)(((uint)input >> 8) & 0xFF);
         return b;
     }
+    
+    /// <summary>
+    /// Converts an integer to a 4-byte little-endian byte array.
+    /// </summary>
+    /// <param name="input">The integer to convert.</param>
+    /// <returns>A 4-byte little-endian byte array.</returns>
     private static byte[] IntToLittle4(int input)
     {
         byte[] b = new byte[4];

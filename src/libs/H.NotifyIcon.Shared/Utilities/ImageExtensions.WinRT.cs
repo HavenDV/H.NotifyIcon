@@ -1,7 +1,4 @@
-﻿using Microsoft.Win32;
-using Windows.ApplicationModel.Resources.Core;
-
-namespace H.NotifyIcon;
+﻿namespace H.NotifyIcon;
 
 internal static partial class ImageExtensions
 {
@@ -22,18 +19,16 @@ internal static partial class ImageExtensions
 
     internal static async Task<Stream> ToStreamAsync(this Uri uri, CancellationToken cancellationToken = default)
     {
-        var context = ResourceContext.GetForViewIndependentUse().Clone();
+#if IS_PACKABLE
+        if (Interop.DesktopBridgeHelpers.IsRunningAsUwp())
+        {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
 
-        using var personalizeKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-        var systemUsesLightTheme = (int)(personalizeKey?.GetValue("SystemUsesLightTheme") ?? 0);
+            return await file.OpenStreamForReadAsync().ConfigureAwait(true);
+        }
+#endif
 
-        context.QualifierValues["altform"] = systemUsesLightTheme != 0
-            ? "unplated"
-            : "lightunplated";
-
-        var resource = ResourceManager.Current.MainResourceMap.GetSubtree("Files").GetValue(uri.LocalPath.Substring(1), context);
-
-        return (await resource.GetValueAsStreamAsync()).AsStreamForRead();
+        return uri.ToStream();
     }
 
     public static Stream ToStream(this ImageSource imageSource)
