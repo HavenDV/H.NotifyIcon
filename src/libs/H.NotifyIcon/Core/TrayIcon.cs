@@ -1,4 +1,5 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using EventGenerator;
 #if MACOS
 using CoreFoundation;
@@ -215,6 +216,7 @@ public partial class TrayIcon : IDisposable
     /// Returns current process path.
     /// </summary>
     /// <returns></returns>
+    [UnconditionalSuppressMessage("SingleFile", "IL3000", Justification = "There is a fallback path with 'AppContext.BaseDirectory' for single-file scenarios.")]
     public static string GetProcessPath()
     {
 #if NET6_0_OR_GREATER
@@ -239,9 +241,7 @@ public partial class TrayIcon : IDisposable
             Assembly.GetEntryAssembly() ??
             throw new InvalidOperationException("Entry assembly is not found.");
 
-#pragma warning disable IL3000
         var location = assembly.Location;
-#pragma warning restore IL3000
         if (string.IsNullOrWhiteSpace(location))
         {
             location = AppContext.BaseDirectory;
