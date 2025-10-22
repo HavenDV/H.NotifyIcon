@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 internal static class ToSystemDrawingExtensions
 {
@@ -31,6 +33,8 @@ internal static class ToSystemDrawingExtensions
     }
 
     [SupportedOSPlatform("windows")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(SolidColorBrush))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(LinearGradientBrush))]
     internal static System.Drawing.Brush ToSystemDrawingBrush(this Brush? brush)
     {
         return brush switch

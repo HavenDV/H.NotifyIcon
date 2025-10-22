@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 public partial class TaskbarIcon
 {
@@ -8,6 +10,7 @@ public partial class TaskbarIcon
     /// Displays the ContextMenu/ContextFlyout if it was set.
     /// </summary>
     [SupportedOSPlatform("windows5.1.2600")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyout))]
     private void ShowContextMenuInPopupMenuMode(System.Drawing.Point cursorPosition)
     {
         var menu = new H.NotifyIcon.Core.PopupMenu
@@ -31,6 +34,10 @@ public partial class TaskbarIcon
 #endif
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(ToggleMenuFlyoutItem))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutItem))]
     private static void PopulateMenu(ICollection<PopupItem> menuItems, IList<MenuFlyoutItemBase> flyoutItemBases)
     {
         foreach (var flyoutItemBase in flyoutItemBases)
