@@ -34,7 +34,9 @@ public partial class TaskbarIcon
 #endif
     }
 
+#if !HAS_MAUI
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(ToggleMenuFlyoutItem))]
+#endif
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutItem))]
