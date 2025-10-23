@@ -1,4 +1,5 @@
-﻿using H.NotifyIcon.Interop;
+﻿using System.Diagnostics.CodeAnalysis;
+using H.NotifyIcon.Interop;
 using Microsoft.UI.Xaml.Data;
 
 namespace H.NotifyIcon;
@@ -49,6 +50,10 @@ public partial class TaskbarIcon
         _ = WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(OverlappedPresenter))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyout))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
     private void PrepareContextMenuWindow()
     {
         if (ContextFlyout == null ||
@@ -178,6 +183,7 @@ public partial class TaskbarIcon
         ContextMenuFlyout = flyout;
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
     private static Size MeasureFlyout(MenuFlyout flyout, Size availableSize)
     {
         var width = 0.0;

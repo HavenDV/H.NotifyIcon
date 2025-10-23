@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 #if !HAS_MAUI
 [DependencyProperty<PopupActivationMode>("PopupActivation", DefaultValue = PopupActivationMode.LeftClick,
@@ -67,6 +69,7 @@ public partial class TaskbarIcon
     /// placed under the mouse. ToolTip internally uses a Popup of
     /// its own, but takes advance of Popup's internal <see cref="UIElement.IsHitTestVisible"/>
     /// property which prevents this issue.</remarks>
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(Popup))]
     private void CreatePopup()
     {
         // check if the item itself is a popup

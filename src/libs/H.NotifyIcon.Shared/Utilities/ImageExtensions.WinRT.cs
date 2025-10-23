@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 /// <summary>
 /// Provides WinRT-specific extension methods for converting ImageSource objects and URIs to streams.
@@ -59,6 +61,7 @@ public static partial class ImageExtensions
     /// <exception cref="NotImplementedException">Thrown when the ImageSource type is not supported.</exception>
     /// <exception cref="FileNotFoundException">Thrown when the image file is not found.</exception>
     [CLSCompliant(false)]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(BitmapImage))]
     public static Stream ToStream(this ImageSource imageSource)
     {
         imageSource = imageSource ?? throw new ArgumentNullException(nameof(imageSource));
@@ -88,6 +91,7 @@ public static partial class ImageExtensions
     /// <exception cref="OperationCanceledException">Thrown when the operation is cancelled.</exception>
     /// <exception cref="FileNotFoundException">Thrown when the image file is not found.</exception>
     [CLSCompliant(false)]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(BitmapImage))]
     public static async Task<Stream> ToStreamAsync(this ImageSource imageSource, CancellationToken cancellationToken = default)
     {
         imageSource = imageSource ?? throw new ArgumentNullException(nameof(imageSource));

@@ -7,7 +7,7 @@ namespace H.NotifyIcon.Core;
 
 /// <inheritdoc/>
 [SupportedOSPlatform("windows5.1.2600")]
-public class TrayIconWithContextMenu : TrayIcon
+public partial class TrayIconWithContextMenu : TrayIcon
 {
     /// <summary>
     /// 

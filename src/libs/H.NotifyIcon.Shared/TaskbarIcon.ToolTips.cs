@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 [DependencyProperty<string>("ToolTipText", DefaultValue = "",
     Description = "A tooltip text that is being displayed if no custom ToolTip was set or if custom tooltips are not supported.", Category = CategoryName)]
@@ -104,6 +106,7 @@ public partial class TaskbarIcon
     /// placed under the mouse. ToolTip internally uses a Popup of
     /// its own, but takes advance of Popup's internal IsHitTestVisible
     /// property which prevents this issue.</remarks>
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(ToolTip2))]
     private void CreateCustomToolTip()
     {
 #if !MACOS && !HAS_MAUI

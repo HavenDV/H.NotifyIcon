@@ -1,4 +1,6 @@
-﻿namespace H.NotifyIcon;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace H.NotifyIcon;
 
 [DependencyProperty<ContextMenuMode>("ContextMenuMode", DefaultValue = ContextMenuMode.PopupMenu,
     Description = "Defines the context menu mode.", Category = CategoryName)]
@@ -76,10 +78,12 @@ public partial class TaskbarIcon
 #endif
     }
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyout))]
     private void UpdateContextFlyoutDataContext(
         FlyoutBase flyout,
         object? newValue)
     {
+        [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
         void UpdateMenuFlyoutDataContext(MenuFlyoutItemBase item)
         {
             UpdateDataContext(item, newValue);
