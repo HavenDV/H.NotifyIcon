@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041</TargetFrameworks>
+    <TargetFrameworks>net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net9.0-windows10.0.19041</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
     <DefineConstants>$(DefineConstants);HAS_WINUI;IS_PACKABLE;HAS_PLATFORM_CODE</DefineConstants>
-    <DefineConstants Condition=" '$(TargetFramework)' != 'net8.0-windows10.0.19041' ">$(DefineConstants);HAS_UNO</DefineConstants>
+    <DefineConstants Condition=" '$(TargetFramework)' != 'net9.0-windows10.0.19041' ">$(DefineConstants);HAS_UNO</DefineConstants>
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);Uno0001;Uno0002;CA1010;CA1031;CS8002;CS0114;CS3009;CA1063;CA1513;CA2000;CA1416;NETSDK1206</NoWarn>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
@@ -35,23 +35,23 @@ popups, context menus, and balloon messages. It can be used directly in code or 
     <ProjectReference Include="..\H.NotifyIcon\H.NotifyIcon.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="Uno.WinUI" Version="5.5.87" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
     <PackageReference Include="Uno.WinUI" Version="5.5.87" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-ios'">
     <PackageReference Include="Uno.WinUI" Version="5.5.87" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-maccatalyst'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-maccatalyst'">
     <PackageReference Include="Uno.WinUI" Version="5.5.87" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
     <PackageReference Include="System.Reflection.Metadata" Version="9.0.1" />
