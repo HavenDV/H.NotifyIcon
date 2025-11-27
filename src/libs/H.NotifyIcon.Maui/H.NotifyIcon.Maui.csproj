@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net9.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst;net10.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-    <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+    <!-- <TargetFrameworks>$(TargetFrameworks);net10.0-tizen</TargetFrameworks> -->
     <UseMaui>true</UseMaui>
     <DefineConstants>$(DefineConstants);HAS_PLATFORM_CODE;HAS_MAUI</DefineConstants>
-    <DefineConstants Condition="'$(TargetFramework)'=='net9.0-windows10.0.19041.0'">$(DefineConstants);HAS_MAUI_WINUI</DefineConstants>
-    <NoWarn>$(NoWarn);CA1031;CS8002;CS0108;CA1501;CA1513</NoWarn>
+    <DefineConstants Condition="'$(TargetFramework)'=='net10.0-windows10.0.19041.0'">$(DefineConstants);HAS_MAUI_WINUI</DefineConstants>
+    <NoWarn>$(NoWarn);CA1031;CS8002;CS0108;CA1501;CA1513;CS3009</NoWarn>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">12.2</SupportedOSPlatformVersion>
