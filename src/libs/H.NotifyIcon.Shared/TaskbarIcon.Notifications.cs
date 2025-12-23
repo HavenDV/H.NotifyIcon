@@ -9,6 +9,20 @@ namespace H.NotifyIcon;
     Description = "Occurs when the user clicks on a balloon ToolTip.", Category = CategoryName)]
 public partial class TaskbarIcon
 {
+    #region Properties
+
+    /// <summary>
+    /// Timer for keeping native balloon notifications alive.
+    /// </summary>
+    private Timer? nativeBalloonRefreshTimer;
+
+    /// <summary>
+    /// Tracks the last notification parameters for refresh.
+    /// </summary>
+    private (string title, string message, NotificationIcon icon, nint? customIconHandle, bool largeIcon, bool sound, bool respectQuietTime, bool realtime, TimeSpan? timeout)? lastNotification;
+
+    #endregion
+
     #region Methods
 
     /// <summary>
@@ -70,6 +84,9 @@ public partial class TaskbarIcon
     {
         EnsureNotDisposed();
 
+        // Track notification parameters for potential refresh
+        lastNotification = (title, message, icon, customIconHandle, largeIcon, sound, respectQuietTime, realtime, timeout);
+
         TrayIcon.ShowNotification(
             title: title,
             message: message,
@@ -94,7 +111,44 @@ public partial class TaskbarIcon
     {
         EnsureNotDisposed();
 
+        // Stop refresh timer and clear tracked notification
+        _ = nativeBalloonRefreshTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        lastNotification = null;
+
         TrayIcon.ClearNotifications();
+    }
+
+    /// <summary>
+    /// Refreshes the current native balloon notification to keep it alive.
+    /// </summary>
+    private void RefreshNativeBalloon()
+    {
+        if (IsDisposed || lastNotification == null)
+        {
+            _ = nativeBalloonRefreshTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            return;
+        }
+
+        var (title, message, icon, customIconHandle, largeIcon, sound, respectQuietTime, realtime, timeout) = lastNotification.Value;
+
+        try
+        {
+            TrayIcon.ShowNotification(
+                title: title,
+                message: message,
+                icon: icon,
+                customIconHandle: customIconHandle,
+                largeIcon: largeIcon,
+                sound: sound,
+                respectQuietTime: respectQuietTime,
+                realtime: realtime,
+                timeout: timeout);
+        }
+        catch
+        {
+            // If refresh fails, stop the timer
+            _ = nativeBalloonRefreshTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        }
     }
 
     #endregion
