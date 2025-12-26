@@ -120,6 +120,9 @@ public partial class TaskbarIcon : IDisposable
 #if HAS_WPF
             balloonCloseTimer.Dispose();
 #endif
+#if !MACOS
+            nativeBalloonRefreshTimer?.Dispose();
+#endif
 
 #if !HAS_WPF && !HAS_UNO && !HAS_MAUI
             ContextMenuWindow?.Close();

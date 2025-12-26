@@ -150,6 +150,11 @@ public partial class TaskbarIcon
     /// it is either closed programmatically through
     /// <see cref="CloseBalloon"/> or due to a new
     /// message being displayed.
+    /// <para>
+    /// For custom balloons (shown via <see cref="ShowCustomBalloon"/>), this stops the close timer.
+    /// For native notifications (shown via <see cref="ShowNotification"/>), this starts a refresh
+    /// timer that periodically re-sends the notification to keep it visible indefinitely.
+    /// </para>
     /// </summary>
     public void ResetBalloonCloseTimer()
     {
@@ -160,8 +165,17 @@ public partial class TaskbarIcon
 
         //lock (lockObject)
         {
-            //reset timer in any case
+            //reset custom balloon timer in any case
             _ = balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+#if !MACOS
+            // For native notifications, start refresh timer to keep them alive
+            // Refresh every 25 seconds (well within the Windows 30-second max timeout)
+            if (lastNotification.HasValue)
+            {
+                _ = nativeBalloonRefreshTimer?.Change(25000, 25000);
+            }
+#endif
         }
     }
 
@@ -188,6 +202,12 @@ public partial class TaskbarIcon
         {
             // reset timer in any case
             _ = balloonCloseTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+#if !MACOS
+            // Also stop native notification refresh timer
+            _ = nativeBalloonRefreshTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            lastNotification = null;
+#endif
 
             // reset old popup, if we still have one
             var popup = CustomBalloon;

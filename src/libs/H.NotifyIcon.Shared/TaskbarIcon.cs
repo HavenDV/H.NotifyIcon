@@ -89,6 +89,10 @@ public partial class TaskbarIcon : FrameworkElement
         balloonCloseTimer = new Timer(CloseBalloonCallback);
 #endif
 
+#if !MACOS
+        nativeBalloonRefreshTimer = new Timer(_ => RefreshNativeBalloon());
+#endif
+
         DisposeAfterExit();
     }
 
