@@ -1,4 +1,4 @@
-﻿<Solution>
+<Solution>
   <Configurations>
     <Platform Name="Any CPU" />
     <Platform Name="arm64" />
@@ -32,6 +32,7 @@
       <Configuration Solution="Release|arm64" Project="Release|arm64|Deploy" />
       <Configuration Solution="Release|x64" Project="Release|x64|Deploy" />
       <Configuration Solution="Release|x86" Project="Release|x86|Deploy" />
+      <Platform Solution="Debug|Any CPU" Project="x64" />
     </Project>
     <Project Path="src\apps\H.NotifyIcon.Apps.WinUI\H.NotifyIcon.Apps.WinUI.csproj">
       <Configuration Solution="Debug|Any CPU" Project="Debug|x64|Deploy" />
@@ -42,6 +43,7 @@
       <Configuration Solution="Release|arm64" Project="Release|arm64|Deploy" />
       <Configuration Solution="Release|x64" Project="Release|x64|Deploy" />
       <Configuration Solution="Release|x86" Project="Release|x86|Deploy" />
+      <Platform Solution="Debug|Any CPU" Project="x64" />
     </Project>
     <Project Path="src\apps\H.NotifyIcon.Apps.Wpf.Windowless\H.NotifyIcon.Apps.Wpf.Windowless.csproj">
       <Configuration Solution="Debug|arm64" Project="Debug|Any CPU" />
