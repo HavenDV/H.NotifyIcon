@@ -15,6 +15,7 @@ public partial class TaskbarIcon
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
+    public event EventHandler? SecondWindowContextMenuOpened;
 
 #pragma warning disable CA1822 // Mark members as static
     partial void OnContextMenuModeChanged(ContextMenuMode oldValue, ContextMenuMode newValue)
@@ -81,6 +82,11 @@ public partial class TaskbarIcon
         }
     }
 
+    private void RaiseSecondWindowContextMenuOpened()
+    {
+        SecondWindowContextMenuOpened?.Invoke(this, EventArgs.Empty);
+    }
+
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(OverlappedPresenter))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyout))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
@@ -117,6 +123,13 @@ public partial class TaskbarIcon
         DesktopWindowsManagerMethods.SetRoundedCorners(handle);
         WindowUtilities.MakeTransparent(handle);
 
+        if (TrayIcon.WindowHandle != 0)
+        {
+            // Keep the second-window popup in the tray icon's window family so it
+            // participates in the same z-order/activation stack as the tray host.
+            HwndUtilities.SetOwnerWindow(handle, TrayIcon.WindowHandle);
+        }
+
 #if !HAS_UNO
         var id = Win32Interop.GetWindowIdFromWindow(handle);
         var appWindow = AppWindow.GetFromWindowId(id);
@@ -134,6 +147,13 @@ public partial class TaskbarIcon
         {
             AreOpenCloseAnimationsEnabled = ContextFlyout.AreOpenCloseAnimationsEnabled,
             Placement = FlyoutPlacementMode.Full,
+        };
+        flyout.Opened += (_, _) =>
+        {
+            if (IsContextMenuVisible)
+            {
+                RaiseSecondWindowContextMenuOpened();
+            }
         };
         flyout.Closed += (_, _) =>
         {
