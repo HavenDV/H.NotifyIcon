@@ -9,6 +9,10 @@ namespace H.NotifyIcon.Interop;
 /// </summary>
 public static class HwndUtilities
 {
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [DllImport("kernel32.dll", ExactSpelling = true, EntryPoint = "SetLastError")]
+    private static extern void ClearLastError(uint dwErrCode);
+
     /// <summary>
     /// Sets the current window style
     /// </summary>
@@ -59,7 +63,7 @@ public static class HwndUtilities
         // GWLP_HWNDPARENT is not exposed consistently across all projections we build against.
         const WINDOW_LONG_PTR_INDEX ownerIndex = (WINDOW_LONG_PTR_INDEX)(-8);
 
-        Marshal.SetLastPInvokeError(0);
+        ClearLastError(0);
         if (Environment.Is64BitProcess)
         {
             _ = PInvoke.SetWindowLongPtr(window, ownerIndex, ownerHWnd);
@@ -69,7 +73,7 @@ public static class HwndUtilities
             _ = PInvoke.SetWindowLong(window, ownerIndex, ownerHWnd.ToInt32());
         }
 
-        var error = Marshal.GetLastPInvokeError();
+        var error = Marshal.GetLastWin32Error();
         if (error != 0)
         {
             throw new Win32Exception(error);
