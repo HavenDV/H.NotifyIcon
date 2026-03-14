@@ -64,7 +64,9 @@ public static class CursorUtilities
             cx = width,
             cy = height,
         };
-        var flags = TRACK_POPUP_MENU_FLAGS.TPM_BOTTOMALIGN;
+        var flags =
+            TRACK_POPUP_MENU_FLAGS.TPM_BOTTOMALIGN |
+            TRACK_POPUP_MENU_FLAGS.TPM_WORKAREA;
         var _excludeRect = new RECT
         {
             left = excludeRect?.Left ?? 0,
