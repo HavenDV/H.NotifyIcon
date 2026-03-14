@@ -40,17 +40,34 @@ public partial class TaskbarIcon
         }
 
         var size = MeasureFlyout(ContextMenuFlyout, new Size(10000.0, 10000.0));
+        var excludeRect = CreateTrayCursorExcludeRect(cursorPosition);
         var rectangle = CursorUtilities.CalculatePopupWindowPosition(
             cursorPosition.X,
             cursorPosition.Y,
             (int)size.Width,
-            (int)size.Height);
+            (int)size.Height,
+            excludeRect);
 
         IsContextMenuVisible = true;
         ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
         _ = WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
         _ = WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
         ShowSecondWindowFlyout(ContextMenuFlyout, ContextMenuWindow.Content);
+    }
+
+    private static System.Drawing.Rectangle CreateTrayCursorExcludeRect(System.Drawing.Point cursorPosition)
+    {
+        // Native tray menus avoid overlapping the icon/taskbar affordance itself.
+        // Give CalculatePopupWindowPosition a small tray-sized exclusion box so it
+        // picks a position adjacent to the cursor instead of overlapping the taskbar.
+        const int width = 36;
+        const int height = 36;
+
+        return new System.Drawing.Rectangle(
+            x: cursorPosition.X - (width / 2),
+            y: cursorPosition.Y - (height / 2),
+            width: width,
+            height: height);
     }
 
     private static void ShowSecondWindowFlyout(MenuFlyout flyout, UIElement target)
