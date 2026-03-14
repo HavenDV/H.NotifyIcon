@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
-    <PackageReference Include="System.Reflection.Metadata" Version="9.0.1" />
   </ItemGroup>
 
   <PropertyGroup Label="NuGet">

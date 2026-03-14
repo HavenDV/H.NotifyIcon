@@ -37,8 +37,6 @@ popups, context menus, and balloon messages. It can be used directly in code or 
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows10.0.19041'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
-    <PackageReference Include="System.Collections.Immutable" Version="10.0.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
