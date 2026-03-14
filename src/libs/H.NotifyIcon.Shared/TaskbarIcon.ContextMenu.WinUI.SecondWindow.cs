@@ -33,7 +33,8 @@ public partial class TaskbarIcon
     private void ShowContextMenuInSecondWindowMode(System.Drawing.Point cursorPosition)
     {
         if (ContextMenuWindowHandle == null ||
-            ContextMenuFlyout == null)
+            ContextMenuFlyout == null ||
+            ContextMenuWindow?.Content == null)
         {
             return;
         }
@@ -45,9 +46,22 @@ public partial class TaskbarIcon
             (int)size.Width,
             (int)size.Height);
 
+        IsContextMenuVisible = true;
         ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
         _ = WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
         _ = WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
+        ShowSecondWindowFlyout(ContextMenuFlyout, ContextMenuWindow.Content);
+    }
+
+    private static void ShowSecondWindowFlyout(MenuFlyout flyout, UIElement target)
+    {
+        if (!flyout.IsOpen)
+        {
+            flyout.ShowAt(target, new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Transient,
+            });
+        }
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(OverlappedPresenter))]
@@ -168,11 +182,12 @@ public partial class TaskbarIcon
                 return;
             }
 
-            IsContextMenuVisible = true;
-            flyout.ShowAt(window.Content, new FlyoutShowOptions
+            if (!IsContextMenuVisible)
             {
-                ShowMode = FlyoutShowMode.Transient,
-            });
+                return;
+            }
+
+            ShowSecondWindowFlyout(flyout, window.Content);
         };
 
         ContextMenuWindow = window;
