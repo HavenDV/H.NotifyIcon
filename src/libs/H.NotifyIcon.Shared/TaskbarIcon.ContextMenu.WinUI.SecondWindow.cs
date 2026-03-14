@@ -15,6 +15,9 @@ public partial class TaskbarIcon
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
+    /// <summary>
+    /// Occurs when the second-window context menu is opened.
+    /// </summary>
     public event EventHandler? SecondWindowContextMenuOpened;
 
 #pragma warning disable CA1822 // Mark members as static

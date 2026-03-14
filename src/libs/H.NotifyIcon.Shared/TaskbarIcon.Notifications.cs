@@ -121,6 +121,7 @@ public partial class TaskbarIcon
     /// <summary>
     /// Refreshes the current native balloon notification to keep it alive.
     /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
     private void RefreshNativeBalloon()
     {
         if (IsDisposed || lastNotification == null)
