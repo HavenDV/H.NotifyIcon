@@ -52,6 +52,29 @@ public partial class TaskbarIcon
             (int)size.Height,
             excludeRect);
 
+        // Choose placement so WinUI's MenuPopupThemeTransition runs the open
+        // animation from the correct direction: only Top placement produces
+        // the bottom-up slide. Offset the rectangle by its own height to
+        // compensate for Top/Bottom placing the flyout adjacent to the anchor
+        // rather than overlapping it.
+        if (rectangle.Y + rectangle.Height <= cursorPosition.Y)
+        {
+            // Menu extends above the cursor (bottom-taskbar case).
+            ContextMenuFlyout.Placement = FlyoutPlacementMode.Top;
+            rectangle.Y += rectangle.Height;
+        }
+        else if (rectangle.Y >= cursorPosition.Y)
+        {
+            // Menu extends below the cursor (top-taskbar case).
+            ContextMenuFlyout.Placement = FlyoutPlacementMode.Bottom;
+            rectangle.Y -= rectangle.Height;
+        }
+        else
+        {
+            // Horizontal taskbar — preserve existing Full placement.
+            ContextMenuFlyout.Placement = FlyoutPlacementMode.Full;
+        }
+
         IsContextMenuVisible = true;
         ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
         _ = WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
