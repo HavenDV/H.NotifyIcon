@@ -10,17 +10,10 @@ jobs:
     uses: HavenDV/workflows/.github/workflows/dotnet_build-test-publish.yml@main
     with:
       os: windows-latest
-      use-msbuild: true
+      dotnet-version: '10.0.x'
+      use-msbuild: false
       workloads: maui
       create-release: false
       install-tizen: true
       generate-build-number: false
-      project-path: 
-        # This is required for correct publishing to NuGet
-        /target:libs\H_GeneratedIcons_SkiaSharp
-        /target:libs\H_GeneratedIcons_System_Drawing
-        /target:libs\H_NotifyIcon
-        /target:libs\H_NotifyIcon_Uno
-        /target:libs\H_NotifyIcon_Uno_WinUI
-        /target:libs\H_NotifyIcon_WinUI
-        /target:libs\H_NotifyIcon_Wpf
+      project-path: H.NotifyIcon.slnx
