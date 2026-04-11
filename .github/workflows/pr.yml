@@ -16,4 +16,4 @@ jobs:
       create-release: false
       install-tizen: true
       generate-build-number: false
-      project-path: H.NotifyIcon.slnx
+      project-path: H.NotifyIcon.PR.slnx
