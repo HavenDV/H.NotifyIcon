@@ -227,14 +227,22 @@ public partial class TrayIcon : IDisposable
             return processPath;
         }
 #endif
-        using (var process = Process.GetCurrentProcess())
+        try
         {
-            var path = process?.MainModule?.FileName;
-            if (path != null &&
-                !string.IsNullOrWhiteSpace(path))
+            using var process = Process.GetCurrentProcess();
+            var path = process.MainModule?.FileName;
+            if (!string.IsNullOrWhiteSpace(path))
             {
-                return path;
+                return path!;
             }
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            // Some endpoint protection tools block MainModule inspection.
+        }
+        catch (InvalidOperationException)
+        {
+            // Fall back to assembly/AppContext probing when process metadata is unavailable.
         }
         
         var assembly =
