@@ -1,4 +1,5 @@
-﻿using H.NotifyIcon.Interop;
+﻿using System.Collections.Concurrent;
+using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
 
@@ -8,6 +9,8 @@ namespace H.NotifyIcon.Core;
 [SupportedOSPlatform("windows5.0")]
 public static class WindowUtilities
 {
+    private const uint WindowNcDestroy = 0x0082;
+
     /// <summary>
     /// Starts message processing on the current thread and blocks it until a WM_QUIT message or error is received.
     /// </summary>
@@ -136,12 +139,13 @@ public static class WindowUtilities
     public static unsafe void MakeTransparent(nint hWndHandle)
     {
         var hWnd = new HWND(hWndHandle);
-
-        SubClassDelegate = new SUBCLASSPROC(WindowSubClass);
+        var subClassDelegate = SubClassDelegates.GetOrAdd(
+            hWndHandle,
+            static _ => new SUBCLASSPROC(WindowSubClass));
 
         _ = PInvoke.SetWindowSubclass(
             hWnd: hWnd,
-            pfnSubclass: SubClassDelegate,
+            pfnSubclass: subClassDelegate,
             uIdSubclass: 0,
             dwRefData: 0).EnsureNonZero();
 
@@ -162,13 +166,18 @@ public static class WindowUtilities
     
     private static int ToWin32(System.Drawing.Color c) => (int) c.B << 16 | (int) c.G << 8 | (int) c.R;
     
-    private static SUBCLASSPROC? SubClassDelegate;
+    private static readonly ConcurrentDictionary<nint, SUBCLASSPROC> SubClassDelegates = new();
 
     [SupportedOSPlatform("windows5.1.2600")]
     private static unsafe LRESULT WindowSubClass(HWND hWnd, uint uMsg, WPARAM wParam, LPARAM lParam, nuint uIdSubclass, nuint dwRefData)
     {
         switch (uMsg)
         {
+            case WindowNcDestroy:
+                {
+                    _ = SubClassDelegates.TryRemove((nint)hWnd.Value, out _);
+                    break;
+                }
             case PInvoke.WM_ERASEBKGND:
                 {
                     RECT rect;
