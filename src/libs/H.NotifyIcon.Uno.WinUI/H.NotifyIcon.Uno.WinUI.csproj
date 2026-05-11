@@ -36,23 +36,23 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows10.0.19041'">
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-    <PackageReference Include="Uno.WinUI" Version="6.4.185" />
+    <PackageReference Include="Uno.WinUI" Version="6.5.229" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
-    <PackageReference Include="Uno.WinUI" Version="6.4.185" />
+    <PackageReference Include="Uno.WinUI" Version="6.5.229" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-ios'">
-    <PackageReference Include="Uno.WinUI" Version="6.4.185" />
+    <PackageReference Include="Uno.WinUI" Version="6.5.229" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-maccatalyst'">
-    <PackageReference Include="Uno.WinUI" Version="6.4.185" />
+    <PackageReference Include="Uno.WinUI" Version="6.5.229" />
   </ItemGroup>
 
 </Project>
