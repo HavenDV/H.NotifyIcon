@@ -35,6 +35,14 @@ trayIcon.ContextMenu = new PopupMenu
                     {
                         new PopupMenuItem("Item 2", (_, _) => ShowMessage(trayIcon, "Item 2")),
                     }
+                },
+                new PopupSubMenu("Disabled SubMenu")
+                {
+                    Enabled = false,
+                    Items =
+                    {
+                        new PopupMenuItem("You can't see me :)", (_, _) => {})
+                    }
                 }
             }
         },
