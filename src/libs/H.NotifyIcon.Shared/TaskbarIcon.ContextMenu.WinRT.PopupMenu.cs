@@ -75,6 +75,7 @@ public partial class TaskbarIcon
                         var item = new PopupSubMenu
                         {
                             Text = subItem.Text,
+                            Enabled = subItem.IsEnabled,
                         };
                         menuItems.Add(item);
 #if HAS_MAUI

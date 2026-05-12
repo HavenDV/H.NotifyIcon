@@ -14,6 +14,9 @@ public class PopupSubMenu : PopupItem
     }
 
     /// <inheritdoc/>
+    public bool Enabled { get; set; } = true;
+
+    /// <inheritdoc/>
     public string Text { get; set; } = string.Empty;
 
     /// <inheritdoc/>

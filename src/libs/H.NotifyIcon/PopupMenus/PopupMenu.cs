@@ -54,9 +54,14 @@ public class PopupMenu
             {
                 var subMenuHandle = PInvoke.CreatePopupMenu();
                 AppendToMenu(subMenuHandle, subMenu.Items);
+
+                var flags = MENU_ITEM_FLAGS.MF_POPUP;
+
+                if (!subMenu.Enabled) flags |= MENU_ITEM_FLAGS.MF_GRAYED;
+
                 return PInvoke.AppendMenu(
                     hMenu: handle,
-                    uFlags: MENU_ITEM_FLAGS.MF_POPUP,
+                    uFlags: flags,
                     uIDNewItem: (nuint)subMenuHandle.Value,
                     lpNewItem: subMenu.Text).EnsureNonZero();
             }
