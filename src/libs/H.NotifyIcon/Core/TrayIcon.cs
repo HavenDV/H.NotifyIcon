@@ -606,6 +606,10 @@ public partial class TrayIcon : IDisposable
         EnsureCreated();
 
         var additionalFlags = (NOTIFY_ICON_DATA_FLAGS)0;
+        if (UseStandardTooltip)
+        {
+            additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_SHOWTIP;
+        }
         if (realtime)
         {
             additionalFlags |= NOTIFY_ICON_DATA_FLAGS.NIF_REALTIME;
@@ -640,6 +644,7 @@ public partial class TrayIcon : IDisposable
         if (!TrayIconMethods.TryShowNotification(
             id: Id,
             additionalFlags: additionalFlags,
+            toolTip: ToolTip,
             title: title,
             message: message,
             infoFlags: infoFlags,
