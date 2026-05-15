@@ -12,6 +12,8 @@
     Description = "Occurs when the user releases the right mouse button.", Category = CategoryName)]
 [RoutedEvent("TrayMiddleMouseUp", RoutedEventStrategy.Bubble,
     Description = "Occurs when the user releases the middle mouse button.", Category = CategoryName)]
+[RoutedEvent("TrayLeftMouseClick", RoutedEventStrategy.Bubble,
+    Description = "Occurs when the user clicks the left mouse button without completing a double click.", Category = CategoryName)]
 [RoutedEvent("TrayLeftMouseDoubleClick", RoutedEventStrategy.Bubble,
     Description = "Occurs when the left mouse button was double clicked.", Category = CategoryName)]
 [RoutedEvent("TrayRightMouseDoubleClick", RoutedEventStrategy.Bubble,
@@ -145,6 +147,7 @@ public partial class TaskbarIcon
                 // show popup once we are sure it's not a double click
                 SingleClickTimerAction = () =>
                 {
+                    _ = OnTrayLeftMouseClick();
 #if HAS_WPF
                     LeftClickCommand?.TryExecute(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
@@ -171,6 +174,7 @@ public partial class TaskbarIcon
                 // show context menu once we are sure it's not a double click
                 SingleClickTimerAction = () =>
                 {
+                    _ = OnTrayLeftMouseClick();
 #if HAS_WPF
                     LeftClickCommand?.TryExecute(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
@@ -194,6 +198,7 @@ public partial class TaskbarIcon
             // show context menu once we are sure it's not a double click
             SingleClickTimerAction = () =>
             {
+                _ = OnTrayLeftMouseClick();
 #if HAS_WPF
                 LeftClickCommand?.TryExecute(LeftClickCommandParameter, LeftClickCommandTarget ?? this);
 #else
