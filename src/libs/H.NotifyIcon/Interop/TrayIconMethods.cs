@@ -268,6 +268,7 @@ internal static class TrayIconMethods
     public static unsafe bool TryShowNotification(
         Guid id,
         NOTIFY_ICON_DATA_FLAGS additionalFlags,
+        string toolTip,
         string title,
         string message,
         NOTIFY_ICON_INFOTIP_FLAGS infoFlags,
@@ -281,6 +282,7 @@ internal static class TrayIconMethods
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags = additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwInfoFlags = (uint)infoFlags,
@@ -290,6 +292,7 @@ internal static class TrayIconMethods
                     uTimeout = timeoutInMilliseconds,
                 }
             };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
             message.SetTo(&data.szInfo._0, data.szInfo.Length);
             title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
@@ -302,6 +305,7 @@ internal static class TrayIconMethods
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags = additionalFlags |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
                 guidItem = id,
                 dwInfoFlags = (uint)infoFlags,
@@ -311,6 +315,7 @@ internal static class TrayIconMethods
                     uTimeout = timeoutInMilliseconds,
                 }
             };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
             message.SetTo(&data.szInfo._0, data.szInfo.Length);
             title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
