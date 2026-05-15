@@ -41,7 +41,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard
-            x:Key="ShowMouseUp"
+            x:Key="ShowLeftMouseClick"
             AutoReverse="True"
             >
             <DoubleAnimationUsingKeyFrames
@@ -115,12 +115,12 @@
             <BeginStoryboard Storyboard="{StaticResource ShowMovement}" />
         </EventTrigger>
         <EventTrigger
-            RoutedEvent="tb:TaskbarIcon.TrayLeftMouseUp"
+            RoutedEvent="tb:TaskbarIcon.TrayLeftMouseClick"
             SourceName="notifyIcon"
             >
             <BeginStoryboard
-                Storyboard="{StaticResource ShowMouseUp}"
-                x:Name="ShowMouseUp_BeginStoryboard"
+                Storyboard="{StaticResource ShowLeftMouseClick}"
+                x:Name="ShowLeftMouseClick_BeginStoryboard"
                 />
         </EventTrigger>
         <EventTrigger
@@ -237,7 +237,7 @@
             >
             <Run
                 Language="de-ch"
-                Text="TrayLeftMouseUp Event"
+                Text="TrayLeftMouseClick Event"
                 />
         </TextBlock>
         <TextBlock
