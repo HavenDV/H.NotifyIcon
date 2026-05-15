@@ -9,11 +9,11 @@ This is an implementation of a NotifyIcon (aka system tray icon or taskbar icon)
 #### Features
 
 * Notifications
-* [Context menus](broken-reference)
+* [Context menus](#winui-context-menu)
 * ICommand support
-* [Design-time access](broken-reference)
-* [Efficiency Mode](broken-reference)
-* [Dynamic icon generation](broken-reference)
+* [Design-time access](#design-time-access)
+* [Efficiency Mode](#efficiency-mode)
+* [Dynamic icon generation](#generated-icons)
 * Trimming/NativeAOT support
 
 #### NuGet
@@ -49,7 +49,9 @@ Install-Package H.NotifyIcon
 </Window>
 ```
 
-#### Efficiency Mode ![image](https://user-images.githubusercontent.com/3002068/164691691-5baf5210-5b5e-417e-99d3-d0f19006d997.png)
+#### Efficiency Mode 
+
+![image](https://user-images.githubusercontent.com/3002068/164691691-5baf5210-5b5e-417e-99d3-d0f19006d997.png)
 
 Windows 11 introduces a new concept called [Efficiency Mode](https://devblogs.microsoft.com/performance-diagnostics/reduce-process-interference-with-task-manager-efficiency-mode/).\
 Since, basically, this library is intended for applications to exist in the background with the ability to interact through TrayIcon, the library implements an API for this mode:
@@ -148,7 +150,7 @@ At the moment, three modes are implemented, each with its own pros and cons.
 
 1. Based on your MenuFlyout, a Win32 PopupMenu will be created that will call the commands attached to your MenuFlyoutItem. This is the default. ![image](https://user-images.githubusercontent.com/3002068/164977047-e8497047-0c6d-4f99-b160-bc1c1a1a6c3f.png)
 2. The menu will be created in your open window, in the corner of the screen.
-3. A second transparent window will be created and used to render the native menu.. At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"\
+3. A second transparent window will be created and used to render the native menu. At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"\
    ![image](https://user-images.githubusercontent.com/3002068/164977343-fab0ef4d-d1bd-4ff0-a1af-1d87f32c6400.png)
 
 Availability of various options(depends on the version of `WindowsAppSDK` you are using):
@@ -174,7 +176,6 @@ Availability of various options(depends on the version of `WindowsAppSDK` you ar
 
 ### Support
 
-Priority place for bugs: https://github.com/HavenDV/H.NotifyIcon/issues\
-Priority place for ideas and general questions: https://github.com/HavenDV/H.NotifyIcon/discussions\
-I also have a Discord support channel:\
-https://discord.gg/g8u2t9dKgE
+Priority place for bugs: https://github.com/HavenDV/H.NotifyIcon/issues  
+Priority place for ideas and general questions: https://github.com/HavenDV/H.NotifyIcon/discussions  
+I also have a Discord support channel: https://discord.gg/g8u2t9dKgE
