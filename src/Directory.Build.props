@@ -6,7 +6,7 @@
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <MauiVersion>10.0.60</MauiVersion>
+    <MauiVersion>10.0.70</MauiVersion>
   </PropertyGroup>
   
 </Project>
