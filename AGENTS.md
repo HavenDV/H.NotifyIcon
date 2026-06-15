@@ -220,3 +220,52 @@ GitHub Actions workflow (`.github/workflows/dotnet.yml`):
 - For trimming-safe reflection, add `[DynamicDependency]` attributes
 - When modifying icon generation, consider both System.Drawing and SkiaSharp implementations
 - Test on multiple target frameworks (net4.6.2, netstandard2.0, net8.0, net9.0)
+
+<!-- BEGIN GENERATED PORTFOLIO CONTEXT -->
+
+## Generated Repository Context
+
+This section was generated from the GitHub repository inventory and local checkout to support future Codex work and portfolio analysis.
+
+### Repository Metadata
+- Remote: https://github.com/HavenDV/H.NotifyIcon
+- Visibility: public
+- Type: original; active
+- Primary language: C#
+- Topics: popups, notifyicon, context-menus, tooltips, custom-balloons, wpf, net, netcore, net5, tray-icon, nuget, winui, winui3, windowsappsdk, console, csharp, dotnet, xaml
+- Last pushed: 2026-06-01T06:43:22Z
+- Local path: /Users/havendv/GitHub/HavenDV/H.NotifyIcon
+- Local note: standard checkout
+- Classification: Public developer tooling/library
+
+### Working Summary
+TrayIcon for WPF/WinUI/Uno/MAUI
+
+### Detected Structure
+- Top-level items: `.claude/`, `.github/`, `assets/`, `src/`, `.editorconfig`, `.gitattributes`, `.gitignore`, `AGENTS.md`, `CLAUDE.md`, `global.json`, `H.NotifyIcon.Maui.slnf`, `H.NotifyIcon.PR.slnx`
+- Sampled file count: 342
+- Common extensions: .cs (142), .png (57), .xaml (40), .csproj (18), .ico (14), .json (11), .plist (8), .xml (7)
+
+### Manifests And Commands
+- H.NotifyIcon.PR.slnx
+- H.NotifyIcon.slnx
+- src/apps/H.NotifyIcon.Apps.Maui/H.NotifyIcon.Apps.Maui.sln
+- .github/workflows
+
+Suggested commands:
+- dotnet build H.NotifyIcon.PR.slnx
+- dotnet test
+
+Testing signal:
+- 1 .NET test project(s) detected
+
+### Portfolio Signals
+- Skills: .NET, XAML UI frameworks, NuGet packaging, GitHub Actions, popups, notifyicon, context-menus, tooltips, custom-balloons, wpf, net, netcore, net5, tray-icon, nuget, winui, winui3, windowsappsdk
+- Portfolio angle: Strong signal for cross-platform .NET UI, Windows desktop, and XAML architecture.
+
+### Agent Notes
+- Prefer README and manifest instructions over generated assumptions when they disagree.
+- Keep generated context current when build tooling, test commands, or project scope changes.
+- Review private or client-specific details before copying portfolio claims into public material.
+
+<!-- END GENERATED PORTFOLIO CONTEXT -->
