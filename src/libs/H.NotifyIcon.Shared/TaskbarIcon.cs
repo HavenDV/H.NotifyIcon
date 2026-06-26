@@ -53,6 +53,7 @@ public partial class TaskbarIcon : FrameworkElement
 
         TrayIcon = new TrayIcon();
         Id = TrayIcon.Id;
+#if !HAS_MAUI || HAS_MAUI_WINUI
         Loaded += (_, _) =>
         {
             try
@@ -64,8 +65,9 @@ public partial class TaskbarIcon : FrameworkElement
                 Debugger.Break();
             }
         };
+#endif
         
-#if !MACOS
+#if !MACOS && (!HAS_MAUI || HAS_MAUI_WINUI)
         // https://github.com/HavenDV/H.NotifyIcon/issues/34
         //Unloaded += (_, _) => Dispose();
         TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
@@ -129,6 +131,9 @@ public partial class TaskbarIcon : FrameworkElement
     [SupportedOSPlatform("windows5.1.2600")]
     public void ForceCreate(bool enablesEfficiencyMode = true)
     {
+#if HAS_MAUI && !HAS_MAUI_WINUI
+        return;
+#else
         TrayIcon.Create();
 
         if (enablesEfficiencyMode &&
@@ -144,6 +149,7 @@ public partial class TaskbarIcon : FrameworkElement
         // This seems to have been fixed in Windows 22598.1 but I'll leave it here for now
         //using var refreshTrayIcon = new TrayIcon(TrayIcon.CreateUniqueGuidForEntryAssembly("RefreshWorkaround"));
         //refreshTrayIcon.Create();
+#endif
     }
 
     #endregion
