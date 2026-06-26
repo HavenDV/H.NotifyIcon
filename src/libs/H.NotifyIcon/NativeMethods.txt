@@ -12,12 +12,14 @@ GetWindowLong
 SetWindowPos
 DefSubclassProc
 SetWindowSubclass
+RemoveWindowSubclass
 GetClientRect
 FillRect
 CreateSolidBrush
 DeleteObject
 SetLayeredWindowAttributes
 WM_ERASEBKGND
+WM_NCDESTROY
 GetDoubleClickTime
 GetPhysicalCursorPos
 GetCursorPos
