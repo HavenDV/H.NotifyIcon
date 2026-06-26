@@ -58,6 +58,24 @@ public partial class TaskbarIcon
         _ = OnTrayContextMenuOpen();
     }
 
+    /// <summary>
+    /// Hides the ContextMenu/ContextFlyout if it is visible.
+    /// </summary>
+    public void CloseContextMenu()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        if (ContextMenu == null)
+        {
+            return;
+        }
+
+        ContextMenu.IsOpen = false;
+    }
+
     #endregion
 
     #region Event Handlers

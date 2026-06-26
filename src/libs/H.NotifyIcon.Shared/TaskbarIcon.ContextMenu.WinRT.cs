@@ -64,6 +64,39 @@ public partial class TaskbarIcon
 #endif
     }
 
+    /// <summary>
+    /// Hides the ContextMenu/ContextFlyout if it is visible.
+    /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
+    public void CloseContextMenu()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        switch (ContextMenuMode)
+        {
+#if !HAS_MAUI
+#if !HAS_UNO
+            case ContextMenuMode.SecondWindow:
+                CloseSecondWindowContextMenu();
+                break;
+#endif
+
+            case ContextMenuMode.ActiveWindow:
+#endif
+            case ContextMenuMode.PopupMenu:
+#if !HAS_MAUI
+                ContextFlyout?.Hide();
+#endif
+                break;
+
+            default:
+                throw new NotImplementedException($"ContextMenuMode: {ContextMenuMode} is not implemented.");
+        }
+    }
+
     #endregion
 
     #region Event Handlers

@@ -83,6 +83,18 @@ public partial class TaskbarIcon
         ShowSecondWindowFlyout(ContextMenuFlyout, ContextMenuWindow.Content);
     }
 
+    private void CloseSecondWindowContextMenu()
+    {
+        IsContextMenuVisible = false;
+        IsSecondWindowContextMenuOpenEventRaised = false;
+        ContextMenuFlyout?.Hide();
+
+        if (ContextMenuWindowHandle is { } handle)
+        {
+            _ = WindowUtilities.HideWindow(handle);
+        }
+    }
+
     private static System.Drawing.Rectangle CreateTrayCursorExcludeRect(
         System.Drawing.Point cursorPosition,
         double rasterizationScale)
@@ -209,10 +221,7 @@ public partial class TaskbarIcon
             {
                 flyoutItemBase.Tapped += (_, _) =>
                 {
-                    IsContextMenuVisible = false;
-                    IsSecondWindowContextMenuOpenEventRaised = false;
-                    flyout.Hide();
-                    _ = WindowUtilities.HideWindow(handle);
+                    CloseSecondWindowContextMenu();
                 };
             }
         }
@@ -235,10 +244,7 @@ public partial class TaskbarIcon
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
-                IsContextMenuVisible = false;
-                IsSecondWindowContextMenuOpenEventRaised = false;
-                flyout.Hide();
-                _ = WindowUtilities.HideWindow(handle);
+                CloseSecondWindowContextMenu();
                 return;
             }
 
