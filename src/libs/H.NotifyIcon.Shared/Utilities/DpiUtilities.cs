@@ -44,4 +44,30 @@ internal static class DpiUtilities
             Height = (int)(size.Height / DpiFactorY),
         };
     }
+
+    internal static int ScaleToDpiPixels(this int value)
+    {
+        return Math.Max(
+            val1: 1,
+            val2: (int)Math.Round(value * Math.Max(DpiFactorX, DpiFactorY)));
+    }
+
+    internal static float ScaleToDpiPixels(this float value)
+    {
+        return (float)(value * Math.Max(DpiFactorX, DpiFactorY));
+    }
+
+    internal static double ScaleToDpiPixels(this double value)
+    {
+        return value * Math.Max(DpiFactorX, DpiFactorY);
+    }
+
+    internal static Thickness ScaleToDpiPixels(this Thickness thickness)
+    {
+        return new Thickness(
+            left: thickness.Left * DpiFactorX,
+            top: thickness.Top * DpiFactorY,
+            right: thickness.Right * DpiFactorX,
+            bottom: thickness.Bottom * DpiFactorY);
+    }
 }

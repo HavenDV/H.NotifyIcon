@@ -29,7 +29,10 @@ public sealed partial class GeneratedIconSource
     [SupportedOSPlatform("windows")]
     internal Bitmap Generate(Bitmap? backgroundBitmap = null)
     {
-        var size = Size;
+        var size = Size.ScaleToDpiPixels();
+        var margin = Margin.ScaleToDpiPixels();
+        var textMargin = TextMargin.ScaleToDpiPixels();
+        var borderThickness = BorderThickness.ScaleToDpiPixels();
         using var fontFamily =
             FontFamily?.ToSystemDrawingFontFamily() ??
             new System.Drawing.FontFamily(string.Empty);
@@ -38,24 +41,24 @@ public sealed partial class GeneratedIconSource
             (float)FontSize,
             FontStyle.ToSystemDrawingFontStyle(FontWeight));
         using var baseImage = backgroundBitmap ?? BackgroundSource?.ToBitmap();
-        using var pen = BorderBrush.ToSystemDrawingPen(BorderThickness);
+        using var pen = BorderBrush.ToSystemDrawingPen(borderThickness);
         using var backgroundBrush = Background.ToSystemDrawingBrush();
         using var foregroundBrush = Foreground.ToSystemDrawingBrush();
 
         return SystemDrawingIconGenerator.Generate(
             backgroundBrush: backgroundBrush,
             foregroundBrush: foregroundBrush,
-            pen: BorderThickness > 0.01F
+            pen: borderThickness > 0.01F
                 ? pen
                 : null,
             backgroundType: BackgroundType,
-            cornerRadius: (float)CornerRadius.TopLeft,
+            cornerRadius: (float)CornerRadius.TopLeft.ScaleToDpiPixels(),
             rectangle: Margin == default
                 ? null
-                : Margin.ToSystemDrawingRectangleF(width: size, height: size),
+                : margin.ToSystemDrawingRectangleF(width: size, height: size),
             text: Text,
             font: font,
-            textRectangle: TextMargin.ToSystemDrawingRectangleF(width: size, height: size),
+            textRectangle: textMargin.ToSystemDrawingRectangleF(width: size, height: size),
             baseImage: baseImage,
             size: size);
     }
