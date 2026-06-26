@@ -135,6 +135,20 @@ public partial class TaskbarIcon
                 throw new ArgumentOutOfRangeException(nameof(args), "Missing handler for mouse event flag: " + args.MouseEvent);
         }
 #endif
+#elif HAS_MAUI_WINUI
+        switch (args.MouseEvent)
+        {
+            case MouseEvent.IconRightMouseUp:
+                RightClickCommand?.TryExecute(RightClickCommandParameter);
+                break;
+            case MouseEvent.IconMiddleMouseUp:
+                MiddleClickCommand?.TryExecute(MiddleClickCommandParameter);
+                break;
+            case MouseEvent.IconDoubleClick:
+                SingleClickTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                DoubleClickCommand?.TryExecute(DoubleClickCommandParameter);
+                break;
+        }
 #endif
 
         var cursorPosition = args.Point.ScaleWithDpi();
