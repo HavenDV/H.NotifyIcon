@@ -125,6 +125,7 @@ public partial class TaskbarIcon : IDisposable
 #endif
 
 #if !HAS_WPF && !HAS_UNO && !HAS_MAUI
+            CloseSecondWindowContextMenu();
             ContextMenuWindow?.Close();
             ContextMenuWindow = null;
             ContextMenuWindowHandle = null;
