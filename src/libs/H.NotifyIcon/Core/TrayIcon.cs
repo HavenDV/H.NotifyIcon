@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using EventGenerator;
 #if MACOS
@@ -227,19 +228,25 @@ public partial class TrayIcon : IDisposable
             return processPath;
         }
 #endif
-        using (var process = Process.GetCurrentProcess())
+        try
         {
-            var path = process?.MainModule?.FileName;
+            using var process = Process.GetCurrentProcess();
+            var path = process.MainModule?.FileName;
             if (path != null &&
                 !string.IsNullOrWhiteSpace(path))
             {
                 return path;
             }
         }
+        catch (Exception exception) when (exception is Win32Exception or InvalidOperationException or NotSupportedException)
+        {
+            // Some endpoint protection tools can block MainModule access.
+            // Fall back to managed application paths instead of failing construction.
+        }
         
         var assembly =
             Assembly.GetEntryAssembly() ??
-            throw new InvalidOperationException("Entry assembly is not found.");
+            Assembly.GetExecutingAssembly();
 
         var location = assembly.Location;
         if (string.IsNullOrWhiteSpace(location))
