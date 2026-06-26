@@ -1,11 +1,14 @@
 ﻿#if !MACOS
 using System.Drawing;
 using System.Threading;
+using EventGenerator;
 using H.NotifyIcon.Interop;
 
 namespace H.NotifyIcon.Core;
 
 /// <inheritdoc/>
+[Event("ContextMenuOpening",
+    Description = "Occurs before the context menu is displayed.")]
 [SupportedOSPlatform("windows5.1.2600")]
 public partial class TrayIconWithContextMenu : TrayIcon
 {
@@ -99,10 +102,17 @@ public partial class TrayIconWithContextMenu : TrayIcon
     /// </summary>
     public void ShowContextMenu()
     {
+        _ = OnContextMenuOpening();
+
+        if (ContextMenu == null)
+        {
+            return;
+        }
+
         var cursorPosition = CursorUtilities.GetCursorPos();
 
         _ = WindowUtilities.SetForegroundWindow(WindowHandle);
-        ContextMenu?.Show(
+        ContextMenu.Show(
             ownerHandle: WindowHandle,
             x: cursorPosition.X,
             y: cursorPosition.Y);
