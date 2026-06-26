@@ -7,6 +7,18 @@ namespace H.NotifyIcon.IntegrationTests;
 public class TrayIconTests
 {
     [TestMethod]
+    public void ContextMenuOpeningIsRaisedWithoutContextMenu()
+    {
+        using var trayIcon = new TrayIconWithContextMenu();
+        var wasRaised = false;
+
+        trayIcon.ContextMenuOpening += (_, _) => wasRaised = true;
+        trayIcon.ShowContextMenu();
+
+        wasRaised.Should().BeTrue();
+    }
+
+    [TestMethod]
     public async Task SimpleTest()
     {
         using var trayIcon = new TrayIcon();
