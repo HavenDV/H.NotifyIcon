@@ -4,6 +4,8 @@ using Microsoft.UI.Xaml.Data;
 
 namespace H.NotifyIcon;
 
+[Event("SecondWindowContextMenuOpened",
+    Description = "Occurs when the second-window context menu is opened.")]
 public partial class TaskbarIcon
 {
 #if !HAS_MAUI
@@ -11,14 +13,11 @@ public partial class TaskbarIcon
     #region Properties
 
     private bool IsContextMenuVisible { get; set; }
+    private bool IsSecondWindowContextMenuOpenEventRaised { get; set; }
     private Window? ContextMenuWindow { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
-    /// <summary>
-    /// Occurs when the second-window context menu is opened.
-    /// </summary>
-    public event EventHandler? SecondWindowContextMenuOpened;
 
 #pragma warning disable CA1822 // Mark members as static
     partial void OnContextMenuModeChanged(ContextMenuMode oldValue, ContextMenuMode newValue)
@@ -44,7 +43,8 @@ public partial class TaskbarIcon
         }
 
         var size = MeasureFlyout(ContextMenuFlyout, new Size(10000.0, 10000.0));
-        var excludeRect = CreateTrayCursorExcludeRect(cursorPosition);
+        var rasterizationScale = ContextMenuWindow.Content.XamlRoot?.RasterizationScale ?? 1.0;
+        var excludeRect = CreateTrayCursorExcludeRect(cursorPosition, rasterizationScale);
         var rectangle = CursorUtilities.CalculatePopupWindowPosition(
             cursorPosition.X,
             cursorPosition.Y,
@@ -76,19 +76,22 @@ public partial class TaskbarIcon
         }
 
         IsContextMenuVisible = true;
+        IsSecondWindowContextMenuOpenEventRaised = false;
         ContextMenuAppWindow?.MoveAndResize(rectangle.ToRectInt32());
         _ = WindowUtilities.ShowWindow(ContextMenuWindowHandle.Value);
         _ = WindowUtilities.SetForegroundWindow(ContextMenuWindowHandle.Value);
         ShowSecondWindowFlyout(ContextMenuFlyout, ContextMenuWindow.Content);
     }
 
-    private static System.Drawing.Rectangle CreateTrayCursorExcludeRect(System.Drawing.Point cursorPosition)
+    private static System.Drawing.Rectangle CreateTrayCursorExcludeRect(
+        System.Drawing.Point cursorPosition,
+        double rasterizationScale)
     {
         // Native tray menus avoid overlapping the icon/taskbar affordance itself.
         // Give CalculatePopupWindowPosition a small tray-sized exclusion box so it
         // picks a position adjacent to the cursor instead of overlapping the taskbar.
-        const int width = 36;
-        const int height = 36;
+        var width = Math.Max(1, (int)Math.Round(36 * rasterizationScale));
+        var height = Math.Max(1, (int)Math.Round(36 * rasterizationScale));
 
         return new System.Drawing.Rectangle(
             x: cursorPosition.X - (width / 2),
@@ -106,11 +109,6 @@ public partial class TaskbarIcon
                 ShowMode = FlyoutShowMode.Transient,
             });
         }
-    }
-
-    private void RaiseSecondWindowContextMenuOpened()
-    {
-        SecondWindowContextMenuOpened?.Invoke(this, EventArgs.Empty);
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(OverlappedPresenter))]
@@ -176,9 +174,11 @@ public partial class TaskbarIcon
         };
         flyout.Opened += (_, _) =>
         {
-            if (IsContextMenuVisible)
+            if (IsContextMenuVisible &&
+                !IsSecondWindowContextMenuOpenEventRaised)
             {
-                RaiseSecondWindowContextMenuOpened();
+                IsSecondWindowContextMenuOpenEventRaised = true;
+                _ = OnSecondWindowContextMenuOpened();
             }
         };
         flyout.Closed += (_, _) =>
@@ -210,6 +210,7 @@ public partial class TaskbarIcon
                 flyoutItemBase.Tapped += (_, _) =>
                 {
                     IsContextMenuVisible = false;
+                    IsSecondWindowContextMenuOpenEventRaised = false;
                     flyout.Hide();
                     _ = WindowUtilities.HideWindow(handle);
                 };
@@ -235,6 +236,7 @@ public partial class TaskbarIcon
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 IsContextMenuVisible = false;
+                IsSecondWindowContextMenuOpenEventRaised = false;
                 flyout.Hide();
                 _ = WindowUtilities.HideWindow(handle);
                 return;
