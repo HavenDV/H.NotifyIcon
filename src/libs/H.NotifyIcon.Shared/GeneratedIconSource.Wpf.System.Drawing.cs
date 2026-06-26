@@ -24,8 +24,8 @@ public sealed partial class GeneratedIconSource
         return Create(
             pixelWidth: bitmap.Width,
             pixelHeight: bitmap.Height,
-            dpiX: 96,
-            dpiY: 96,
+            dpiX: 96 * DpiUtilities.DpiFactorX,
+            dpiY: 96 * DpiUtilities.DpiFactorY,
             pixelFormat: PixelFormats.Rgb24,
             palette: null,
             buffer: bits.Scan0,

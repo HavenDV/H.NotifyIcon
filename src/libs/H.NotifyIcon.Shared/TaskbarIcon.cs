@@ -70,7 +70,7 @@ public partial class TaskbarIcon : FrameworkElement
 #if !MACOS && (!HAS_MAUI || HAS_MAUI_WINUI)
         // https://github.com/HavenDV/H.NotifyIcon/issues/34
         //Unloaded += (_, _) => Dispose();
-        TrayIcon.MessageWindow.DpiChanged += static (_, _) => DpiUtilities.UpdateDpiFactors();
+        TrayIcon.MessageWindow.DpiChanged += OnDpiChanged;
         TrayIcon.MessageWindow.TaskbarCreated += OnTaskbarCreated;
 
         // register event listeners
@@ -118,6 +118,22 @@ public partial class TaskbarIcon : FrameworkElement
         {
             // ignored.
         }
+    }
+
+    /// <summary>
+    /// Refreshes the tray icon after Windows reports a DPI change.
+    /// </summary>
+    [SupportedOSPlatform("windows5.1.2600")]
+    private async void OnDpiChanged(object? sender, EventArgs args)
+    {
+        DpiUtilities.UpdateDpiFactors();
+
+        if (IconSource == null)
+        {
+            return;
+        }
+
+        Icon = await IconSource.ToIconAsync().ConfigureAwait(true);
     }
 
     #endregion
