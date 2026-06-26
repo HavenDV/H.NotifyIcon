@@ -193,6 +193,14 @@ public partial class TaskbarIcon
                 _ = OnSecondWindowContextMenuOpened();
             }
         };
+        flyout.Closing += (_, args) =>
+        {
+            if (!CloseContextMenuOnItemClick &&
+                IsContextMenuVisible)
+            {
+                args.Cancel = true;
+            }
+        };
         flyout.Closed += (_, _) =>
         {
             if (!flyout.AreOpenCloseAnimationsEnabled ||
@@ -221,7 +229,10 @@ public partial class TaskbarIcon
             {
                 flyoutItemBase.Tapped += (_, _) =>
                 {
-                    CloseSecondWindowContextMenu();
+                    if (CloseContextMenuOnItemClick)
+                    {
+                        CloseSecondWindowContextMenu();
+                    }
                 };
             }
         }
