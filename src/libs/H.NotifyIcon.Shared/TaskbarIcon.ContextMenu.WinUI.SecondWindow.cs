@@ -42,6 +42,8 @@ public partial class TaskbarIcon
             return;
         }
 
+        SynchronizeSecondWindowContextMenuItems();
+
         var size = MeasureFlyout(ContextMenuFlyout, new Size(10000.0, 10000.0));
         var rasterizationScale = ContextMenuWindow.Content.XamlRoot?.RasterizationScale ?? 1.0;
         var excludeRect = CreateTrayCursorExcludeRect(cursorPosition, rasterizationScale);
@@ -215,27 +217,8 @@ public partial class TaskbarIcon
                 ShowMode = FlyoutShowMode.Transient,
             });
         };
-        foreach (var flyoutItemBase in ((MenuFlyout)ContextFlyout).Items)
-        {
-            if (flyoutItemBase is not MenuFlyoutSeparator)
-            {
-                flyoutItemBase.Height = 32;
-                flyoutItemBase.Padding = new Thickness(11, 0, 11, 0);
-            }
-            flyout.Items.Add(flyoutItemBase);
-
-            // MenuFlyoutSubItem should not be clickable and should not close the context menu
-            if (flyoutItemBase is not MenuFlyoutSubItem)
-            {
-                flyoutItemBase.Tapped += (_, _) =>
-                {
-                    if (CloseContextMenuOnItemClick)
-                    {
-                        CloseSecondWindowContextMenu();
-                    }
-                };
-            }
-        }
+        ContextMenuFlyout = flyout;
+        SynchronizeSecondWindowContextMenuItems();
 
         frame.Loaded += (_, _) =>
         {
@@ -277,7 +260,56 @@ public partial class TaskbarIcon
 #if !HAS_UNO
         ContextMenuAppWindow = appWindow;
 #endif
-        ContextMenuFlyout = flyout;
+    }
+
+    private void SynchronizeSecondWindowContextMenuItems()
+    {
+        if (ContextFlyout is not MenuFlyout sourceFlyout ||
+            ContextMenuFlyout == null)
+        {
+            return;
+        }
+
+        var sourceItems = sourceFlyout.Items.ToList();
+        foreach (var flyoutItemBase in sourceItems)
+        {
+            if (ContextMenuFlyout.Items.Contains(flyoutItemBase))
+            {
+                continue;
+            }
+
+            AddSecondWindowContextMenuItem(flyoutItemBase);
+        }
+    }
+
+    private void AddSecondWindowContextMenuItem(MenuFlyoutItemBase flyoutItemBase)
+    {
+        PrepareSecondWindowContextMenuItem(flyoutItemBase);
+        ContextMenuFlyout!.Items.Add(flyoutItemBase);
+
+        // MenuFlyoutSubItem should not be clickable and should not close the context menu.
+        if (flyoutItemBase is not MenuFlyoutSubItem)
+        {
+            flyoutItemBase.Tapped += OnSecondWindowContextMenuItemTapped;
+        }
+    }
+
+    private void OnSecondWindowContextMenuItemTapped(object sender, TappedRoutedEventArgs args)
+    {
+        if (CloseContextMenuOnItemClick)
+        {
+            CloseSecondWindowContextMenu();
+        }
+    }
+
+    private static void PrepareSecondWindowContextMenuItem(MenuFlyoutItemBase item)
+    {
+        // https://github.com/microsoft/microsoft-ui-xaml/issues/7374
+        if (item is not MenuFlyoutSeparator)
+        {
+            item.Height = 32;
+            item.Padding = new Thickness(11, 0, 11, 0);
+        }
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSeparator))]
@@ -288,12 +320,7 @@ public partial class TaskbarIcon
 
         foreach (var item in flyout.Items)
         {
-            // https://github.com/microsoft/microsoft-ui-xaml/issues/7374
-            if (item is not MenuFlyoutSeparator)
-            {
-                item.Height = 32;
-                item.Padding = new Thickness(11, 0, 11, 0);
-            }
+            PrepareSecondWindowContextMenuItem(item);
             item.Measure(availableSize);
 
             width = Math.Max(width, item.DesiredSize.Width);
