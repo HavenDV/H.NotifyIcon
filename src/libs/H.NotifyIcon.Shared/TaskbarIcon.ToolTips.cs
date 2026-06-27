@@ -38,6 +38,7 @@ public partial class TaskbarIcon
     partial void OnTrayToolTipChanged(UIElement? oldValue, UIElement? newValue)
     {
         CreateCustomToolTip();
+        UpdateStandardToolTipMode();
 
 #if HAS_WPF
         if (oldValue != null)
@@ -110,9 +111,14 @@ public partial class TaskbarIcon
     private void CreateCustomToolTip()
     {
 #if !MACOS && !HAS_MAUI
+        if (TrayToolTip == null)
+        {
+            TrayToolTipResolved = null;
+            return;
+        }
+
         var toolTip = TrayToolTip as ToolTip2 ?? new ToolTip2();
-        if (TrayToolTip != null &&
-            TrayToolTip is not ToolTip2)
+        if (TrayToolTip is not ToolTip2)
         {
             toolTip.Content = TrayToolTip;
         }
@@ -123,9 +129,18 @@ public partial class TaskbarIcon
 #endif
     }
 
+    private void UpdateStandardToolTipMode()
+    {
+#if HAS_WPF || HAS_WINUI || HAS_UNO_WINUI || HAS_MAUI_WINUI
+        TrayIcon.UseStandardTooltip = TrayToolTipResolved == null;
+#endif
+    }
+
     [SupportedOSPlatform("windows5.1.2600")]
     private void WriteToolTipSettings()
     {
+        UpdateStandardToolTipMode();
+
         var text = ToolTipText;
 #if !MACOS
         if (TrayIcon.Version == IconVersion.Vista)
