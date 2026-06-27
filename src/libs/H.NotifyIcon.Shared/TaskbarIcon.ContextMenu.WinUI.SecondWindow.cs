@@ -30,6 +30,11 @@ public partial class TaskbarIcon
         }
     }
 
+    partial void OnContextMenuThemeModeChanged(PopupMenuThemeMode oldValue, PopupMenuThemeMode newValue)
+    {
+        ApplySecondWindowContextMenuTheme(ContextMenuWindow?.Content as FrameworkElement);
+    }
+
     #endregion
     
     #region Methods
@@ -172,7 +177,14 @@ public partial class TaskbarIcon
             Content = frame,
         };
 
-        ActualThemeChanged += (_, _) => frame.RequestedTheme = ActualTheme;
+        ApplySecondWindowContextMenuTheme(frame);
+        ActualThemeChanged += (_, _) =>
+        {
+            if (ContextMenuThemeMode == PopupMenuThemeMode.System)
+            {
+                ApplySecondWindowContextMenuTheme(frame);
+            }
+        };
 
         var handle = WindowNative.GetWindowHandle(window);
         DesktopWindowsManagerMethods.SetRoundedCorners(handle);
@@ -282,6 +294,22 @@ public partial class TaskbarIcon
 #endif
 
         EnsureSecondWindowContextMenuLoaded();
+    }
+
+    private void ApplySecondWindowContextMenuTheme(FrameworkElement? target)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        target.RequestedTheme = ContextMenuThemeMode switch
+        {
+            PopupMenuThemeMode.System => ActualTheme,
+            PopupMenuThemeMode.Light => ElementTheme.Light,
+            PopupMenuThemeMode.Dark => ElementTheme.Dark,
+            _ => ElementTheme.Default,
+        };
     }
 
     private void SynchronizeSecondWindowContextMenuItems()

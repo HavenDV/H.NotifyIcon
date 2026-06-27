@@ -54,6 +54,10 @@
                 Content="Show tray popup"
                 Click="ShowTrayPopupButton_Click"
                 />
+            <Button
+                Content="Show native context menu"
+                Click="ShowNativeContextMenuButton_Click"
+                />
         </StackPanel>
     </Grid>
 </Page>

@@ -15,7 +15,8 @@ public partial class TaskbarIcon
     {
         var menu = new H.NotifyIcon.Core.PopupMenu
         {
-            RightToLeft = FlowDirection == FlowDirection.RightToLeft
+            RightToLeft = FlowDirection == FlowDirection.RightToLeft,
+            ThemeMode = ContextMenuThemeMode,
         };
 #if HAS_MAUI
         PopulateMenu(menu.Items, (MenuFlyout)ContextFlyout);
