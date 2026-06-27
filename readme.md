@@ -153,6 +153,8 @@ At the moment, three modes are implemented, each with its own pros and cons.
 3. A second transparent window will be created and used to render the native menu. At the moment it is in the preview stage. To do this you need to explicitly set ContextMenuMode="SecondWindow"\
    ![image](https://user-images.githubusercontent.com/3002068/164977343-fab0ef4d-d1bd-4ff0-a1af-1d87f32c6400.png)
 
+Native `PopupMenu` mode follows the Windows app theme by default. Use `ContextMenuThemeMode="Light"`, `ContextMenuThemeMode="Dark"`, or `ContextMenuThemeMode="Default"` to override this behavior. Direct `H.NotifyIcon.Core.PopupMenu` users can set the same behavior with the `ThemeMode` property.
+
 Availability of various options(depends on the version of `WindowsAppSDK` you are using):
 
 | Option       | Packaged App          | Unpackaged App        |

@@ -45,4 +45,23 @@ public sealed partial class NotificationView
     {
         TrayIcon?.ShowTrayPopup(new System.Drawing.Point(120, 120));
     }
+
+    private void ShowNativeContextMenuButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (TrayIcon == null)
+        {
+            return;
+        }
+
+        var contextMenuMode = TrayIcon.ContextMenuMode;
+        try
+        {
+            TrayIcon.ContextMenuMode = ContextMenuMode.PopupMenu;
+            TrayIcon.ShowContextMenu(new System.Drawing.Point(120, 120));
+        }
+        finally
+        {
+            TrayIcon.ContextMenuMode = contextMenuMode;
+        }
+    }
 }

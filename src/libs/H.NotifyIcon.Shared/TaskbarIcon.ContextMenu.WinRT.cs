@@ -4,6 +4,8 @@ namespace H.NotifyIcon;
 
 [DependencyProperty<ContextMenuMode>("ContextMenuMode", DefaultValue = ContextMenuMode.PopupMenu,
     Description = "Defines the context menu mode.", Category = CategoryName)]
+[DependencyProperty<PopupMenuThemeMode>("ContextMenuThemeMode", DefaultValue = PopupMenuThemeMode.System,
+    Description = "Defines how tray context menus select their light or dark theme.", Category = CategoryName)]
 [DependencyProperty<bool>("CloseContextMenuOnItemClick", DefaultValue = true,
     Description = "Defines whether the second-window context menu closes after a menu item is clicked.", Category = CategoryName)]
 public partial class TaskbarIcon

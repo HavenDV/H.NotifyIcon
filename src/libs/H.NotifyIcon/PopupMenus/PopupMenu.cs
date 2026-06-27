@@ -22,6 +22,11 @@ public class PopupMenu
     public bool RightToLeft { get; set; }
 
     /// <summary>
+    /// Gets or sets how the native popup menu should select its light or dark theme.
+    /// </summary>
+    public PopupMenuThemeMode ThemeMode { get; set; } = PopupMenuThemeMode.System;
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="ownerHandle"></param>
@@ -30,6 +35,8 @@ public class PopupMenu
     /// <exception cref="NotImplementedException"></exception>
     public void Show(nint ownerHandle, int x, int y)
     {
+        NativeThemeUtilities.ApplyMenuTheme(ThemeMode);
+
         var flags =
            TRACK_POPUP_MENU_FLAGS.TPM_RETURNCMD |
            TRACK_POPUP_MENU_FLAGS.TPM_NONOTIFY |
