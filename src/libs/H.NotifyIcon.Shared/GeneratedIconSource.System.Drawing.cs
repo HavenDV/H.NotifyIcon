@@ -6,10 +6,10 @@ public sealed partial class GeneratedIconSource
     /// 
     /// </summary>
     /// <returns></returns>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows5.0")]
     public Icon ToIcon()
     {
-        using var bitmap = Generate();
+        using var bitmap = GenerateIconBitmap();
 
         return Icon.FromHandle(bitmap.GetHicon());
     }
@@ -18,12 +18,43 @@ public sealed partial class GeneratedIconSource
     /// 
     /// </summary>
     /// <returns></returns>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows5.0")]
     public async Task<Icon> ToIconAsync(CancellationToken cancellationToken = default)
+    {
+        using var bitmap = await GenerateIconBitmapAsync(cancellationToken).ConfigureAwait(true);
+
+        return Icon.FromHandle(bitmap.GetHicon());
+    }
+
+    [SupportedOSPlatform("windows5.0")]
+    private Bitmap GenerateIconBitmap()
+    {
+        using var bitmap = Generate();
+
+        return ResizeToRequiredIconSize(bitmap);
+    }
+
+    [SupportedOSPlatform("windows5.0")]
+    private async Task<Bitmap> GenerateIconBitmapAsync(CancellationToken cancellationToken = default)
     {
         using var bitmap = await GenerateAsync(cancellationToken).ConfigureAwait(true);
 
-        return Icon.FromHandle(bitmap.GetHicon());
+        return ResizeToRequiredIconSize(bitmap);
+    }
+
+    [SupportedOSPlatform("windows5.0")]
+    private static Bitmap ResizeToRequiredIconSize(Bitmap bitmap)
+    {
+        var size = H.NotifyIcon.Interop.IconUtilities.GetRequiredCustomIconSize(largeIcon: false);
+        if (bitmap.Width == size.Width &&
+            bitmap.Height == size.Height)
+        {
+            return (Bitmap)bitmap.Clone();
+        }
+
+        return new Bitmap(
+            original: bitmap,
+            newSize: size);
     }
 
     [SupportedOSPlatform("windows")]
