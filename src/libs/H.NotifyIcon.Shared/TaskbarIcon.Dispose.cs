@@ -125,6 +125,15 @@ public partial class TaskbarIcon : IDisposable
 #endif
 
 #if !HAS_WPF && !HAS_UNO && !HAS_MAUI
+#if HAS_WINUI
+            CloseTrayPopupWindow();
+            TrayPopupWindow?.Close();
+            TrayPopupWindow = null;
+            TrayPopupWindowHandle = null;
+            TrayPopupAppWindow = null;
+            TrayPopupWindowRoot = null;
+
+#endif
             CloseSecondWindowContextMenu();
             ContextMenuWindow?.Close();
             ContextMenuWindow = null;

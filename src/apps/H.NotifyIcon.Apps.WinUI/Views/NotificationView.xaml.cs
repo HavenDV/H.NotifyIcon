@@ -40,4 +40,9 @@ public sealed partial class NotificationView
     {
         TrayIcon?.ClearNotifications();
     }
+
+    private void ShowTrayPopupButton_Click(object sender, RoutedEventArgs e)
+    {
+        TrayIcon?.ShowTrayPopup(new System.Drawing.Point(120, 120));
+    }
 }

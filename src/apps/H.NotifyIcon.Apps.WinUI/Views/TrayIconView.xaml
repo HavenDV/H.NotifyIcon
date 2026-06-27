@@ -22,8 +22,31 @@
         IconSource="{x:Bind IsWindowVisible, Converter={StaticResource BoolToImageSourceConverter}}"
         LeftClickCommand="{x:Bind ShowHideWindowCommand}"
         NoLeftClickDelay="True"
+        PopupActivation="MiddleClick"
         ToolTipText="ToolTip"
         >
+        <tb:TaskbarIcon.TrayPopup>
+            <Border
+                MinWidth="240"
+                Padding="16"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                >
+                <StackPanel Spacing="8">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="Tray Popup"
+                        />
+                    <TextBlock
+                        Text="WinUI content hosted by H.NotifyIcon."
+                        TextWrapping="Wrap"
+                        />
+                </StackPanel>
+            </Border>
+        </tb:TaskbarIcon.TrayPopup>
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout AreOpenCloseAnimationsEnabled="False">
                 <MenuFlyoutItem
