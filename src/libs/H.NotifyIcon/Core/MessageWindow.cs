@@ -167,7 +167,11 @@ public partial class MessageWindow : IDisposable
 
     private static Point ToPoint(nuint value)
     {
-        return new Point((int)value & 0xFFFF, ((int)value >> 16) & 0xFFFF);
+        var packed = unchecked((uint)value);
+
+        return new Point(
+            x: unchecked((short)(packed & 0xFFFF)),
+            y: unchecked((short)((packed >> 16) & 0xFFFF)));
     }
 
     /// <summary>

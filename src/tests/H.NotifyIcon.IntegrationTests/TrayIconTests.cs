@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection;
 using H.NotifyIcon.Core;
 
 namespace H.NotifyIcon.IntegrationTests;
@@ -16,6 +17,19 @@ public class TrayIconTests
         trayIcon.ShowContextMenu();
 
         wasRaised.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void MessageWindowCallbackPointSupportsNegativeVirtualScreenCoordinates()
+    {
+        var method = typeof(MessageWindow).GetMethod(
+            name: "ToPoint",
+            bindingAttr: BindingFlags.Static | BindingFlags.NonPublic);
+        var packed = unchecked((uint)((ushort)-120 | ((ushort)-80 << 16)));
+
+        var point = (Point)method!.Invoke(null, [new UIntPtr(packed)])!;
+
+        point.Should().Be(new Point(-120, -80));
     }
 
     [TestMethod]
