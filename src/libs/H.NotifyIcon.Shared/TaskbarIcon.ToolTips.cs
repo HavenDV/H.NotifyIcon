@@ -90,7 +90,11 @@ public partial class TaskbarIcon
             var balloon = (Popup?)null;
 #endif
 
-            return popup is { IsOpen: true } ||
+            return
+#if HAS_WINUI
+                   IsTrayPopupVisible ||
+#endif
+                   popup is { IsOpen: true } ||
                    menu is { IsOpen: true } ||
                    balloon is { IsOpen: true };
 #endif

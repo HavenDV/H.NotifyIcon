@@ -50,6 +50,10 @@
                 Content="Clear notifications"
                 Click="ClearNotificationsButton_Click"
                 />
+            <Button
+                Content="Show tray popup"
+                Click="ShowTrayPopupButton_Click"
+                />
         </StackPanel>
     </Grid>
 </Page>

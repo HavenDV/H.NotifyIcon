@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+#if HAS_WINUI
+using H.NotifyIcon.Interop;
+#endif
+
 namespace H.NotifyIcon;
 
 #if !HAS_MAUI
@@ -26,6 +30,15 @@ namespace H.NotifyIcon;
 public partial class TaskbarIcon
 {
     #region Properties
+
+#if HAS_WINUI
+    private bool IsTrayPopupVisible { get; set; }
+    private bool IsTrayPopupWindowLoaded { get; set; }
+    private Window? TrayPopupWindow { get; set; }
+    private nint? TrayPopupWindowHandle { get; set; }
+    private AppWindow? TrayPopupAppWindow { get; set; }
+    private FrameworkElement? TrayPopupWindowRoot { get; set; }
+#endif
 
     #region TrayPopup
 
@@ -72,6 +85,9 @@ public partial class TaskbarIcon
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(Popup))]
     private void CreatePopup()
     {
+#if HAS_WINUI
+        CreateTrayPopupWindow();
+#else
         // check if the item itself is a popup
         var popup = TrayPopup as Popup;
 
@@ -108,6 +124,7 @@ public partial class TaskbarIcon
 
         // store a reference to the used tooltip
         TrayPopupResolved = popup;
+#endif
     }
 
     /// <summary>
@@ -133,10 +150,14 @@ public partial class TaskbarIcon
             return;
         }
 
+#if HAS_WINUI
+        CloseTrayPopupWindow();
+#else
         if (TrayPopupResolved != null)
         {
             TrayPopupResolved.IsOpen = false;
         }
+#endif
     }
 
     /// <summary>
@@ -163,6 +184,12 @@ public partial class TaskbarIcon
         {
             return;
         }
+#if HAS_WINUI
+        if (!ShowTrayPopupWindow(cursorPosition))
+        {
+            return;
+        }
+#else
         if (TrayPopupResolved == null)
         {
             return;
@@ -199,6 +226,7 @@ public partial class TaskbarIcon
         TrayPopup?.RaiseEvent(new RoutedEventArgs(PopupOpenedEvent));
 #endif
 
+#endif
         // bubble routed event
         OnTrayPopupOpen();
     }
@@ -237,6 +265,195 @@ public partial class TaskbarIcon
         TrayPopupResolved.HorizontalOffset += PopupOffset.Left;
         TrayPopupResolved.VerticalOffset += PopupOffset.Top;
     }
+
+#if HAS_WINUI
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(OverlappedPresenter))]
+    private void CreateTrayPopupWindow()
+    {
+        CloseTrayPopupWindow();
+        TrayPopupWindow?.Close();
+        TrayPopupWindow = null;
+        TrayPopupWindowHandle = null;
+        TrayPopupAppWindow = null;
+        TrayPopupWindowRoot = null;
+        TrayPopupResolved = null;
+        IsTrayPopupWindowLoaded = false;
+
+        if (TrayPopup == null)
+        {
+            return;
+        }
+
+        if (TrayPopup is FrameworkElement element)
+        {
+            UpdateDataContext(element, DataContext);
+        }
+
+        var root = new Grid
+        {
+            Background = new SolidColorBrush(Colors.Transparent),
+        };
+        root.Children.Add(TrayPopup);
+
+        var window = new Window
+        {
+            Content = root,
+        };
+
+        var handle = WindowNative.GetWindowHandle(window);
+        if (TrayIcon.WindowHandle != 0)
+        {
+            HwndUtilities.SetOwnerWindow(handle, TrayIcon.WindowHandle);
+        }
+
+#if !HAS_UNO
+        var id = Win32Interop.GetWindowIdFromWindow(handle);
+        var appWindow = AppWindow.GetFromWindowId(id);
+        appWindow.IsShownInSwitchers = false;
+
+        var presenter = (OverlappedPresenter)appWindow.Presenter;
+        presenter.IsMaximizable = false;
+        presenter.IsMinimizable = false;
+        presenter.IsResizable = false;
+        presenter.IsAlwaysOnTop = true;
+        presenter.SetBorderAndTitleBar(false, false);
+#endif
+
+        root.Loaded += (_, _) =>
+        {
+            IsTrayPopupWindowLoaded = true;
+            HwndUtilities.SetWindowStyleAsPopupWindow(handle);
+            _ = WindowUtilities.HideWindow(handle);
+        };
+        window.Activated += (_, args) =>
+        {
+            if (args.WindowActivationState == WindowActivationState.Deactivated &&
+                IsTrayPopupVisible)
+            {
+                CloseTrayPopupWindow();
+            }
+        };
+
+        TrayPopupWindow = window;
+        TrayPopupWindowHandle = handle;
+#if !HAS_UNO
+        TrayPopupAppWindow = appWindow;
+#endif
+        TrayPopupWindowRoot = root;
+    }
+
+    private bool ShowTrayPopupWindow(System.Drawing.Point cursorPosition)
+    {
+        if (TrayPopupWindow == null ||
+            TrayPopupWindowHandle == null ||
+            TrayPopupWindowRoot == null)
+        {
+            return false;
+        }
+
+        EnsureTrayPopupWindowLoaded();
+
+        var size = MeasureTrayPopup(TrayPopupWindowRoot);
+        var anchor = GetTrayPopupAnchor(cursorPosition);
+        var rasterizationScale = TrayPopupWindowRoot.XamlRoot?.RasterizationScale ?? 1.0;
+        var rectangle = CursorUtilities.CalculatePopupWindowPosition(
+            anchor.X,
+            anchor.Y,
+            (int)size.Width,
+            (int)size.Height,
+            CreateTrayPopupExcludeRect(anchor, rasterizationScale));
+
+        IsTrayPopupVisible = true;
+        TrayPopupAppWindow?.MoveAndResize(rectangle.ToRectInt32());
+        _ = WindowUtilities.ShowWindow(TrayPopupWindowHandle.Value);
+        _ = WindowUtilities.SetForegroundWindow(TrayPopupWindowHandle.Value);
+
+        return true;
+    }
+
+    private void EnsureTrayPopupWindowLoaded()
+    {
+        if (IsTrayPopupWindowLoaded ||
+            TrayPopupWindow == null ||
+            TrayPopupWindowHandle == null)
+        {
+            return;
+        }
+
+        TrayPopupAppWindow?.MoveAndResize(CreateRectInt32(
+            x: -32000,
+            y: -32000,
+            width: 1,
+            height: 1));
+        TrayPopupWindow.Activate();
+        _ = WindowUtilities.HideWindow(TrayPopupWindowHandle.Value);
+    }
+
+    private void CloseTrayPopupWindow()
+    {
+        IsTrayPopupVisible = false;
+
+        if (TrayPopupWindowHandle is { } handle)
+        {
+            _ = WindowUtilities.HideWindow(handle);
+        }
+    }
+
+    private static Size MeasureTrayPopup(UIElement popup)
+    {
+        popup.Measure(new Size(10000.0, 10000.0));
+
+        var scale = popup.XamlRoot?.RasterizationScale ?? 1.0;
+
+        return new Size(
+            width: Math.Max(1.0, Math.Ceiling(popup.DesiredSize.Width * scale)),
+            height: Math.Max(1.0, Math.Ceiling(popup.DesiredSize.Height * scale)));
+    }
+
+    private System.Drawing.Point GetTrayPopupAnchor(System.Drawing.Point cursorPosition)
+    {
+        var point = PopupPlacement == PlacementMode.Bottom
+            ? TrayInfo.GetTrayLocation(0)
+            : cursorPosition;
+
+        return new System.Drawing.Point(
+            x: point.X + (int)Math.Round(PopupOffset.Left),
+            y: point.Y + (int)Math.Round(PopupOffset.Top));
+    }
+
+    private static System.Drawing.Rectangle CreateTrayPopupExcludeRect(
+        System.Drawing.Point cursorPosition,
+        double rasterizationScale)
+    {
+        var width = Math.Max(1, (int)Math.Round(36 * rasterizationScale));
+        var height = Math.Max(1, (int)Math.Round(36 * rasterizationScale));
+
+        return new System.Drawing.Rectangle(
+            x: cursorPosition.X - (width / 2),
+            y: cursorPosition.Y - (height / 2),
+            width: width,
+            height: height);
+    }
+
+    private static RectInt32 CreateRectInt32(int x, int y, int width, int height)
+    {
+#if HAS_UNO
+        return new RectInt32
+        {
+            X = x,
+            Y = y,
+            Width = width,
+            Height = height,
+        };
+#else
+        return new RectInt32(
+            _X: x,
+            _Y: y,
+            _Width: width,
+            _Height: height);
+#endif
+    }
+#endif
 
     #endregion
 }

@@ -147,7 +147,11 @@ public partial class TaskbarIcon
 
     partial void OnDataContextChanged(object? newValue)
     {
+#if HAS_WINUI
+        UpdateDataContext(TrayPopup as FrameworkElement, newValue);
+#else
         UpdateDataContext(TrayPopupResolved, newValue);
+#endif
         UpdateDataContext(TrayToolTipResolved, newValue);
 #if HAS_WPF
         UpdateDataContext(ContextMenu, newValue);
