@@ -14,6 +14,7 @@ public partial class TaskbarIcon
 
     private bool IsContextMenuVisible { get; set; }
     private bool IsSecondWindowContextMenuOpenEventRaised { get; set; }
+    private bool IsSecondWindowContextMenuLoaded { get; set; }
     private Window? ContextMenuWindow { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
@@ -43,6 +44,7 @@ public partial class TaskbarIcon
         }
 
         SynchronizeSecondWindowContextMenuItems();
+        EnsureSecondWindowContextMenuLoaded();
 
         var size = MeasureFlyout(ContextMenuFlyout, new Size(10000.0, 10000.0));
         var rasterizationScale = ContextMenuWindow.Content.XamlRoot?.RasterizationScale ?? 1.0;
@@ -97,6 +99,19 @@ public partial class TaskbarIcon
         }
     }
 
+    private void EnsureSecondWindowContextMenuLoaded()
+    {
+        if (IsSecondWindowContextMenuLoaded ||
+            ContextMenuWindow == null ||
+            ContextMenuWindowHandle == null)
+        {
+            return;
+        }
+
+        ContextMenuWindow.Activate();
+        _ = WindowUtilities.HideWindow(ContextMenuWindowHandle.Value);
+    }
+
     private static System.Drawing.Rectangle CreateTrayCursorExcludeRect(
         System.Drawing.Point cursorPosition,
         double rasterizationScale)
@@ -136,6 +151,8 @@ public partial class TaskbarIcon
         {
             return;
         }
+
+        IsSecondWindowContextMenuLoaded = false;
 
         var frame = new Frame
         {
@@ -222,6 +239,8 @@ public partial class TaskbarIcon
 
         frame.Loaded += (_, _) =>
         {
+            IsSecondWindowContextMenuLoaded = true;
+
             // Set the window style to PopupWindow to make the title bar invisible
             if (ContextMenuWindowHandle != null)
             {
@@ -233,6 +252,7 @@ public partial class TaskbarIcon
                 ShowMode = FlyoutShowMode.Transient,
             });
             flyout.Hide();
+            _ = WindowUtilities.HideWindow(handle);
         };
         window.Activated += (sender, args) =>
         {
@@ -260,6 +280,8 @@ public partial class TaskbarIcon
 #if !HAS_UNO
         ContextMenuAppWindow = appWindow;
 #endif
+
+        EnsureSecondWindowContextMenuLoaded();
     }
 
     private void SynchronizeSecondWindowContextMenuItems()
