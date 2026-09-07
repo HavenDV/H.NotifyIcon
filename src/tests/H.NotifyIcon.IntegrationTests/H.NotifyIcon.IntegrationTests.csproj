@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest" Version="4.3.3" />
+    <PackageReference Include="MSTest" Version="4.4.0" />
     <PackageReference Include="FluentAssertions" Version="8.10.0" />
     <PackageReference Include="System.Memory" Version="4.6.3" />
   </ItemGroup>
