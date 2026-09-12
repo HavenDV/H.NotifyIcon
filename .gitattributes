@@ -1,5 +1,5 @@
-# Auto detect text files and perform CRLF normalization
-*          text eol=crlf
+# Auto-detect text files and use the same line endings on every platform.
+*          text=auto eol=lf
 
 #
 # The above will handle all files NOT found below
@@ -50,10 +50,10 @@
 *.fish     text eol=lf
 *.sh       text eol=lf
 *.zsh      text eol=lf
-# These are explicitly windows files and should use crlf
+# These are explicitly Windows command files and should use CRLF.
 *.bat      text eol=crlf
 *.cmd      text eol=crlf
-*.ps1      text eol=crlf
+*.ps1      text eol=lf
 
 # Serialisation
 *.json     text
@@ -70,7 +70,7 @@
 *.zip      binary
 *.ttf      binary
 
-# Binarird
+# Binaries
 *.exe      binary
 *.dll      binary
 
@@ -85,9 +85,10 @@
 .gitignore     export-ignore
 .gitkeep       export-ignore
 
-# C# specificsssввввывывыddssвававdfdfds
+# C#-specific files
 *.cs       text diff=csharp
 *.cshtml   text diff=html
 *.csx      text diff=csharp
-*.sln      text eol=crlf
-*.csproj   text eol=crlf
+*.sln      text eol=lf
+*.slnx     text eol=lf
+*.csproj   text eol=lf
