@@ -32,5 +32,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NotifyIcon.Wpf\H.NotifyIcon.Wpf.csproj" />
   </ItemGroup>
-  
+
 </Project>
