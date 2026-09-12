@@ -19,6 +19,7 @@ public partial class TaskbarIcon
     private Frame? ContextMenuWindowRoot { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
+    private MenuFlyout? ContextMenuSourceFlyout { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -129,7 +130,7 @@ public partial class TaskbarIcon
                 item.Tapped -= OnSecondWindowContextMenuItemTapped;
                 _ = flyout.Items.Remove(item);
 
-                if (ContextFlyout is MenuFlyout sourceFlyout &&
+                if (ContextMenuSourceFlyout is { } sourceFlyout &&
                     !sourceFlyout.Items.Contains(item))
                 {
                     sourceFlyout.Items.Add(item);
@@ -151,6 +152,7 @@ public partial class TaskbarIcon
         }
 
         IsSecondWindowContextMenuLoaded = false;
+        ContextMenuSourceFlyout = null;
         ContextMenuFlyout = null;
         ContextMenuWindow = null;
         ContextMenuWindowRoot = null;
@@ -205,13 +207,14 @@ public partial class TaskbarIcon
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
     private void PrepareContextMenuWindow()
     {
+        DisposeSecondWindowContextMenu();
+
         if (ContextFlyout == null ||
             ContextMenuMode != ContextMenuMode.SecondWindow)
         {
             return;
         }
 
-        DisposeSecondWindowContextMenu();
         IsSecondWindowContextMenuLoaded = false;
 
         var frame = new Frame
@@ -267,6 +270,7 @@ public partial class TaskbarIcon
         flyout.Opened += OnSecondWindowFlyoutOpened;
         flyout.Closing += OnSecondWindowFlyoutClosing;
         flyout.Closed += OnSecondWindowFlyoutClosed;
+        ContextMenuSourceFlyout = ContextFlyout as MenuFlyout;
         ContextMenuFlyout = flyout;
         SynchronizeSecondWindowContextMenuItems();
 
