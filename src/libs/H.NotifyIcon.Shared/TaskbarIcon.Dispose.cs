@@ -134,11 +134,7 @@ public partial class TaskbarIcon : IDisposable
             TrayPopupWindowRoot = null;
 
 #endif
-            CloseSecondWindowContextMenu();
-            ContextMenuWindow?.Close();
-            ContextMenuWindow = null;
-            ContextMenuWindowHandle = null;
-            ContextMenuAppWindow = null;
+            DisposeSecondWindowContextMenu();
 #endif
 
             TrayIcon.Dispose();

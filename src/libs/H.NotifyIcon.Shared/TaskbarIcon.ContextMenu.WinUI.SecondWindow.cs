@@ -16,14 +16,22 @@ public partial class TaskbarIcon
     private bool IsSecondWindowContextMenuOpenEventRaised { get; set; }
     private bool IsSecondWindowContextMenuLoaded { get; set; }
     private Window? ContextMenuWindow { get; set; }
+    private Frame? ContextMenuWindowRoot { get; set; }
     private nint? ContextMenuWindowHandle { get; set; }
     private AppWindow? ContextMenuAppWindow { get; set; }
+    private MenuFlyout? ContextMenuSourceFlyout { get; set; }
     private MenuFlyout? ContextMenuFlyout { get; set; }
 
 #pragma warning disable CA1822 // Mark members as static
     partial void OnContextMenuModeChanged(ContextMenuMode oldValue, ContextMenuMode newValue)
 #pragma warning restore CA1822 // Mark members as static
     {
+        if (oldValue is ContextMenuMode.SecondWindow &&
+            newValue is not ContextMenuMode.SecondWindow)
+        {
+            DisposeSecondWindowContextMenu();
+        }
+
         if (newValue is ContextMenuMode.SecondWindow)
         {
             PrepareContextMenuWindow();
@@ -32,7 +40,7 @@ public partial class TaskbarIcon
 
     partial void OnContextMenuThemeModeChanged(PopupMenuThemeMode oldValue, PopupMenuThemeMode newValue)
     {
-        ApplySecondWindowContextMenuTheme(ContextMenuWindow?.Content as FrameworkElement);
+        ApplySecondWindowContextMenuTheme(ContextMenuWindowRoot);
     }
 
     #endregion
@@ -104,6 +112,54 @@ public partial class TaskbarIcon
         }
     }
 
+    private void DisposeSecondWindowContextMenu()
+    {
+        CloseSecondWindowContextMenu();
+
+        ActualThemeChanged -= OnSecondWindowActualThemeChanged;
+
+        if (ContextMenuFlyout is { } flyout)
+        {
+            flyout.Opened -= OnSecondWindowFlyoutOpened;
+            flyout.Closing -= OnSecondWindowFlyoutClosing;
+            flyout.Closed -= OnSecondWindowFlyoutClosed;
+
+            var items = flyout.Items.ToList();
+            foreach (var item in items)
+            {
+                item.Tapped -= OnSecondWindowContextMenuItemTapped;
+                _ = flyout.Items.Remove(item);
+
+                if (ContextMenuSourceFlyout is { } sourceFlyout &&
+                    !sourceFlyout.Items.Contains(item))
+                {
+                    sourceFlyout.Items.Add(item);
+                }
+            }
+        }
+
+        if (ContextMenuWindowRoot is { } root)
+        {
+            root.Loaded -= OnSecondWindowRootLoaded;
+            root.ClearValue(FlowDirectionProperty);
+        }
+
+        if (ContextMenuWindow is { } window)
+        {
+            window.Activated -= OnSecondWindowActivated;
+            window.Content = null;
+            window.Close();
+        }
+
+        IsSecondWindowContextMenuLoaded = false;
+        ContextMenuSourceFlyout = null;
+        ContextMenuFlyout = null;
+        ContextMenuWindow = null;
+        ContextMenuWindowRoot = null;
+        ContextMenuWindowHandle = null;
+        ContextMenuAppWindow = null;
+    }
+
     private void EnsureSecondWindowContextMenuLoaded()
     {
         if (IsSecondWindowContextMenuLoaded ||
@@ -151,6 +207,8 @@ public partial class TaskbarIcon
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof(MenuFlyoutSubItem))]
     private void PrepareContextMenuWindow()
     {
+        DisposeSecondWindowContextMenu();
+
         if (ContextFlyout == null ||
             ContextMenuMode != ContextMenuMode.SecondWindow)
         {
@@ -178,13 +236,7 @@ public partial class TaskbarIcon
         };
 
         ApplySecondWindowContextMenuTheme(frame);
-        ActualThemeChanged += (_, _) =>
-        {
-            if (ContextMenuThemeMode == PopupMenuThemeMode.System)
-            {
-                ApplySecondWindowContextMenuTheme(frame);
-            }
-        };
+        ActualThemeChanged += OnSecondWindowActualThemeChanged;
 
         var handle = WindowNative.GetWindowHandle(window);
         DesktopWindowsManagerMethods.SetRoundedCorners(handle);
@@ -215,85 +267,111 @@ public partial class TaskbarIcon
             AreOpenCloseAnimationsEnabled = ContextFlyout.AreOpenCloseAnimationsEnabled,
             Placement = FlyoutPlacementMode.Full,
         };
-        flyout.Opened += (_, _) =>
-        {
-            if (IsContextMenuVisible &&
-                !IsSecondWindowContextMenuOpenEventRaised)
-            {
-                IsSecondWindowContextMenuOpenEventRaised = true;
-                _ = OnSecondWindowContextMenuOpened();
-            }
-        };
-        flyout.Closing += (_, args) =>
-        {
-            if (!CloseContextMenuOnItemClick &&
-                IsContextMenuVisible)
-            {
-                args.Cancel = true;
-            }
-        };
-        flyout.Closed += (_, _) =>
-        {
-            if (!flyout.AreOpenCloseAnimationsEnabled ||
-                !IsContextMenuVisible)
-            {
-                _ = WindowUtilities.HideWindow(handle);
-                return;
-            }
-
-            flyout.ShowAt(window.Content, new FlyoutShowOptions
-            {
-                ShowMode = FlyoutShowMode.Transient,
-            });
-        };
+        flyout.Opened += OnSecondWindowFlyoutOpened;
+        flyout.Closing += OnSecondWindowFlyoutClosing;
+        flyout.Closed += OnSecondWindowFlyoutClosed;
+        ContextMenuSourceFlyout = ContextFlyout as MenuFlyout;
         ContextMenuFlyout = flyout;
         SynchronizeSecondWindowContextMenuItems();
 
-        frame.Loaded += (_, _) =>
-        {
-            IsSecondWindowContextMenuLoaded = true;
-
-            // Set the window style to PopupWindow to make the title bar invisible
-            if (ContextMenuWindowHandle != null)
-            {
-                HwndUtilities.SetWindowStyleAsPopupWindow(ContextMenuWindowHandle.Value);
-            }
-            
-            flyout.ShowAt(window.Content, new FlyoutShowOptions
-            {
-                ShowMode = FlyoutShowMode.Transient,
-            });
-            flyout.Hide();
-            _ = WindowUtilities.HideWindow(handle);
-        };
-        window.Activated += (sender, args) =>
-        {
-            if (args.WindowActivationState == WindowActivationState.Deactivated)
-            {
-                CloseSecondWindowContextMenu();
-                return;
-            }
-
-            if (ContextMenuWindow == null)
-            {
-                return;
-            }
-
-            if (!IsContextMenuVisible)
-            {
-                return;
-            }
-
-            ShowSecondWindowFlyout(flyout, window.Content);
-        };
+        frame.Loaded += OnSecondWindowRootLoaded;
+        window.Activated += OnSecondWindowActivated;
 
         ContextMenuWindow = window;
+        ContextMenuWindowRoot = frame;
         ContextMenuWindowHandle = handle;
 #if !HAS_UNO
         ContextMenuAppWindow = appWindow;
 #endif
 
         EnsureSecondWindowContextMenuLoaded();
+    }
+
+    private void OnSecondWindowActualThemeChanged(FrameworkElement sender, object args)
+    {
+        if (ContextMenuThemeMode == PopupMenuThemeMode.System)
+        {
+            ApplySecondWindowContextMenuTheme(ContextMenuWindowRoot);
+        }
+    }
+
+    private void OnSecondWindowFlyoutOpened(object? sender, object args)
+    {
+        if (IsContextMenuVisible &&
+            !IsSecondWindowContextMenuOpenEventRaised)
+        {
+            IsSecondWindowContextMenuOpenEventRaised = true;
+            _ = OnSecondWindowContextMenuOpened();
+        }
+    }
+
+    private void OnSecondWindowFlyoutClosing(FlyoutBase sender, FlyoutBaseClosingEventArgs args)
+    {
+        if (!CloseContextMenuOnItemClick &&
+            IsContextMenuVisible)
+        {
+            args.Cancel = true;
+        }
+    }
+
+    private void OnSecondWindowFlyoutClosed(object? sender, object args)
+    {
+        if (sender is not MenuFlyout flyout ||
+            !flyout.AreOpenCloseAnimationsEnabled ||
+            !IsContextMenuVisible)
+        {
+            if (ContextMenuWindowHandle is { } handle)
+            {
+                _ = WindowUtilities.HideWindow(handle);
+            }
+
+            return;
+        }
+
+        if (ContextMenuWindowRoot is { } root)
+        {
+            ShowSecondWindowFlyout(flyout, root);
+        }
+    }
+
+    private void OnSecondWindowRootLoaded(object sender, RoutedEventArgs args)
+    {
+        if (sender is not Frame root ||
+            ContextMenuFlyout is not { } flyout ||
+            ContextMenuWindowHandle is not { } handle)
+        {
+            return;
+        }
+
+        IsSecondWindowContextMenuLoaded = true;
+
+        // Set the window style to PopupWindow to make the title bar invisible
+        HwndUtilities.SetWindowStyleAsPopupWindow(handle);
+
+        flyout.ShowAt(root, new FlyoutShowOptions
+        {
+            ShowMode = FlyoutShowMode.Transient,
+        });
+        flyout.Hide();
+        _ = WindowUtilities.HideWindow(handle);
+    }
+
+    private void OnSecondWindowActivated(object sender, WindowActivatedEventArgs args)
+    {
+        if (args.WindowActivationState == WindowActivationState.Deactivated)
+        {
+            CloseSecondWindowContextMenu();
+            return;
+        }
+
+        if (!IsContextMenuVisible ||
+            ContextMenuFlyout is not { } flyout ||
+            ContextMenuWindowRoot is not { } root)
+        {
+            return;
+        }
+
+        ShowSecondWindowFlyout(flyout, root);
     }
 
     private void ApplySecondWindowContextMenuTheme(FrameworkElement? target)
