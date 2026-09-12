@@ -39,7 +39,7 @@ public partial class TaskbarIcon
 
     partial void OnContextMenuThemeModeChanged(PopupMenuThemeMode oldValue, PopupMenuThemeMode newValue)
     {
-        ApplySecondWindowContextMenuTheme(ContextMenuWindow?.Content as FrameworkElement);
+        ApplySecondWindowContextMenuTheme(ContextMenuWindowRoot);
     }
 
     #endregion
@@ -123,12 +123,18 @@ public partial class TaskbarIcon
             flyout.Closing -= OnSecondWindowFlyoutClosing;
             flyout.Closed -= OnSecondWindowFlyoutClosed;
 
-            foreach (var item in flyout.Items)
+            var items = flyout.Items.ToList();
+            foreach (var item in items)
             {
                 item.Tapped -= OnSecondWindowContextMenuItemTapped;
-            }
+                _ = flyout.Items.Remove(item);
 
-            flyout.Items.Clear();
+                if (ContextFlyout is MenuFlyout sourceFlyout &&
+                    !sourceFlyout.Items.Contains(item))
+                {
+                    sourceFlyout.Items.Add(item);
+                }
+            }
         }
 
         if (ContextMenuWindowRoot is { } root)
