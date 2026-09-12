@@ -10,6 +10,9 @@ jobs:
   build-test-publish:
     name: Build, test and publish library
     runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -40,9 +43,15 @@ jobs:
           Get-ChildItem -Path src/libs -Recurse -Filter *.csproj | ForEach-Object { dotnet build $_.FullName --configuration Release }
         shell: pwsh
 
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: nuget_login
+        with:
+          user: havendv
+
       - name: Publish
         run: dotnet nuget push
           **.nupkg
           --skip-duplicate
           --source https://api.nuget.org/v3/index.json
-          --api-key ${{ secrets.NUGET_KEY }}
+          --api-key ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
