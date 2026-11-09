@@ -76,11 +76,11 @@ public static class WindowUtilities
     public static unsafe bool IsPackaged()
     {
         var size = 0U;
-        var result = PInvoke.GetCurrentPackageId(
+        var result = PackageMethods.GetCurrentPackageId(
             bufferLength: &size,
             buffer: default);
 
-        return result != WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE;
+        return result != PackageMethods.APPMODEL_ERROR_NO_PACKAGE;
     }
 
     /// <summary>Sets the specified window's show state.</summary>

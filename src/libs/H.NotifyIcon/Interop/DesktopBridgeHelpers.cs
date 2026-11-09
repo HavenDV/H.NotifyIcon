@@ -20,11 +20,11 @@ public static class DesktopBridgeHelpers
 
         uint length = 0;
         var empty = stackalloc char[0];
-        _ = PInvoke.GetCurrentPackageFullName(&length, empty);
+        _ = PackageMethods.GetCurrentPackageFullName(&length, empty);
 
         var text = stackalloc char[(int)length];
-        var error = PInvoke.GetCurrentPackageFullName(&length, text);
+        var error = PackageMethods.GetCurrentPackageFullName(&length, text);
 
-        return error != WIN32_ERROR.APPMODEL_ERROR_NO_PACKAGE;
+        return error != PackageMethods.APPMODEL_ERROR_NO_PACKAGE;
     }
 }

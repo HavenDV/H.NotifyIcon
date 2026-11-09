@@ -53,9 +53,6 @@ NIN_POPUPCLOSE
 GetIconInfo
 GetSystemMetrics
 
-// WindowUtilities.IsPackaged
-GetCurrentPackageId
-
 // Shell32
 ABM_GETTASKBARPOS
 ABE_BOTTOM
@@ -92,9 +89,6 @@ CreatePopupMenu
 DeleteMenu
 TrackPopupMenuEx
 TRACK_POPUP_MENU_FLAGS
-
-// DesktopBridgeHelpers
-GetCurrentPackageFullName
 
 // DesktopWindowsManagerMethods.SetRoundedCorners
 DwmSetWindowAttribute
