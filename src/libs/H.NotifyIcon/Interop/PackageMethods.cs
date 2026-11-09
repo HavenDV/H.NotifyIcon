@@ -3,8 +3,7 @@
 namespace H.NotifyIcon.Interop;
 
 /// <summary>
-/// Package identity APIs, declared by hand because CsWin32 would generate
-/// the whole WIN32_ERROR enum (over 3,000 members) for their return type.
+/// Package identity APIs, declared by hand because CsWin32 would generate the whole WIN32_ERROR enum (over 3,000 members) for their return type.
 /// </summary>
 internal static unsafe class PackageMethods
 {
