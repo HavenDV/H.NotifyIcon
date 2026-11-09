@@ -55,6 +55,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <PropertyGroup Label="Source Link">
+    <!-- Ship symbols in a .snupkg instead of embedding them, so apps that bundle these DLLs don't carry them. -->
+    <DebugType>portable</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
   <ItemGroup Label="PolySharp">
     <PackageReference Include="PolySharp" Version="1.17.0">
       <PrivateAssets>all</PrivateAssets>
