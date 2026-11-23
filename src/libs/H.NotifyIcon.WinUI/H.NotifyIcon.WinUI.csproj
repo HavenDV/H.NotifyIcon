@@ -24,10 +24,11 @@ popups, context menus, and balloon messages. It can be used directly in code or 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DependencyPropertyGenerator" Version="1.5.0">
+    <PackageReference Include="DependencyPropertyGenerator" Version="1.5.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
   </ItemGroup>
 
   <ItemGroup>
